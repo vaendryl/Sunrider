@@ -1,29 +1,41 @@
 ## this file declares all the functions used in the engine
 
 init -6 python:
+    if 'mouseup_2' in config.keymap['hide_windows']:
+        config.keymap['hide_windows'].remove('mouseup_2')
+    if 'h' in config.keymap['hide_windows']:
+        config.keymap['hide_windows'].remove('h')
+
+
     import math
     #import random
 
-    def battlemode(bm):
-        if 'mousedown_4' in config.keymap['rollback']:
-            config.keymap['rollback'].remove('mousedown_4')
-        if 'K_PAGEUP' in config.keymap['rollback']:
-            config.keymap['rollback'].remove('K_PAGEUP')
-        if 'mousedown_5' not in config.keymap['rollforward']:
-            config.keymap['rollforward'].remove('mousedown_5')
-        if 'K_PAGEDOWN' not in config.keymap['rollforward']:
-            config.keymap['rollforward'].remove('K_PAGEDOWN')
+    def battlemode(bm):  #as it turns out, modifying the keymap doesn't seem to do ANYTHING in runtime
+#        if 'mousedown_4' in config.keymap['rollback']:
+#            config.keymap['rollback'].remove('mousedown_4')
+#        if 'K_PAGEUP' in config.keymap['rollback']:
+#            config.keymap['rollback'].remove('K_PAGEUP')
+#        if 'mousedown_5' in config.keymap['rollforward']:
+#            config.keymap['rollforward'].remove('mousedown_5')
+#        if 'K_PAGEDOWN' in config.keymap['rollforward']:
+#            config.keymap['rollforward'].remove('K_PAGEDOWN')
+#        if 'mouseup_2' in config.keymap['hide_windows']:
+#            config.keymap['hide_windows'].remove('mouseup_2')
+#        if 'h' in config.keymap['hide_windows']:
+#            config.keymap['hide_windows'].remove('h')
         bm.battlemode = True
         config.rollback_enabled = False
 
     def VNmode():
-        try:
-            config.keymap['rollback'].append('mousedown_4')
-            config.keymap['rollforward'].append('mousedown_5')
-            config.keymap['K_PAGEUP'].append('mousedown_4')
-            config.keymap['K_PAGEDOWN'].append('mousedown_5')
-        except:
-            pass
+#        try:
+#            config.keymap['rollback'].append('mousedown_4')
+#            config.keymap['rollforward'].append('mousedown_5')
+#            config.keymap['K_PAGEUP'].append('mousedown_4')
+#            config.keymap['K_PAGEDOWN'].append('mousedown_5')
+#            config.keymap['hide_windows'].append('mouseup_2')
+#            config.keymap['hide_windows'].append('h')
+#        except:
+#            pass
         BM.battlemode = False
         config.rollback_enabled = True
 

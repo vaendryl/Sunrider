@@ -78,6 +78,10 @@ screen battle_screen:
         key "mousedown_5" action Return(["zoom", "out"])
         key "K_PAGEUP" action Return(["zoom", "in"])
         key "K_PAGEDOWN" action Return(["zoom", "out"])
+        if 'mouseup_2' not in config.keymap['hide_windows']:
+            key "mousedown_2" action Return("next ship")
+        key "]" action Return("next ship")
+        key "[" action Return("previous ship")
     else:
         timer 0.5 repeat True action Return(['timer',0])   #this is used when a ship is moving from grid to grid
 
@@ -526,11 +530,16 @@ screen battle_screen:
             color 'fff'
             outlines [(1,'000',0,0)]
 
+    $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(0.6, 1.0, 0.5))
+    for ship in player_ships:
+        if ship.en >= ship.max_en:
+            $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
+
     imagebutton:
         xpos 90
         yalign 1.0
-        idle 'Battle UI/button_endturn.png'
-        hover hoverglow('Battle UI/button_endturn.png')
+        idle endturnbutton_idle
+        hover hoverglow(endturnbutton_idle)
         action Return('endturn')
 
 transform move_down(ystart,yend,xx=0):
@@ -607,8 +616,8 @@ screen commands: ##show the weapon buttons etc##
         $en_size = int(298*(float(BM.selected.en)/BM.selected.max_en))
         add 'Battle UI/status window_HP.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
         add 'Battle UI/status window_EN.png' xpos 1133 ypos 805 crop (0,0,en_size,19)
-        text (str(BM.selected.hp) + '/' + str(BM.selected.max_hp)) xanchor 0.5 xpos 1510 ypos 779 size 15 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
-        text (str(BM.selected.en) + '/' + str(BM.selected.max_en)) xanchor 0.5 xpos 1490 ypos 805 size 15 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+        text (str(BM.selected.hp) + '/' + str(BM.selected.max_hp)) xanchor 0.5 xpos 1510 ypos 779 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+        text (str(BM.selected.en) + '/' + str(BM.selected.max_en)) xanchor 0.5 xpos 1490 ypos 805 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
         text (str(BM.selected.flak)) xanchor 1.0 xpos 1149 ypos 847 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
         text (str(BM.selected.shields)) xanchor 1.0 xpos 1149 ypos 897 size 24 font "Font/sui generis rg.ttf" outlines [(1,BM.selected.shield_color,0,0)]
         text (str(BM.selected.armor)) xanchor 1.0 xpos 1149 ypos 947 size 24 font "Font/sui generis rg.ttf" outlines [(1,BM.selected.armor_color,0,0)]
@@ -812,6 +821,8 @@ screen victory:
     $wait = 0.2
     $xx = 750
 
+    add Solid((0,0,0,200))
+
     for letter in word:
         text letter:
             xanchor 0.5
@@ -842,6 +853,8 @@ screen victory2:
     $xx = 200
     $store.total_money = 0
     $store.repair_cost = 0
+
+    add Solid((0,0,0,200))
 
     textbutton 'Continue':
         xalign 0.5
@@ -967,26 +980,4 @@ screen game_over_gimmick:
         $randy = random.random()
         $randt = random.randint(100,600) / 100.0
         text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -101,6 +101,24 @@ init -2 python:
             if result == 'I WIN':
                 instant_win()
 
+            if result == "next ship":
+                if self.selected != None and len(player_ships) > 1:
+                    index = player_ships.index(self.selected)
+                    if index == (len(player_ships)-1):
+                        index = 0
+                    else:
+                        index += 1
+                    self.select_ship(player_ships[index])
+
+            if result == "previous ship":
+                if self.selected != None and len(player_ships) > 1:
+                    index = player_ships.index(self.selected)
+                    if index == 0:
+                        index = len(player_ships)-1
+                    else:
+                        index -= 1
+                    self.select_ship(player_ships[index])
+
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
                 if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
@@ -306,6 +324,7 @@ init -2 python:
 #ending the battle - reset values for next battle
         def battle_end(self, lost = False):
             self.battlemode = False #this ends the battle loop
+            if self.selected != None: self.unselect_ship(self.selected)
 
             if not lost:
                 renpy.music.stop()

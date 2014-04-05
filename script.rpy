@@ -790,11 +790,10 @@ label firstbattle_end:
     hide screen battle_screen
     hide screen commands
 
-    window show
-
     play music "Music/WorldBuilder.ogg"
 
     scene bg bridgered with dissolve
+    window show
 
     show ava uniform handonhip neutral with dissolve
 
@@ -1588,10 +1587,10 @@ label secondbattle_end:
 
     hide screen battle_screen
     hide screen commands
-    window show
 
     scene bg black2 with horizontalwipereverse
     scene bg hangar with horizontalwipereverse
+    window show
 
     play music "Music/WorldBuilder.ogg"  fadeout 1.5
 
