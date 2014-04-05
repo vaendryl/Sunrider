@@ -1,6 +1,7 @@
 Sunrider
 ========
 1.06 patch notes
+
 -added warning text to save/load screen
 
 -fixed possible crash caused by Vanguard cannon when used to kill a boss (and other units)
