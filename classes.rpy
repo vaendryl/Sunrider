@@ -117,21 +117,23 @@ init -2 python:
 
             if result == "next ship":
                 if self.selected != None and len(player_ships) > 1:
-                    index = player_ships.index(self.selected)
-                    if index == (len(player_ships)-1):
-                        index = 0
-                    else:
-                        index += 1
-                    self.select_ship(player_ships[index])
+                    if self.selected.faction == 'Player':
+                        index = player_ships.index(self.selected)
+                        if index == (len(player_ships)-1):
+                            index = 0
+                        else:
+                            index += 1
+                        self.select_ship(player_ships[index])
 
             if result == "previous ship":
                 if self.selected != None and len(player_ships) > 1:
-                    index = player_ships.index(self.selected)
-                    if index == 0:
-                        index = len(player_ships)-1
-                    else:
-                        index -= 1
-                    self.select_ship(player_ships[index])
+                    if self.selected.faction == 'Player':
+                        index = player_ships.index(self.selected)
+                        if index == 0:
+                            index = len(player_ships)-1
+                        else:
+                            index -= 1
+                        self.select_ship(player_ships[index])
 
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
