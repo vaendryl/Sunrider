@@ -292,7 +292,7 @@ init -2 python:
                         if ship.location[1] == sunrider.location[1]:
                             if ship.location[0]-sunrider.location[0] >=0:
                                 if ship.location[0]-sunrider.location[0] <=7:
-                                    if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
+                                    if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
                                         BM.target = ship
                                         ship.receive_damage(800,sunrider,'Vanguard')
                     BM.vanguard = False
@@ -657,7 +657,8 @@ init -2 python:
             a = self.location[0]-1  #make the next line of code a little shorter
             b = self.location[1]-1
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
-            BM.ships.remove(self)
+            if self in BM.ships:
+                BM.ships.remove(self)
             if self.boss:
                 BM.battle_end()
 
