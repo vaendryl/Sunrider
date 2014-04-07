@@ -18,6 +18,8 @@ transform shake(time=0.5,repeats=20): #defunct?
         ease 0.01 xpos 0.5
         repeat repeats
 
+
+
 label endofturn:
     show screen battle_screen
     $update_stats()
@@ -100,5 +102,18 @@ label tryagain:
     pause
     return
 
+#label main_menu:
+#    $BM = Battle()
+#    return
+
+
 label after_load:
+    #old versions don't have this variable so if it doesn't exist, make one.
+    python:
+        try:
+            if BM.edgescroll == None:
+                pass
+        except:
+            BM.edgescroll = (0,0)
+
     return

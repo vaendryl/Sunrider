@@ -41,6 +41,9 @@ init -1 python hide:
 # http://www.renpy.org/doc/html/screen_special.html#say
 screen say:
 
+    if 'mouseup_3' not in config.keymap['game_menu']:
+        key 'mouseup_3' action Show('save')
+
     # Defaults for side_image and two_window
     default side_image = None
     default two_window = False
@@ -198,6 +201,8 @@ screen nvl:
 
 screen main_menu:
 
+    $BM = Battle()
+
     imagemap:
         ground "Menu/menu_default.jpg"
         idle "Menu/menu_default.jpg"
@@ -268,144 +273,153 @@ screen load:
     modal True
     zorder 200
 
-    text 'WARNING! \n Do not save or load during the enemy \n turn.':
-        xpos 50
-        ypos 50
-        size 35
-        color 'fff'
-        outlines [(2,'f00',0,0)]
+    if BM.phase == 'PACT' or BM.phase == 'Pirate':
+        text 'WARNING! \n You can not load during the enemy \n turn.':
+            xalign 0.5
+            yalign 0.5
+            size 35
+            color 'fff'
+            outlines [(2,'f00',0,0)]
 
-    imagemap:
-        ground "Menu/load_base.png"
-        hover "Menu/load_hover.png"
+        timer 2 action Hide('load')
+    else:
 
-        hotspot (752, 215, 137, 28) action FilePage(1)
-        hotspot (913, 215, 137, 28) action FilePage("auto")
-        hotspot (1075, 215, 137, 28) action FilePage("quick")
-        hotspot (1221, 250, 30, 146) action FilePagePrevious()
-        hotspot (1221, 724, 30, 146) action FilePageNext()
-        hotspot (948, 926, 107, 23) action Hide('load', transition=dissolve)
-        hotspot (726, 59, 137, 44) action [ Hide('load'), Show('save', transition=dissolve) ]
-        hotspot (1002, 59, 137, 44) action [ Hide('load'), Show('preferences', transition=dissolve) ]
-        hotspot (1140, 59, 137, 44) action MainMenu()
+        imagemap:
+            ground "Menu/load_base.png"
+            hover "Menu/load_hover.png"
 
-        style "file_picker_frame"
+            hotspot (752, 215, 137, 28) action FilePage(1)
+            hotspot (913, 215, 137, 28) action FilePage("auto")
+            hotspot (1075, 215, 137, 28) action FilePage("quick")
+            hotspot (1221, 250, 30, 146) action FilePagePrevious()
+            hotspot (1221, 724, 30, 146) action FilePageNext()
+            hotspot (948, 926, 107, 23) action Hide('load', transition=dissolve)
+            hotspot (726, 59, 137, 44) action [ Hide('load'), Show('save', transition=dissolve) ]
+            hotspot (1002, 59, 137, 44) action [ Hide('load'), Show('preferences', transition=dissolve) ]
+            hotspot (1140, 59, 137, 44) action MainMenu()
 
-        $ columns = 1
-        $ rows = 8
+            style "file_picker_frame"
 
-        # Display a grid of file slots.
-        grid columns rows:
-            transpose True
-            xfill True
-            style_group "file_picker"
-            xpos 753
-            ypos 251
+            $ columns = 1
+            $ rows = 8
 
-            # Display ten file slots, numbered 1 - 10.
-            for i in range(1, columns * rows + 1):
+            # Display a grid of file slots.
+            grid columns rows:
+                transpose True
+                xfill True
+                style_group "file_picker"
+                xpos 753
+                ypos 251
 
-                # Each file slot is an hbox containing two buttons.
-                hbox:
+                # Display ten file slots, numbered 1 - 10.
+                for i in range(1, columns * rows + 1):
 
-                    button:
+                    # Each file slot is an hbox containing two buttons.
+                    hbox:
 
-                        xminimum 424
-                        yminimum 77
-                        action FileAction(i)
+                        button:
 
-                        has hbox
+                            xminimum 424
+                            yminimum 77
+                            action FileAction(i)
 
-                        # Add the screenshot.
-                        add FileScreenshot(i)
+                            has hbox
 
-                        # Format the description, and add it as text.
-                        $ description = "% 2s. %s\n%s" % (
-                            FileSlotName(i, columns * rows),
-                            FileTime(i, empty=_("Empty Slot.")),
-                            FileSaveName(i))
+                            # Add the screenshot.
+                            add FileScreenshot(i)
 
-                        text description
+                            # Format the description, and add it as text.
+                            $ description = "% 2s. %s\n%s" % (
+                                FileSlotName(i, columns * rows),
+                                FileTime(i, empty=_("Empty Slot.")),
+                                FileSaveName(i))
 
-                        key "save_delete" action FileDelete(i)
+                            text description
 
-                    button:
+                            key "save_delete" action FileDelete(i)
 
-                        yminimum 77
-                        action FileDelete(i)
-                        text "X" # Or this could be an image or something.
+                        button:
+
+                            yminimum 77
+                            action FileDelete(i)
+                            text "X" # Or this could be an image or something.
 
 screen save:
 
     modal True
     zorder 200
 
-    text 'WARNING! \n Do not save or load during the enemy \n turn.':
-        xpos 50
-        ypos 50
-        size 35
-        color 'fff'
-        outlines [(2,'f00',0,0)]
+    if BM.phase == 'PACT' or BM.phase == 'Pirate':
+        text 'WARNING! \n You can not save during the enemy \n turn.':
+            xalign 0.5
+            yalign 0.5
+            size 35
+            color 'fff'
+            outlines [(2,'f00',0,0)]
 
-    imagemap:
-        ground "Menu/save_base.png"
-        hover "Menu/save_hover.png"
+        timer 2 action Hide('save')
 
-        hotspot (752, 215, 137, 28) action FilePage(1)
-        hotspot (913, 215, 137, 28) action FilePage("auto")
-        hotspot (1075, 215, 137, 28) action FilePage("quick")
-        hotspot (1221, 250, 30, 146) action FilePagePrevious()
-        hotspot (1221, 724, 30, 146) action FilePageNext()
-        hotspot (948, 926, 107, 23) action Hide('save', transition=dissolve)
-        hotspot (864, 59, 137, 44) action [ Hide('save'), Show('load', transition=dissolve) ]
-        hotspot (1002, 59, 137, 44) action [ Hide('save'), Show('preferences', transition=dissolve) ]
-        hotspot (1140, 59, 137, 44) action MainMenu()
+    else:
 
-        style "file_picker_frame"
+        imagemap:
+            ground "Menu/save_base.png"
+            hover "Menu/save_hover.png"
 
-        $ columns = 1
-        $ rows = 8
+            hotspot (752, 215, 137, 28) action FilePage(1)
+            hotspot (913, 215, 137, 28) action FilePage("auto")
+            hotspot (1075, 215, 137, 28) action FilePage("quick")
+            hotspot (1221, 250, 30, 146) action FilePagePrevious()
+            hotspot (1221, 724, 30, 146) action FilePageNext()
+            hotspot (948, 926, 107, 23) action Hide('save', transition=dissolve)
+            hotspot (864, 59, 137, 44) action [ Hide('save'), Show('load', transition=dissolve) ]
+            hotspot (1002, 59, 137, 44) action [ Hide('save'), Show('preferences', transition=dissolve) ]
+            hotspot (1140, 59, 137, 44) action MainMenu()
 
-        # Display a grid of file slots.
-        grid columns rows:
-            transpose True
-            xfill True
-            style_group "file_picker"
-            xpos 753
-            ypos 251
+            style "file_picker_frame"
 
-            # Display ten file slots, numbered 1 - 10.
-            for i in range(1, columns * rows + 1):
+            $ columns = 1
+            $ rows = 8
 
-                # Each file slot is an hbox containing two buttons.
-                hbox:
+            # Display a grid of file slots.
+            grid columns rows:
+                transpose True
+                xfill True
+                style_group "file_picker"
+                xpos 753
+                ypos 251
 
-                    button:
+                # Display ten file slots, numbered 1 - 10.
+                for i in range(1, columns * rows + 1):
 
-                        xminimum 424
-                        yminimum 77
-                        action FileAction(i)
+                    # Each file slot is an hbox containing two buttons.
+                    hbox:
 
-                        has hbox
+                        button:
 
-                        # Add the screenshot.
-                        add FileScreenshot(i)
+                            xminimum 424
+                            yminimum 77
+                            action FileAction(i)
 
-                        # Format the description, and add it as text.
-                        $ description = "% 2s. %s\n%s" % (
-                            FileSlotName(i, columns * rows),
-                            FileTime(i, empty=_("Empty Slot.")),
-                            FileSaveName(i))
+                            has hbox
 
-                        text description
+                            # Add the screenshot.
+                            add FileScreenshot(i)
 
-                        key "save_delete" action FileDelete(i)
+                            # Format the description, and add it as text.
+                            $ description = "% 2s. %s\n%s" % (
+                                FileSlotName(i, columns * rows),
+                                FileTime(i, empty=_("Empty Slot.")),
+                                FileSaveName(i))
 
-                    button:
+                            text description
 
-                        yminimum 77
-                        action FileDelete(i)
-                        text "X" # Or this could be an image or something.
+                            key "save_delete" action FileDelete(i)
+
+                        button:
+
+                            yminimum 77
+                            action FileDelete(i)
+                            text "X" # Or this could be an image or something.
 
 init -2 python:
     style.file_picker_frame = Style(style.menu_frame)

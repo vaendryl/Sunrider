@@ -5,6 +5,8 @@ init -6 python:
         config.keymap['hide_windows'].remove('mouseup_2')
     if 'h' in config.keymap['hide_windows']:
         config.keymap['hide_windows'].remove('h')
+    if 'mouseup_3' in config.keymap['game_menu']:
+        config.keymap['game_menu'].remove('mouseup_3')
 
 
     import math

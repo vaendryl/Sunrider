@@ -7,6 +7,7 @@
 
     ##disable the main menu for easy iteration
 label splashscreen:
+    $BM = Battle()
 
     scene black
 
@@ -21,99 +22,71 @@ label splashscreen:
     $ renpy.pause(0.5)
 
     stop music fadeout 1.0
-    window show
-
-    asa "Ah.  Ah.  Uh, is this thing working?  Can everyone see me okay?"
-
-    play music "Music/SAMFREE.ogg"
-
-    scene bg renpytomback with dissolve
-    show asaga uniform neutral funnysmile with dissolve
-    show backgroundcredit:
-        xpos 2.0
-        linear 30 xpos -1.0
-
-    asa "O-oh! There we go!"
-    asa "A-ahem.  Hello and welcome to Doki Doki Space Whale Dating Sim 3.  I'm your ol' childhood friend Asaga Oakrun."
-    asa "Eh, what?  You're here for the Sunrider Beta instead?"
-    asa "U-uck... Well, about that..."
-    asa "Samu-kun came down ill yesterday after he was bit by an emu and couldn't finish coding the game in time."
-
-    show asaga uniform armscrossed confident with dissolve
-
-    asa "Ufufu... But I bet I got something which you want even more than the beta..."
-    asa "In my pocket is an exclusive preview of the very first HCG in our new Love in Space exclusive spin off game, Doki Doki Space Whale."
-    asa "You better prepare yourself! Because there's three thousand tons of pure love in this image! Now STAND BACK, and BRACE YOURSELF!"
-
-    show chigara uniform handsup surprise:
-        xpos 1.1
-        ease 0.5 xpos 0.8
-    with dissolve
-
-    chi "A-ah! W-wait!"
-    chi "Samu-kun made a miraculous recovery and managed to finish the beta in time!"
-
-    show asaga uniform thinking surprise with dissolve
-
-    asa "Eeehh!? I thought that emu bite did him in for good!"
-
-    show chigara uniform twiddlefingers forcedsmile with dissolve
-
-    chi "A-Asaga... Please don't say scary things like that..."
-
-    show asaga uniform excited smile with dissolve
-
-    asa "W-well, in that case, looks like I'll just have to save the HCG for another day!"
-    asa "Sit up straight and make sure to keep your arms and legs inside the ride at all times folks!  The Sunrider beta is about to begin!"
-    asa "A-ahem, now Chigara, check out these HCGs..."
-
-    show chigara uniform handsup surprise with dissolve
-
-    chi "E-eh... EEEHHHHHHHH!?"
-
-    scene bg black
-
-    show episode1commences:
-        zoom 5 xalign 0.5 yalign 0.5
-        ease 0.5 zoom 1
-
-    pause 0.5
-
-    play sound "sound/drum.ogg"
-
-    pause
-
     return
 
-#label start:
+#    window show
 
-    #create the battlemanager and a few lists
+#    asa "Ah.  Ah.  Uh, is this thing working?  Can everyone see me okay?"
 
- #   jump story
+#    play music "Music/SAMFREE.ogg"
 
-#    menu:
-#        "To Battle!":
-#            jump battletest
+#    scene bg renpytomback with dissolve
+#    show asaga uniform neutral funnysmile with dissolve
+#    show backgroundcredit:
+#        xpos 2.0
+#        linear 30 xpos -1.0
 
-#        "Tell me a story":
-#            jump story
+#    asa "O-oh! There we go!"
+#    asa "A-ahem.  Hello and welcome to Doki Doki Space Whale Dating Sim 3.  I'm your ol' childhood friend Asaga Oakrun."
+#    asa "Eh, what?  You're here for the Sunrider Beta instead?"
+#    asa "U-uck... Well, about that..."
+#    asa "Samu-kun came down ill yesterday after he was bit by an emu and couldn't finish coding the game in time."
 
-#label battletest:
+#    show asaga uniform armscrossed confident with dissolve
 
-#    ## this starts the battle! see classes.rpy for details
-#    call battle_start
+#    asa "Ufufu... But I bet I got something which you want even more than the beta..."
+#    asa "In my pocket is an exclusive preview of the very first HCG in our new Love in Space exclusive spin off game, Doki Doki Space Whale."
+#    asa "You better prepare yourself! Because there's three thousand tons of pure love in this image! Now STAND BACK, and BRACE YOURSELF!"
 
-  #  'welcome back to visual novel mode!'
- #   'nothing to see here, though. resetting...'
+#    show chigara uniform handsup surprise:
+#        xpos 1.1
+#        ease 0.5 xpos 0.8
+#    with dissolve
 
- #   return
+#    chi "A-ah! W-wait!"
+#    chi "Samu-kun made a miraculous recovery and managed to finish the beta in time!"
 
-#label gameover:
-  #  show screen game_over_gimmick
-  #  'GAME OVER!'
- #   'better luck next time. resetting...'
- #   hide screen game_over_gimmick
- #   jump start
+#    show asaga uniform thinking surprise with dissolve
+
+#    asa "Eeehh!? I thought that emu bite did him in for good!"
+
+#    show chigara uniform twiddlefingers forcedsmile with dissolve
+
+#    chi "A-Asaga... Please don't say scary things like that..."
+
+#    show asaga uniform excited smile with dissolve
+
+#    asa "W-well, in that case, looks like I'll just have to save the HCG for another day!"
+#    asa "Sit up straight and make sure to keep your arms and legs inside the ride at all times folks!  The Sunrider beta is about to begin!"
+#    asa "A-ahem, now Chigara, check out these HCGs..."
+
+#    show chigara uniform handsup surprise with dissolve
+
+#    chi "E-eh... EEEHHHHHHHH!?"
+
+#    scene bg black
+
+#    show episode1commences:
+#        zoom 5 xalign 0.5 yalign 0.5
+#        ease 0.5 zoom 1
+
+#    pause 0.5
+
+#    play sound "sound/drum.ogg"
+
+#    pause
+
+#    return
 
 label quit:
     $ renpy.quit(relaunch=False)
@@ -121,8 +94,6 @@ label quit:
 
 
 # The game starts here.
-
-
 label start:
 
 #####################################VARIABLE SET UP

@@ -36,6 +36,9 @@ init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.register_channel("kayvoice", "voice", False)
     renpy.music.register_channel("othvoice", "voice", False)
 
+    #set music volume to 75%. This is seperate from the setting in preferences screen!
+    renpy.music.set_volume(0.75)
+
     Difficulty = 2
 
 init -5:

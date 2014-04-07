@@ -52,6 +52,7 @@ init -2 python:
                 'energyregen':0,
                 }
             self.battlemode = False
+            self.edgescroll = (0,0)
             self.xadj = ui.adjustment() #used by the viewport in the battlescreen
             self.yadj = ui.adjustment()
             self.draggable = True
@@ -100,6 +101,19 @@ init -2 python:
 
             if result == 'I WIN':
                 instant_win()
+
+            if result == 'deselect':
+                if self.active_weapon != None:
+                    self.active_weapon = None
+                    self.targetingmode = False
+                    self.weaponhover = None
+#                    renpy.restart_interaction()
+#                    renpy.hide_screen('battle_screen')
+#                    renpy.show_screen('battle_screen')
+                elif self.selected != None:
+                    self.unselect_ship(self.selected)
+                else:
+                    pass
 
             if result == "next ship":
                 if self.selected != None and len(player_ships) > 1:

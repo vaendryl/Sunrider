@@ -80,6 +80,8 @@ screen battle_screen:
         key "K_PAGEDOWN" action Return(["zoom", "out"])
         if 'mouseup_2' not in config.keymap['hide_windows']:
             key "mousedown_2" action Return("next ship")
+        if 'mouseup_3' not in config.keymap['game_menu']:
+            key "mousedown_3" action Return("deselect")
         key "]" action Return("next ship")
         key "[" action Return("previous ship")
     else:
@@ -104,6 +106,7 @@ screen battle_screen:
         child_size (childx,childy)
         draggable BM.draggable
         mousewheel False
+        edgescroll BM.edgescroll #(0,0) #(70,400*zoomlevel)
 
                 ##CREATE GRID##
         for a in range(1,GRID_SIZE[1]+2):
@@ -511,9 +514,19 @@ screen battle_screen:
 
     if config.developer:
         vbox:
+            ypos 50
             xalign 1.0
             textbutton "Debug Cheats" action Return('cheat')
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
+
+    if BM.edgescroll == (0,0):
+        vbox:
+            xalign 1.0
+            textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
+    else:
+        vbox:
+            xalign 1.0
+            textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
 
     if not BM.showing_orders:
         imagebutton:
