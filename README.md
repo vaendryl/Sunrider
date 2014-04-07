@@ -2,7 +2,7 @@ Sunrider
 ========
 1.06 patch notes
 
--added warning text to save/load screen
+-disabled saving/loading during the enemy turn. instead, a warning will appear.
 
 -fixed possible crash caused by Vanguard cannon when used to kill a boss (and other units)
 
@@ -17,3 +17,9 @@ I think a confirmation popup would be too invasive.
 
 -pressing [ or ] now cycles through player ships. if you start a new game on 1.06 then the middle mouse 
 button will also work.
+
+-lowered the default volume of music
+
+-right click deselects weapon or ship (new game required)
+
+-added experimental option for edge scrolling.
