@@ -23,3 +23,19 @@ button will also work.
 -right click deselects weapon or ship (new game required)
 
 -added experimental option for edge scrolling.
+
+1.06a
+
+-fixed crash after killing a boss
+
+-hopefully really fixed the Vanguard crash issue
+
+-fixed crash when clicking middle mouse while selecting an enemy
+
+-right click exits the save menu screen
+
+-middle click will select the sunrider if no units are selected.
+
+1.06b 
+
+-fixed bug introduced by commenting out some critical code
