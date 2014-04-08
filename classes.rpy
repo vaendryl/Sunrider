@@ -118,6 +118,7 @@ init -2 python:
             if result == "next ship":
                 if self.selected == None:
                     self.select_ship(sunrider)
+                    return
                 if self.selected != None and len(player_ships) > 1:
                     if self.selected.faction == 'Player':
                         index = player_ships.index(self.selected)
@@ -389,8 +390,8 @@ init -2 python:
                 if ship.faction == 'Player':
                     player_ships.append(ship)
                     self.ships.append(ship)
-#            for ship in player_ships:
-#                self.ships.append(ship)
+            for ship in player_ships:
+                self.ships.append(ship)
             for ship in player_ships:
                 ship.en = ship.max_en
                 ship.hp = ship.max_hp
