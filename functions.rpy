@@ -177,6 +177,7 @@ init -6 python:
             return ship
 
     def get_movement_tiles(ship):
+        if ship == None: return
         move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
         tile_locations = []

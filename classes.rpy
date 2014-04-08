@@ -116,6 +116,8 @@ init -2 python:
                     pass
 
             if result == "next ship":
+                if self.selected == None:
+                    self.select_ship(sunrider)
                 if self.selected != None and len(player_ships) > 1:
                     if self.selected.faction == 'Player':
                         index = player_ships.index(self.selected)
@@ -216,7 +218,8 @@ init -2 python:
                                 damage = self.active_weapon.fire(self.selected,result[1])
                                   #make the target deal with the damage it takes
                                 result[1].receive_damage(damage,self.selected,self.active_weapon.wtype) #I pass the BM too because .destroy uses it.
-                                self.selected.movement_tiles = get_movement_tiles(self.selected)
+                                if self.selected != None:
+                                    self.selected.movement_tiles = get_movement_tiles(self.selected)
                                 self.active_weapon = None #you used the weapon and now it's not selected anymore
                                 update_stats()
 
@@ -386,8 +389,8 @@ init -2 python:
                 if ship.faction == 'Player':
                     player_ships.append(ship)
                     self.ships.append(ship)
-            for ship in player_ships:
-                self.ships.append(ship)
+#            for ship in player_ships:
+#                self.ships.append(ship)
             for ship in player_ships:
                 ship.en = ship.max_en
                 ship.hp = ship.max_hp

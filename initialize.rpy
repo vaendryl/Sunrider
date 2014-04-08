@@ -13,6 +13,8 @@ init -10 python:
     MESSAGE_PAUSE = 0.75
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16)
+    BM = renpy.store.object()
+    BM.phase = None
 
 init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.register_channel("sound1", "sfx", False)

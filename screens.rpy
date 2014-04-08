@@ -273,6 +273,8 @@ screen load:
     modal True
     zorder 200
 
+    key 'mouseup_3' action Hide('load')
+
     if BM.phase == 'PACT' or BM.phase == 'Pirate':
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
@@ -348,6 +350,8 @@ screen save:
 
     modal True
     zorder 200
+
+    key 'mouseup_3' action Hide('save')
 
     if BM.phase == 'PACT' or BM.phase == 'Pirate':
         text 'WARNING! \n You can not save during the enemy \n turn.':

@@ -15,7 +15,7 @@ init -1 python hide:
     ## set to False before the game is released, so the user can't
     ## cheat using developer tools.
 
-    config.developer = True
+    config.developer = False
     config.log = None
 
     ## These control the width and height of the screen.
@@ -27,7 +27,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider Beta Release 1 "
-    config.version = "Beta 1.06"
+    config.version = "Beta 1.06a"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 30
