@@ -274,12 +274,14 @@ screen bonus:
         
         $ page = 0
         
-        # how can we make the buttons clickable?
+        # we need to make the screen update when the arrows are clicked
         hotspot (1221, 215, 30, 146):
             $ page += 1
+            action NullAction()
         hotspot (1221, 724, 30, 146):
-            if $ page > 0
+            if page > 0:
                 $ page -= 1
+            action NullAction()
         hotspot (726, 59, 137, 44) action [ Hide('bonus'), Show('save', transition=dissolve) ]
         hotspot (948, 926, 107, 23) action Hide('bonus', transition=dissolve)
         hotspot (864, 59, 137, 44) action [ Hide('bonus'), Show('load', transition=dissolve) ]
