@@ -255,6 +255,13 @@ screen navigation:
 
 init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
+    
+    #                                               number of features
+    bonus_features = [[0 for x in xrange(2)] for x in xrange(1)]
+    
+    # bonus 1
+    bonus_features[0][0] = "Background/renpytomback.jpg"
+    bonus_features[0][1] = " Doki Doki Space Whale:\n Dating Sim 3"
 
 screen bonus:
 
@@ -264,16 +271,24 @@ screen bonus:
     imagemap:
         ground "Menu/bonus_base.png"
         hover "Menu/bonus_hover.png"
-
-        hotspot (1221, 215, 30, 146) action FilePagePrevious()
-        hotspot (1221, 724, 30, 146) action FilePageNext()
+        
+        $ page = 0
+        
+        # we need to make the screen update when the arrows are clicked
+        hotspot (1221, 215, 30, 146):
+            $ page += 1
+            action NullAction()
+        hotspot (1221, 724, 30, 146):
+            if page > 0:
+                $ page -= 1
+            action NullAction()
         hotspot (726, 59, 137, 44) action [ Hide('bonus'), Show('save', transition=dissolve) ]
         hotspot (948, 926, 107, 23) action Hide('bonus', transition=dissolve)
         hotspot (864, 59, 137, 44) action [ Hide('bonus'), Show('load', transition=dissolve) ]
         hotspot (1002, 59, 137, 44) action [ Hide('bonus'), Show('preferences', transition=dissolve) ]
         hotspot (1140, 59, 137, 44) action Hide('bonus', transition=dissolve)
 
-        style "file_picker_frame"
+        #style "file_picker_frame"
 
         $ columns = 1
         $ rows = 5
@@ -282,11 +297,11 @@ screen bonus:
         grid columns rows:
             transpose True
             xfill True
-            style_group "file_picker"
+            #style_group "file_picker"
             xpos 753
             ypos 216
 
-            # This needs to be finished so that the bonus screen works
+            # We need to make the bonus features clickable
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
@@ -298,16 +313,13 @@ screen bonus:
 
                     has hbox
 
-                    # Add the screenshot.
-                    add FileScreenshot(i)
-
-                    # Format the description, and add it as text.
-                    $ description = "% 2s. %s\n%s" % (
-                        FileSlotName(i, columns * rows),
-                        FileTime(i, empty=_("Empty Bonus.")),
-                        FileSaveName(i))
-
-                    text description
+                    # Add the image and text.
+                    if page * columns * rows + i - 1 < len(bonus_features):
+                        add bonus_features[i - 1][0] zoom .09
+                        text bonus_features[i - 1][1]
+                        
+                    else:
+                        text str(page * columns * rows + i) + ". Empty Bonus."
 
 ##############################################################################
 # Save, Load
