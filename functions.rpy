@@ -8,9 +8,7 @@ init -6 python:
     if 'mouseup_3' in config.keymap['game_menu']:
         config.keymap['game_menu'].remove('mouseup_3')
 
-
     import math
-    #import random
 
     def battlemode(bm):  #as it turns out, modifying the keymap doesn't seem to do ANYTHING in runtime
 #        if 'mousedown_4' in config.keymap['rollback']:

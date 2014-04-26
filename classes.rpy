@@ -13,9 +13,6 @@ init -5:
 #        xcenter ycenter
 
 init -2 python:
-#    from time import sleep
-    import math
-#    import random
 
         ##here the Battle class gets defined. it forms the core and spine of the entire combat engine.
         ##it gets initialized into an instance called BM, short for battlemanager
@@ -90,7 +87,7 @@ init -2 python:
 
             if result == 'anime':
                 try:
-                    renpy.call_in_new_context('insert_label_here')
+                    renpy.call_in_new_context('melee_attack_player') #'atkanim_blackjack_melee')
                 except:
                     show_message('animation label does not exist!')
 
@@ -147,7 +144,7 @@ init -2 python:
             if result[0] == 'selection':  #this means you clicked on a ship
                 #result[1] here represents the ship you clicked on
                 if self.selected == result[1] : #check if you clicked on the same ship that is selected. this cancels the selection
-                    if self.targetingmode:
+                    if self.targetingmode:  #if you clicked yourself after selecting a support skill, you should not deselect yourself though!
                         if self.active_weapon.wtype == 'Support':
                             self.target = result[1]
                             self.hovered = None
@@ -210,10 +207,15 @@ init -2 python:
                                 self.targetingmode = False
 
                                   #pass the weapontype to the selected ship and show the attack animation
-                                try:
-                                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-                                except:
-                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+
+                                BM.attacker = BM.selected
+                                if self.active_weapon.wtype == 'Melee':
+                                    pass
+                                else:
+                                    try:
+                                        renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+                                    except:
+                                        show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
 
                                   #calculate damage done. if it misses then damage == 'miss'. 2nd parameter is the target you clicked on
                                 damage = self.active_weapon.fire(self.selected,result[1])
@@ -567,10 +569,14 @@ init -2 python:
             elif damage == 'no ammo':
                 renpy.say('ERROR','the {} does not have enough ammo for this attack'.format(self.name))
             elif damage == 'miss':
-                try:
-                    renpy.call_in_new_context('miss_{}'.format(self.animation_name)) #show the miss animation
-                except:
-                    show_message('missing animation. "miss_{}" does\'t seem to exist'.format(self.animation_name))
+                if wtype == 'Melee':
+                    store.damage = damage
+                    renpy.call_in_new_context('melee_attack_player')
+                else:
+                    try:
+                        renpy.call_in_new_context('miss_{}'.format(self.animation_name)) #show the miss animation
+                    except:
+                        show_message('missing animation. "miss_{}" does\'t seem to exist'.format(self.animation_name))
             else:
 
                 #handle healing
@@ -627,10 +633,14 @@ init -2 python:
                 BM.target = self
 
                   #if the attack hits, show the hit animation of the target based on weapon type
-                try:
-                    renpy.call_in_new_context('hitanim_{}_{}'.format(self.animation_name,wtype.lower()))
-                except:
-                    show_message('missing animation. "hitanim_{}_{}" doesn\'t seem to exist'.format(self.animation_name,wtype.lower()))
+
+                if wtype == 'Melee':
+                    renpy.call_in_new_context('melee_attack_player')
+                else:
+                    try:
+                        renpy.call_in_new_context('hitanim_{}_{}'.format(self.animation_name,wtype.lower()))
+                    except:
+                        show_message('missing animation. "hitanim_{}_{}" doesn\'t seem to exist'.format(self.animation_name,wtype.lower()))
 
                 self.hp -= damage
                 if self.hp <= 0:
@@ -1189,9 +1199,49 @@ init -2 python:
             self.shot_count = shots_remaining
 
 
+    class Melee(Weapon):
+        def __init__(self):
+            Weapon.__init__(self)
+            self.damage = 400    #multiplied by shot count
+            self.energy_use = 50
+            self.ammo_use = 1
+            self.accuracy = 140
+            self.acc_degradation = 100
+            self.wtype = 'Melee'
+            self.name = 'Zantetsuken'  #lol
+            self.type = 'Melee'
+            self.shot_count = 1
+            self.lbl = 'Battle UI/button_melee.png'
 
+        def fire(self, parent, target):
+            update_armor(target)
+            if parent.en < self.energy_use:  #energy handling
+                return 'no energy'
+            else:
+                parent.en -= self.energy_use
 
-
+            accuracy = get_acc(self, parent, target)
+            if accuracy == 0: return 'miss'
+            total_damage = 0
+            store.hit_count = 0
+            store.total_armor_negation = 0
+            store.total_shield_negation = 0
+            for shot in range(self.shot_count):
+                if renpy.random.randint(0,100) > accuracy:
+                    pass #you missed!
+                else:
+                    damage = self.damage * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
+                    if damage < target.armor *2:
+                        store.total_armor_negation += damage -1
+                    else:
+                        store.total_armor_negation += target.armor *2
+                    damage -= target.armor * 2
+                    if damage <= 1: damage = 1 #it's rpg tradition you still do 1 damage against a big armored enemy :)
+                    total_damage += damage
+                    store.hit_count += 1
+            if total_damage == 0: return 'miss'
+            return int(total_damage)
 
 
 
@@ -1232,7 +1282,7 @@ init -2 python:
             while self.next_shot <= st:
                 if self.running:
                     for startx, starty in self.generators:
-                            angle = (self.angle + random.uniform(-self.dispersion, self.dispersion)) / 180.0 * math.pi
+                            angle = (self.angle + renpy.random.uniform(-self.dispersion, self.dispersion)) / 180.0 * math.pi
                             xdt = 1.0 * self.speed * math.sin(angle)
                             ydt = 1.0 * self.speed * -math.cos(angle)
                             sprite = self.manager.create(self.d)
