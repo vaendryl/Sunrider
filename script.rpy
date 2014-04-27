@@ -28,9 +28,6 @@ label main_menu:
 #    stop music fadeout 1.0
 #    return
 
-
-
-
 #    window show
 
 #    asa "Ah.  Ah.  Uh, is this thing working?  Can everyone see me okay?"
@@ -146,6 +143,7 @@ label start:
 #####################################VARIABLE SET UP
 
 
+    $ BM.money = 99999 #DEBUG CHEAT
     jump test_battle   ##TEMPORARY
 
     stop music fadeout 3.0
@@ -2641,7 +2639,8 @@ label allocatefunds:
             blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
-    call screen upgrade
+    $ buy_upgrades()
+    jump dispatch
 
 label humantraffickers:
 

@@ -733,7 +733,15 @@ screen commands: ##show the weapon buttons etc##
                         unhovered SetField(BM,'weaponhover',None)
 
                   ##show energy cost of weapon on weaponbutton
-                text str(-weapon.energy_use) + 'EN':
+                if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
+                if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.energy_cost)
+                if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.missile_cost)
+                if weapon.wtype == 'Melee':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.melee_cost)
+                text str(energy_cost) + 'EN':
                     xanchor 0.5
                     yanchor 0.5
                     xpos (x_offset+80+120*count)

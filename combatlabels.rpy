@@ -50,6 +50,8 @@ label test_battle:
     $ PlayerTurnMusic = "music/Titan.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
 
+    $ buy_upgrades() ##testing
+
     jump battle_start
     return
 
