@@ -127,6 +127,38 @@ init 2 python:
             self.movebackward_voice = ['Chigara/Move Backward Line 1.ogg','Chigara/Move Backward Line 2.ogg','Chigara/Move Backward Line 3.ogg']
             self.buffed_voice = ['Chigara/Buffed Line 1.ogg','Chigara/Buffed Line 2.ogg']
             self.cursed_voice = ['Chigara/Cursed Line 1.ogg','Chigara/Cursed Line 2.ogg','Chigara/Cursed Line 3.ogg']
+            
+class Phoenix(Battleship):
+ -        def __init__(self):
+ -            Battleship.__init__(self)
+ -            self.stype = 'Ryder'
+ -            self.name = 'Phoenix'
+ -            self.animation_name = 'phoenix'
+ -            self.faction = 'Player'
+ -            self.max_hp = 300
+ -            self.hp = self.max_hp
+ -            self.max_en = 100
+ -            self.base_armor = 0
+ -            self.armor = self.base_armor
+ -            self.en = self.max_en
+ -            self.max_missiles = 0
+ -            self.missiles = self.max_missiles
+ -            self.move_cost = 10
+ -            self.hate = 100
+ -            self.evasion = 50
+ -            self.lbl = 'Battle UI/label_phoenix.png'  #this is the battle avatar
+ -            self.portrait = 'Battle UI/icari_portrait.png'
+ -            self.flak = 20
+ -            store.BM.ships.append(self)  #register itself upon creation
+ -
+ -            ####################VOICES
+ -            self.voice_channel = "icavoice"
+ -            self.selection_voice = ['Icari/Icari Selection 1.ogg','Icari/Icari Selection 2.ogg','Icari/Icari Selection 3.ogg','Icari/Icari Selection 4.ogg','Icari/Icari Selection 5.ogg','Icari/Icari Selection 6.ogg','Icari/Icari Selection 7.ogg']
+ -            self.moveforward_voice = ['Icari/Icari Move Forward 1.ogg','Icari/Icari Move Forward 2.ogg','Icari/Icari Move Forward 3.ogg']
+ -            self.movebackward_voice = ['Icari/Icari Move Backward 1.ogg.ogg','Icari/Icari Move Backward 2.ogg','Icari/Icari Move Backward 3.ogg']
+ -            self.buffed_voice = ['Icari/Icari Buffed 1.ogg','Icari/Icari Buffed 2.ogg']
+ -            self.cursed_voice = ['Icari/Icari Cursed 1.ogg','Icari/Icari Cursed 2.ogg','Icari/Icari Cursed 3.ogg','Icari Cursed 4.ogg']
+ -            
 
 ### PACT ships ###
 
