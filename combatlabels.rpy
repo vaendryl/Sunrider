@@ -18,7 +18,143 @@ transform shake(time=0.5,repeats=20): #defunct?
         ease 0.01 xpos 0.5
         repeat repeats
 
+label test_battle:
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        BM.mission = 'test'
 
+        #create the sunrider. you only have to create a player ship once:
+        sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault()]
+        sunrider = create_ship(Sunrider(),(8,6),sunrider_weapons)
+
+        blackjack_weapons = [Melee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+        blackjack = create_ship(BlackJack(),(10,5),blackjack_weapons)
+
+        liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
+        liberty = create_ship(Liberty(),(8,7),liberty_weapons)
+
+        create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
+        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+
+        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
+
+    $ buy_upgrades() ##testing
+
+    jump battle_start
+    return
+
+label missiontest:
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump missiontest #loop back
+    else:
+        pass #continue down
+
+    return
+
+transform melee_atkanim(img1,img2):
+    img1
+    xalign 0.5 yalign 0.5
+    zoom 2 xpos 0.2
+    ease 0.5 zoom 1 xpos 0.5
+    pause 1.3
+#    img2 with dissolve
+    img2 with Dissolve(.5, alpha=True)
+    pause 1.0
+    xpos 0.5 ypos 0.5
+    ease 1.0 xpos 2.0 ypos -1.0
+    xpos -2.0 ypos 1.0
+    ease 1.5 xpos 0.9 ypos 0.5
+    pause 0.5
+    xpos 0.9 ypos 0.5
+    ease 1.0 xpos 2.0 ypos -1.0
+
+transform melee_atkanim_sprite(img1):
+    img1
+    yanchor 0.51 ypos 1.0
+    xanchor 0.5
+    zoom 0.6255
+    subpixel True
+    xzoom -1 xpos -0.2
+    ease 0.3 xpos 0.15
+    pause 0.5
+    ease 1.5 alpha 0
+
+transform melee_hitanim(img1,yy):
+    pause 3.5
+    img1
+    yanchor 0.5 xanchor 0.5
+    xpos 0.5 ypos 0.5
+    linear 1.0 ypos yy
+
+screen melee_player:
+    zorder 2
+    if store.damage == 'miss':
+        add melee_hitanim(BM.target.sprites['standard'],-1.5)
+    else:
+        add melee_hitanim(BM.target.sprites['standard'],0.5)
+    add melee_atkanim(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
+    add melee_atkanim_sprite(BM.attacker.sprites['character'])
+
+label melee_attack_player:
+    python:
+        renpy.show_screen('show_background',_layer='master')
+        renpy.show_screen('melee_player',_layer='master')
+        random = renpy.random.randint(0,len(BM.attacker.attack_voice)-1)
+        renpy.music.play(BM.attacker.attack_voice[random],channel=BM.attacker.voice_channel)
+    pause 1.3
+    play sound "sound/mech1.ogg"
+    pause 1.0 #I think dissolve effect also pauses for a little while
+    play sound "sound/boasters.ogg"
+    pause 1.4
+
+    ## hitanim ##   little reason not to combine them if it's all dynamically generated anyway.
+
+    show screen animation_hp
+    pause 1.0
+    play sound "sound/Sword Shing 2.ogg"
+
+
+    if store.damage != 'miss':
+        show melee_overlay onlayer screens:
+            xzoom -1
+        with meleehitreverse
+        pause 0.1
+        hide melee_overlay onlayer screens with dissolvequick
+        pause 0.5
+        play sound1 "sound/explosion1.ogg"
+        show layer master at shake2(repeats=6)
+        show piratebomber_kinetichit2 onlayer screens:
+            xpos 0.55 ypos 0.5 zoom 1.2
+            ease 1.2 alpha 0
+        pause 0.1
+        play sound2 "sound/explosion1.ogg"
+        show layer master at shake2(repeats=6)
+        show piratebomber_kinetichit1 onlayer screens:
+            xpos 0.55 ypos 0.5 zoom 1.2
+            ease 1.2 alpha 0
+        pause 0.5
+
+        $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+    else:
+        pause 0.5
+        $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+
+    return
 
 label endofturn:
     show screen battle_screen
@@ -49,8 +185,6 @@ label endofturn:
     $update_modifiers() #update buffs and curses
 
     return
-
-
 
 label battle_start:
     play music PlayerTurnMusic

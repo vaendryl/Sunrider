@@ -287,13 +287,6 @@ screen deck1:
                     idle "Menu/pro_button.png"
                     hover "Menu/pro_button_hover.png"
                     activate_sound "Sound/click.mp3"
-            if res_location == "lab":
-                imagebutton:
-                    action Jump(res_event)
-                    idle "Menu/res_button.png"
-                    hover "Menu/res_button_hover.png"
-                    activate_sound "Sound/click.mp3"
-            
 screen deck2:
  
     tag ship_map
