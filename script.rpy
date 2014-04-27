@@ -99,7 +99,7 @@ label start:
 #####################################VARIABLE SET UP
 
     call initialize
-    
+
     call firstvariables
 
 #####################################VARIABLE SET UP
@@ -112,7 +112,7 @@ label start:
     with Dissolve(2)
 
     window hide
-    
+
     jump firstbatle
 
     play music "Music/Tides.ogg" loop
@@ -333,12 +333,12 @@ label give_report_move_on:
 label bridge_tour:
 
     hide screen deck1
-    
+
     scene bg bridge
     show ava uniform alt neutral neutral:
         xanchor 0.5 xpos 0.8
     with dissolve
-    
+
     window show
 
     ava "This is the Sunrider's main bridge. This is where you'll be commanding the ship."
@@ -359,7 +359,7 @@ label engineering_tour:
     show ava uniform alt neutral neutral:
         xanchor 0.5 xpos 0.8
     with dissolve
-    
+
     window show
 
     ava "This is engineering. The ship's main reactor is located here and we can also use the lab to research and construct new equipment. Unfortunately, the research lab's not yet open."
@@ -378,7 +378,7 @@ label messhall_tour:
     show ava uniform alt neutral neutral:
         xanchor 0.5 xpos 0.8
     with dissolve
-    
+
     window show
 
     ava "This is the ship's mess hall. We can come down here to eat and relax after work."
@@ -396,7 +396,7 @@ label captainsloft_tour:
     show ava uniform alt neutral neutral:
         xanchor 0.5 xpos 0.8
     with dissolve
-    
+
     window show
 
     ava "Finally, these are your personal quarters."
@@ -740,7 +740,7 @@ label firstbattle_end:
     scene bg bridgered
     show ava uniform handonhip neutral
     with dissolve
-    
+
     window show
 
     ava "Our forces are pushing the remaining PACT units back. The PACT frigates are no longer a threat."
@@ -1202,7 +1202,7 @@ label warptotydaria:
     scene bg bridge
     show ava uniform alt neutral neutral
     with dissolve
-    
+
     window show
 
     ava "You can use the starmap at the center of the bridge to plot our course."
@@ -1934,11 +1934,11 @@ label firstpriority:
     $ captaindeck = 1
 
     hide screen deck1
-    
+
     scene bg bridge
     show ava uniform handonhip neutral
     with dissolve
-    
+
     window show
 
     ava "The ship is at your command, captain."
@@ -1987,9 +1987,9 @@ label defeatingthepirates:
     hide screen deck2
 
     scene bg hangar
-    show asaga plugsuit neutralalt smile 
+    show asaga plugsuit neutralalt smile
     with dissolve
-    
+
     window show
 
     asa "Oh! Did you need me for something, capt'n?"
@@ -2211,7 +2211,7 @@ label chigarafirstconvo:
     scene bg engineering
     show chigara plugsuitlabcoat holdingipad surprise
     with dissolve
-    
+
     window show
 
     chi "E-eah! Oh, sorry, Captain Shields, I didn't see you coming."
@@ -2408,7 +2408,7 @@ label attackonpiratesnest:
     show chigara plugsuitlabcoat altneutral neutral:
         xpos 0.8
     with dissolve
-    
+
     window show
 
     kay "Bring me up to date on our situation."
@@ -2506,7 +2506,7 @@ label meetsophita:
     scene bg captainsoffice
     show ava uniform handonhip neutral
     with dissolve
-    
+
     window show
 
     ava "Captain, I have news for you."
@@ -2617,7 +2617,7 @@ label researchanddevelopment:
             jump dispatch
 
 label allocatefunds:
-    
+
     window hide
 
     python:
@@ -2625,7 +2625,8 @@ label allocatefunds:
             blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
-    call screen upgrade
+    $ buy_upgrades()
+    jump dispatch
 
 label humantraffickers:
 
@@ -2962,7 +2963,7 @@ label mission4_end:
     scene bg bridgered
     show ava uniform fistup yes
     with dissolve
-    
+
     window show
 
     ava "The spire has been destroyed! The mission is accomplished!"
@@ -3013,7 +3014,7 @@ label mission4_end:
 
     $ captaindeck = 1
     $ warpto_pactstation1 = False
-    
+
     jump dispatch
 
 label piratebaseattack:
@@ -3184,13 +3185,13 @@ label mission5_end:
 
     hide screen battle_screen
     hide screen commands
-    
+
     play music "Music/The_Beginning_Of_The_Adventure.ogg" fadeout 1.5
 
     scene bg bridge
-    show ava uniform armscrossed smile 
+    show ava uniform armscrossed smile
     with dissolve
-    
+
     window show
 
     ava "I must say captain, I'm impressed. Perhaps we do stand a chance against PACT after all."
@@ -3232,14 +3233,14 @@ label celebratehangar:
 label celebratepiratebase_asa:
 
     hide screen deck2
-    
+
     $ asa_location = None
     $ asa_event = None
-    
+
     scene bg hangar
     show asaga plugsuit excited happy
     with dissolve
-    
+
     window show
 
     asa "Uwah-hahahaha! We did it, capt'n, we did it! That pirate's nest is history!"
@@ -3308,9 +3309,9 @@ label goingtohappenwithChigara:
 label celebratepiratebase_chi:
 
     hide screen deck2
-    
+
     scene bg hangar
-    show chigara plugsuit handonchest smile 
+    show chigara plugsuit handonchest smile
     with dissolve
 
     window show
@@ -3342,37 +3343,37 @@ label celebratepiratebase_chi:
     chi "Understood, captain. I look forward to working with you."
 
     window hide
-    
+
     stop music fadeout 1.5
-    
+
     show eyecatch_top with eyecatch_wipe
     show eyecatch_bottom with eyecatch_wiperev
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
     scene bg black2 with dissolvelong
     scene bg captainsoffice with dissolvelong
-    
+
     window show
-    
+
     play music "Music/The_Meteor.ogg"
-    
+
     kay "Begin captain's log.  It's been a two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
     kay "Despite our efforts, PACT's invasion of the Neutral Rim has continued unabated.  Six more governments have voluntarily joined PACT and two more have been conquered.  PACT's war machine has been indiscriminate, slaughtering both civilians and combatants alike.  In the mere month since Cera, millions more innocents have been murdered."
     kay "Unless something is done, the day when PACT rules the entire Neutral Rim appears to be fast approaching."
     "-Door bell-"
     kay "Come in."
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "Captain, we've just received an encrypted transmission."
     kay "Transmission? Where from?"
     ava "It's from the Solar Alliance.  Admiral Harold Grey is interested in speaking to you."
     kay "An audience with the admiral, huh?  I didn't realize we were so important already."
     ava "I've added the Admiral's line to your FTL transponder.  You can patch him through now."
     kay "All right, let's hear what the Admiral wants with us."
-    
+
     $ badpolitics = False
-    
+
     show ava uniform handonhip neutral:
         zoom 1.0
         ease 0.5 xpos 0.7
@@ -3380,7 +3381,7 @@ label celebratepiratebase_chi:
     show grey:
         xpos 0.3
     with dissolve
-     
+
     gre " Greetings, Captain of the Sunrider. I am Admiral Grey of the Alliance Space Force."
     kay "This is Captain Kayto Shields of the Cera Space Force.  This is my First Officer, Ava Crescentia.  What would the admiral of the Solar Alliance want with us?"
     gre " You must have my condolences for the loss of your great planet. It pains me to hear that another neutral world has fallen to PACT's war machine."
@@ -3391,82 +3392,82 @@ label celebratepiratebase_chi:
     gre "Our diplomats have been sent on a mission to the neutral world of Versta to convince its people to join the Alliance for quite some time."
     gre "Unfortunately, it does not seem like the mission was successful, and a PACT invasion fleet is rapidly approaching the world. I need you to go in there and get our men out before the PACT fleet finds them and kills them."
     gre "Of course, I will see to it that you and your crew are rewarded for your efforts."
-    
+
     menu:
         "Why do you need us? Surely, the Alliance must have other ships up to the task.":
             jump othershipstask
-        
+
         "Are the diplomats high ranking government officials? Why do you need them protected so much?":
             jump protectedsomuch
-        
+
         "Is there really no hope of getting Versta to join the Alliance?":
             jump nohopejoin
-        
+
         "You have a deal, admiral. Any mission against PACT is good in my book.":
             jump goodinbook
-    
+
 label othershipstask:
 
     gre " Unfortunately, because of the break down in talks, our military vessels are forbidden to enter Versta space. It is too dangerous getting the diplomats out without an armed escort, so we've had no choice but to resort to an unaligned vessel like the Sunrider."
-    
-    menu:        
+
+    menu:
         "Are the diplomats high ranking government officials? Why do you need them protected so much?":
             jump protectedsomuch
-        
+
         "Is there really no hope of getting Versta to join the Alliance?":
             jump nohopejoin
-        
+
         "You have a deal, admiral. Any mission against PACT is good in my book.":
             jump goodinbook
 
-    
+
 label protectedsomuch:
-    
+
     gre " Not per se. But an execution of our diplomats by PACT will be viewed by my government as an act of war, and the Alliance will have no choice but to declare war on PACT."
     gre "I've been ordered by President Alythe himself that an intergalactic war with PACT over a minor neutral rim world would be an unacceptable outcome."
 
     menu:
         "A devastating war between PACT and the Alliance now would cost the lives of billions. The Alliance should wait for a better moment to fight PACT.":
             jump matterforpoliticians
-            
+
         "But PACT's going to take over the galaxy one way or another, admiral. The Alliance must stop them.":
             jump matterforpoliticians
-            
+
 label nohopejoin:
 
     gre " I'm afraid the latest reports from our negotiators have been grim. Now, Versta's in a state of total panic regarding the approaching invasion fleet, and they somehow think we're responsible for it."
     gre " My government views it as a lost cause and just want the diplomats pulled out before PACT gets their hands on them."
-                
+
     menu:
         "Why do you need us? Surely, the Alliance must have other ships up to the task.":
             jump othershipstask
-        
+
         "Are the diplomats high ranking government officials? Why do you need them protected so much?":
             jump protectedsomuch
-                
-        "You have a deal, admiral. Any mission against PACT is good in my book.":
-            jump goodinbook  
-                
-label matterforpoliticians:
-    
-    $ badpolitics = True
-    
-    gre " A matter for politicians to decide, unfortunately.  Hmph.  The President has ordered that we prevent an intergalactic war, so those are your directives."
-    
-    menu:
-        "Why do you need us? Surely, the Alliance must have other ships up to the task.":
-            jump othershipstask
-        
-        "Are the diplomats high ranking government officials? Why do you need them protected so much?":
-            jump protectedsomuch
-                
+
         "You have a deal, admiral. Any mission against PACT is good in my book.":
             jump goodinbook
-    
+
+label matterforpoliticians:
+
+    $ badpolitics = True
+
+    gre " A matter for politicians to decide, unfortunately.  Hmph.  The President has ordered that we prevent an intergalactic war, so those are your directives."
+
+    menu:
+        "Why do you need us? Surely, the Alliance must have other ships up to the task.":
+            jump othershipstask
+
+        "Are the diplomats high ranking government officials? Why do you need them protected so much?":
+            jump protectedsomuch
+
+        "You have a deal, admiral. Any mission against PACT is good in my book.":
+            jump goodinbook
+
 label goodinbook:
-    
+
     $ amissionforalliance = True
-    
+
     gre " Good.  My staff have already mailed your First Officer with the details.  You have your orders, Sunrider. I expect results. Admiral Grey out."
 
     hide grey with dissolve
@@ -3475,70 +3476,70 @@ label goodinbook:
         ease 0.5 xpos 0.5
 
     kay "A mission from the Alliance. Can't say I was expecting that."
-    
+
     show ava uniform alt neutral neutral with dissolve
-    
+
     ava "Times like this, almost everyone wants a hired gun.  Especially if you happen to have a very big gun.  At this rate, we might see a new golden age of privateering."
     kay "We might want to swap out your uniform with something more eye catching then.  Do you have the Pirate Commander design yet?"
-    
+
     show ava uniform armscrossed frown with dissolve
-    
+
     ava "No."
-    
+
     if badpolitics == True:
         menu:
-            
+
             "Tell me about the situation between the Alliance and PACT.":
                 jump situationbetweenalliance
-            
+
             "It doesn't sound like the admiral is a fan of his own government.":
                 jump notfanofgov
-            
+
             "Well, now we know our next step. Let's get underway to Versta.":
                 jump getunderwayvesta
 
     menu:
-        
+
         "Tell me about the situation between the Alliance and PACT.":
             jump situationbetweenalliance
-                    
+
         "Well, now we know our next step. Let's get underway to Versta.":
             jump getunderwayvesta
-                
+
 label notfanofgov:
-    
+
     show ava uniform armscrossed neutral with dissolve
-    
+
     ava "Hmm... I get the same feeling as well."
     ava "So far, the President of the Alliance has been avoiding war with PACT at all costs. But my sense is that the military establishment inside the Alliance is already gearing up for a war."
     kay "That makes sense. PACT intends to take over the galaxy one way or another. It's only matter of time until the Alliance will be forced into the fight."
 
     menu:
-        
+
         "Tell me about the situation between the Alliance and PACT.":
             jump situationbetweenalliance
-                    
+
         "Well, now we know our next step. Let's get underway to Versta.":
             jump getunderwayvesta
-    
+
 label situationbetweenalliance:
-    
+
     show ava uniform alt neutral neutral with dissolve
-    
+
     ava "What do you want to know?"
 
     menu:
         "Tell me more about the Alliance.":
             jump tellmorealliance
-            
+
         "Tell me more about PACT.":
             jump tellmorepact
-            
+
         "The Alliance and PACT aren't at war yet?":
             jump alliancepactnowar
-            
+
 label tellmorealliance:
-    
+
     ava "The Solar Alliance is the current power house of the galaxy. It's actually a military, economic, and research alliance between the planet of Solaris and numerous other worlds."
     kay "It doesn't sound like everyone wants to join the Alliance though."
     ava "Some planets simply wish to be left alone. The planets that make up the neutral rim are too far from Solaris and have so far avoided joining the Alliance. Cera was one of those planets."
@@ -3549,19 +3550,19 @@ label tellmorealliance:
     ava "Neither party has managed to get anything done because of their irreconcilable differences."
     ava "President Alythe has avoided war with PACT at all costs. Even though PACT continues to swallow up most of the neutral rim, the Alliance has done nothing about it."
 
-    menu:            
+    menu:
         "Tell me more about PACT.":
             jump tellmorepact
-            
+
         "The Alliance and PACT aren't at war yet?":
             jump alliancepactnowar
-            
+
         "Thanks for the history lesson. That's all I needed to know.":
             jump thankshistorylesson
 
 label tellmorepact:
-    
-    ava "PACT, short for the People's Alliance for Common Treatment, was originally an independence movement which started at New Eden against the New Empire." 
+
+    ava "PACT, short for the People's Alliance for Common Treatment, was originally an independence movement which started at New Eden against the New Empire."
     ava "New Eden was a paradise planet which was rich in valuable resources. However, the rulers of the New Empire hoarded the planet's riches for themselves, while the masses lived in poverty."
     ava "Eventually, the division in wealth reached a critical point and the people of New Eden declared a revolution against their own rulers."
     kay "If they're an independence movement, then why are they trying to take over the galaxy now?"
@@ -3574,7 +3575,7 @@ label tellmorepact:
     menu:
         "Tell me more about the Alliance.":
             jump tellmorealliance
-                        
+
         "The Alliance and PACT aren't at war yet?":
             jump alliancepactnowar
 
@@ -3582,50 +3583,50 @@ label tellmorepact:
             jump thankshistorylesson
 
 label alliancepactnowar:
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "No, but I wouldn't bet on that lasting. War between the two powers is all but inevitable, I would say."
     kay "What makes you say that?"
     ava "So far, PACT has only been hitting neutral rim planets that are far away from Solaris. Eventually though, the entire neutral rim is going to belong to PACT. And then who's PACT going to attack next?"
     kay "Right, I see your point."
-    
+
     menu:
         "Tell me more about the Alliance.":
             jump tellmorealliance
-            
+
         "Tell me more about PACT.":
             jump tellmorepact
-            
+
         "Thanks for the history lesson. That's all I needed to know.":
             jump thankshistorylesson
-    
+
 label thankshistorylesson:
-    
+
     if badpolitics == True:
         menu:
-            
+
             "Tell me about the situation between the Alliance and PACT.":
                 jump situationbetweenalliance
-            
+
             "It doesn't sound like the admiral is a fan of his own government.":
                 jump notfanofgov
-            
+
             "Well, now we know our next step. Let's get underway to Versta.":
                 jump getunderwayvesta
 
     menu:
-        
+
         "Tell me about the situation between the Alliance and PACT.":
             jump situationbetweenalliance
-                    
+
         "Well, now we know our next step. Let's get underway to Versta.":
             jump getunderwayvesta
-                
+
 label getunderwayvesta:
-    
+
     show ava uniform neutral neutral with dissolve
-    
+
     ava "Understood captain."
 
     $ captaindeck = 0
@@ -3639,11 +3640,11 @@ label getunderwayvesta:
     $ warpto_occupiedcera = True
     $ warpto_tydaria = True
     $ warpto_astralexpanse = True
-    
+
     jump dispatch
 
 label jumphotversta:
-    
+
     $ Random = renpy.random.randint(1,9)
 
     if Random == 1:
@@ -3681,7 +3682,7 @@ label jumphotversta:
         ease 0.2 xpos 200 ypos 300 zoom 0
 
     pause 1.0
-    
+
     scene versta_approach:
         ypos 0
         ease 1.5 ypos -120
@@ -3705,26 +3706,26 @@ label jumphotversta:
 
 
     ava "We've arrived at the planet of Vesta."
-    
+
     play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
     show ava uniform alt neutral angry
-    
+
     ava "Wait a minute... Alert! Drop point is hot! I'm detecting PACT signatures all around us!"
-    
+
     play sound "Sound/redalert.ogg"
     scene bg bridgered
     show ava uniform alt neutral angry
     with dissolve
-    
+
     kay "Red alert! Scramble our ryders!"
-    
+
     show asaga plugsuit excited happy:
         xpos 0.2
     with wipeup
-    
+
     asa "We're ready at your command, capt'n! Just give the word!"
     kay "One hell of an entrance... All right everyone, let's take the enemy out!"
-    
+
     play sound "Sound/battle.wav"
     show battlewarning:
         xpos 0.5 ypos 0.5 zoom 20
@@ -3744,26 +3745,26 @@ label jumphotversta:
     $ BM.mission = 6
     $ check1 = False
     jump battle_start
-    
+
 label mission6:
-    
+
     $BM.battle_bg = "Background/space7.jpg"
-    
+
     if check1 == False and BM.turn_count == 2:
 
         $BM.draggable = False
-        
+
         show ava uniform alt neutral angry onlayer screens zorder 50:
             xpos 0.8
         with dissolve
-        
+
         ava "I'm detecting a new warp signature..."
-        
+
         scene space back7 onlayer screens zorder 50 with dissolve
         pause 0.5
-        
+
         play sound "sound/small_warpout.ogg"
-        
+
         show phoenixwarpin onlayer screens zorder 50:
             xpos 1500 ypos 150 zoom 0.0
             ease 0.1 xpos 960 ypos 540 zoom 1.0
@@ -3774,35 +3775,35 @@ label mission6:
             ease 0.1 alpha 0.4
             ease 0.1 alpha 0
         show phoenixwarpout onlayer screens zorder 50
-        
+
         pause 0.0001
-        
+
         show ava uniform alt neutral angry onlayer screens zorder 50:
             xpos 0.8
         with dissolve
-        
+
         ava "An unidentified ryder has just entered the battle!"
         kay "A ryder capable of warping...?"
         ava "It seems to be using some sort of booster pack..."
         kay "Flag?"
         ava "Unidentified... It doesn't match any of our pirate designs ..."
-        
+
         play sound "sound/Laser 1.ogg"
         show phoenixwarpout laser onlayer screens zorder 50 with dissolve
         show phoenixwarpout onlayer screens zorder 50 with dissolve
-        
+
         hide ava onlayer screens zorder 50
         show asaga plugsuit handsonhips surpriseangry onlayer screens zorder 50:
             xpos 0.8
         with dissolve
-        
+
         asa "W-woah! W-whatever that is, it isn't friendly!"
         kay "Tsch... For now, treat it as a PACT special unit! Take it down along with the rest of the enemy!"
-        
+
         hide asaga onlayer screens
         hide phoenixwarpout onlayer screens
         hide space back7 onlayer screens
-        
+
         $ BM.draggable = True
         $ check1 = True
 
@@ -3819,7 +3820,7 @@ label mission6:
         pass #continue down to the next label
 
 label mission6victory:
-    
+
     $ mission6_complete = True
 
     hide screen battle_screen
@@ -3828,70 +3829,70 @@ label mission6victory:
     scene bg bridgered
     show ava uniform neutral neutral
     with dissolve
-    
+
     window show
-    
+
     show asaga plugsuit excited happy:
         xpos 0.2 xzoom -1
     with wipeup
 
     asa "We did it! The PACT fleet's history!"
-    
+
     show chigara plugsuit handonchest smile:
         xpos 0.8
     with wipeup
-    
+
     chi "Ah... It looks like we won."
-    
+
     show ava uniform armscrossed frown with dissolve
-    
+
     ava "Don't celebrate just yet. That was too weak to have been the main invasion force. It was just an recon squad."
     kay "And now the enemy knows we're here."
     kay "Asaga, Chigara, return to the Sunrider for now."
-    
+
     hide asaga with dissolve
     hide chigara with dissolve
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "Captain, I'm still reading the PACT special unit on scanners."
     kay "Left behind, huh... I guess it can't go anywhere without its warp booster."
     ava "Your orders?"
     kay "Disable it, and then get the Liberty to haul it to our hangar. I think we have ourselves our first PACT prisoner."
-    
+
     show ava uniform salute neutral with dissolve
-    
+
     ava "Understood captain."
-    
+
     scene bg hangar with dissolve
     play music "Music/Mission_Briefing.ogg"
     show asaga plugsuit neutralalt alert with dissolve
 
     asa "Oh! Chigara tells me that we have a prisoner!"
     kay "Yeah."
-    
+
     show asaga plugsuit armscrossed confident with dissolve
-    
+
     asa "Uu-fufufu... So... You gonna interrogate the pilot? Throw 'em out the airlock if they don't spill all their secrets?"
     kay "Uhhh no, I was actually just planning on asking some questions and then turning him over to the Alliance after this is all done."
-    
+
     show asaga plugsuit altneutral sad with dissolve
-    
+
     asa "Aw, so much for how they do it on the holovision..."
-    
+
     show ava uniform armscrossed frown:
         xpos 0.2
     with dissolve
-    
+
     ava "Hmph. Stand back, everyone. This guy might be dangerous."
-    
+
     show chigara plugsuit twiddlefingers scared:
         xpos 0.8
     with dissolve
-    
+
     chi "Huu... I think I'll just watch from back here..."
     kay "Alright, open the ryder's hatch and get our prisoner out."
-    
+
     show ava uniform armscrossed frown:
         zoom 1
         ease 0.5 xpos 0.4
@@ -3905,31 +3906,31 @@ label mission6victory:
     show icari plugsuit neutral closedeyes:
         xpos 0.12
     with dissolve
-    
+
     ica "... ... ..."
-    
+
     show asaga plugsuit excited surprise with dissolve
-    
+
     asa "O-oh! She's just a girl like us, Chigara!"
-    
+
     show icari plugsuit neutral neutral with dissolve
-    
+
     ica "Is this... a PACT vessel?"
     kay "No. I'm Captain Kayto Shields of the Cera Space Force. Welcome aboard the Sunrider."
-    
+
     show icari plugsuit armscrossed neutral with dissolve
-    
+
     ica "Cera? I thought you were conquered by PACT."
     kay "Not all of us. Who are you?"
     ica "Icari Isidolde. Private mercenary."
     kay "Were you hired by PACT?"
-    
+
     show icari plugsuit armscrossed confident with dissolve
-    
+
     ica "Heh... Nothing of the sort. Was on a mission. I can't tell you more than that."
-    
+
     show ava uniform armscrossed frowntalk with dissolve
-    
+
     ava "You're now our prisoner.  Put your hands up and turn over all your weapons."
     kay "Have security escort our guest to the brig.  We'll continue with our discussion there."
 
@@ -3942,11 +3943,11 @@ label mission6victory:
     show ava uniform alt neutral neutral:
         zoom 1.5 xpos 0.7 ypos 1.35
     with dissolve
-    
+
     kay "How's our guest holding up, Ava?"
-    
+
     show ava uniform armscrossed neutral with dissolve
-    
+
     ava "Per protocol, we've scanned her for contraband.  We found enough assassination tools on her person to topple small governments.  I'd say we caught a professional hitman."
     kay "Anything identifying who she's working for?"
     ava "We scanned through the database on her ryder and all of her electronics and found nothing.  She's no amateur."
@@ -3956,73 +3957,73 @@ label mission6victory:
 
     ica "Tsch. I sure hope you haven't dirtied up my ryder."
     kay "You don't need to worry about that. Why don't you avoid all this trouble by giving us some info?"
-    
+
     show icari plugsuit handonhip lookawaysnide with dissolve
-    
+
     ica "Heh, what do you want?"
     kay "Why'd you attack us? Are you working for PACT?"
-    
+
     show icari plugsuit handonhip annoyedtalk with dissolve
-    
+
     ica "I already told you, I don't work for those fanatics. Haven't you been listening?"
     ica "I attacked you because I thought you were PACT freelancers.  Last I heard, the entire Cera Space Force was impressed into the PACT Fleet and the few survivors became pirates or freelancers."
     ica "If you haven't noticed, this area of the galaxy's like the Wild Wild West. Plenty of guns for sale have thrown their lots with PACT nowadays, thinking that's the way the galaxy's gonna spin."
-    
+
     show icari plugsuit handonhip lookawaysnide with dissolve
-    
+
     ica "Heh, not if I have anything to say about it anyways."
     kay "You're no friend of PACT?"
-    
+
     show icari plugsuit handonhip annoyedtalk with dissolve
-    
+
     ica "No! Hate 'em. I would have busted up their whole fleet back there."
-    
+
     show icari plugsuit armscrossed tsun with dissolve
-    
+
     ica "If it weren't for you smashing up my booster anyways. Ugh..."
     kay "Well, at least we're on the same side then."
-    
+
     show icari plugsuit handonhip annoyedtalk with dissolve
-    
+
     ica "So are you going to tell me what a Cera captain's doing here?"
-    
+
     show ava uniform alt neutral angry with dissolve
-    
+
     ava "We're asking the questions here, not you."
-    
+
     show icari plugsuit handonhip snide with dissolve
-    
+
     ica "Heh, what, we're not here to become friends?"
     ica "C'mon captain, throw me something here. Aren't we going to work this out together?"
     kay "All right."
     kay "We're here on Alliance business.  We're doing a bit of freelancing ourselves."
-    
+
     show icari plugsuit handonhip lookawaysnide with dissolve
-    
+
     ica "Heh, interesting."
     kay "There, you have our secret. How about you tell me yours?"
     ica "... ... ..."
-    
+
     show icari plugsuit armscrossed frown with dissolve
-    
+
     ica "All right, captain. You've made your point. If I tell you mine, you're going to have to promise not to lay a finger on my Phoenix. Oh, and also to get your damned housewife's scowl out of my face."
-    
+
     show ava uniform armscrossed frown with dissolve
-    
+
     ava "Hmph."
     kay "All right.  I suppose we could lay off your ryder."
-    
+
     show icari plugsuit armscrossed tsun with dissolve
-    
+
     ica "I hope so."
-    
+
     show icari plugsuit handonhip annoyedtalk with dissolve
-    
+
     ica "You wouldn't have happened to have been hired by an Alliance admiral who looked like a grey old statue, would you?"
     kay "Well, he certainly was grey.  In more ways than one."
-    
+
     show icari plugsuit handonhip snide with dissolve
-    
+
     ica "Hahahaha.  That bastard hasn't changed a bit."
     kay "You know him?"
     ica "Know him? I've worked for him for ages."
@@ -4033,48 +4034,48 @@ label mission6victory:
     kay "You're a contract assassin."
     ica "Let me guess, you're here about the diplomats on Versta right?"
     kay "Looks like the big secret's out."
-    
+
     show icari plugsuit armscrossed confident with dissolve
-    
+
     ica "Heh."
     kay "What's a contract assassin like you doing here then?  Versta's a rescue mission.  Nobody needs to be shot."
-    
+
     show icari plugsuit neutral snide with dissolve
-    
+
     ica "Rescue mission? Is that what the Admiral told you?"
-    
+
     show ava uniform armscrossed frowntalk with dissolve
-    
+
     ava "If you know something, you better spill it."
     ica "Not so fast.  That little information's gonna cost you.  Nothing big, mind you."
     ava "If I recall correctly, you're the one stuck sitting in a jail cell, not us."
-    
+
     show icari plugsuit armscrossed tsun with dissolve
-    
+
     ica "I'm not going to go around revealing client information unless there's security for me."
     ica "And I'd say you need my help more than ever if you still think you're here on a rescue mission.  If I tell you what's going on, you let me outta this cell and give me back my ryder."
     kay "(It seems like she's interested in talking.  Let's play along for now and see what she says.)"
     kay "All right.  If we're both against PACT, I'm interested in seeing what you have to say."
     ica "I may be an assassin, but I'm no scoundrel.  You can depend on my words, captain."
-    
+
     show icari plugsuit neutral neutral with dissolve
-    
+
     ica "War between the Solar Alliance and PACT is inevitable.  Everyone knows that and they're just too scared to admit it.  The galaxy's on the brink of an interstellar war on a scale it hasn't seen in one hundred years."
     ica "There's a certain faction within the Alliance which understands this and wants to intervene before the entire Neutral Rim's PACT's back yard."
     ica "And honestly, I'd rather not be bowing to the Veniczar, so I say good on them.  The only issue is that President Alythe's a damned pussy who couldn't fight an angry duck to save his own life."
     ica "The Alliance needs a push.  And this crisis is the opportunity everyone's been waiting for to bring the Alliance into this fight."
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "So you've been hired by this faction to hover around Vesta, and make sure that those diplomats are captured by PACT to spark a war.  Is that what you're saying?"
     ica "Now you're catching on.  You let me ensure that those diplomats are captured by PACT, and you can bet you'll have the Alliance's full support behind you in your war."
     kay "And if they find out I had anything to do with their capture?"
-    
+
     show icari plugsuit armscrossed neutral with dissolve
-    
+
     ica "Who gives a damn? The Alliance military wants PACT to get those diplomats to get this war started anyways.  You'll probably get a shiny medal for saving the Neutral Rim or something."
     kay "(This is a little hard to believe, but her hatred of PACT seems sincere.  What should I do?)"
-    
+
     menu:
         "All right, you've made your point.  I'll let you out of your cell, but you'll be confined to quarters for now while we perform our own investigation.":
             jump outcellinvestigation
@@ -4090,20 +4091,20 @@ label outcellinvestigation:
     ica "Tsch, that's the best you can do?"
     kay "It's not like you're going anywhere on your ryder without a booster pack.  So enjoy the warm bed."
     ica "Fine, just get me outta this cell and bring me something to eat."
-    
+
     $ asa_location = "messhall"
     $ asa_event = "whattodoicari_asa"
-    
+
     $ chi_location = "engineering"
     $ chi_event = "whattodoicari_chi"
-    
+
     $ ava_location = "bridge"
     $ ava_event = "whattodoicari_ava"
-    
+
     $ gal_location = None
     $ captaindeck = 1
     jump dispatch
-    
+
 label dontbelieveicari:
 
     show icari plugsuit neutral angry with dissolve
@@ -4111,42 +4112,42 @@ label dontbelieveicari:
     ica "Are you kidding me, captain!?  We had a deal!"
     kay "I didn't promise anything.  Ava, get our guest something to eat.  She'll be staying here for a while."
     ava "Understood."
-    
+
     show icari plugsuit armscrossed bitter with dissolve
-    
+
     ica "Tsch... Whatever.  Once you find out that I'm telling the truth, you'll be back here begging for help.  Just you wait!"
 
     $ asa_location = "messhall"
     $ asa_event = "whattodoicari_asa"
-    
+
     $ chi_location = "engineering"
     $ chi_event = "whattodoicari_chi"
-    
+
     $ ava_location = "bridge"
     $ ava_event = "whattodoicari_ava"
-    
+
     $ gal_location = None
     $ captaindeck = 1
     jump dispatch
-        
+
 label whattodoicari_ava:
-    
+
     hide screen deck1
-    
+
     scene bg bridge
     show ava uniform alt neutral neutral:
         zoom 1 xpos 0.5
     with dissolve
-    
+
     window show
-    
+
     kay "Did you get our guest set up?"
     ava "She's getting comfortable. About what she said..."
-    
+
     menu:
         "She's got a point. Sparking an Alliance-PACT war is the only way we can stop PACT.":
             jump pointwaronlyway
-            
+
         "She's obviously crazy. We're going to complete our mission and save those diplomats.":
             jump obviouslycrazysave
 
@@ -4161,14 +4162,14 @@ label pointwaronlyway:
     ava "I hope that you're not being blinded by what happened at Cera."
     kay "It's not like you disagree."
     ava "... ... ..."
-    
+
     show ava uniform neutral lookleft with dissolve
-    
+
     ava "True, Alliance intervention is the only hope we have at liberating Cera.  Liberating our home world will take a fleet.  And the Alliance has a mighty one at that."
     kay "PACT's going to take over the whole galaxy unless the Alliance steps in. If a few diplomats have to be sacrificed for the safety of the galaxy, so be it."
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "Very well, captain. I may not trust the mercenary, but I don't disagree with what you're saying."
 
     jump consideringoptionsfornow
@@ -4179,21 +4180,21 @@ label obviouslycrazysave:
 
     ava "I agree we should be careful about her. But given our situation, we should consider what she has told us."
     kay "I won't have the blood of civilians on my hands, Ava."
-    
+
     show ava uniform armscrossed neutral with dissolve
-    
+
     ava "Noble of you. But know this captain: War between the Alliance and PACT will happen one way or another."
     ava "All we would be doing would be hastening the process. Every second we wait, PACT will have conquered one more neutral world and grown that much stronger."
     ava "The quicker the war between the Alliance and PACT begins, the more lives we can save in the end."
-    
+
     jump consideringoptionsfornow
-    
+
 label consideringoptionsfornow:
-    
+
     kay "Anyways, I'm still considering our options for now. What's our next step?"
-    
+
     show ava uniform neutral talk with dissolve
-    
+
     ava "I've made contact with the Alliance diplomats.  They're going to attempt to make an escape soon."
     kay "All right.  Will we be bringing them aboard?"
     ava "Actually, they've arranged to escape on the civilian liner Agamemnon.  We'll be providing escort in case things gets hairy."
@@ -4201,51 +4202,51 @@ label consideringoptionsfornow:
     ava "They tell me international law prohibits them from coming aboard a foreign military vessel."
     kay "(That's the first time I've ever heard of a rule like that.  Something's amiss...)"
     kay "One challenge after another.  Keep me posted, Ava."
-    
+
     $ ava_location = None
     $ pro_location = "captainsloft"
     $ pro_event = "proceed_rescuediplomats"
     $ captaindeck = 1
 
     jump dispatch
-    
+
 label whattodoicari_asa:
-    
+
     hide screen deck0
-    
+
     scene bg messhall
     show asaga uniform neutral happy
     with dissolve
-    
+
     window show
 
     asa "Oh, did you need me for something, capt'n?"
     kay "I presume you've heard the rumors about the mercenary we've captured."
-    
+
     show asaga uniform excited grin with dissolve
-    
+
     asa "Well, we're still gonna rescue those diplomats, aren't we? And beat up the PACT fleet, of course!"
     kay "I don't think we'll be able to destroy the whole invasion fleet by ourselves, Asaga..."
-    
+
     show asaga uniform neutral happy with dissolve
-    
+
     asa "Don't worry, don't worry! Just leave it to me and mah Black Jack! We'll take of the invasion fleet in no time!"
-    
+
     menu:
         "What do you think about what the mercenary said?":
             jump whatdoyouthink
-        
+
         "Just be careful out there and don't do anything reckless, okay?":
             jump caredontreckless
-        
+
 label whatdoyouthink:
-    
+
     show asaga uniform armscrossed nonono with dissolve
-    
+
     asa "No, no, no, capt'n! You can't do that and let innocents die!"
-    
+
     show asaga uniform excited angry with dissolve
-    
+
     asa "You gotta stand for what's right!  We're gonna win this fight the hard way, but the right way!"
 
     menu:
@@ -4253,89 +4254,89 @@ label whatdoyouthink:
             jump neverbeatpactalliance
         "You're right.  We're going to win this war with our principles intact.":
             jump betterpactwinprinciples
-        
+
 label neverbeatpactalliance:
-    
+
     $ captain_prince += 1
-    
+
     show asaga uniform armscrossed confidenthappy with dissolve
-        
+
     asa "Ahh, don't be so down, capt'n! You have me and the Black Jack! Together, we can do anything!"
-    
+
     jump thanksfortalkasaga
-    
+
 label betterpactwinprinciples:
-    
+
     $ captain_moralist += 1
-    
+
     show asaga uniform excited grin with dissolve
 
     asa "Hell yeah, capt'n!"
     jump thanksfortalkasaga
-    
+
 label thanksfortalkasaga:
-    
+
     kay "Uh, I'll keep that in mind. Thanks."
-    
+
     show asaga uniform neutral smile with dissolve
-    
+
     asa "I'll see you later!"
-    
+
     $ asa_location = None
     $ pro_location = "captainsloft"
     $ pro_event = "proceed_rescuediplomats"
     $ captaindeck = 0
-    
+
     jump dispatch
 
 label caredontreckless:
 
     asa "Of course, capt'n!"
-    
+
     $ pro_location = "captainsloft"
     $ pro_event = "proceed_rescuediplomats"
     $ captaindeck = 0
-    
+
     jump dispatch
-    
+
 label whattodoicari_chi:
-    
+
     hide screen deck1
-    
+
     scene bg engineering
     show chigara uniform handsup surprise
     with dissolve
-    
+
     window show
 
     chi "E-eah! O-oh, sorry, captain, I didn't see you coming..."
-    
+
     menu:
         "What's your take on what's going on with the mercenary?":
             jump yourtakemercenary
         "How's the research station coming?":
             jump howsresearchstation
-            
+
 label yourtakemercenary:
-    
+
     show chigara uniform twiddlefingers smile with dissolve
-        
+
     chi "Ummm... I'm not very good with making decisions, so I think you'd be much better suited to thinking about it than I am..."
-    
+
     show chigara uniform handstogether smile with dissolve
-    
+
     chi "Eh-heh. Whatever the captain decides, I'm sure it'll be the right decision."
-    
+
     menu:
         "Thanks for the vote of confidence, Chigara.":
             jump thanksconfidencechigara
         "Are you sure? You're smarter than anyone else I've ever met.":
             jump smarteranyoneelse
-            
+
 label howsresearchstation:
-    
+
     show chigara uniform neutral neutral with dissolve
-    
+
     chi "Ah, I've finished setting my equipment up. Even though it's still at the beginning stages, I'll be able to get started on some basic research projects."
 
     menu:
@@ -4343,42 +4344,42 @@ label howsresearchstation:
             jump goodallocatefundinglater
         "Great, let's see what projects need funding...":
             jump allocatefunds
-        
+
 label goodallocatefundinglater:
-        
+
     chi "Understood, captain."
-    
+
     menu:
         "What's your take on what's going on with the mercenary?":
             jump yourtakemercenary
         "Thanks for your work.  I'll see you later, Chigara.":
             jump thanksbyechigara
-            
+
 label smarteranyoneelse:
 
     chi "Uh-huh. I may be comfortable with machines, captain, but that's just about it. Where people are concerned, I feel... Well, I just don't feel like I understand them very well."
     kay "Maybe machines really are easier to deal with than people..."
-    
+
     menu:
         "How's the research station coming?":
             jump howsresearchstation
-            
+
         "Thanks for your work.  I'll see you later, Chigara.":
             jump thanksbyechigara
 
 label thanksconfidencechigara:
 
     chi "Eh-heh. Any time, captain. Was there something else you needed?"
-    
+
     menu:
         "How's the research station coming?":
             jump howsresearchstation
-            
+
         "Thanks for your work.  I'll see you later, Chigara.":
             jump thanksbyechigara
-    
+
 label thanksbyechigara:
-    
+
     show chigara uniform neutral neutral with dissolve
 
     chi "Good bye, captain."
@@ -4387,85 +4388,85 @@ label thanksbyechigara:
     $ pro_location = "captainsloft"
     $ pro_event = "proceed_rescuediplomats"
     $ captaindeck = 1
-    
+
     jump dispatch
-    
+
 label proceed_rescuediplomats:
-    
+
     hide screen deck0
     stop music fadeout 1.5
     scene black
     window show
     with dissolve
-    
+
     kay "Well then, I think I'll return to my room to think about what to do..."
-    
+
     scene bg captainsoffice with dissolve
-    
+
     kay "Begin captain's log. We've made contact with the diplomats on Versta and are going to attempt an escape."
     kay "I should be focused on getting them out of here safe, but I can't get what the mercenary said out of my mind."
     kay "Some part of my head thinks that she has some ulterior motive and she's tricking us all. Maybe she's a PACT spy and making us wander into a trap."
     kay "Maybe the diplomats know something that PACT doesn't and she's just fooling us into silencing them."
     kay "Or maybe she's really telling the truth."
-    
+
     play music "Music/A_Dark_Dream.ogg"
     scene bg captainsoffice_nolights
     show captainsoffice_nolights_overlay
     with dissolve
-    
+
     kay "What the-"
-    
+
     show icari plugsuit armscrossed confident behind captainsoffice_nolights_overlay with dissolve
-    
+
     ica "Hello again, captain. Unfortunately, it looks like you'll have to upgrade your security system, since it was all too easy for me to crack."
     kay "Security, get to my quarters now!"
     ica "Of course, I've already disabled all communications out of this room as well."
     kay "What do you want, mercenary?"
-    
+
     show icari plugsuit handonhip snide behind captainsoffice_nolights_overlay with dissolve
-    
+
     ica "Relax captain. I'm not here to slit your throat, or anything gory like that. I just want to talk."
     kay "Just talk?"
-    
+
     show icari plugsuit altneutral neutral behind captainsoffice_nolights_overlay with dissolve
-    
+
     ica "I never imagined that I'd find myself onboard a Cera vessel. It must be hard, being the only ship left."
     kay "I don't disagree, but we get by."
     ica "Tell me... How many people died at Cera that day?"
-    
+
     menu:
         "Your attempts at manipulating me won't work, mercenary.":
             jump photoalbumlook
         "Too many.":
             jump photoalbumlook
-    
+
 label photoalbumlook:
-    
+
     show item album:
         xpos 0.1 ypos 0.2
     with dissolve
-    
+
     ica "Who's that in the picture album behind you?"
     kay "That's none of your business."
-    
+
     show icari plugsuit altneutral smallsnide with dissolve
-    
+
     ica "She looks young.  You don't seem like a father though.  So I'm thinking... your sister?"
     kay "You're walking on thin ice.  I suggest you drop it."
-    
+
     hide item with dissolve
-    
+
     ica "What's the matter, captain? Did I hit a soft spot?"
-    
+
     show icari plugsuit altneutral smallsnide:
         zoom 1
         ease 1.00 zoom 1.5 ypos 1.4
-    
+
     ica "Are you scared for her?"
     ica "... ... ..."
-    
+
     show icari plugsuit neutral neutral with dissolve
-    
+
     ica "I know what it's like to lose family... Listen to me, captain."
     ica "PACT killed my entire family years ago.  I swore I'd get PACT back for what they did, and I'm finally so close."
     ica "We can work together, you and I.  Let's bring the Alliance into this war and end the PACT invasion.  I'll even work under you as a pilot if you're going after PACT."
@@ -4475,17 +4476,17 @@ label photoalbumlook:
     ica "I'm willing to make an exception, just for you."
     ica "Do you know who it was that hired me to take out those diplomats? It was Admiral Grey of the Solar Alliance himself."
     kay "Admiral Grey? Funny you say that, considering he sent us here to protect the diplomats."
-    
+
     show icari plugsuit armscrossed neutral with dissolve
-    
-    ica "Get with the program, captain.  Everyone in the Alliance military knows that war is inevitable." 
+
+    ica "Get with the program, captain.  Everyone in the Alliance military knows that war is inevitable."
     ica "You can save those diplomats now... And with each passing day, PACT will conquer one planet after another.  Millions more will lose their lives..."
     ica "Until PACT finally runs out of neutral planets to conquer and turns to Alliance space."
     ica "Then there will be an interstellar war of unimaginable proportions, with PACT bringing to bear the resources of every planet of the Neutral Rim against the Alliance."
     ica "Or those diplomats can die now.  Then the Alliance will intervene while PACT is still mustering its strength."
     ica "While a few may have to be sacrificed, you will save the lives of millions."
     ica "Admiral Grey understands this.  That is why he hired me to ensure those diplomats never make it out of Verstra space."
-    
+
     menu:
         "You're not making any sense. Why would Admiral Grey send us here to save the diplomats, and then hire you to make sure they get captured by PACT?":
             jump nosensesavediplomats
@@ -4499,15 +4500,15 @@ label nosensesavediplomats:
     ica "Admiral Grey still has to obey the commands of President Alythe. The President has ordered that war with PACT is to be avoided at all costs."
     ica "That's why he used the official channels to send the Sunrider here to protect the diplomats."
     ica "Then on the unofficial channels, he contacted me to ensure that the diplomats are captured."
-    
+
     menu:
         "You're saying Alliance military's going to coup the civilian government?":
             jump militarycoupgovernment
         "So in the end, what are you after?":
             jump endafterwhat
-    
+
 label militarycoupgovernment:
-    
+
     ica "Perhaps. Not today, or tomorrow, but if the Solar Congress continues to be mired in politics while PACT swallows up the entire neutral rim, the Alliance military will act to protect its citizens, with or without the support of the civilian leaders."
 
     menu:
@@ -4519,15 +4520,15 @@ label militarycoupgovernment:
 label endafterwhat:
 
     show icari plugsuit altneutral smallsnide with dissolve
-        
+
     ica "Like I said, captain, I just want to see PACT defeated. I think we share that common goal, don't we?"
-    
+
     show icari plugsuit neutral neutral:
         ease 0.5 zoom 1.8 ypos 1.6
-    
+
     ica "So, what will it be captain?"
     ica "Will you stand by while PACT conquers one neutral planet after another, growing more powerful with each day; or will you make a stand and stop PACT once and for all?"
-    
+
     menu:
         "I hate PACT and everything they stand for. That includes killing innocents to accomplish my goals.  Now get back to the brig where you belong.":
             jump hatepactbackbrig
@@ -4535,9 +4536,9 @@ label endafterwhat:
             jump rightyouworktogether
 
 label hatepactbackbrig:
-    
+
     $ captain_moralist += 10
-    
+
     show icari plugsuit neutral frown:
         ease 0.5 zoom 1.5 ypos 1.4
     with dissolve
@@ -4551,21 +4552,21 @@ label hatepactbackbrig:
 
     ica "Tsch... Looks like you've left me no choice then."
     ica "PACT must be stopped no matter what, and I won't let you interfere with my mission."
-    
+
     scene bg captainsoffice
     show icari plugsuit pistol angry:
         zoom 1.5 xpos 0.5 ypos 1.4
     show ava uniform alt neutral angry:
         xpos 0.8 zoom 1
     with dissolve
-    
+
     ava "Captain!"
-    
+
     show icari plugsuit pistol angry:
         ease 0.5 ypos 1.4 xpos -0.5
-    
+
     ica "!!!"
-    
+
     show ava uniform neutral angrytalk:
         ease 0.5 xpos 0.5
 
@@ -4573,113 +4574,113 @@ label hatepactbackbrig:
     kay "Yeah."
     ava "I ran up here as soon as I realized the mercenary escaped.  Looks like I was almost too late."
     kay "That mercenary's becoming a problem. Find her and stop her!"
-    
+
     jump findherandstopher
-    
+
 label rightyouworktogether:
-    
+
     $ captain_prince += 1
     $ affection_icari += 3
-    
+
     show icari plugsuit neutral smile:
         ease 0.5 zoom 1.5 ypos 1.4
     with dissolve
-    
+
     ica "I'm glad we agree."
     kay "Now, will you please turn the lights in my office back on?"
-    
+
     show icari plugsuit armscrossed confidentlaugh with dissolve
-    
+
     ica "Hahahaha.  Of course, captain."
-    
+
     scene bg captainsoffice
     show icari plugsuit armscrossed confidentlaugh:
         zoom 1.5 xpos 0.5 ypos 1.4
     with dissolve
-    
+
     kay "I'll need to inform Ava of the change in plans.  You should go back to where you're supposed to be now, and just play along for now."
-    
+
     show icari plugsuit armscrossed confident with dissolve
-    
+
     ica "All right, I'm willing to be your prisoner for a bit."
-    
+
     show icari plugsuit armscrossed embarassedtsun with dissolve
-    
+
     ica "Oh... And thank you captain."
     ica "For uh... hearing me out."
     kay "???"
     ica "Seriously, you're going to need my help if you couldn't figure it out on your own..."
 
     jump agreehelpicari
-    
+
 label findherandstopher:
-    
+
     scene bg bridge with dissolve
-    
+
     kay "What's the status on the Phoenix!?"
-    
+
     show ava uniform alt neutral angry with dissolve
-    
+
     ava "Damn! She's already hacked into our security system and escaped on her ryder!"
-    
+
     show ava uniform alt order angry with dissolve
-    
+
     ava "All pilots, scramble your ryders and pursue!"
-    
+
     show ava uniform alt neutral angry with dissolve
     show asaga uniform excited surprise:
         xpos 0.2
     with wipeup
-    
+
     asa "O-oh! Press quick save, Chigara, it's go time!"
-    
+
     show chigara uniform handsup surprise:
         xpos 0.8
     with wipeup
-    
+
     chi "E-eh!?"
-    
+
     show ava uniform fistup angry with dissolve
-    
+
     ava "What's going on down there!?"
-    
+
     show asaga uniform armscrossed embarassedgrin with dissolve
-    
+
     asa "Oh nuthin', was just in the middle of a game, that's all!"
-    
+
     hide asaga with dissolve
     hide chigara with dissolve
-    
+
     kay "It was their break time."
-    
+
     show ava uniform facepalm with dissolve
-    
+
     ava "Unbelievable..."
-    
+
     play sound "sound/warning.ogg"
-    
+
     "-Warning-"
-     
+
     kay "What now?"
-    
+
     show ava uniform neutral angrytalk with dissolve
-    
+
     ava "Uh... Warning! Massive PACT signatures detected!"
-    
+
     play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
     play sound "Sound/redalert.ogg"
     scene bg bridgered
     show ava uniform neutral angrytalk
     with dissolve
-    
+
     kay "Red alert!  All hands, assume battle stations!"
     ava "It's the PACT invasion fleet. They arrived here early!"
     kay "Just one thing after another. Asaga, come in."
-    
+
     show asaga plugsuit excited focushappy:
         xpos 0.2
     with wipeup
-    
+
     asa "I'm here, capt'n!"
     kay "Change of plans.  Focus on defending the diplomats against the PACT fleet.  Keep your eyes out for the mercenary unit.  I have the feeling she'll be back to interfere with our mission."
     asa "Aye capt'n!"
@@ -4696,68 +4697,68 @@ label findherandstopher:
     "Agamemnon" "Six hundred children in all.  It was the only way to get them off planet before PACT arrived!"
     kay "This mission just got even more complicated."
     kay "All ryders.  Your orders are to defend the Agamemnon at all costs.  Don't let a single PACT unit hit it."
-    
+
     show asaga plugsuit handsonhips determined with dissolve
-    
+
     asa "Understood, captain!  Don't worry, we'll keep those children safe!"
-    
+
     show chigara plugsuit excited determined:
         xpos 0.8
     with wipeup
-    
+
     chi "We'll do this with our lives!"
     kay "All ryders, launch!"
-    
+
 label agreehelpicari:
-    
+
     scene bg bridge with dissolve
     show ava uniform armscrossed neutral with dissolve
-    
+
     ava "Captain.  We're nearly finished with the preparations for our escort mission.  The diplomats are secure on the civilian transport Agamemnon.  I was just about to call you down here, in fact."
     kay "About that.  There's been a change of plans, Ava."
     ava "Oh?"
     kay "The mercenary is right."
     kay "The lives of a few diplomats cannot compare to the billions of innocents who will be killed if PACT is permitted to invade the Neutral Rim unchallenged."
-    
+
     show ava uniform armscrossed smile with dissolve
-    
+
     ava "Understood, captain. As is the norm in war, sacrifices must be made for the greater good.  I will relay your new orders to the crew then."
     kay "Thank you, Ava."
-    
+
     play sound "sound/warning.ogg"
-    
+
     "-Warning-"
-    
+
     kay "What happened!?"
-    
+
     show ava uniform neutral angrytalk with dissolve
-    
+
     ava "Contact!  Multiple warp signatures detected!  It's PACT!"
-    
+
     play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
     play sound "Sound/redalert.ogg"
     scene bg bridgered
     show ava uniform neutral angrytalk
     with dissolve
-    
+
     kay "Red alert! All hands, assume battle stations!"
     ava "It's the PACT invasion fleet.  They arrived here early!"
     kay "Get us out of the planet's gravity well and spool up our warp drive.  Our role here is finished."
     ava "Understood, captain."
-    
+
     show ava uniform handonhip mad with dissolve
-    
+
     ava "The PACT fleet has noticed us.  A squadron of ships has broken off to intercept.  Time until in range: Ten minutes."
     ava "We are receiving a message from the Agamemnon.  Should I open the channel?"
-    
+
     menu:
         "Put me through to them.":
             jump agaputmethrough
         "No, close the channel.":
             jump agaclosechannel
-    
+
 label agaputmethrough:
-    
+
     ava "Aye captain."
     "Agamemnon" "What are you doing!?  I thought you were supposed to be our escort!"
     kay "Change of plans.  It seems like your leaders no longer wish to see you alive."
@@ -4772,24 +4773,24 @@ label agaputmethrough:
     "Agamemnon" "There are six hundred children on board this ship, Sunrider!"
     "Agamemnon" "With the PACT invasion fleet approaching, taking the Versta children under Alliance protection was the only thing we could do!"
     kay "What!?"
-    
+
     show ava uniform neutral angrytalk with dissolve
-    
+
     ava "Captain, we are getting underway.  What are your orders?"
     "Agamemnon" "Without your protection, our act of charity will instead doom the children!"
     "Agamemnon" "Please, help us!"
     kay "(Six hundred children? There was no way to have foreseen this!)"
-    
+
 label cmd_savethechildren:
-    
-    if BM.cmd >= 300:        
+
+    if BM.cmd >= 300:
         menu:
             "...Maintain course.  Prepare to break through that PACT squadron.":
                 jump maintainpreparethroughpact
             "COMMAND DECISION: Cancel warp.  We're going to escort the Agamemnon out of here! |300 CMD/[BM.cmd] Available|":
                 jump cancelwarpagaout
 
-    if BM.cmd < 300:        
+    if BM.cmd < 300:
         menu:
             "...Maintain course.  Prepare to break through that PACT squadron.":
                 jump maintainpreparethroughpact
@@ -4798,54 +4799,54 @@ label cmd_savethechildren:
 
 
 label maintainpreparethroughpact:
-    
+
     $ captain_prince += 10
-    
+
     show ava uniform salute angry with dissolve
-    
+
     ava "Aye captain."
     kay "Asaga, your orders are to focus on the PACT squadron ahead of us and open up a path for the Sunrider to warp.  Ignore the Agamemnon, understand?"
-    
+
     show asaga plugsuit altneutral surprise:
         xpos 0.2
     with wipeup
-    
+
     asa "B-but what about-"
     kay "It's necessary to stop PACT.  Do it."
-    
+
     show asaga plugsuit armscrossed grumpy with dissolve
-    
+
     asa "I'm not feeling so good about this....."
-    
+
     show chigara plugsuit excited scared:
         xpos 0.8
     with wipeup
-    
+
     chi "Asaga, we have to do this or else Vestra won't be the last planet that PACT invades!"
-    
+
     show asaga uniform armscrossed madshout with dissolve
-    
+
     asa "A-all right, all right, let's go!"
-    
+
     hide chigara with dissolve
     show icari plugsuit armscrossed confident:
         xpos 0.8
     with wipeup
-    
+
     ica "Heh, I think you'll need my help too."
-    
+
     show asaga uniform handsonhips mad with dissolve
-    
+
     asa "Eh? What are you doing here?"
     ica "Just a bit of back up, in case things don't go as planned.  With the captain's approval, of course."
     kay "All right, Icari.  Help us break through the PACT fleet and you will have earned our trust."
-    
+
     show ava uniform armscrossed looklefttalk with dissolve
-    
+
     ava "Looks like I'll be taking another look at our security protocols after this..."
     kay "Icari's no ordinary prisoner, Ava.  I think we can let it slide this time."
     kay "All ryders, launch!"
-    
+
     play sound "Sound/battle.wav"
     show battlewarning:
         xpos 0.5 ypos 0.5 zoom 20
@@ -4853,7 +4854,7 @@ label maintainpreparethroughpact:
     pause 0.5
     play sound "Sound/drum.ogg"
     $ renpy.pause(2)
-    
+
     window hide
     hide bg bridgered
     hide ava
@@ -4866,84 +4867,84 @@ label maintainpreparethroughpact:
     jump battle_start
 
 label cancelwarpagaout:
-    
+
     play sound "sound/swordhit.ogg"
     show captainflash:
         xpos 1.1 ypos 0.2
         ease 0.7 xpos 0.35
         pause 0.5
         ease 0.8 alpha 0
-    
+
     $ BM.cmd -= 300
     $ captain_moralist += 5
-    
+
     show ava uniform salute angry with dissolve
-    
+
     ava "Aye captain.  Changing course.  We will take the Agamemnon under our wing."
-    
+
     show asaga plugsuit excited focushappy:
         xpos 0.2
     with dissolve
-    
+
     asa "All right! Let's go and kick some PACT ass! Haha!"
-    
+
     show chigara plugsuit excited determined:
         xpos 0.8
     with dissolve
-    
+
     chi "I'm ready, captain!"
     kay "All ryders, launch!"
 
 label agaclosechannel:
-    
+
     $ captain_prince += 5
-    
+
     ava "Understood."
-    
+
     show ava uniform handonhip mad with dissolve
-    
+
     ava "The Agamemnon has left port, captain.  They are making a run for it out of Versta's gravity well."
     kay "Let them be.  Prepare to break through that PACT squadron and engage warp."
     ava "Aye captain."
     kay "Asaga, your orders are to focus on the PACT squadron ahead of us and open up a path for the Sunrider to warp.  Ignore the Agamemnon, you understand?"
-    
+
     show asaga plugsuit altneutral surprise:
         xpos 0.2
     with wipeup
-    
+
     asa "B-but-"
     kay "It's necessary to stop PACT.  Do it."
-    
+
     show asaga plugsuit excited forcedsmile with dissolve
-    
+
     asa "O-okay, captain.  C'mon Chigara, let's go out there and beat PACT up!"
-    
+
     show chigara plugsuit excited scared:
         xpos 0.8
     with wipeup
-    
+
     chi "I-I'll try my best, captain!"
-    
+
     hide chigara with dissolve
     show icari plugsuit armscrossed confident:
         xpos 0.8
     with wipeup
-    
+
     ica "Heh, I think you'll need my help too."
-    
+
     show asaga uniform handsonhips mad with dissolve
-    
+
     asa "Eh? What are you doing here?"
-    
+
     ica "Just a bit of back up, in case things don't go as planned.  With the captain's approval, of course."
     kay "All right, Icari.  Help us break through the PACT fleet and you will have earned our trust."
-    
+
     show ava uniform armscrossed looklefttalk with dissolve
-    
+
     ava "Looks like I'll be taking another look at our security protocols after this..."
     kay "Icari's no ordinary prisoner, Ava.  I think we can let it slide this time."
     kay "All ryders, launch!"
-    
+
     play sound "Sound/battle.wav"
     show battlewarning:
         xpos 0.5 ypos 0.5 zoom 20
@@ -4951,7 +4952,7 @@ label agaclosechannel:
     pause 0.5
     play sound "Sound/drum.ogg"
     $ renpy.pause(2)
-    
+
     window hide
     hide bg bridgered
     hide ava
@@ -4962,7 +4963,7 @@ label agaclosechannel:
     call mission7_inits
     $ BM.mission = 7
     jump battle_start
-    
+
 label mission7:
 
 #    if not battle3_check1:
@@ -4982,7 +4983,7 @@ label mission7:
         pass #continue down to the next label
 
 label aftermission7:
-    
+
     hide screen commands
     hide screen battle_screen
 
@@ -4997,7 +4998,7 @@ label aftermission7:
     kay "Get us out of the planet's gravity well, double time!"
     ava "Aye captain."
 
-    scene cg_epi2_cgback 
+    scene cg_epi2_cgback
     show cg_epi2_phoenix
     with dissolve
 
@@ -5020,14 +5021,14 @@ label aftermission7:
         ease 0.8 alpha 1.0
 
     ica "...!!!"
-    
+
     pause 0.5
     scene cg_epi2_cg3 with dissolve
     pause 1.0
     scene cg_epi2_cg2 with dissolve
     pause 0.8
     scene white with dissolve
-    
+
     play sound "sound/explosion4.ogg"
 
     scene cg_epi2_cgback
@@ -5048,7 +5049,7 @@ label aftermission7:
         ease 0.8 alpha 0
     pause 1.0
     hide cg_epi2_shuttleflame
-    
+
     pause 1.5
     scene bg bridgered with dissolve
     show ava uniform neutral angrytalk:
@@ -5057,61 +5058,61 @@ label aftermission7:
 
     ava "Contact lost with Agamemnon!"
     kay "... ... ..."
-    
+
     show icari plugsuit armscrossed sad:
         xpos 0.6
     with wipeup
-    
+
     ica "I've been looking forward to this for as long as I can remember..."
-    
+
     show icari plugsuit armscrossed cry with dissolve
-    
+
     ica "And yet why..."
-    
+
     show asaga plugsuit excited shout:
         xpos 0.8
     with wipeup
-    
+
     asa "Tsch.....  PACT...!!!"
-    
+
     show chigara plugsuit handonchest sadsurprise:
         xpos 0.2
     with wipeup
-    
+
     chi "How horrible...."
     ava "The Sunrider has cleared the planet's gravity well.  Warp out at your command, captain."
     kay "All ryders, return home."
     kay "We're getting out of here."
-    
+
     stop music fadeout 1.5
     scene black with dissolvelong
     scene bg captainsoffice with dissolve
     play music "Music/The Tumbrel.ogg" fadeout 1.5
-    
+
     show ava uniform alt neutral neutral with dissolve
-    
+
     ava "The results of our investigation are complete, captain."
     ava "It appears that what the mercenary told us was the truth.  While the Admiral Grey's Office officially denies any involvement, several inside sources have informed me that the mercenary had been hired by the Admiral."
     ava "Further, by going through previous obituaries, I've confirmed that the mercenary's mother, father, and brother were killed by PACT thirteen years ago."
     kay "I see..."
-    
+
     show ava uniform armscrossed looklefttalk with dissolve
-    
+
     ava "Are you feeling all right sir?"
     "Shields stood from his chair."
     kay "Yeah."
     "He turned around and picked up the picture frame of his sister."
-    
+
     show item album:
         xpos 0.2 ypos 0.3
     with dissolve
-    
+
     kay "So the girl's lost her whole family to PACT, huh."
-    
+
     hide item with dissolve
-    
+
     show ava uniform neutral neutral with dissolve
-    
+
     ava "It would appear so.  What do you intend to do with her?"
     kay "Invite her to stay.  She's a talented pilot.  And she's got an axe to grind against PACT.  We could use someone like her on our side."
     ava "Understood, captain."
@@ -5123,9 +5124,9 @@ label aftermission7:
     ava "The galaxy's mere seconds away from total intergalactic war now."
     kay "Good."
     ava "... ... ..."
-    
+
     show ava uniform armscrossed looklefttalk with dissolve
-    
+
     ava "Kayto. Is this really..."
     kay "What?"
 
@@ -5146,18 +5147,18 @@ label aftermission7:
     kay "What's the matter.  You got exactly what you wanted, and now you're giving me the long face?"
 
     show icari uniform armscrossed lookawayannoyed with dissolve
-    
+
     ica "Tsch.  Sneaking up on me, captain?"
     kay "Don't give me that.  I know you heard me coming from the moment I entered the door."
     ica "Contract killing's an ugly business, captain.  If you think I'm going to be torn up about those kids, then you're wrong."
     kay "I saw your face after you came back."
-    
+
     show icari uniform armscrossed tsun with dissolve
-    
+
     ica "I was just... dazed, that's all.  A-also, I keep onions in my cockpit.  W-what, you don't believe me? It's true!"
-    
+
     show icari uniform armscrossed sad with dissolve
-    
+
     ica "... ... ..."
     ica "Tsch."
     ica "I saw a girl on that ship. And it just reminded me..."
@@ -5167,11 +5168,11 @@ label aftermission7:
     ica "I barely managed to get to the escape pod before they blasted the whole ship. I drifted through space for five days until I was rescued by an Alliance patrol."
 
     show icari uniform armscrossed depressedblush with dissolve
-    
+
     ica "In the end... I was the only survivor."
-    
+
     show icari uniform neutral madblush with dissolve
-    
+
     ica "They all deserve to die for what they did that day... I've spent my whole life trying to avenge my family.  And I won't stop now."
     kay "... ... ..."
     "Shields walked to the window and gazed out into the stars."
@@ -5182,20 +5183,20 @@ label aftermission7:
     kay "Neither will I."
 
     window hide
-    
+
     jump credits
-    
+
 label aftermission8:
-    
+
     hide screen commands
     hide screen battle_screen
-    
+
     play music "Music/Battle_Against_Time.ogg" fadeout 1.5
-    
+
     scene space back8
     show blackjack
     with dissolve
-    
+
     window show
 
     show asaga plugsuit point angry:
@@ -5203,47 +5204,47 @@ label aftermission8:
     with dissolve
 
     asa "It's over, Icari!  Surrender!"
-    
+
     scene space back9
     show phoenix:
         xzoom -1
     with dissolve
-    
+
     show icari plugsuit neutral creepy:
         xpos 0.3
     with dissolve
-    
+
     ica "... ... ..."
-    
+
     show icari plugsuit neutral creepygrin with dissolve
-    
+
     ica "Ufufufu..."
-    
+
     show icari plugsuit point crazylaugh with dissolve
-    
+
     ica "HAH!  You think you've won? "
     ica "The only thing you'll accomplish today is allow PACT to win this war!  And I'll never allow that!"
     ica "With these very hands... I'll rid the galaxy of PACT!  For everyone that they've murdered!"
     kay "Icari, stop!"
     ica "Hehehehe... Hahahahaha!!"
-    
+
     play sound "sound/mechchange.ogg"
     show phoenix assault
-    
+
     ica "I'm... going to avenge everyone!  And there won't be anyone to stop me!"
-    
+
     scene cg_epi2_cgback
     show cg_epi2_shuttle
     with dissolve
-    
+
     show cg_epi2_phoenix:
         xpos -0.75 ypos 1.75
         ease 0.8 xpos 0.0 ypos 0.0
-        
+
     pause 1.0
-    
+
     stop music fadeout 1.5
-    
+
     show cg_epi2_cgset2:
         ease 0.8 xpos -2900 ypos -528 zoom 3
         ease 0.5 alpha 0
@@ -5251,17 +5252,17 @@ label aftermission8:
         alpha 0
         pause 0.5
         ease 0.8 alpha 1.0
-        
+
     ica "... ... ..."
-    
+
     scene cg_epi2_cg3 with dissolve
     pause 1.0
     scene cg_epi2_cg2 with dissolve
-    
+
     ica "... ... ..."
-    
+
     play music "Music/Limitless.ogg"
-    
+
     scene bg bridgered
     show icari plugsuit neutral mad
     with dissolve
@@ -5271,30 +5272,30 @@ label aftermission8:
     show icari plugsuit neutral sadblush with dissolve
     pause 0.5
     show icari plugsuit neutral sadcry with dissolve
-    
+
     ica "Why..."
     kay "Because you're not like PACT, Icari.  Don't ever forget that."
-    
+
     show icari plugsuit armscrossed cryclosedeyes with dissolve
-    
+
     ica "...Tsch."
     ica "So uncool..."
-    
+
     show ava uniform neutral talk:
         xpos 0.2
     with dissolve
-    
+
     ava "Captain, we've escaped Versta's gravity well.  The Agamemnon is warping out."
     kay "Spool up our warp drive.  Get us out of here too."
     kay "All ryders, return home.  That includes you, Icari."
-    
+
     show icari plugsuit armscrossed crysmile with dissolve
-    
-    ica "... ... ..."    
+
+    ica "... ... ..."
     ica "Understood.  Phoenix, returning."
-    
+
     scene bg hangar with dissolve
-    
+
     asa "Ah hah!! That's two for two, captain!"
     kay "Good job, Asaga. I admit, I was starting to sweat pretty heavily there."
     asa "Eh-heh... Any time!"
@@ -5341,11 +5342,11 @@ label aftermission8:
     ica "S-seriously..."
     "With that, the team walked upstairs to the star lounge to celebrate their latest victory."
     "While the clouds of war which loomed in the distance were darker than ever, tonight they had something to celebrate."
-    
-    
 
 
-    
+
+
+
 
 
 label credits:

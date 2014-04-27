@@ -775,7 +775,7 @@ init -2 python:
             try:
                 renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
             except:
-                renpy.call_in_new_context('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
+                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
             damage = weapon.fire(self,pship)
             pship.receive_damage(damage,self,weapon.wtype)
             update_stats()

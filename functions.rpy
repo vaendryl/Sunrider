@@ -22,6 +22,7 @@ init -6 python:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
                     ship.missiles = ship.max_missiles
+                active = False
                 return
 
             if result == 'next':

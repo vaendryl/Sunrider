@@ -733,6 +733,7 @@ screen commands: ##show the weapon buttons etc##
                         unhovered SetField(BM,'weaponhover',None)
 
                   ##show energy cost of weapon on weaponbutton
+                $ energy_cost = -weapon.energy_use
                 if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
                     $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
                 if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
