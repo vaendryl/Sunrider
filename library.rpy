@@ -77,11 +77,17 @@ init 2 python:
             self.evasion = 25
             self.lbl = 'Battle UI/label_blackjack.png'  #this is the battle avatar
             self.portrait = 'Battle UI/asaga_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/BlackJack/blackjack.png',
+                'melee':'gameplay/Animations/BlackJack/blackjack_sword.png',
+                'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
+                }
             self.flak = 35
             store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "asavoice"
+            self.attack_voice = ["sound/Voice/Asaga/Asaga Melee 1.ogg","sound/Voice/Asaga/Asaga Melee 2.ogg","sound/Voice/Asaga/Asaga Melee 3.ogg","sound/Voice/Asaga/Asaga Melee 4.ogg"]
             self.selection_voice = ['Asaga/Asaga Select 1.ogg','Asaga/Asaga Select 2.ogg','Asaga/Asaga Select 3.ogg','Asaga/Asaga Select 4.ogg','Asaga/Asaga Select 5.ogg','Asaga/Asaga Select 6.ogg','Asaga/Asaga Select 7.ogg']
             self.moveforward_voice = ['Asaga/Asaga Forward 1.ogg','Asaga/Asaga Forward 2.ogg','Asaga/Asaga Forward 3.ogg']
             self.movebackward_voice = ['Asaga/Asaga Backwards 1.ogg','Asaga/Asaga Backwards 2.ogg','Asaga/Asaga Backwards 3.ogg']
@@ -105,6 +111,9 @@ init 2 python:
             self.evasion = 20
             self.lbl = 'Battle UI/label_liberty.png'  #this is the battle avatar
             self.portrait = 'Battle UI/chigara_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/Liberty/side.png'
+                }
             self.flak = 0
             self.shield_generation = 35
             self.shields = self.shield_generation
@@ -161,6 +170,9 @@ init 2 python:
             self.armor = 0
             self.blbl = 'Battle UI/label_pactmook.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PACTMook/side.png'
+                }
             self.flak = 10
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -248,6 +260,9 @@ init 2 python:
             self.move_cost = 30
             self.blbl = 'Battle UI/label_piratebomber.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PirateBomber/bomber_side.png'
+                }
             self.flak = 20
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -275,6 +290,11 @@ init 2 python:
             self.move_cost = 30
             self.blbl = 'Battle UI/havoc.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/Havoc/havoc.png',
+                'melee':'gameplay/Animations/Havoc/havoc_melee.png',
+                'character':"Character/Cosette/cosette_plugsuit_front_evilsmile.png"
+                }
             self.flak = 20
             self.flak_range = 2
             store.BM.ships.append(self)
@@ -299,6 +319,9 @@ init 2 python:
             self.move_cost = 20
             self.blbl = 'Battle UI/label_pirategrunt.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PirateGrunt/side.png'
+                }
             self.flak = 15
             self.flak_range = 1
             store.BM.ships.append(self)

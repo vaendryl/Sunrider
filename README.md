@@ -1,5 +1,25 @@
 Sunrider
 ========
+
+beta 2 W.I.P.
+
+-added melee attacks and created dynamic animations for them  
+
+-addes screen logic so it can only be used on the right targets    
+
+to do:
+
+-blind side attacks
+
+-AI for melee attacks
+
+-test upgrade rewrite
+
+-script neutral unit
+
+
+Beta 1
+========
 1.06 patch notes
 
 -disabled saving/loading during the enemy turn. instead, a warning will appear.
