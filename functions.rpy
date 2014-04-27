@@ -8,36 +8,47 @@ init -6 python:
     if 'mouseup_3' in config.keymap['game_menu']:
         config.keymap['game_menu'].remove('mouseup_3')
 
-
     import math
-    #import random
 
-    def battlemode(bm):  #as it turns out, modifying the keymap doesn't seem to do ANYTHING in runtime
-#        if 'mousedown_4' in config.keymap['rollback']:
-#            config.keymap['rollback'].remove('mousedown_4')
-#        if 'K_PAGEUP' in config.keymap['rollback']:
-#            config.keymap['rollback'].remove('K_PAGEUP')
-#        if 'mousedown_5' in config.keymap['rollforward']:
-#            config.keymap['rollforward'].remove('mousedown_5')
-#        if 'K_PAGEDOWN' in config.keymap['rollforward']:
-#            config.keymap['rollforward'].remove('K_PAGEDOWN')
-#        if 'mouseup_2' in config.keymap['hide_windows']:
-#            config.keymap['hide_windows'].remove('mouseup_2')
-#        if 'h' in config.keymap['hide_windows']:
-#            config.keymap['hide_windows'].remove('h')
+    def buy_upgrades():
+        renpy.show_screen('upgrade')
+        active = True
+        while active:
+            result = ui.interact()
+
+            if result == 'quit':
+                renpy.hide_screen('upgrade')
+                for ship in player_ships:
+                    ship.hp = ship.max_hp
+                    ship.en = ship.max_en
+                    ship.missiles = ship.max_missiles
+                return
+
+            if result == 'next':
+                if BM.selected != None and len(player_ships) > 1:
+                    index = player_ships.index(BM.selected)
+                    if index == (len(player_ships)-1):
+                        index = 0
+                    else:
+                        index += 1
+                    BM.selected = player_ships[index]
+
+            elif result != None:
+                ship = BM.selected #shorter
+                name,level,increase,cost,multiplier = ship.upgrades[result]
+                if BM.money >= cost:  #sanity check
+                    BM.money -= cost
+                    new_value = getattr(ship,result)+increase
+                    setattr(ship,result,new_value)
+                    level += 1
+                    cost = int(cost * multiplier)
+                    ship.upgrades[result] = [name,level,increase,cost,multiplier]
+
+    def battlemode(bm):
         bm.battlemode = True
         config.rollback_enabled = False
 
     def VNmode():
-#        try:
-#            config.keymap['rollback'].append('mousedown_4')
-#            config.keymap['rollforward'].append('mousedown_5')
-#            config.keymap['K_PAGEUP'].append('mousedown_4')
-#            config.keymap['K_PAGEDOWN'].append('mousedown_5')
-#            config.keymap['hide_windows'].append('mouseup_2')
-#            config.keymap['hide_windows'].append('h')
-#        except:
-#            pass
         BM.battlemode = False
         config.rollback_enabled = True
 
@@ -51,6 +62,14 @@ init -6 python:
     def get_acc(weapon, attacker, target, guess = False): #calculate the chance to hit an enemy ship
         accuracy = (weapon.accuracy + attacker.modifiers['accuracy'][0])
         accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))
+        if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+            accuracy *= attacker.kinetic_acc
+        if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+            accuracy *= attacker.energy_acc
+        if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+            accuracy *= attacker.missile_acc
+        if weapon.wtype == 'Melee':
+            accuracy *= attacker.melee_acc
         if not weapon.wtype == 'Support' or guess:
             accuracy -= (target.evasion + target.modifiers['evasion'][0])
         accuracy *= BM.environment['accuracy'] / 100.0

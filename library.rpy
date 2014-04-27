@@ -77,11 +77,17 @@ init 2 python:
             self.evasion = 25
             self.lbl = 'Battle UI/label_blackjack.png'  #this is the battle avatar
             self.portrait = 'Battle UI/asaga_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/BlackJack/blackjack.png',
+                'melee':'gameplay/Animations/BlackJack/blackjack_sword.png',
+                'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
+                }
             self.flak = 35
             store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "asavoice"
+            self.attack_voice = ["sound/Voice/Asaga/Asaga Melee 1.ogg","sound/Voice/Asaga/Asaga Melee 2.ogg","sound/Voice/Asaga/Asaga Melee 3.ogg","sound/Voice/Asaga/Asaga Melee 4.ogg"]
             self.selection_voice = ['Asaga/Asaga Select 1.ogg','Asaga/Asaga Select 2.ogg','Asaga/Asaga Select 3.ogg','Asaga/Asaga Select 4.ogg','Asaga/Asaga Select 5.ogg','Asaga/Asaga Select 6.ogg','Asaga/Asaga Select 7.ogg']
             self.moveforward_voice = ['Asaga/Asaga Forward 1.ogg','Asaga/Asaga Forward 2.ogg','Asaga/Asaga Forward 3.ogg']
             self.movebackward_voice = ['Asaga/Asaga Backwards 1.ogg','Asaga/Asaga Backwards 2.ogg','Asaga/Asaga Backwards 3.ogg']
@@ -105,6 +111,9 @@ init 2 python:
             self.evasion = 20
             self.lbl = 'Battle UI/label_liberty.png'  #this is the battle avatar
             self.portrait = 'Battle UI/chigara_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/Liberty/side.png'
+                }
             self.flak = 0
             self.shield_generation = 35
             self.shields = self.shield_generation
@@ -118,37 +127,6 @@ init 2 python:
             self.movebackward_voice = ['Chigara/Move Backward Line 1.ogg','Chigara/Move Backward Line 2.ogg','Chigara/Move Backward Line 3.ogg']
             self.buffed_voice = ['Chigara/Buffed Line 1.ogg','Chigara/Buffed Line 2.ogg']
             self.cursed_voice = ['Chigara/Cursed Line 1.ogg','Chigara/Cursed Line 2.ogg','Chigara/Cursed Line 3.ogg']
-
-    class Phoenix(Battleship):
-        def __init__(self):
-            Battleship.__init__(self)
-            self.stype = 'Ryder'
-            self.name = 'Phoenix'
-            self.animation_name = 'phoenix'
-            self.faction = 'Player'
-            self.max_hp = 300
-            self.hp = self.max_hp
-            self.max_en = 100
-            self.base_armor = 0
-            self.armor = self.base_armor
-            self.en = self.max_en
-            self.max_missiles = 0
-            self.missiles = self.max_missiles
-            self.move_cost = 10
-            self.hate = 100
-            self.evasion = 50
-            self.lbl = 'Battle UI/label_phoenix.png'  #this is the battle avatar
-            self.portrait = 'Battle UI/icari_portrait.png'
-            self.flak = 20
-            store.BM.ships.append(self)  #register itself upon creation
-
-            ####################VOICES
-            self.voice_channel = "icavoice"
-            self.selection_voice = ['Icari/Icari Selection 1.ogg','Icari/Icari Selection 2.ogg','Icari/Icari Selection 3.ogg','Icari/Icari Selection 4.ogg','Icari/Icari Selection 5.ogg','Icari/Icari Selection 6.ogg','Icari/Icari Selection 7.ogg']
-            self.moveforward_voice = ['Icari/Icari Move Forward 1.ogg','Icari/Icari Move Forward 2.ogg','Icari/Icari Move Forward 3.ogg']
-            self.movebackward_voice = ['Icari/Icari Move Backward 1.ogg.ogg','Icari/Icari Move Backward 2.ogg','Icari/Icari Move Backward 3.ogg']
-            self.buffed_voice = ['Icari/Icari Buffed 1.ogg','Icari/Icari Buffed 2.ogg']
-            self.cursed_voice = ['Icari/Icari Cursed 1.ogg','Icari/Icari Cursed 2.ogg','Icari/Icari Cursed 3.ogg','Icari Cursed 4.ogg']
 
 ### PACT ships ###
 
@@ -192,6 +170,9 @@ init 2 python:
             self.armor = 0
             self.blbl = 'Battle UI/label_pactmook.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PACTMook/side.png'
+                }
             self.flak = 10
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -255,76 +236,6 @@ init 2 python:
             self.move_cost = 1000
             store.BM.ships.append(self)  #register itself upon creation
 
-    class PhoenixBoaster(Battleship):
-        def __init__(self):
-            Battleship.__init__(self)
-            self.stype = 'Ryder'
-            self.name = 'Unknown Hostile'
-            self.animation_name = 'phoenixboaster'
-            self.faction = 'PACT'
-            self.max_hp = 700
-            self.hp = self.max_hp
-            self.max_en = 100
-            self.en = self.max_en
-            self.evasion = 30
-            self.move_cost = 15
-            self.base_armor = 4
-            self.money_reward = 300
-            self.armor = 4
-            self.blbl = 'Battle UI/label_phoenixboaster.png'  #this is the battle avatar
-            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
-            self.flak = 20
-            self.flak_range = 1
-            store.BM.ships.append(self)
-
-    class PactBomber(Battleship):
-        def __init__(self):
-            Battleship.__init__(self)
-            self.stype = 'Bomber'
-            self.name = 'PACT Bomber'
-            self.animation_name = 'pactbomber'
-            self.faction = 'PACT'
-            self.max_hp = 400
-            self.hp = self.max_hp
-            self.max_en = 100
-            self.en = self.max_en
-            self.max_missiles = 2
-            self.max_rockets = 1
-            self.money_reward = 75
-            self.missiles = self.max_missiles
-            self.rockets = self.max_rockets
-            self.base_armor = 10  #Ryders are not typically armored
-            self.armor = self.base_armor
-            self.evasion = 5
-            self.move_cost = 30
-            self.blbl = 'Battle UI/label_pactbomber.png'  #this is the battle avatar
-            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
-            self.flak = 0
-            self.flak_range = 0
-            store.BM.ships.append(self)
-            
-    class PhoenixEnemy(Battleship):
-        def __init__(self):
-            Battleship.__init__(self)
-            self.stype = 'Ryder'
-            self.name = 'Phoenix'
-            self.animation_name = 'phoenixenemy'
-            self.faction = 'PACT'
-            self.max_hp = 300
-            self.hp = self.max_hp
-            self.max_en = 100
-            self.en = self.max_en
-            self.evasion = 50
-            self.move_cost = 10
-            self.base_armor = 0
-            self.money_reward = 100
-            self.armor = 0
-            self.blbl = 'Battle UI/label_phoenixenemy.png'  #this is the battle avatar
-            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
-            self.flak = 20
-            self.flak_range = 1
-            store.BM.ships.append(self)
-
 ### pirate ships ###
 
     class PirateBomber(Battleship):
@@ -349,6 +260,9 @@ init 2 python:
             self.move_cost = 30
             self.blbl = 'Battle UI/label_piratebomber.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PirateBomber/bomber_side.png'
+                }
             self.flak = 20
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -376,6 +290,11 @@ init 2 python:
             self.move_cost = 30
             self.blbl = 'Battle UI/havoc.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/Havoc/havoc.png',
+                'melee':'gameplay/Animations/Havoc/havoc_melee.png',
+                'character':"Character/Cosette/cosette_plugsuit_front_evilsmile.png"
+                }
             self.flak = 20
             self.flak_range = 2
             store.BM.ships.append(self)
@@ -400,6 +319,9 @@ init 2 python:
             self.move_cost = 20
             self.blbl = 'Battle UI/label_pirategrunt.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PirateGrunt/side.png'
+                }
             self.flak = 15
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -805,26 +727,6 @@ init 2 python:
             self.energy_use = 40
             self.shot_count = 15
             self.accuracy = 70
-            
-#################################################### PHOENIX BOOSTER
-
-    class PhoenixBoasterLaser(Laser):
-        def __init__(self):
-            Laser.__init__(self)
-            self.damage = 180
-            self.energy_use = 70
-            self.shot_count = 1
-            self.accuracy = 100
-            
-    class PhoenixBoasterAssault(Kinetic):
-        def __init__(self):
-            Kinetic.__init__(self)
-            self.damage = 10
-            self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 60
-            self.wtype = 'Assault'
-
 
 ##############################################
 
@@ -984,62 +886,6 @@ init 2 python:
             self.shot_count = 15  #many shots, but any armor will block most
             self.wtype = 'Assault'
             self.name = 'Basic Assault'
-            self.lbl = 'Battle UI/button_assault.png'
-
-########################################## PACT BOMBER
-
-    class PACTBomberMissile(Missile):
-        def __init__(self):
-            Missile.__init__(self)
-            self.damage = 30
-            self.energy_use = 30
-            self.shot_count = 8
-            self.accuracy = 70
-            self.wtype = 'Missile'
-
-    class PACTBomberRocket(Missile):
-        def __init__(self):
-            Missile.__init__(self)
-            self.damage = 300
-            self.energy_use = 50
-            self.uses_rockets = True
-            self.uses_missiles = False
-            self.wtype = 'Rocket'
-            self.accuracy = 60
-            self.shot_count = 1
-
-    class PACTBomberLaser(Laser):
-        def __init__(self):
-            Laser.__init__(self)
-            self.damage = 140
-            self.energy_use = 70
-            self.shot_count = 1
-            self.accuracy = 100
-
-###########################################PHOENIX
-
-    class PhoenixAssault(Kinetic):
-        def __init__(self):
-            Kinetic.__init__(self)
-            self.damage = 12
-            self.energy_use = 30
-            self.shot_count = 20
-            self.accuracy = 65
-            self.wtype = 'Assault'
-            self.name = 'Phoenix_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
-
-###########################################PHOENIX ENEMY
-
-    class PhoenixEnemyAssault(Kinetic):
-        def __init__(self):
-            Kinetic.__init__(self)
-            self.damage = 12
-            self.energy_use = 30
-            self.shot_count = 20
-            self.accuracy = 65
-            self.wtype = 'Assault'
-            self.name = 'Phoenix_Assault'
             self.lbl = 'Battle UI/button_assault.png'
 
 

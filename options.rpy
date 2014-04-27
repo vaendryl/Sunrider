@@ -16,6 +16,8 @@ init -1 python hide:
     ## cheat using developer tools.
 
     config.developer = True
+    #config.use_cpickle = False
+    #config.save_dump = True
     config.log = None
 
     ## These control the width and height of the screen.
@@ -26,8 +28,8 @@ init -1 python hide:
     ## This controls the title of the window, when Ren'Py is
     ## running in a window.
 
-    config.name = "Sunrider Beta Release 1 "
-    config.version = "Beta 1.06b"
+    config.name = "Sunrider Beta Release 2 "
+    config.version = "Beta 2 0.1"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 30
