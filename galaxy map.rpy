@@ -2,7 +2,7 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
 
     modal True
 
-    if warpto_occupiedcera == True:
+    if warpto_occupiedcera = True:
         imagebutton:
             action Jump("warpto_OccupiedCera")
             idle "Map/map_icon_base.png"
@@ -10,7 +10,7 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
             xpos 1297 ypos 480
         text "CERA" xpos 1350 ypos 480 size 15
 
-    if warpto_tydaria == True:
+    if warpto_tydaria = True:
         imagebutton:
             action Jump("warpto_Tydaria")
             idle "Map/map_icon_base.png"
@@ -18,7 +18,7 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
             xpos 1371 ypos 519
         text "TYDARIA" xpos 1424 ypos 519 size 15
 
-    if warpto_astralexpanse == True:
+    if warpto_astralexpanse = True:
         imagebutton:
             action Jump("warpto_astralexpanse")
             idle "Map/map_icon_base.png"
@@ -26,22 +26,13 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
             xpos 1250 ypos 540
         text "ASTRAL EXPANSE" xpos 1302 ypos 540 size 15
 
-    if warpto_pactstation1 == True:
+    if warpto_pactstation1 = True:
         imagebutton:
             action Jump("warpto_pactstation")
             idle "Map/map_icon_base.png"
             hover "Map/map_icon_hover.png"
             xpos 1390 ypos 440
         text "PACT Outpost" xpos 1442 ypos 440 size 15
-
-    if warpto_versta == True:
-        imagebutton:
-            action Jump("warpto_versta")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1490 ypos 725
-        text "VERSTA" xpos 1550 ypos 725 size 15
-
 
     imagebutton:
         xpos 1600 ypos 950
@@ -153,18 +144,6 @@ label warpto_Tydaria:
         $ mission1_name = "Main: Attack Pirate Nest"
         $ mission2_name = None
         $ mission3_name = None
-        
-    if warpto_versta == True:
-        $ galaxymission1 = False
-        $ galaxymission2 = False
-        $ galaxymission3 = False
-        $ mission1 = None
-        $ mission2 = None
-        $ mission3 = None
-        $ mission1_name = None
-        $ mission2_name = None
-        $ mission3_name = None
-
 
     scene bg black
     show galaxymap:
@@ -297,53 +276,6 @@ label warpto_pactstation:
     call screen map_travelto
     with dissolve
 
-label warpto_versta:
-
-    $ map_back = "versta_back"
-
-    if amissionforalliance == True:
-        $ galaxymission1 = True
-        $ galaxymission2 = False
-        $ galaxymission3 = False
-        $ mission1 = "jumphotversta"
-        $ mission2 = None
-        $ mission3 = None
-        $ mission1_name = "Main: Rescue Diplomats"
-        $ mission2_name = None
-        $ mission3_name = None
-        
-    else:
-
-        $ galaxymission1 = False
-        $ galaxymission2 = False
-        $ galaxymission3 = False
-        $ mission1 = None
-        $ mission2 = None
-        $ mission3 = None
-        $ mission1_name = None
-        $ mission2_name = None
-        $ mission3_name = None
-
-    scene bg black
-    show galaxymap:
-        alpha 1 zoom 1
-        parallel:
-            ease 0.5 alpha 0
-        parallel:
-            ease 1 xpos -14900 ypos -7250 zoom 10
-    show map_versta:
-        zoom 0.0268041237113402
-        xpos 1490 ypos 725 alpha 0
-        parallel:
-            ease 1 alpha 1
-        parallel:
-            ease 0.75 zoom 1 xpos 0 ypos -430
-    pause 1
-    show map_versta_info:
-        xpos 1098 ypos 200
-    call screen map_travelto
-    with dissolve
-
 label Tydaria_back:
     hide map_tydariainfo
     scene bg black
@@ -413,25 +345,6 @@ label pactstation_back:
             ease 1 zoom 0.0268041237113402 xpos 1297 ypos 480
     show galaxymap:
         xpos -12970 ypos -4800 zoom 10 alpha 0
-        parallel:
-            ease 1.1 alpha 1
-        parallel:
-            ease 1 xpos 0 ypos 0 zoom 1
-    pause 1
-    call screen galaxymap_buttons
-    
-label versta_back:
-    hide map_versta_info
-    scene bg black
-    show map_versta:
-        zoom 1
-        xpos 0 ypos -430 alpha 1
-        parallel:
-            ease 0.5 alpha 0
-        parallel:
-            ease 1 zoom 0.0268041237113402 xpos 1490 ypos 725
-    show galaxymap:
-        xpos -14900 ypos -7250 zoom 10 alpha 0
         parallel:
             ease 1.1 alpha 1
         parallel:
