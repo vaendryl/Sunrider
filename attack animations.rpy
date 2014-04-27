@@ -9,14 +9,7 @@ label atkanim_sunrider_kinetic:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Kinetic 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attacking Kinetic 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Attacking Kinetic 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Ava/Ava Attacking Kinetic 4.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attacking Kinetic " + str(Random) + ".ogg"
 
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
@@ -74,14 +67,7 @@ label atkanim_sunrider_laser:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 4.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attacking Lasers " + str(Random) + ".ogg"
 
 
     show ava uniform alt order angry:
@@ -116,14 +102,7 @@ label atkanim_sunrider_missile:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 4.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attacking Missiles " + str(Random) + ".ogg"
 
 
     show ava uniform alt order angry:
@@ -166,10 +145,7 @@ label atkanim_sunrider_pulse:
 
     $ Random = renpy.random.randint(1,2)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 3.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attacking Lasers 4.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attacking Lasers " + str(Random) + ".ogg"
 
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
@@ -356,12 +332,7 @@ label atkanim_sunrider_assault:
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Kinetic 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Flak Intercept 1.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Flak Intercept 2.ogg"
+    play avavoice "sound/Voice/Ava/Ava Flak Intercept " + str(Random) + ".ogg"
 
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
@@ -475,12 +446,7 @@ label atkanim_sunrider_rocket:
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 2.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 3.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Attacking Missiles 4.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attacking Missiles " + str(Random) + ".ogg"
 
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
@@ -947,20 +913,7 @@ label attacksuccess_sunrider:
 
     $ Random = renpy.random.randint(1,7)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 4.ogg"
-    if Random == 5:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 5.ogg"
-    if Random == 6:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 6.ogg"
-    if Random == 7:
-        play avavoice "sound/Voice/Ava/Ava Attack Success 7.ogg"
+    play avavoice "sound/Voice/Ava/Ava Attack Success " + str(Random) + ".ogg"
 
     show ava uniform fistup yes:
         xzoom -1 xpos -0.2
@@ -978,16 +931,7 @@ label attackfail_sunrider:
 
     $ Random = renpy.random.randint(1,5)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Ava/Ava Missing Attack 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Ava/Ava Missing Attack 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Ava/Ava Missing Attack 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Ava/Ava Missing Attack 4.ogg"
-    if Random == 5:
-        play avavoice "sound/Voice/Ava/Ava Missing Attack 5.ogg"
+    play avavoice "sound/Voice/Ava/Ava Missing Attack " + str(Random) + ".ogg"
 
     show ava uniform alt neutral angry:
         xzoom -1 xpos -0.2
@@ -1772,14 +1716,7 @@ label atkanim_blackjack_assault: ########################BLACK JACK ATTACK ANIMA
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Asaga/Asaga Kinetic 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Asaga/Asaga Kinetic 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Asaga/Asaga Kinetic 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Asaga/Asaga Kinetic 4.ogg"
+    play avavoice "sound/Voice/Asaga/Asaga Kinetic " + str(Random) + ".ogg"
 
     show blackjack:
         zoom 2 xpos 0.2
@@ -1829,14 +1766,7 @@ label atkanim_blackjack_laser:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 4.ogg"
+    play avavoice "sound/Voice/Asaga/Asaga Lasers " + str(Random) + ".ogg"
 
     show blackjack:
         zoom 2 xpos 0.2
@@ -1893,14 +1823,7 @@ label atkanim_blackjack_missile:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Asaga/Asaga Missiles 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Asaga/Asaga Missiles 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Asaga/Asaga Missiles 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Asaga/Asaga Missiles 4.ogg"
+    play avavoice "sound/Voice/Asaga/Asaga Missiles " + str(Random) + ".ogg"
 
     show blackjack:
         zoom 2 xpos 0.2
@@ -1964,14 +1887,7 @@ label atkanim_blackjack_pulse:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Asaga/Asaga Lasers 4.ogg"
+    play avavoice "sound/Voice/Asaga/Asaga Lasers " + str(Random) + ".ogg"
 
     show blackjack:
         zoom 2 xpos 0.2
@@ -2155,14 +2071,7 @@ label atkanim_blackjack_melee:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play avavoice "sound/Voice/Asaga/Asaga Melee 1.ogg"
-    if Random == 2:
-        play avavoice "sound/Voice/Asaga/Asaga Melee 2.ogg"
-    if Random == 3:
-        play avavoice "sound/Voice/Asaga/Asaga Melee 3.ogg"
-    if Random == 4:
-        play avavoice "sound/Voice/Asaga/Asaga Melee 4.ogg"
+    play avavoice "sound/Voice/Asaga/Asaga Melee " + str(Random) + ".ogg"
 
     show blackjack:
         zoom 2 xpos 0.2
@@ -2669,18 +2578,7 @@ label attacksuccess_blackjack:
 
     $ Random = renpy.random.randint(1,6)
 
-    if Random == 1:
-        play asavoice "sound/Voice/Asaga/Asaga Success 1.ogg"
-    if Random == 2:
-        play asavoice "sound/Voice/Asaga/Asaga Success 2.ogg"
-    if Random == 3:
-        play asavoice "sound/Voice/Asaga/Asaga Success 3.ogg"
-    if Random == 4:
-        play asavoice "sound/Voice/Asaga/Asaga Success 4.ogg"
-    if Random == 5:
-        play asavoice "sound/Voice/Asaga/Asaga Success 5.ogg"
-    if Random == 6:
-        play asavoice "sound/Voice/Asaga/Asaga Success 6.ogg"
+    play asavoice "sound/Voice/Asaga/Asaga Success " + str(Random) + ".ogg"
 
     show asaga plugsuit vpose:
         xzoom -1 xpos -0.2
@@ -2698,16 +2596,7 @@ label attackfail_blackjack:
 
     $ Random = renpy.random.randint(1,5)
 
-    if Random == 1:
-        play asavoice "sound/Voice/Asaga/Asaga Miss 1.ogg"
-    if Random == 2:
-        play asavoice "sound/Voice/Asaga/Asaga Miss 2.ogg"
-    if Random == 3:
-        play asavoice "sound/Voice/Asaga/Asaga Miss 3.ogg"
-    if Random == 4:
-        play asavoice "sound/Voice/Asaga/Asaga Miss 4.ogg"
-    if Random == 5:
-        play asavoice "sound/Voice/Asaga/Asaga Miss 5.ogg"
+    play asavoice "sound/Voice/Asaga/Asaga Miss " + str(Random) + ".ogg"
 
     show asaga plugsuit handsonhips frown:
         xzoom -1 xpos -0.2
@@ -2754,16 +2643,7 @@ label die_blackjack:
 
     $ Random = renpy.random.randint(1,5)
 
-    if Random == 1:
-        play asavoice "sound/Voice/Asaga/Asaga Retreat 1.ogg"
-    if Random == 2:
-        play asavoice "sound/Voice/Asaga/Asaga Retreat 2.ogg"
-    if Random == 3:
-        play asavoice "sound/Voice/Asaga/Asaga Retreat 3.ogg"
-    if Random == 4:
-        play asavoice "sound/Voice/Asaga/Asaga Retreat 4.ogg"
-    if Random == 5:
-        play asavoice "sound/Voice/Asaga/Asaga Retreat 5.ogg"
+    play asavoice "sound/Voice/Asaga/Asaga Retreat " + str(Random) + ".ogg"
 
     show asaga plugsuit armscrossed sad:
         xzoom -1 xpos -0.2
@@ -2789,14 +2669,7 @@ label atkanim_liberty_laser: ########################LIBERTY ATTACK ANIMATIONS
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play chivoice "sound/Voice/Chigara/Attack With Lasers Line 1.ogg"
-    if Random == 2:
-        play chivoice "sound/Voice/Chigara/Attack With Lasers Line 2.ogg"
-    if Random == 3:
-        play chivoice "sound/Voice/Chigara/Attack With Lasers Line 3.ogg"
-    if Random == 4:
-        play chivoice "sound/Voice/Chigara/Attack With Lasers Line 4.ogg"
+    play chivoice "sound/Voice/Chigara/Attack With Lasers Line " + str(Random) + ".ogg"
 
     show liberty:
         zoom 2 xpos 0.2
@@ -3238,12 +3111,7 @@ label attacksuccess_liberty:
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 1.ogg"
-    if Random == 2:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 2.ogg"
-    if Random == 3:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 3.ogg"
+    play chivoice "sound/Voice/Chigara/Successful Attack Line " + str(Random) + ".ogg"
 
     show chigara plugsuit handonchest happy:
         xzoom -1 xpos -0.2
@@ -3261,12 +3129,7 @@ label attackfail_liberty:
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play asavoice "sound/Voice/Chigara/Attack Miss Line 1.ogg"
-    if Random == 2:
-        play asavoice "sound/Voice/Chigara/Attack Miss Line 2.ogg"
-    if Random == 3:
-        play asavoice "sound/Voice/Chigara/Attack Miss Line 3.ogg"
+    play asavoice "sound/Voice/Chigara/Attack Miss Line " + str(Random) + ".ogg"
 
     show chigara plugsuit altneutral sad:
         xzoom -1 xpos -0.2
@@ -3313,16 +3176,7 @@ label die_liberty:
 
     $ Random = renpy.random.randint(1,5)
 
-    if Random == 1:
-        play chivoice "sound/Voice/Chigara/Retreat Line 1.ogg"
-    if Random == 2:
-        play chivoice "sound/Voice/Chigara/Retreat Line 1.ogg"
-    if Random == 3:
-        play chivoice "sound/Voice/Chigara/Retreat Line 1.ogg"
-    if Random == 4:
-        play chivoice "sound/Voice/Chigara/Retreat Line 1.ogg"
-    if Random == 5:
-        play chivoice "sound/Voice/Chigara/Retreat Line 1.ogg"
+    play chivoice "sound/Voice/Chigara/Retreat Line " + str(Random) + ".ogg"
 
     show chigara plugsuit altneutral sad:
         xzoom -1 xpos -0.2
@@ -4685,12 +4539,7 @@ label atkanim_havoc_missile: ##########################HAVOC ATTACK ANIMATIONS
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 1.ogg"
-    if Random == 2:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 2.ogg"
-    if Random == 3:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 3.ogg"
+    play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack " + str(Random) + ".ogg"
 
     show cosette plugsuit point evilsmile:
         xzoom -1 xpos -0.2
@@ -4760,12 +4609,7 @@ label atkanim_havoc_rocket:
 
     $ Random = renpy.random.randint(1,3)
 
-    if Random == 1:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 1.ogg"
-    if Random == 2:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 2.ogg"
-    if Random == 3:
-        play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack 3.ogg"
+    play cosvoice "sound/Voice/Cosette/Cosette Missiles Attack " + str(Random) + ".ogg"
 
     show cosette plugsuit point evilsmile:
         xzoom -1 xpos -0.2
@@ -4821,14 +4665,7 @@ label atkanim_havoc_assault:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play cosvoice "sound/Voice/Cosette/Cosette Kinetic Attack 1.ogg"
-    if Random == 2:
-        play cosvoice "sound/Voice/Cosette/Cosette Kinetic Attack 1.ogg"
-    if Random == 3:
-        play cosvoice "sound/Voice/Cosette/Cosette Kinetic Attack 3.ogg"
-    if Random == 4:
-        play cosvoice "sound/Voice/Cosette/Cosette Kinetic Attack 4.ogg"
+    play cosvoice "sound/Voice/Cosette/Cosette Kinetic Attack " + str(Random) + ".ogg"
 
     show cosette plugsuit point evilsmile:
         xzoom -1 xpos -0.2
@@ -4870,14 +4707,7 @@ label atkanim_havoc_melee:
 
     $ Random = renpy.random.randint(1,4)
 
-    if Random == 1:
-        play cosvoice "sound/Voice/Cosette/Cosette Melee Attack 1.ogg"
-    if Random == 2:
-        play cosvoice "sound/Voice/Cosette/Cosette Melee Attack 1.ogg"
-    if Random == 3:
-        play cosvoice "sound/Voice/Cosette/Cosette Melee Attack 3.ogg"
-    if Random == 4:
-        play cosvoice "sound/Voice/Cosette/Cosette Melee Attack 4.ogg"
+    play cosvoice "sound/Voice/Cosette/Cosette Melee Attack " + str(Random) + ".ogg"
 
     show cosette plugsuit point evilsmile:
         xzoom -1 xpos -0.2
