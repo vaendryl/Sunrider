@@ -90,7 +90,7 @@ init -2 python:
 
             if result == 'anime':
                 try:
-                    renpy.call_in_new_context('insert_label_here')
+                    renpy.call_in_new_context('hitanim_sunrider_missile')
                 except:
                     show_message('animation label does not exist!')
 

@@ -2,632 +2,23 @@ init -5:
     
     ########################## CHARACTER INIT
     
-    define kay = Character('Kayto', who_xalign=0.1)
-    define ava = Character('Ava', who_xalign=0.1)
-    define asa = Character('Asaga', who_xalign=0.1)
-    define chi = Character('Chigara', who_xalign=0.1)
-    define ica = Character('Icari', who_xalign=0.1)
-    define kry = Character('Kryska', who_xalign=0.1)
-    define ser = Character('Sola', who_xalign=0.1)
-    define cla = Character('Claude', who_xalign=0.1)
-    define cos = Character('Cosette', who_xalign=0.1)
-    define gre = Character('Admiral Grey', who_xalign=0.1)
-    define ven = Character('Veniczar Arcadius', who_xalign=0.1)
-    define ryu = Character('King Ryuvia', who_xalign=0.1)
-    define pi = Character('Pilot', who_xalign=0.1)
-    define sop = Character('Sophita', who_xalign=0.1)
+    define kay = Character('Kayto', who_xalign=0.05)
+    define ava = Character('Ava', who_xalign=0.05)
+    define asa = Character('Asaga', who_xalign=0.05)
+    define chi = Character('Chigara', who_xalign=0.05)
+    define ica = Character('Icari', who_xalign=0.05)
+    define kry = Character('Kryska', who_xalign=0.05)
+    define ser = Character('Sola', who_xalign=0.05)
+    define cla = Character('Claude', who_xalign=0.05)
+    define cos = Character('Cosette', who_xalign=0.05)
+    define gre = Character('Grey', who_xalign=0.05)
+    define ven = Character('Arcadius', who_xalign=0.05)
+    define ryu = Character('Ryuvia', who_xalign=0.05)
+    define pi = Character('Pilot', who_xalign=0.05)
+    define sop = Character('Sophita', who_xalign=0.05)
     define cen = Character(" ", what_font="Font/PERTILI.TTF", what_size=25, what_xalign=0.5, what_text_align=0.5, what_yalign=0.5)
     define e = Character(" ")
-    define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)    
-
-
-    #####################################AVA SPRITES
-
-    image ava uniform salute neutral:
-        "Character/Ava/ava_uniform_salute_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform salute talk:
-        "Character/Ava/ava_uniform_salute_talk.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral neutral:
-        "Character/Ava/ava_uniform_neutral_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral talk:
-        "Character/Ava/ava_uniform_neutral_talk.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral looklefttalk:
-        "Character/Ava/ava_uniform_neutral_looklefttalk.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform alt neutral talk:
-        "Character/Ava/ava_uniform_alt_neutral_talk.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform alt neutral neutral:
-        "Character/Ava/ava_uniform_alt_neutral_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral lookleft:
-        "Character/Ava/ava_uniform_neutral_lookleft.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed neutral:
-        "Character/Ava/ava_uniform_armscrossed_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed looklefttalk:
-        "Character/Ava/ava_uniform_armscrossed_looklefttalk.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform handonhip neutral:
-        "Character/Ava/ava_uniform_alt_handonhip_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform order talk:
-        "Character/Ava/ava_uniform_alt_order_mouthopen.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform alt neutral angry:
-        "Character/Ava/ava_uniform_alt_neutral_angry.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform alt order angry:
-        "Character/Ava/ava_uniform_alt_order_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform alt neutral mad:
-        "Character/Ava/ava_uniform_alt_neutral_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform handonhip mad:
-        "Character/Ava/ava_uniform_handonhip_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform handonhip neutral:
-        "Character/Ava/ava_uniform_handonhip_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed smile:
-        "Character/Ava/ava_uniform_armscrossed_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform fistup yes:
-        "Character/Ava/ava_uniform_fistup_yes.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral surprise:
-        "Character/Ava/ava_uniform_neutral_surprise.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform neutral surpriseangry:
-        "Character/Ava/ava_uniform_neutral_surpriseangry.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform altneutral surpriseshout:
-        "Character/Ava/ava_uniform_altneutral_surpriseshout.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed frown:
-        "Character/Ava/ava_uniform_armscrossed_frown.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed lookleftmouthopen:
-        "Character/Ava/ava_uniform_armscrossed_lookleftmouthopen.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform armscrossed surprisemad:
-        "Character/Ava/ava_uniform_armscrossed_surprisemad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image ava uniform facepalm:
-        "Character/Ava/ava_uniform_facepalm.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-
-
-    ###########################################COSETTE SPRITES
-        
-    image cosette plugsuit front evilsmile:
-        "Character/Cosette/cosette_plugsuit_front_evilsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit handsonhip evilsmile:
-        "Character/Cosette/cosette_plugsuit_handsonhip_evilsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit point evilsmile:
-        "Character/Cosette/cosette_plugsuit_point_evilsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit armscrossed happy:
-        "Character/Cosette/cosette_plugsuit_armscrossed_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit neutralalt yandereshock:
-        "Character/Cosette/cosette_plugsuit_neutralalt_yandereshock.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit neutralalt yanderegrin:
-        "Character/Cosette/cosette_plugsuit_neutralalt_yanderegrin.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit neutral yanderegrin:
-        "Character/Cosette/cosette_plugsuit_neutral_yanderegrin.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit point yanderegrin:
-        "Character/Cosette/cosette_plugsuit_point_yanderegrin.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit point yandereneutral:
-        "Character/Cosette/cosette_plugsuit_point_yandereneutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image cosette plugsuit armscrossed angry:
-        "Character/Cosette/cosette_plugsuit_armscrossed_angry.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-        
-    ######################################################ASAGA SPRITES
-        
-    image asaga plugsuit point happy:
-        "Character/Asaga/asaga_plugsuit_point_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit vpose:
-        "Character/Asaga/asaga_vpose.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutralalt alert:
-        "Character/Asaga/asaga_plugsuit_neutralalt_alert.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit handsonhips frown:
-        "Character/Asaga/asaga_plugsuit_handsonhips_frown.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit excited happy:
-        "Character/Asaga/asaga_plugsuit_excited_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutralalt smile:
-        "Character/Asaga/asaga_plugsuit_neutralalt_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutral mad:
-        "Character/Asaga/asaga_plugsuit_neutral_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutralalt closedeyessmile:
-        "Character/Asaga/asaga_plugsuit_neutralalt_closedeyessmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit handsonhips mad:
-        "Character/Asaga/asaga_plugsuit_handsonhips_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutral frown:
-        "Character/Asaga/asaga_plugsuit_neutral_frown.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit handsonhips happy:
-        "Character/Asaga/asaga_plugsuit_handsonhips_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed sad:
-        "Character/Asaga/asaga_plugsuit_armscrossed_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed smile:
-        "Character/Asaga/asaga_plugsuit_armscrossed_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutral content:
-        "Character/Asaga/asaga_plugsuit_neutral_content.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed content:
-        "Character/Asaga/asaga_plugsuit_armscrossed_content.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed mad:
-        "Character/Asaga/asaga_plugsuit_armscrossed_mad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit neutral sad:
-        "Character/Asaga/asaga_plugsuit_neutral_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit excited closedeyessmile:
-        "Character/Asaga/asaga_plugsuit_excited_closedeyessmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit altneutral happy:
-        "Character/Asaga/asaga_plugsuit_altneutral_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed annoyed:
-        "Character/Asaga/asaga_plugsuit_armscrossed_annoyed.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit armscrossed confident:
-        "Character/Asaga/asaga_plugsuit_armscrossed_confident.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit thinking lookleft:
-        "Character/Asaga/asaga_plugsuit_thinking_lookleft.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image asaga plugsuit thinking content:
-        "Character/Asaga/asaga_plugsuit_thinking_content.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image asaga plugsuit altneutral neutral:
-        "Character/Asaga/asaga_plugsuit_altneutral_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image asaga plugsuit excited angry:
-        "Character/Asaga/asaga_plugsuit_excited_angry.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image asaga plugsuit armscrossed evil:
-        "Character/Asaga/asaga_plugsuit_armscrossed_evil.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True          
-    image asaga plugsuit armscrossed frustrated:
-        "Character/Asaga/asaga_plugsuit_armscrossed_frustrated.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True          
-    image asaga plugsuit armscrossed evilgrin:
-        "Character/Asaga/asaga_plugsuit_armscrossed_evilgrin.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True     
-    image asaga plugsuit handsonhips grin:
-        "Character/Asaga/asaga_plugsuit_handsonhips_grin.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image asaga uniform neutral funnysmile:
-        "Character/Asaga/asaga_uniform_neutral_funnysmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image asaga uniform armscrossed confident:
-        "Character/Asaga/asaga_uniform_armscrossed_confident.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image asaga uniform thinking surprise:
-        "Character/Asaga/asaga_uniform_thinking_surprise.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image asaga uniform excited smile:
-        "Character/Asaga/asaga_uniform_excited_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-######################################CHIGARA
-
-    image chigara plugsuitlabcoat altneutral smile:
-        "Character/Chigara/chigara_plugsuitlabcoat_altneutral_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuitlabcoat altneutral smile:
-        "Character/Chigara/chigara_plugsuitlabcoat_shysmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuitlabcoat altneutral forcedsmile:
-        "Character/Chigara/chigara_plugsuitlabcoat_forcedsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuitlabcoat altneutral sad:
-        "Character/Chigara/chigara_plugsuitlabcoat_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuitlabcoat neutral neutral:
-        "Character/Chigara/chigara_plugsuitlabcoat_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuitlabcoat holdingipad surprise:
-        "Character/Chigara/chigara_plugsuitlabcoat_holdingipad_surprise.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True        
-    image chigara plugsuitlabcoat holdingipad curious:
-        "Character/Chigara/chigara_plugsuitlabcoat_holdingipad_curious.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True        
-    image chigara plugsuitlabcoat holdingipad smile:
-        "Character/Chigara/chigara_plugsuit_holdingipad_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True           
-    image chigara plugsuitlabcoat holdingipad sad:
-        "Character/Chigara/chigara_plugsuitlabcoat_holdingipad_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True                  
-    image chigara plugsuitlabcoat holdingipad forcedsmile:
-        "Character/Chigara/chigara_plugsuitlabcoat_holdingipad_forcedsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True           
-    image chigara plugsuitlabcoat holdingipad neutral:
-        "Character/Chigara/chigara_plugsuitlabcoat_holdingipad_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True        
-    image chigara plugsuitlabcoat holdingipad reminsice:
-        "Character/Chigara/chigara_plugsuitlabcoat_ipad_reminicse.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-    image chigara plugsuitlabcoat altneutral neutral:
-        "Character/Chigara/chigara_plugsuitlabcoat_altneutral_neutral.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True  
-    image chigara plugsuit altneutral shout:
-        "Character/Chigara/chigara_plugsuit_altneutral_shout.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuit handonchest happy:
-        "Character/Chigara/chigara_plugsuit_handonchest_happy.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuit altneutral sad:
-        "Character/Chigara/chigara_plugsuit_altneutral_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuit handstogether forcedsmile:
-        "Character/Chigara/chigara_plugsuit_handstogether_forcedsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True
-    image chigara plugsuit twidlefingers scared:
-        "Character/Chigara/chigara_plugsuit_twidlefingers_scared.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True        
-    image chigara plugsuit handonchest sad:
-        "Character/Chigara/chigara_plugsuit_handonchest_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit neutral scared:
-        "Character/Chigara/chigara_plugsuit_neutral_scared.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit palmsup surprise:
-        "Character/Chigara/chigara_plugsuit_palmsup_surprise.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit excited scared:
-        "Character/Chigara/chigara_plugsuit_excited_scared.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit handonchest smile:
-        "Character/Chigara/chigara_plugsuit_handonchest_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit twiddlefingers embarrassed:
-        "Character/Chigara/chigara_plugsuit_twiddlefingers_embarrassed.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit handstogether sad:
-        "Character/Chigara/chigara_plugsuit_handstogether_sad.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara plugsuit handstogether smile:
-        "Character/Chigara/chigara_plugsuit_handstogether_smile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-
-    image chigara uniform handsup surprise:
-        "Character/Chigara/chigara_uniform_handsup_surprise.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-    image chigara uniform twiddlefingers forcedsmile:
-        "Character/Chigara/chigara_uniform_twiddlefingers_forcedsmile.png"
-        yanchor 0.51 ypos 1.0
-        xanchor 0.5
-        zoom 0.6255
-        subpixel True    
-
-
-        
+    define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)            
         
 
 #####################################SIDE CHARACTERS
@@ -639,7 +30,12 @@ init -5:
         zoom 0.6255
         subpixel True 
                 
-        
+    image grey:
+        "Character/Side/grey.png"
+        yanchor 0.9 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
     
     
         
@@ -665,7 +61,7 @@ init -5:
 
     image space back4:
         "Background/space4.jpg"
-        yanchor 0.5 xanchor 0.5
+        yanchor 0.5 xanchor 0.5 
         xpos 0.5 ypos 0.5
         subpixel True
 
@@ -765,11 +161,22 @@ init -5:
         "Background/bridge_red.jpg"
         yalign 0.5
         xalign 0.5
+    image bg brig:
+        "Background/brig.jpg"
+        yalign 0.5
+        xalign 0.5
+    image brigoverlay:
+        "Background/brig_over.png"
+        yalign 0.5
+        xalign 0.5
     image bg battlegrid = "Gameplay/battlegrid.jpg"
     image bg black = "Gameplay/Space/parallax_spacebase.jpg"
     image bg black2 = "Menu/black.jpg"
     image bg sunriderwarpout = "Space/sunrider_warpout_back.jpg"
-    
+    image bg captainsoffice_nolights = "Background/captainsoffice_nolights.jpg"
+    image captainsoffice_nolights_overlay = "Background/captainsoffice_nolightsoverlay.png"
+
+
     ###########################CGs
     
     image cg sunrider_drydock = "CG/sunrider_drydock.jpg"
@@ -886,6 +293,9 @@ init -5:
     image tydaria_orbit:
         "Space/tydaria.jpg"
         
+    image item album:
+        "CG/album.png"
+        
     ########################################MAP
     
     image galaxymap:
@@ -899,7 +309,6 @@ init -5:
     image map_astralexpanse:
         "Map/astralexpanse.jpg"
         
-
     image map_occupiedcerainfo:
         "Map/occupiedcera_info.png"
     image map_tydariainfo:
@@ -908,8 +317,10 @@ init -5:
         "Map/pactstation1_info.png"
     image map_astralexpanse_info:
         "Map/astralexpanse_info.png"
-
-
+    image map_versta:
+        "Map/versta.jpg"
+    image map_versta_info:
+        "Map/versta_info.png"
     
     ########################LOGOS
     
@@ -989,11 +400,12 @@ init -5:
     image credits14 = Text("Asaga Oakrun:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits15 = Text("Chigara Ashada:  Mary Morgan", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16 = Text("Cosette Cosmos:  Jill Harris", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16a = Text("Icari Isidolde:  Aimee Smith", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits17 = Text("Captain Kayto Shields:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits20 = Text("Voice Clean Up{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun- ft.lily-an/Maya Full |{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -1099,6 +511,13 @@ init -5:
 
     $ enemy_laserhitwipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
     $ blackjack_missilewipe = ImageDissolve("Transitions/left_to_right.jpg", 0.87, reverse=True)
+    
+    $ meleehit = ImageDissolve("Transitions/left_to_right.jpg", 0.3, reverse=False)
+    $ meleehitreverse = ImageDissolve("Transitions/left_to_right.jpg", 0.3, reverse=True)
+
+    $ eyecatch_wipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
+    $ eyecatch_wiperev = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=True)
+
     define flash = Fade(0.1, 0.0, 0.5, color="#fff")
 
     
@@ -1539,11 +958,11 @@ init -5:
 
 #########################################################BLACK JACK
 
-    image blackjack_side:
+    image blackjack:
         "gameplay/Animations/BlackJack/blackjack.png"
         xalign 0.5 yalign 0.5
 
-    image blackjack_side assault:
+    image blackjack assault:
         "gameplay/Animations/BlackJack/blackjack_assault.png"
         xanchor 0.5 yanchor 0.5
 
@@ -1555,7 +974,7 @@ init -5:
         "gameplay/Animations/BlackJack/blackjack_assaultflash2.png"
         xalign 0.5 yalign 0.5
         
-    image blackjack_side laser:
+    image blackjack laser:
         "gameplay/Animations/BlackJack/blackjack_laser.png"
         xanchor 0.5 yanchor 0.5
 
@@ -1573,7 +992,7 @@ init -5:
         xanchor 0.5 yanchor 0.5
 
 
-    image blackjack_side missile:
+    image blackjack missile:
         "gameplay/Animations/BlackJack/blackjack_missile.png"
         xalign 0.5 yalign 0.5
         
@@ -1598,7 +1017,7 @@ init -5:
         xanchor 0.8 yanchor 0.5
         
         
-    image blackjack_side pulse:
+    image blackjack pulse:
         "gameplay/Animations/BlackJack/blackjack_pulse.png"
         xalign 0.5 yalign 0.5
     image blackjack_pulseflash1:
@@ -1665,11 +1084,15 @@ init -5:
         
     image blackjack_rockettrail:
         "gameplay/Animations/BlackJack/rockettrail.png"
-
+        
+    image blackjack melee:
+        "gameplay/Animations/BlackJack/blackjack_sword.png"
+        xalign 0.5 ypos 0.5 yanchor 540
 
     image blackjack_rocketexplode:
         "gameplay/Animations/BlackJack/rocketexplode.png"
         xalign 0.5 yalign 0.5
+
 ###############################################################PIRATE BOMER INITS
 
     image piratebomber:
@@ -1903,8 +1326,9 @@ init -5:
         "gameplay/Animations/Havoc/rocket4.png"
         xanchor 0.5 yanchor 0.5
 
-    
-
+    image havoc melee:
+        "gameplay/Animations/Havoc/havoc_melee.png"
+        xanchor 0.5 yanchor 0.5
 
 
         
@@ -2169,9 +1593,152 @@ init -5:
         "gameplay/Animations/PirateBase/assaultflash2.png"
         xalign 0.5 yalign 0.5
         
+    image phoenixboaster:
+        "gameplay/Animations/Phoenix/boaster_side.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster assault:
+        "gameplay/Animations/Phoenix/boaster_assault.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_laser1:
+        "gameplay/Animations/Phoenix/boaster_laser1.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_laser2:
+        "gameplay/Animations/Phoenix/boaster_laser2.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_laser3:
+        "gameplay/Animations/Phoenix/boaster_laser3.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_laser4:
+        "gameplay/Animations/Phoenix/boaster_laser4.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_assaultflash1:
+        "gameplay/Animations/Phoenix/boaster_assaultflash1.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_assaultflash2:
+        "gameplay/Animations/Phoenix/boaster_assaultflash2.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_assaultflash3:
+        "gameplay/Animations/Phoenix/boaster_assaultflash3.png"
+        xalign 0.5 yalign 0.5
+    image phoenixboaster_assaultflash4:
+        "gameplay/Animations/Phoenix/boaster_assaultflash4.png"
+        xalign 0.5 yalign 0.5
+    image phoenixnoboaster:
+        "gameplay/Animations/Phoenix/noboast.png"
+        xalign 0.5 yalign 0.5
+        
+    image phoenixwarpin:
+        "Space/phoenixwarpin.png"
+        xalign 0.5 yalign 0.5
+    image phoenixwarpout:
+        "Space/phoenixwarpout.png"
+        xalign 0.5 yalign 0.5
+    image phoenixwarpout laser:
+        "Space/phoenixwarpout_laser.png"
+        xalign 0.5 yalign 0.5
+
+        
+        
     image badend:
         "Menu/badend.jpg"
-
+        
+    image melee_overlay:
+        "gameplay/Animations/BlackJack/melee_overlay.jpg"
+        xalign 0.5 yalign 0.5
+        
+    image eyecatch_bottom:
+        "Menu/blackline_bottom.png"
+    image eyecatch_top:
+        "Menu/blackline_top.png"
+    image eyecatch_logo:
+        "Menu/blackline_logo.png"
+        
+    image versta_approach:
+        "Space/versta.jpg"
+        
+    image captainflash:
+        "Menu/captainflash.png"
+        
+    image pactbomber:
+        "gameplay/Animations/PACTBomber/side.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber laser:
+        "gameplay/Animations/PACTBomber/laser.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber missile:
+        "gameplay/Animations/PACTBomber/missile.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber norocket:
+        "gameplay/Animations/PACTBomber/norocket.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber rocket:
+        "gameplay/Animations/PACTBomber/rocket.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber_laserbeam:
+        "gameplay/Animations/PACTBomber/laserbeam.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber_laserflash:
+        "gameplay/Animations/PACTBomber/laserflash.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber_missiletrail:
+        "gameplay/Animations/PACTBomber/missiletrail.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber_rocketfly1:
+        "gameplay/Animations/PACTBomber/rocketfly1.png"
+        xalign 0.5 yalign 0.5
+    image pactbomber_rocketfly2:
+        "gameplay/Animations/PACTBomber/rocketfly2.png"
+        xalign 0.5 yalign 0.5
+        
+    image agamemnon_side:
+        "gameplay/Animations/Agamemnon/side.png"
+        xalign 0.5 yalign 0.5
+        
+    image phoenix:
+        "gameplay/Animations/Phoenix/side.png"
+        xalign 0.5 yalign 0.5
+    image phoenix melee:
+        "gameplay/Animations/Phoenix/melee.png"
+        xalign 0.5 yalign 0.5
+    image phoenix assault:
+        "gameplay/Animations/Phoenix/assault.png"
+        xalign 0.5 yalign 0.5
+    image phoenix_assaultflash1:
+        "gameplay/Animations/Phoenix/assault_flash1.png"
+        xalign 0.5 yalign 0.5
+    image phoenix_assaultflash2:
+        "gameplay/Animations/Phoenix/assault_flash2.png"
+        xalign 0.5 yalign 0.5
+    image phoenix melee:
+        "gameplay/Animations/Phoenix/melee.png"
+        xalign 0.5 yalign 0.5
+        
+    image cg_epi2_cgback:
+        "CG/epi2_cgback.jpg"
+    image cg_epi2_shuttleflame:
+        "CG/epi2_cg_shuttleflame.png"
+    image cg_epi2_shuttle:
+        "CG/epi2_cg_shuttle.png"
+    image cg_epi2_phoenix:
+        "CG/epi2_cg_phoenix.png"
+    image cg_epi2_cg2:
+        "CG/Episode2_CG2.jpg"
+    image cg_epi2_cg3:
+        "CG/Episode2_CG3.jpg"
+    
+    image cg_epi2_explode1:
+        "CG/epi2_explode1.png"
+    image cg_epi2_explode2:
+        "CG/epi2_explode2.png"
+    image cg_epi2_explode3:
+        "CG/epi2_explode3.png"
+    image cg_epi2_cgset:
+        "CG/epi2_cgset.jpg"
+    image cg_epi2_cgset2:
+        "CG/epi2_cgset2.jpg"
+        
+        
+        
 ########################################## APRIL FOOLS
 
     image bg renpytomback:
