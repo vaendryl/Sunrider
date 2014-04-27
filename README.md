@@ -2,18 +2,20 @@ Sunrider
 ========
 
 beta 2 W.I.P.
+========
 
 -added melee attacks and created dynamic animations for them  
 
 -addes screen logic so it can only be used on the right targets    
 
-to do:
-
 -blind side attacks
 
--AI for melee attacks
+-rewrote upgrade system
 
--test upgrade rewrite
+to do:
+========
+
+-AI for melee attacks
 
 -script neutral unit
 

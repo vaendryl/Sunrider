@@ -423,10 +423,13 @@ init -2 python:
 
             for ship in self.ships:
                 ship.flak_effectiveness = 100
-                if ship.faction == 'Player': #restore EN to all player ships
-                    ship.en = ship.max_en
+                ship.en = ship.max_en
 
             self.enemy_AI() #call the AI to take over
+
+            for ship in self.ships:
+                ship.flak_effectiveness = 100
+                ship.en = ship.max_en
 
         def enemy_AI(self):
 
@@ -486,6 +489,7 @@ init -2 python:
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
+            self.repair = 0
             self.flak = 0
             self.flak_range = 1
             self.flak_effectiveness = 100
@@ -500,29 +504,43 @@ init -2 python:
                 'missiles':20,
                 'energy':20,
                 }
-
-          #per upgrade: [level,cost]
+            self.kinetic_dmg = 1  #normal damage at start. increased by upgrades
+            self.kinetic_acc = 1
+            self.kinetic_cost = 1
+            self.energy_dmg = 1
+            self.energy_acc = 1
+            self.energy_cost = 1
+            self.missile_dmg = 1
+            self.missile_acc = 1
+            self.missile_cost = 1
+            self.melee_dmg = 1
+            self.melee_acc = 1
+            self.melee_cost = 1
+            #[display name, level,increase/upgrade,upgrade cost,cost multiplier]
             self.upgrades = {
-                'HP':[1,100],
-                'energy':[1,100],
-                'engine':[1,100],
-                'thrusters':[1,100],
-                'kinetic_acc':[1,100],
-                'kinetic_dmg':[1,100],
-                'kinetic_en':[1,100],
-                'laser_acc':[1,100],
-                'laser_dmg':[1,100],
-                'laser_en':[1,100],
-                'missile_acc':[1,100],
-                'missile_dmg':[1,100],
-                'missile_en':[1,100],
-                'shield_gen':[1,100],
-                'shield_range':[1,100],
-                'flak':[1,100],
-                'armor':[1,100],
-                'repair':[1,100],
+                'max_hp':['Hull Plating',1,100,100,1.5],
+                'max_en':['Energy Reactor',1,10,100,1.5],
+                'move_cost':['Move Cost',1,-1,100,2.5],
+                'evasion':['Evasion',1,5,500,2.5],
+                'kinetic_dmg':['Kinetic Damage',1,0.05,100,1.5],
+                'kinetic_acc':['Kinetic Accuracy',1,0.05,100,1.5],
+                'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.5],
+                'energy_dmg':['Energy Damage',1,0.05,100,1.5],
+                'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
+                'energy_cost':['Energy Energy Cost',1,-0.05,100,2.5],
+                'missile_dmg':['Missile Damage',1,0.05,100,1.5],
+                'missile_acc':['Missile Accuracy',1,0.05,100,1.5],
+                'missile_cost':['Missile Energy Cost',1,-0.05,100,2.5],
+                'max_missiles':['Missile Storage',1,1,500,3],
+                'melee_dmg':['Melee Damage',1,0.05,100,1.5],
+                'melee_acc':['Melee Accuracy',1,0.05,100,1.5],
+                'melee_cost':['Melee Energy Cost',1,-0.05,100,2.5],
+                'shield_generation':['Shield Power',1,5,500,2],
+                'shield_range':['Shield Range',1,1,1000,5],
+                'flak':['Flak',1,5,500,2],
+                'base_armor':['Armor',1,5,500,2],
+                'repair':['Repair Crew',1,50,500,2]
                 }
-
             self.total_damage = 0  #refers to damage done, not taken. used by AI
             self.total_kinetic_damage = 0
             self.total_missile_damage = 0
@@ -736,7 +754,12 @@ init -2 python:
                         if pship.damage_estimation[1] < estimation:
                             pship.damage_estimation = [weapon,int(estimation),priority]
                     if weapon.wtype == 'Melee':
-                        pass #not implemented yet
+                        estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                        priority = estimation * (pship.hate/100.0)/50.0
+                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
+                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
+                        if pship.damage_estimation[2] < priority:
+                            pship.damage_estimation = [weapon,int(estimation),priority]
             if pship.damage_estimation[0] == None:
                 pass
                 #renpy.log('all weapons can do no damage')
@@ -752,7 +775,7 @@ init -2 python:
             try:
                 renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
             except:
-                renpy.call_in_new_context('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
+                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
             damage = weapon.fire(self,pship)
             pship.receive_damage(damage,self,weapon.wtype)
             update_stats()
@@ -947,6 +970,19 @@ init -2 python:
                     show_message('debug: infinite loop detected while moving. breaking off....')
                     bm.moving = False
 
+            ## BLIND SIDE ATTACKS
+            if self.faction == 'Player':
+                for enemy in enemy_ships:
+                    if get_ship_distance(self,enemy) == 1 and self in player_ships: #if next to enemy and -not dead-
+                        counter = None
+                        for weapon in enemy.weapons:
+                            if weapon.wtype == 'Assault':
+                                counter = weapon
+                        if counter != None:
+                            if enemy.en >= counter.energy_use:
+                                show_message('COUNTER ATTACK!')
+                                enemy.AI_attack_target(self,counter)
+
             bm.select_ship(self, play_voice = False) #you can control your ship again
 
 
@@ -979,10 +1015,11 @@ init -2 python:
 
         def fire(self, parent, target): #firing lasers!
             update_armor(target)
-            if parent.en < self.energy_use:  #energy handling
+            energy_cost = int(self.energy_use * parent.energy_cost)
+            if parent.en < energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= self.energy_use
+                parent.en -= energy_cost
             accuracy = get_acc(self, parent, target)
 
                 ## actual damage calculation
@@ -994,7 +1031,7 @@ init -2 python:
                 if renpy.random.randint(0,100) > accuracy:
                     pass #you missed!
                 else:
-                    damage = self.damage * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     damage -= target.armor
                     if damage <= 1: damage = 1
@@ -1010,9 +1047,6 @@ init -2 python:
             else:
                 return 'miss'
 
-
-
-
         ## GUNZ ##
     class Kinetic(Weapon): #starter Kinetic weapon
         def __init__(self):
@@ -1027,10 +1061,12 @@ init -2 python:
 
         def fire(self, parent, target): #firing gunz!
             update_armor(target)
-            if parent.en < self.energy_use:  #energy handling
+
+            energy_cost = int(self.energy_use * parent.kinetic_cost)
+            if parent.en < energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= self.energy_use
+                parent.en -= energy_cost
 
             accuracy = get_acc(self, parent, target)
             if accuracy == 0: return 'miss'
@@ -1042,7 +1078,7 @@ init -2 python:
                 if renpy.random.randint(0,100) > accuracy:
                     pass #you missed!
                 else:
-                    damage = self.damage * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if damage < target.armor *2:
                         store.total_armor_negation += damage -1
@@ -1054,8 +1090,6 @@ init -2 python:
                     store.hit_count += 1
             if total_damage == 0: return 'miss'
             return int(total_damage)
-
-
 
 
         ## Missiles ##
@@ -1077,10 +1111,13 @@ init -2 python:
 
         def fire(self, parent, target):
             update_armor(target)
-            if parent.en < self.energy_use:  #energy and ammo handling
+
+            energy_cost = int(self.energy_use * parent.missile_cost)
+            if parent.en < energy_cost:  #energy handling
                 return 'no energy'
             else:
-                pass
+                parent.en -= energy_cost
+
             if self.uses_missiles:
                 if self.ammo_use > parent.missiles:
                     return 'no ammo'
@@ -1153,7 +1190,7 @@ init -2 python:
             store.total_shield_negation = 0
             for shot in range(missile.shot_count):
                 if renpy.random.randint(0,100) <= accuracy:
-                    damage = self.damage * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     damage -= target.armor
                     if damage <= 1: damage = 1
@@ -1215,10 +1252,12 @@ init -2 python:
 
         def fire(self, parent, target):
             update_armor(target)
-            if parent.en < self.energy_use:  #energy handling
+
+            energy_cost = int(self.energy_use * parent.melee_cost)
+            if parent.en < energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= self.energy_use
+                parent.en -= energy_cost
 
             accuracy = get_acc(self, parent, target)
             if accuracy == 0: return 'miss'
@@ -1230,7 +1269,7 @@ init -2 python:
                 if renpy.random.randint(0,100) > accuracy:
                     pass #you missed!
                 else:
-                    damage = self.damage * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.melee_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if damage < target.armor *2:
                         store.total_armor_negation += damage -1
