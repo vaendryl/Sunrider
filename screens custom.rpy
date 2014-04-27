@@ -7,7 +7,7 @@
 ## 3) command menu
 
 init -2:  ##0) transforms
-    $import random
+#    $import random
 
     transform hoverglow(img1):  #makes units glow when you mouseover
         im.MatrixColor(img1,im.matrix.brightness(.05))
@@ -237,7 +237,7 @@ screen battle_screen:
                         if BM.targetingmode and not BM.active_weapon.wtype == 'Support':  #makes enemy_ships glow when you should target them. because clicking what you want dead isn't an obvious thing
                             if ship.faction == 'Player':
                                 if BM.selected == ship:
-                                    imagebutton:
+                                    imagebutton:   #this is your own selected ship
                                         xanchor 0.5
                                         yanchor 0.5
                                         xpos xposition
@@ -250,7 +250,7 @@ screen battle_screen:
                                         focus_mask True
                                         at zoom_button(zoomlevel/2.5)
                                 else:
-                                    imagebutton:
+                                    imagebutton:   #this is one of your ships, but not the one selected
                                         xanchor 0.5
                                         yanchor 0.5
                                         xpos xposition
@@ -263,18 +263,48 @@ screen battle_screen:
                                         focus_mask True
                                         at zoom_button(zoomlevel/2.5)
                             else:
-                                imagebutton:
-                                    xanchor 0.5
-                                    yanchor 0.5
-                                    xpos xposition
-                                    ypos yposition
-                                    action Return(['selection',ship])
-                                    idle hoverglow(ship.lbl)
-                                    hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                    hovered SetField(BM,'hovered',ship)
-                                    unhovered SetField(BM,'hovered',None)
-                                    focus_mask True
-                                    at zoom_button(zoomlevel/2.5)
+                                if BM.active_weapon.wtype == 'Melee':
+                                    if ship.stype == 'Ryder' and get_ship_distance(BM.selected,ship) == 1:
+                                        imagebutton:  #enemy ship ready to attack with active melee weapon
+                                            xanchor 0.5
+                                            yanchor 0.5
+                                            xpos xposition
+                                            ypos yposition
+                                            action Return(['selection',ship])
+                                            idle hoverglow(ship.lbl)
+                                            hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
+                                            hovered SetField(BM,'hovered',ship)
+                                            unhovered SetField(BM,'hovered',None)
+                                            focus_mask True
+                                            at zoom_button(zoomlevel/2.5)
+                                    else:
+                                        imagebutton:  #enemy ship cannot be attacked by melee weapon!
+                                            xanchor 0.5
+                                            yanchor 0.5
+                                            xpos xposition
+                                            ypos yposition
+                                            action NullAction()
+                                            idle im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                                            hover im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                                            hovered SetField(BM,'hovered',ship)
+                                            unhovered SetField(BM,'hovered',None)
+                                            focus_mask True
+                                            at zoom_button(zoomlevel/2.5)
+
+
+                                else:
+                                    imagebutton:  #enemy ship ready to attack with active (non melee) weapon
+                                        xanchor 0.5
+                                        yanchor 0.5
+                                        xpos xposition
+                                        ypos yposition
+                                        action Return(['selection',ship])
+                                        idle hoverglow(ship.lbl)
+                                        hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
+                                        hovered SetField(BM,'hovered',ship)
+                                        unhovered SetField(BM,'hovered',None)
+                                        focus_mask True
+                                        at zoom_button(zoomlevel/2.5)
 
                         elif BM.targetingmode and BM.active_weapon.wtype == 'Support':
                             if ship.faction == 'Player':
@@ -396,9 +426,11 @@ screen battle_screen:
                     for ship in BM.ships:
                         if BM.weaponhover == None:
                             $BM.weaponhover = BM.active_weapon
-                        if BM.weaponhover.wtype == 'Support' and not ship.faction == 'Player':
+                        if BM.weaponhover.wtype == 'Support' and ship.faction != 'Player':
                             $continue
-                        if not BM.weaponhover.wtype == 'Support' and ship.faction == 'Player':
+                        if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
+                            $continue
+                        if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,BM.selected) > 1):
                             $continue
 
                         if ship.location == (a,b):
@@ -701,7 +733,15 @@ screen commands: ##show the weapon buttons etc##
                         unhovered SetField(BM,'weaponhover',None)
 
                   ##show energy cost of weapon on weaponbutton
-                text str(-weapon.energy_use) + 'EN':
+                if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
+                if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.energy_cost)
+                if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.missile_cost)
+                if weapon.wtype == 'Melee':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.melee_cost)
+                text str(energy_cost) + 'EN':
                     xanchor 0.5
                     yanchor 0.5
                     xpos (x_offset+80+120*count)
@@ -767,20 +807,24 @@ screen animation_hp2:
     add 'Battle UI/dmgstatus.png':
         xalign 1.0
 
+    if store.damage == 'miss':
+        $damage = 0
+    else:
+        $damage = store.damage
     $hp_size1 = int(409*(float(BM.target.hp)/BM.target.max_hp))
-    $hp_size2 = int(409*(float(BM.target.hp-store.damage)/BM.target.max_hp))
+    $hp_size2 = int(409*(float(BM.target.hp-damage)/BM.target.max_hp))
 
     add 'Battle UI/dmgstatus_bar.png':
         xpos 1340
         ypos 3
         at hp_falls(hp_size1,hp_size2)
 
-    text 'HP: {!s}/{!s}'.format((BM.target.hp-store.damage),BM.target.max_hp):
+    text 'HP: {!s}/{!s}'.format((BM.target.hp-damage),BM.target.max_hp):
         xpos 1750
         ypos 8
         size 19
         color 'fff'
-    text '{!s}'.format(store.damage):
+    text '{!s}'.format(damage):
         xanchor 1.0
         xpos 1670
         ypos 45
@@ -794,7 +838,7 @@ screen animation_hp2:
         size 40
         color '800'
         outlines [(1,'fff',0,0)]
-    text '{!s}'.format(-store.damage):
+    text '{!s}'.format(-damage):
         xanchor 0.5
         at float_up
         size 30

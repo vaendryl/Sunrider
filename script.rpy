@@ -6,23 +6,27 @@
 #TO DO
 
     ##disable the main menu for easy iteration
-label splashscreen:
-    $BM = Battle()
-
-    scene black
-
-    play music "Music/The_Meteor.ogg"
-
-    pause 0.5
-    show logo 1 with dissolve
-    $ renpy.pause(2)
-    show logo 2 with dissolve
-    $ renpy.pause(2)
-    hide logo with dissolve
-    $ renpy.pause(0.5)
-
-    stop music fadeout 1.0
+label main_menu:
     return
+
+
+#label splashscreen:
+#    $BM = Battle()
+
+#    scene black
+
+#    play music "Music/The_Meteor.ogg"
+
+#    pause 0.5
+#    show logo 1 with dissolve
+#    $ renpy.pause(2)
+#    show logo 2 with dissolve
+#    $ renpy.pause(2)
+#    hide logo with dissolve
+#    $ renpy.pause(0.5)
+
+#    stop music fadeout 1.0
+#    return
 
 #    window show
 
@@ -138,6 +142,9 @@ label start:
 
 #####################################VARIABLE SET UP
 
+
+    $ BM.money = 99999 #DEBUG CHEAT
+    jump test_battle   ##TEMPORARY
 
     stop music fadeout 3.0
     play sound "Sound/buttonclick.wav"
@@ -2632,7 +2639,8 @@ label allocatefunds:
             blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
-    call screen upgrade
+    $ buy_upgrades()
+    jump dispatch
 
 label humantraffickers:
 

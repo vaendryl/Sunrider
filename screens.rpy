@@ -213,7 +213,7 @@ screen main_menu:
         hotspot (80, 472, 208, 50) action FileLoad("1", page="quick", confirm=False)
         hotspot (171, 537, 118, 50) action ShowMenu('load')
         hotspot (92, 598, 200, 50) action ShowMenu('preferences')
-        hotspot (138, 666, 151, 50) action None
+        hotspot (138, 666, 151, 50) action ShowMenu('bonus')
         hotspot (186, 730, 108, 50) action Quit()
 
     text '[config.version]' xpos 0.01 ypos 0.98 size 12
@@ -255,7 +255,71 @@ screen navigation:
 
 init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
+    
+    #                                               number of features
+    bonus_features = [[0 for x in xrange(2)] for x in xrange(1)]
+    
+    # bonus 1
+    bonus_features[0][0] = "Background/renpytomback.jpg"
+    bonus_features[0][1] = " Doki Doki Space Whale:\n Dating Sim 3"
 
+screen bonus:
+
+    modal True
+    zorder 200
+    
+    imagemap:
+        ground "Menu/bonus_base.png"
+        hover "Menu/bonus_hover.png"
+        
+        $ page = 0
+        
+        # we need to make the screen update when the arrows are clicked
+        hotspot (1221, 215, 30, 146):
+            $ page += 1
+            action NullAction()
+        hotspot (1221, 724, 30, 146):
+            if page > 0:
+                $ page -= 1
+            action NullAction()
+        hotspot (726, 59, 137, 44) action [ Hide('bonus'), Show('save', transition=dissolve) ]
+        hotspot (948, 926, 107, 23) action Hide('bonus', transition=dissolve)
+        hotspot (864, 59, 137, 44) action [ Hide('bonus'), Show('load', transition=dissolve) ]
+        hotspot (1002, 59, 137, 44) action [ Hide('bonus'), Show('preferences', transition=dissolve) ]
+        hotspot (1140, 59, 137, 44) action Hide('bonus', transition=dissolve)
+
+        #style "file_picker_frame"
+
+        $ columns = 1
+        $ rows = 5
+
+        # Display a grid of file slots.
+        grid columns rows:
+            transpose True
+            xfill True
+            #style_group "file_picker"
+            xpos 753
+            ypos 216
+
+            # We need to make the bonus features clickable
+
+            # Display five file slots, numbered 1 - 5.
+            for i in range(1, columns * rows + 1):
+
+                button:
+
+                    xminimum 460
+                    yminimum 130
+
+                    has hbox
+
+                    # Add the image and text.
+                    if page * columns * rows + i - 1 < len(bonus_features):
+                        add bonus_features[i - 1][0] zoom .09
+                        text bonus_features[i - 1][1]
+                        
+                    else:
+                        text str(page * columns * rows + i) + ". Empty Bonus."
 
 ##############################################################################
 # Save, Load
@@ -275,7 +339,7 @@ screen load:
 
     key 'mouseup_3' action Hide('load')
 
-    if BM.phase == 'PACT' or BM.phase == 'Pirate':
+    if not BM.phase == 'Player':
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
@@ -313,7 +377,7 @@ screen load:
                 xpos 753
                 ypos 251
 
-                # Display ten file slots, numbered 1 - 10.
+                # Display eight file slots, numbered 1 - 8.
                 for i in range(1, columns * rows + 1):
 
                     # Each file slot is an hbox containing two buttons.
@@ -353,7 +417,7 @@ screen save:
 
     key 'mouseup_3' action Hide('save')
 
-    if BM.phase == 'PACT' or BM.phase == 'Pirate':
+    if not BM.phase == 'Player':
         text 'WARNING! \n You can not save during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
@@ -392,7 +456,7 @@ screen save:
                 xpos 753
                 ypos 251
 
-                # Display ten file slots, numbered 1 - 10.
+                # Display eight file slots, numbered 1 - 8.
                 for i in range(1, columns * rows + 1):
 
                     # Each file slot is an hbox containing two buttons.

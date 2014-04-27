@@ -1099,6 +1099,13 @@ init -5:
 
     $ enemy_laserhitwipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
     $ blackjack_missilewipe = ImageDissolve("Transitions/left_to_right.jpg", 0.87, reverse=True)
+    
+    $ meleehit = ImageDissolve("Transitions/left_to_right.jpg", 0.3, reverse=False)
+    $ meleehitreverse = ImageDissolve("Transitions/left_to_right.jpg", 0.3, reverse=True)
+
+    $ eyecatch_wipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
+    $ eyecatch_wiperev = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=True)
+
     define flash = Fade(0.1, 0.0, 0.5, color="#fff")
 
     
@@ -1539,11 +1546,11 @@ init -5:
 
 #########################################################BLACK JACK
 
-    image blackjack_side:
+    image blackjack:
         "gameplay/Animations/BlackJack/blackjack.png"
         xalign 0.5 yalign 0.5
 
-    image blackjack_side assault:
+    image blackjack assault:
         "gameplay/Animations/BlackJack/blackjack_assault.png"
         xanchor 0.5 yanchor 0.5
 
@@ -1555,7 +1562,7 @@ init -5:
         "gameplay/Animations/BlackJack/blackjack_assaultflash2.png"
         xalign 0.5 yalign 0.5
         
-    image blackjack_side laser:
+    image blackjack laser:
         "gameplay/Animations/BlackJack/blackjack_laser.png"
         xanchor 0.5 yanchor 0.5
 
@@ -1573,7 +1580,7 @@ init -5:
         xanchor 0.5 yanchor 0.5
 
 
-    image blackjack_side missile:
+    image blackjack missile:
         "gameplay/Animations/BlackJack/blackjack_missile.png"
         xalign 0.5 yalign 0.5
         
@@ -1598,7 +1605,7 @@ init -5:
         xanchor 0.8 yanchor 0.5
         
         
-    image blackjack_side pulse:
+    image blackjack pulse:
         "gameplay/Animations/BlackJack/blackjack_pulse.png"
         xalign 0.5 yalign 0.5
     image blackjack_pulseflash1:
@@ -1665,11 +1672,15 @@ init -5:
         
     image blackjack_rockettrail:
         "gameplay/Animations/BlackJack/rockettrail.png"
-
+        
+    image blackjack melee:
+        "gameplay/Animations/BlackJack/blackjack_sword.png"
+        xalign 0.5 ypos 0.5 yanchor 540
 
     image blackjack_rocketexplode:
         "gameplay/Animations/BlackJack/rocketexplode.png"
         xalign 0.5 yalign 0.5
+
 ###############################################################PIRATE BOMER INITS
 
     image piratebomber:
@@ -1903,8 +1914,9 @@ init -5:
         "gameplay/Animations/Havoc/rocket4.png"
         xanchor 0.5 yanchor 0.5
 
-    
-
+    image havoc melee:
+        "gameplay/Animations/Havoc/havoc_melee.png"
+        xanchor 0.5 yanchor 0.5
 
 
         
@@ -2171,6 +2183,17 @@ init -5:
         
     image badend:
         "Menu/badend.jpg"
+        
+    image melee_overlay:
+        "gameplay/Animations/BlackJack/melee_overlay.jpg"
+        xalign 0.5 yalign 0.5
+        
+    image eyecatch_bottom:
+        "Menu/blackline_bottom.png"
+    image eyecatch_top:
+        "Menu/blackline_top.png"
+    image eyecatch_logo:
+        "Menu/blackline_logo.png"
 
 ########################################## APRIL FOOLS
 
