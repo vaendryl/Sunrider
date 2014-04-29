@@ -224,6 +224,38 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari plugsuit armscrossed crysmile:
+        "Character/Icari/icari_plugsuit_armscrossed_crysmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit armscrossed concernedlookaway:
+        "Character/Icari/icari_plugsuit_armscrossed_concernedlookaway.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit neutral smilecry:
+        "Character/Icari/icari_plugsuit_neutral_smilecry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit neutral talkconcernblush:
+        "Character/Icari/icari_plugsuit_neutral_talkconcernblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit armscrossed tsunblush:
+        "Character/Icari/icari_plugsuit_armscrossed_tsunblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
+
 
 
         

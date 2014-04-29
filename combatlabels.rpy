@@ -35,13 +35,13 @@ label test_battle:
         liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
         liberty = create_ship(Liberty(),(8,7),liberty_weapons)
 
-        create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
-        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(Havoc(),(13,5),[Melee()]) #,HavocAssault(),HavocMissile(),HavocRocket()])
+#        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+#        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+#        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
 
-        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+#        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+#        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -50,7 +50,7 @@ label test_battle:
     $ PlayerTurnMusic = "music/Titan.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
 
-    $ buy_upgrades() ##testing
+#    $ buy_upgrades() ##testing
 
     jump battle_start
     return
@@ -72,7 +72,6 @@ transform melee_atkanim(img1,img2):
     zoom 2 xpos 0.2
     ease 0.5 zoom 1 xpos 0.5
     pause 1.3
-#    img2 with dissolve
     img2 with Dissolve(.5, alpha=True)
     pause 1.0
     xpos 0.5 ypos 0.5
@@ -82,6 +81,23 @@ transform melee_atkanim(img1,img2):
     pause 0.5
     xpos 0.9 ypos 0.5
     ease 1.0 xpos 2.0 ypos -1.0
+
+transform melee_atkanim_enemy(img1,img2):
+    img1
+    xalign 0.5 yalign 0.5
+    zoom 2 xpos 0.8
+    ease 0.5 zoom 1 xpos 0.5
+    pause 1.3
+    img2 with Dissolve(.5, alpha=True)
+    pause 1.0
+    xpos 0.5 ypos 0.5
+    ease 1.0 xpos -2.0 ypos -1.0
+    xpos 2.0 ypos 1.0
+    ease 1.5 xpos 0.1 ypos 0.5
+    pause 0.5
+    xpos 0.1 ypos 0.5
+    ease 1.0 xpos -1.0 ypos -1.0
+
 
 transform melee_atkanim_sprite(img1):
     img1
@@ -103,21 +119,35 @@ transform melee_hitanim(img1,yy):
 
 screen melee_player:
     zorder 2
+
     if store.damage == 'miss':
         add melee_hitanim(BM.target.sprites['standard'],-1.5)
     else:
         add melee_hitanim(BM.target.sprites['standard'],0.5)
-    add melee_atkanim(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
+
+    if BM.attacker.faction == 'Player':
+        add melee_atkanim(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
+    else:
+        add melee_atkanim_enemy(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
+
     add melee_atkanim_sprite(BM.attacker.sprites['character'])
 
 label melee_attack_player:
     python:
         renpy.show_screen('show_background',_layer='master')
         renpy.show_screen('melee_player',_layer='master')
-        random = renpy.random.randint(0,len(BM.attacker.attack_voice)-1)
-        renpy.music.play(BM.attacker.attack_voice[random],channel=BM.attacker.voice_channel)
+
+        try:
+            random = renpy.random.randint(0,len(BM.attacker.attack_voice)-1)
+            renpy.music.play(BM.attacker.attack_voice[random],channel=BM.attacker.voice_channel)
+        except:
+            pass
+
     pause 1.3
-    play sound "sound/mech1.ogg"
+    if BM.attacker.name == 'Havoc':
+        play sound "sound/chainsaw.ogg"
+    else:
+        play sound "sound/mech1.ogg"
     pause 1.0 #I think dissolve effect also pauses for a little while
     play sound "sound/boasters.ogg"
     pause 1.4
@@ -130,29 +160,60 @@ label melee_attack_player:
 
 
     if store.damage != 'miss':
-        show melee_overlay onlayer screens:
-            xzoom -1
-        with meleehitreverse
+
+        if BM.attacker.faction == 'Player':
+            show melee_overlay onlayer screens:
+                xzoom -1
+            with meleehitreverse
+        else:
+            show melee_overlay onlayer screens:
+                xzoom -1
+            with meleehit
+
         pause 0.1
         hide melee_overlay onlayer screens with dissolvequick
         pause 0.5
         play sound1 "sound/explosion1.ogg"
         show layer master at shake2(repeats=6)
-        show piratebomber_kinetichit2 onlayer screens:
-            xpos 0.55 ypos 0.5 zoom 1.2
-            ease 1.2 alpha 0
-        pause 0.1
-        play sound2 "sound/explosion1.ogg"
-        show layer master at shake2(repeats=6)
-        show piratebomber_kinetichit1 onlayer screens:
-            xpos 0.55 ypos 0.5 zoom 1.2
-            ease 1.2 alpha 0
+
+        if BM.attacker.faction == 'Player':
+            show piratebomber_kinetichit2 onlayer screens:
+                xpos 0.55 ypos 0.5 zoom 1.2
+                ease 1.2 alpha 0
+            pause 0.1
+            play sound2 "sound/explosion1.ogg"
+            show layer master at shake2(repeats=6)
+            show piratebomber_kinetichit1 onlayer screens:
+                xpos 0.55 ypos 0.5 zoom 1.2
+                ease 1.2 alpha 0
+        else:
+            show piratebomber_kinetichit2 onlayer screens:
+                xpos 0.4 ypos 0.5 xzoom -1 zoom 1.2
+                ease 1.2 alpha 0
+            pause 0.1
+            play sound2 "sound/explosion1.ogg"
+            show layer master at shake2(repeats=6)
+            show piratebomber_kinetichit1 onlayer screens:
+                xpos 0.4 ypos 0.5 xzoom -1 zoom 1.2
+                ease 1.2 alpha 0
+
         pause 0.5
 
-        $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+        if BM.attacker.faction == 'Player':
+            $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+        else:
+            $renpy.call('hit_{}'.format(BM.target.animation_name))
     else:
         pause 0.5
-        $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+        if BM.attacker.faction == 'Player':
+            $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+        else:
+            python:
+                try:
+                    random = renpy.random.randint(0,len(BM.attacker.no_damage_voice)-1)
+                    renpy.music.play(BM.attacker.no_damage_voice[random],channel=BM.attacker.voice_channel)
+                except:
+                    pass
 
     return
 

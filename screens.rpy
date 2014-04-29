@@ -96,24 +96,30 @@ screen devconsole:
 screen choice:
 
     vbox:
-        ypos 0.7
-        spacing 20
+        ypos 0.65
+        spacing 5
 
         # Create one textbutton per label, action pair.
         for label, action, chosen in items:
-            button:
+            imagebutton:
                 action action
                 xmargin 140
                 xfill True
-                background "Menu/choice.png"
-                hover_background "Menu/choice_hover.png"
+                idle "Menu/choice.png"
+                hover "Menu/choice_hover.png"
+                
+    vbox:
+        ypos 0.655
+        xalign 0.5
+        spacing 28
+        for label, action, chosen in items:
 
-                text label:
-                    size 25
-                    outlines [ (2, "#000", 0, 0) ]
-                    text_align 0.5
-                    xalign 0.5
-                    yalign 0.8
+            text label:
+                size 25
+                outlines [ (2, "#000", 0, 0) ]
+                text_align 0.5
+                xalign 0.5
+                yalign 0.5
 
 init -2 python:
     config.narrator_menu = True

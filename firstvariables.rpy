@@ -43,4 +43,6 @@ label firstvariables:
     $ warpto_pactstation1 = False
     $ warpto_versta = False
     
+    $ ep2_cancelwarp = False
+    
     return

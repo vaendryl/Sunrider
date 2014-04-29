@@ -113,8 +113,6 @@ label start:
 
     window hide
 
-    jump firstbatle
-
     play music "Music/Tides.ogg" loop
     $ renpy.pause (0.5)
     show introtext0:
@@ -1516,14 +1514,26 @@ label mission2:
         hide asaga onlayer screens
         hide cosette onlayer screens
 
-        $ battle2_check2 = True
-        $ BM.draggable = True
-
         show screen battle_screen
 
         python:
-            blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
+        
+        show asaga plugsuit neutralalt smile onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        asa "By the way, did you know about repeating attacks?"
+        asa "Some weapons like assault rifles don't deal much damage, but shoot multiple times in a single attack.  It's a good way to deal reliable damage against units with high evasion like ryders."
+        asa "Watch out though! They're totally useless against units with armor, like capital ships."
+        asa "If you select a weapon, the third number listed on the enemy unit is that unit's armor rating.  Be careful when you're using your kinetic-type weapons especially, because armor's twice as effective against kinetics!"
+
+        hide asaga onlayer screens with dissolve
+
+        $ battle2_check2 = True
+        $ BM.draggable = True
+
 
     $ BM.battle()  #continue the battle
 
@@ -2622,7 +2632,7 @@ label allocatefunds:
 
     python:
         if blackjack == None: # it shouldn't be possible to kill Havoc on the first turn, but if the player did...
-            blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
     $ buy_upgrades()
@@ -2715,19 +2725,28 @@ label humantraffickers:
 
     call mission3_inits
     $ BM.mission = 3
-    $ battle3_check1 = False
+    $ check1 = False
     jump battle_start
 
 label mission3:
 
-#    if not battle3_check1:
-#        $BM.draggable = False
+    if check1 == False:
+        $BM.draggable = False
 
-#        "test"
+        show chigara plugsuit altneutral neutral onlayer screens:
+            xpos 0.2 xzoom -1
+        with dissolve
 
-#        $ battle3_check1 = True #this ensures you see this dialogue only once
+        chi "Ah captain.  The Liberty is capable of generating a small energy field."
+        chi "Energy fields provide protection against laser based weapons for all units within the blue field indicated on the map."
+        chi "Using allied defenses while exploiting weaknesses in the enemy's defenses is essential to winning."
+        chi "No defense is perfect though, so make sure you exploit the holes in the enemy's defenses by using the best weapon type for the situation."
 
-#        $ BM.draggable = True  #this enables dragging the viewport again.
+        hide chigara onlayer screens with dissolve
+
+        $ check1 = True
+
+        $ BM.draggable = True
 
     $BM.battle()  #continue the battle
 
@@ -2940,6 +2959,18 @@ label mission4:
         "Objective: Destroy the PACT Spire"
 
         hide ava onlayer screens with dissolve
+        
+        show chigara plugsuit altneutral neutral onlayer screens:
+            xpos 0.2 xzoom -1
+        with dissolve
+
+        chi "Ah captain.  The Liberty is capable of generating a small energy field."
+        chi "Energy fields provide protection against laser based weapons for all units within the blue field indicated on the map."
+        chi "Using allied defenses while exploiting weaknesses in the enemy's defenses is essential to winning."
+        chi "No defense is perfect though, so make sure you exploit the holes in the enemy's defenses by using the best weapon type for the situation."
+
+        hide chigara onlayer screens with dissolve
+        
         $ battle_check1 = True
 
         $ BM.draggable = True
@@ -3128,11 +3159,30 @@ label piratebaseattack:
     call mission5_inits
     $ BM.mission = 5
     $ battle_check1 = False
+    $ check2 = False
     jump battle_start
 
 label mission5:
 
     $BM.battle_bg = "Background/asteroids3.jpg"
+    
+    if check2 == False:
+        
+        $BM.draggable = False
+        show ava uniform handonhip neutral onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        ava "The time has come for you to issue executive orders, captain."
+        ava "As you win battles, you gain command points based on your battlefield performance."
+        ava "Those command points may be spent to issue powerful executive orders which can quickly change the tide of combat."
+        ava "Simply select the orders tab at the top left side of the battle screen and then select the order you wish to issue."
+        
+        hide ava onlayer screens with dissolve
+        
+        $BM.draggable = True
+        
+        $ check2 = True
 
     if battle_check1 == False and BM.turn_count == 5:
 
@@ -3357,9 +3407,15 @@ label celebratepiratebase_chi:
 
     play music "Music/The_Meteor.ogg"
 
-    kay "Begin captain's log.  It's been a two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
-    kay "Despite our efforts, PACT's invasion of the Neutral Rim has continued unabated.  Six more governments have voluntarily joined PACT and two more have been conquered.  PACT's war machine has been indiscriminate, slaughtering both civilians and combatants alike.  In the mere month since Cera, millions more innocents have been murdered."
+    kay "Begin captain's log."
+    kay "It's been a two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
+    kay "Despite our efforts, PACT's invasion of the Neutral Rim has continued unabated."
+    kay "Six more governments have voluntarily joined PACT and two more have been conquered.  PACT's war machine has been indiscriminate, slaughtering both civilians and combatants alike."
+    kay "In the mere month since Cera, millions more innocents have been murdered."
     kay "Unless something is done, the day when PACT rules the entire Neutral Rim appears to be fast approaching."
+    
+    play sound "sound/doorbell.ogg"
+    
     "-Door bell-"
     kay "Come in."
 
@@ -3630,7 +3686,6 @@ label getunderwayvesta:
     ava "Understood captain."
 
     $ captaindeck = 0
-    $ ava_location = None
     $ asa_location = None
     $ chi_location = None
     $ gal_location = "bridge"
@@ -4100,6 +4155,9 @@ label outcellinvestigation:
 
     $ ava_location = "bridge"
     $ ava_event = "whattodoicari_ava"
+    
+    $ cal_location = "captainsloft"
+    $ cal_event = "ftltransponder"
 
     $ gal_location = None
     $ captaindeck = 1
@@ -4125,6 +4183,9 @@ label dontbelieveicari:
 
     $ ava_location = "bridge"
     $ ava_event = "whattodoicari_ava"
+    
+    $ cal_location = "captainsloft"
+    $ cal_event = "ftltransponder"
 
     $ gal_location = None
     $ captaindeck = 1
@@ -4230,7 +4291,7 @@ label whattodoicari_asa:
 
     show asaga uniform neutral happy with dissolve
 
-    asa "Don't worry, don't worry! Just leave it to me and mah Black Jack! We'll take of the invasion fleet in no time!"
+    asa "Don't worry, don't worry! Just leave it to me and mah Black Jack! We'll take care of the invasion fleet in no time!"
 
     menu:
         "What do you think about what the mercenary said?":
@@ -4614,6 +4675,8 @@ label rightyouworktogether:
     jump agreehelpicari
 
 label findherandstopher:
+    
+    $ affection_asaga += 2
 
     scene bg bridge with dissolve
 
@@ -4709,7 +4772,36 @@ label findherandstopher:
     chi "We'll do this with our lives!"
     kay "All ryders, launch!"
 
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+    
+    $ ep2_cancelwarp = False
+    
+    window hide
+    hide bg bridgered
+    hide ava
+    hide asaga
+    hide chigara
+    hide battlewarning
+
+    call mission8_inits
+    $ BM.mission = 8
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    
+    jump battle_start
+    
 label agreehelpicari:
+
+    $ affection_ava += 1
 
     scene bg bridge with dissolve
     show ava uniform armscrossed neutral with dissolve
@@ -4799,7 +4891,8 @@ label cmd_savethechildren:
 
 
 label maintainpreparethroughpact:
-
+    
+    $ affection_asaga -= 2
     $ captain_prince += 10
 
     show ava uniform salute angry with dissolve
@@ -4867,6 +4960,8 @@ label maintainpreparethroughpact:
     jump battle_start
 
 label cancelwarpagaout:
+    
+    $ ep2_cancelwarp = True
 
     play sound "sound/swordhit.ogg"
     show captainflash:
@@ -4877,6 +4972,7 @@ label cancelwarpagaout:
 
     $ BM.cmd -= 300
     $ captain_moralist += 5
+    $ affection_asaga += 2
 
     show ava uniform salute angry with dissolve
 
@@ -4894,6 +4990,31 @@ label cancelwarpagaout:
 
     chi "I'm ready, captain!"
     kay "All ryders, launch!"
+    
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+    
+    window hide
+    hide bg bridgered
+    hide ava
+    hide asaga
+    hide chigara
+    hide battlewarning
+
+    call mission8_inits
+    $ BM.mission = 8
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    
+    jump battle_start
 
 label agaclosechannel:
 
@@ -4959,6 +5080,8 @@ label agaclosechannel:
     hide icari
     hide asaga
     hide battlewarning
+    
+    $ check1 = False
 
     call mission7_inits
     $ BM.mission = 7
@@ -4966,14 +5089,15 @@ label agaclosechannel:
 
 label mission7:
 
-#    if not battle3_check1:
-#        $BM.draggable = False
+    if check1 == False:
+        $BM.draggable = False
+        
+        play sound "sound/objectives.ogg"
+        "Note:  The Phoenix can briefly become immune to blindside attacks by going into stealth mode."
 
-#        "test"
+        $ check1 = True
 
-#        $ battle3_check1 = True #this ensures you see this dialogue only once
-
-#        $ BM.draggable = True  #this enables dragging the viewport again.
+        $ BM.draggable = True  #this enables dragging the viewport again.
 
     $BM.battle()  #continue the battle
 
@@ -4983,6 +5107,8 @@ label mission7:
         pass #continue down to the next label
 
 label aftermission7:
+    
+    $ Saveddiplomats = False
 
     hide screen commands
     hide screen battle_screen
@@ -5092,7 +5218,7 @@ label aftermission7:
     show ava uniform alt neutral neutral with dissolve
 
     ava "The results of our investigation are complete, captain."
-    ava "It appears that what the mercenary told us was the truth.  While the Admiral Grey's Office officially denies any involvement, several inside sources have informed me that the mercenary had been hired by the Admiral."
+    ava "It appears that what the mercenary told us was the truth.  While Admiral Grey's Office officially denies any involvement, several inside sources have informed me that the mercenary had been hired by the Admiral."
     ava "Further, by going through previous obituaries, I've confirmed that the mercenary's mother, father, and brother were killed by PACT thirteen years ago."
     kay "I see..."
 
@@ -5183,10 +5309,150 @@ label aftermission7:
     kay "Neither will I."
 
     window hide
+    scene black with dissolve
+    scene cg_album:
+        ease 5.0 xpos -0.3
+    with dissolvelong
+    
+    pause 8.0
 
     jump credits
 
+label mission8:
+    
+    if ep2_cancelwarp == True:
+        
+        $BM.draggable = False
+
+        show ava uniform altneutral angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        ava "Captain, we just had an unauthorized launch from our hangar! It's the mercenary!"
+        kay "Disable her ryder!"
+        ava "Too late! She's already out of our range."
+        kay "All units. Icari has escaped on the Phoenix. Keep your eyes open for her. No doubt she intends to interfere with our mission."
+
+        hide ava onlayer screens with dissolve
+        $ ep2_cancelwarp = False
+        $ BM.draggable = True
+
+    if check1 == False:
+        
+        $BM.draggable = False
+        
+        play sound "Sound/objectives.ogg"
+        "Objective: Bring the Agamemnon to the far right edge of the map."
+        
+        $ check1 = True
+        $ BM.draggable = True
+        
+    if check2 == False and BM.turn_count == 3:
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactMook(),(13,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(13,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(14,3),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            
+            create_ship(PactMook(),(13,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(13,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(14,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            
+        $ check2 = True
+
+    if check3 == False and BM.turn_count == 5:
+        
+        play sound "sound/Voice/Ava/Ava Others 5.ogg"
+        python:
+            create_ship(MissileFrigate(),(15,5),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(15,8),[PactFrigateMissile()])
+            create_ship(PactCruiser(),(14,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(14,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        $ check3 = True
+
+    if check4 == False and BM.turn_count == 6:
+        
+        $BM.draggable = False
+
+        show icari plugsuit point angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        ica "Get outta my way!"
+        
+        hide icari onlayer screens with dissolve
+        show asaga plugsuit handsonhips angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        asa "Oy!  Don't you see what's happening here!?  If you go through with this, all those children are gonna die!"
+        
+        hide asaga onlayer screens with dissolve
+        show icari plugsuit neutral angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+
+        ica "And if I don't, a million more will die as PACT conquers planet after planet!"
+        
+        hide icari onlayer screens with dissolve
+        show asaga plugsuit excited angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        asa "You don't even know if letting everyone die now will prevent that!"
+        asa "Screw thinking about what might happen tomorrow!  'Cause you've got innocents to protect today, right in front of you!"
+        
+        hide asaga onlayer screens with dissolve
+        show icari plugsuit handonhip snide onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        ica "Heheh...  You're naïve."
+        ica "War cannot be won without sacrifice.  The righteous like you are just blind to reality!"
+        
+        hide icari onlayer screens with dissolve
+        show asaga plugsuit point angry onlayer screens:
+            xzoom -1 xpos 0.2
+        with dissolve
+        
+        asa "Y-you're crazy!"
+        
+        hide asaga onlayer screens with dissolve
+        
+        python:
+            create_ship(PhoenixEnemy(),(18,6),[PhoenixEnemyMelee(),PhoenixEnemyAssault()])
+        
+        $ BM.draggable = True
+        $ check4 = True
+        
+        
+    if check5 == False and BM.turn_count == 8:
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactCruiser(),(16,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(16,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+
+        $ check5 = True
+
+    $BM.battle()  #continue the battle
+    
+    if agamemnon.location[0] == 18:
+        $ BM.battle_end()
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission8 #loop back
+    else:
+        pass #continue down to the next label
+
 label aftermission8:
+    
+    $ Saveddiplomats = True
 
     hide screen commands
     hide screen battle_screen
@@ -5229,7 +5495,7 @@ label aftermission8:
     ica "Hehehehe... Hahahahaha!!"
 
     play sound "sound/mechchange.ogg"
-    show phoenix assault
+    show phoenix assault with dissolve
 
     ica "I'm... going to avenge everyone!  And there won't be anyone to stop me!"
 
@@ -5241,7 +5507,7 @@ label aftermission8:
         xpos -0.75 ypos 1.75
         ease 0.8 xpos 0.0 ypos 0.0
 
-    pause 1.0
+    pause 2.0
 
     stop music fadeout 1.5
 
@@ -5260,6 +5526,10 @@ label aftermission8:
     scene cg_epi2_cg2 with dissolve
 
     ica "... ... ..."
+    
+    scene cg_epi2_cgset2 with dissolve
+    
+    ica "...Tsch..."
 
     play music "Music/Limitless.ogg"
 
@@ -5293,24 +5563,90 @@ label aftermission8:
 
     ica "... ... ..."
     ica "Understood.  Phoenix, returning."
+    
+    $ Random = renpy.random.randint(1,9)
+
+    if Random == 1:
+        scene space back1
+    if Random == 2:
+        scene space back2
+    if Random == 3:
+        scene space back3
+    if Random == 4:
+        scene space back4
+    if Random == 5:
+        scene space back5
+    if Random == 6:
+        scene space back6
+    if Random == 7:
+        scene space back7
+    if Random == 8:
+        scene space back8
+    if Random == 9:
+        scene space back9
+
+    show sunrider_warpout_standard:
+        xpos 700 ypos 350
+    with dissolve
+
+    pause 1.0
+
+    play sound "Sound/large_warpout.ogg"
+    show sunrider_warpout_standard_flash:
+        xpos 426 ypos 0 alpha 0
+        linear 0.1 alpha 1
+        linear 0.1 alpha 0
+    show sunrider_warpout_standard out:
+        xpos 700 ypos 350
+        ease 0.2 xpos 200 ypos 300 zoom 0
+
+    pause 1.0
 
     scene bg hangar with dissolve
+    
+    show asaga plugsuit vpose:
+        xpos 0.4
+    with dissolve
 
     asa "Ah hah!! That's two for two, captain!"
     kay "Good job, Asaga. I admit, I was starting to sweat pretty heavily there."
+    
+    show asaga plugsuit armscrossed smile with dissolve
+    
     asa "Eh-heh... Any time!"
+    
+    show chigara plugsuit handonchest smile:
+        xpos 0.2
+    with dissolve
+    
     chi "Ah, I've come back too, captain."
     kay "Good job to you too, Chigara."
     chi "Eh-heh... Thank-you, captain."
+    
+    show ava uniform alt neutral mad:
+        xpos 0.8
+    show icari plugsuit armscrossed concernedlookaway:
+        xpos 0.6
+    with dissolve
+    
     ava "I've apprehended the mercenary. What should we do with her?"
     ica "... ... ..."
     kay "Well, I guess it's better being one of the good guys after all, huh Icari?"
+    
+    show icari plugsuit armscrossed tsun with dissolve
+    
     ica "What? I-it's not like I wanted to help you out or anything! I just felt bad about those kids..."
+    
+    show icari plugsuit armscrossed sad with dissolve
+    
     ica "... ... ..."
     ica "But... I guess I was wrong. For just a moment there, I would actually have done it."
     ica "I would have shot at those kids, just to get even with PACT."
     ica "My whole family was killed by PACT when I was just twelve years old."
     ica "We were... just space explorers. But they still came onboard, demanding charts that we knew nothing about."
+    
+    show icari plugsuit armscrossed cry with dissolve
+    
     ica "When we couldn't give them what they wanted, their leader shot my mom between the eyes."
     ica "I... barely managed to get to the escape pod before they blasted the ship... I drifted through space for five days until I was rescued by an Alliance patrol."
     ica "In the end... I was the only survivor."
@@ -5321,33 +5657,76 @@ label aftermission8:
     kay "I know a better way.  Our hangar bay's awfully empty, and we're looking for skilled pilots."
     kay "You play by our rules, and there might be a space for you onboard this ship."
     kay "We'll defeat PACT the right way, without harming any innocents."
-    kay "It'll be a hard and we might all die trying, but I'd rather be dead than forget about what we're fighting to protect."
+    kay "It'll be a hard mission and we might all die trying, but I'd rather be dead than forget about what we're fighting to protect."
+    
+    show icari plugsuit neutral sadcry with dissolve
+    
     ica "You'd still have me on your team? Even after all I've done?"
     kay "Everyone on this ship knows what it feels like to lose family.  Don't think for a second that you're alone."
-    ica "I... never expected such kindness from you, captain. Perhaps... you're right. We can't win this war using the same methods as PACT."
-    kay "There is. PACT won't get away with what they did to Cera, or your family. I'll make sure we all get payback."
+    
+    show icari plugsuit neutral smilecry with dissolve
+    
+    ica "I... never expected such kindness from you, captain. Perhaps... you're right. We can win this war without using the same methods as PACT."
+    kay "There is a way to win. PACT won't get away with what they did to Cera, or your family. I'll make sure we all get payback."
     ica "All right... You have a deal. I'll help you defeat PACT... and in exchange, I'll play by your rules."
+    
+    show ava uniform armscrossed frowntalk with dissolve
+    
     ava "Don't think this means I won't have my eyes on you, mercenary. You might have won over the captain's sympathy, but the instant you cause any trouble, I'll be throwing you in the brig."
+    
+    show asaga plugsuit armscrossed grumpy with dissolve
+    
     asa "Oy Capt'n, you suppose putting this person on our ship is a good idea? She's already tried to slit our throats one too many times..."
     kay "We're all trying to stop PACT, aren't we? Besides, we'll need all the help we can get."
+    
+    show asaga plugsuit armscrossed sigh with dissolve
+    
     asa "All right, I guess an extra wing mate isn't so bad... So long as she's aiming at PACT."
+    
+    show icari plugsuit neutral talkconcernblush with dissolve
+    
     ica "I swear, I'll win your trust. We'll fight together from now."
     asa "Yeah... but I think I'll lock the doors when I sleep, just in case..."
+    
+    show chigara plugsuit handstogether forcedsmile with dissolve
+    
     chi "Ah... W-welcome to the team, Icari... Eh-heh..."
     chi "Let's try to get along well from now, alright? No more fighting..."
+    
+    show asaga plugsuit handsonhips happy with dissolve
+    
     asa "Ah well, now that that's over, let's grab some grub! I'm hungry!"
+    
+    show ava uniform facepalm with dissolve
+    
     ava "Unbelievable..."
+    
+    show asaga plugsuit handsonhips laugh with dissolve
+    
     asa "Haahhahahaha! C'mon capt'n! Come join me and Chigara! We have so much to talk about!"
     kay "Well Ava, looks like you'll be taking a break. And Icari, you too."
-    ica "S-seriously..."
+    
+    show icari plugsuit armscrossed tsunblush with dissolve
+    
+    ica "S-seriously... I guess I have no choice then..."
+    
+    hide chigara with dissolve
+    hide asaga with dissolve
+    hide icari with dissolve
+    hide ava with dissolve
+    
     "With that, the team walked upstairs to the star lounge to celebrate their latest victory."
     "While the clouds of war which loomed in the distance were darker than ever, tonight they had something to celebrate."
 
+    window hide
+    scene black with dissolve
+    scene cg_album:
+        ease 5.0 xpos -0.3
+    with dissolvelong
+    
+    pause 8.0
 
-
-
-
-
+    jump credits
 
 label credits:
 
@@ -5490,8 +5869,77 @@ label credits:
         linear 6.666666666666667 ypos 0.5
     $ renpy.pause(15.0)
 
+    jump aftercreditsep2
+    
+label aftercreditsep2:
+    
+    window show
+    play music "Music/SAMFREE.ogg" fadeout 1.5
+    
+    scene asagacorner with dissolve
+    show asaga uniform neutral happy with dissolve
+    
+    asa "Welcome to the first edition of Asaga's Corner! Oh, what a dramatic episode we had today! I hope nobody cried in front of their monitor!"
+    
+    show asaga uniform excited grin with dissolve
+    
+    asa "Well, ya better put those tissues away, 'cause it's time to unveil the results of our first ever character popularity poll!"
+    
+    play sound "sound/drumroll.ogg"
+    show asaga uniform neutral happy with dissolve
+    
+    asa "With 33 votes counted, the winner is..."
+    
+    show pollone:
+        xpos 0.01 ypos 0.4
+    
+    show asaga uniform neutral surprise with dissolve
+    
+    asa "E-eh!? Chigara!?"
+    
+    hide pollone with dissolve
+    
+    show chigara uniform handsup surprise:
+        xpos 0.8
+    with dissolve
+    
+    chi "O-oh? M-me? *Never expected to win*"
+    
+    show asaga uniform armscrossed sad with dissolve
+    
+    asa "N-no way... And I'm supposed to be the main girl... *100 percent expected to win*"
+    
+    show asaga uniform excited grin with dissolve
+    
+    asa "I guess this just means that the winner will get extra fan service shots in the beach episode!"
+    
+    show chigara uniform palmsup surpriseblush with dissolve
+    
+    chi "Eh!? N-no way..."
+    asa "That's right people! Go root for your favorite girl in the next popularity poll! Who knows what nice things will happen to the winner in the beach episode. Heh-heh..."
+    
+    show chigara uniform twiddlefingers embarassed with dissolve
+    
+    chi "N-nice things huh..."
+    
+    show asaga uniform handsonhips happy with dissolve
+    
+    asa "And now... the moment you've been waiting for..."
+    asa "We have some exclusive previews of our next big Kickstarter project, Doki Doki Space Whale and the Adventures of Unknown Pilot-kun!"
+    asa "Ufufufu... Even though this is supposed to be top secret, I guess we can spill the beans on this."
+    asa "Sit back... and watch our amazing pitch video!"
+    
+    window hide
+    scene crash
+    
+    pause 1.0
+    
+    window show
+    
+    asa "EEEEEHHHHHHHHHH!?"
+    
     return
-
+    
 label devconsoleshow:
     show screen devconsole
 

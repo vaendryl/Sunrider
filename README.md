@@ -1,24 +1,18 @@
 Sunrider
 ========
 
-beta 2 W.I.P.
+beta 2 v2.00
 ========
+
+-3 new missions, 1 new unit and 1 new character and lots of story!
 
 -added melee attacks and created dynamic animations for them  
 
--addes screen logic so it can only be used on the right targets    
+-blind side attacks. any unit moving right next to another unit will get counter attacked by assault type weapons
 
--blind side attacks
+-upgrading is completely overhauled and much more functional
 
--rewrote upgrade system
-
-to do:
-========
-
--AI for melee attacks
-
--script neutral unit
-
+-AI slightly modified
 
 Beta 1
 ========

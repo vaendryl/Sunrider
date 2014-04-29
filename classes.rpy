@@ -577,6 +577,7 @@ init -2 python:
                 'shield':[0,0],
                 'flak':[0,0],
                 'energy':[0,0],
+                'stealth':[0,0],
                 }
 
         def receive_damage(self,damage,attacker,wtype):
@@ -754,7 +755,10 @@ init -2 python:
                         if pship.damage_estimation[1] < estimation:
                             pship.damage_estimation = [weapon,int(estimation),priority]
                     if weapon.wtype == 'Melee':
-                        estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                        if pship.stype == "Ryder":
+                            estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                        else:
+                            estimation = 0
                         priority = estimation * (pship.hate/100.0)/50.0
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
@@ -771,11 +775,15 @@ init -2 python:
 #AI attacks
         def AI_attack_target(self,pship,weapon):
             update_stats()
+            BM.attacker = self
             BM.target = pship
-            try:
-                renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
-            except:
-                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
+            if weapon.wtype == 'Melee':
+                pass
+            else:
+                try:
+                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
+                except:
+                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
             damage = weapon.fire(self,pship)
             pship.receive_damage(damage,self,weapon.wtype)
             update_stats()
@@ -830,8 +838,19 @@ init -2 python:
                             most_attractive_ship = [eship,eship.attraction]
                     #renpy.log('the most attractive ship weighed by distance is {} at {!s} attraction'.format(most_attractive_ship[0].name,int(most_attractive_ship[1])))
 
+            #check if this ship can use melee attacks
+            can_melee = False
+            for weapon in self.weapons:
+                if weapon.wtype == 'Melee':
+                    can_melee = True
+
+            if can_melee:
+                minimum_damage = 100
+            else:
+                minimum_damage = 10
+
               ##decide whether to shoot or to move
-            if best_target[0] == None or most_attractive_ship[1] < 5000 and best_target[2] < 10:
+            if best_target[0] == None or most_attractive_ship[1] < 5000 and best_target[2] < minimum_damage:
                 #renpy.log('decided on moving towards an enemy ship')
                 if best_target[0] == None:
                     pass
@@ -843,9 +862,17 @@ init -2 python:
 
                   ##find the enemy ships you want to move towards
                 priority_target = [None,0]
+                can_melee = False
+                for weapon in self.weapons:
+                    if weapon.wtype == 'Melee':
+                        can_melee = True
+
                 for ship in player_ships:
                     distance = get_ship_distance(self,ship)
-                    priority = (ship.hate/100+10) / (distance*distance/2.0)
+                    if ship.stype == 'Ryder' and can_melee:
+                        priority = 10*(ship.hate/100+10) / (distance*distance/2.0)
+                    else:
+                        priority = (ship.hate/100+10) / (distance*distance/2.0)
                     if  priority > priority_target[1]:
                         priority_target = [ship,priority]
                 self.target = priority_target[0]
@@ -880,6 +907,13 @@ init -2 python:
             final_spot = self.location
             max_move_distance = self.en/self.move_cost
             travel_distance = get_ship_distance(self,target)
+
+            if melee_distance == False:
+                if target.stype == 'Ryder':
+                    for weapon in self.weapons:
+                        if weapon.wtype == 'Melee':
+                            melee_distance = True
+
             if max_move_distance == 0:
                 return
 
@@ -971,7 +1005,7 @@ init -2 python:
                     bm.moving = False
 
             ## BLIND SIDE ATTACKS
-            if self.faction == 'Player':
+            if self.faction == 'Player' and self.modifiers['stealth'][0] != 1:
                 for enemy in enemy_ships:
                     if get_ship_distance(self,enemy) == 1 and self in player_ships: #if next to enemy and -not dead-
                         counter = None
@@ -982,6 +1016,25 @@ init -2 python:
                             if enemy.en >= counter.energy_use:
                                 show_message('COUNTER ATTACK!')
                                 enemy.AI_attack_target(self,counter)
+            else:
+                for ship in player_ships:
+                    if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
+                        counter = None
+                        for weapon in ship.weapons:
+                            if weapon.wtype == 'Assault':
+                                counter = weapon
+                        if counter != None:
+                            if ship.en >= counter.energy_use:
+                                show_message('COUNTER ATTACK!')
+                                update_stats()
+                                try:
+                                    renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
+                                except:
+                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
+                                damage = counter.fire(ship,self)
+                                self.receive_damage(damage,ship,counter.wtype)
+
+
 
             bm.select_ship(self, play_voice = False) #you can control your ship again
 

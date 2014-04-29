@@ -109,7 +109,7 @@ label mission2_inits:
 
         create_ship(PirateGrunt(),(13,5),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(Havoc(),(14,6),[HavocAssault(),HavocMissile(),HavocRocket()])
+        create_ship(Havoc(),(14,6),[HavocMelee(),HavocAssault(),HavocMissile(),HavocRocket()])
         create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
         create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
@@ -133,7 +133,7 @@ label mission3_inits:
         sunrider.set_location(4,6) #reset the location of the sunrider.
 
         if blackjack == None: # it's possible the player killed havoc in the first turn on low difficulty
-            blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
         blackjack.set_location(5,5)
         liberty.set_location(5,7)
@@ -169,7 +169,7 @@ label mission4_inits:
         destroyed_ships = []
 
         if blackjack == None: # it shouldn't be possible to kill Havoc on the first turn, but if the player did...
-            blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
         #we only have to set new locations for the player ships
@@ -205,7 +205,7 @@ label mission5_inits:
         destroyed_ships = []
 
         if blackjack == None: # it shouldn't be possible to kill Havoc on the first turn, but if the player did...
-            blackjack_weapons = [BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
             blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
 
         #all should already exist (and maybe improved!)
@@ -282,7 +282,7 @@ label mission7_inits:
         blackjack.set_location(5,6)
         liberty.set_location(5,7)
         
-        phoenix_weapons = [PhoenixAssault()]
+        phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
         phoenix = create_ship(Phoenix(),(5,5),phoenix_weapons)
 
         create_ship(PactMook(),(14,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
@@ -306,6 +306,33 @@ label mission7_inits:
         create_ship(PactCruiser(),(15,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
         create_ship(PactCruiser(),(15,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
 
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Driving_the_Top_Down.ogg"
+    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+
+    return
+    
+label mission8_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,6)
+        blackjack.set_location(5,6)
+        liberty.set_location(5,7)
+        agamemnon_weapons = []
+        agamemnon = create_ship(Agamemnon(),(2,6),agamemnon_weapons)
+        
+        create_ship(PactMook(),(12,5),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(12,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(12,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
