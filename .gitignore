@@ -1,55 +1,54 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+*.rpyc
+*.rpyb
+*.rpymc
+*.pyc
+*.pyo
 
-# C extensions
-*.so
+*~
+*.bak
 
-# Distribution / packaging
-.Python
-env/
-bin/
-build/
-develop-eggs/
-dist/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-*.db
+saves
+tmp
+cache
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+log.txt
+/errors.txt
+/traceback.txt
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
+styles.txt
 
-# Translations
-*.mo
+/android
+/build
+/dist
+/dists
+/renpy.app
+/jedit
+/lint.txt
+/renpy.code
+/*testing*
+/screenshot*
+/renpy.exe
+/lib
+/lib.old
+/doc
+/.pydevproject
+/.pydevproject.bak
+/.project
+/.settings
+/LICENSE.txt
+/templates/english/README.html
+/the_question/README.html
+/tutorial/README.html
+/renpy/angle/*.pyx
+/renpy/angle/*.pxd
+/renpy-ppc.zip
+/module/build
+/module/gen
+/editra
+/launcher/game/theme
+/launcher/game/script_version.rpy
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
-
-# Django stuff:
-*.log
-*.pot
-
-# Sphinx documentation
-docs/_build/
-
+dl
+renpy/vc_version.py
+.externalToolBuilders
+rapt
