@@ -24,17 +24,13 @@ patch notes 2.1
   * you can only use 1 order per turn
 
 beta 2 v2.00
-========
+------------
 
--3 new missions, 1 new unit and 1 new character and lots of story!
-
--added melee attacks and created dynamic animations for them  
-
--blind side attacks. any unit moving right next to another unit will get counter attacked by assault type weapons
-
--upgrading is completely overhauled and much more functional
-
--AI slightly modified
+* 3 new missions, 1 new unit and 1 new character and lots of story!
+* added melee attacks and created dynamic animations for them  
+* blind side attacks. any unit moving right next to another unit will get counter attacked by assault type weapons
+* upgrading is completely overhauled and much morefunctional
+* AI slightly modified
 
 Beta 1
 ========
