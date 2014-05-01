@@ -39,8 +39,9 @@ init -2 python:
             self.orders = {
                 'FULL FORWARD':[500,'full_forward'],
                 'REPAIR DRONES':[500,'repair_drones'],
-                'VANGUARD CANNON':[1000,'vanguard_cannon']
+                'VANGUARD CANNON':[1500,'vanguard_cannon']
                 }
+            self.order_used = False
               #environment modififiers are initialized here and can be changed later
             self.environment = {
                 'accuracy':100,
@@ -75,9 +76,9 @@ init -2 python:
             self.targetingmode = False
             ship.movement_tiles = []
 
-        def start(self): #this is where the magic happens!
-            battlemode(self) #this makes it so scrolling doesn't cause rollback/forward and sets BM.battlemode to true
-            update_stats()  #used later to update some attributes
+        def start(self):
+            battlemode(self)
+            update_stats()  #used to update some attributes like armor and shields
             renpy.show_screen('battle_screen')
             renpy.jump('mission{}'.format(self.mission))
 
@@ -87,7 +88,7 @@ init -2 python:
 
             if result == 'anime':
                 try:
-                    renpy.call_in_new_context('melee_attack_player') #'atkanim_blackjack_melee')
+                    renpy.call_in_new_context('atkanim_blackjack_melee') #'atkanim_blackjack_melee')
                 except:
                     show_message('animation label does not exist!')
 
@@ -281,8 +282,8 @@ init -2 python:
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
 
             if result == 'VANGUARD CANNON':
-                if self.cmd >= 1000:
-                    self.cmd -= 1000
+                if self.cmd >= 1500:
+                    self.cmd -= 1500
                     renpy.music.play('Music/March_of_Immortals.ogg')
                     renpy.call_in_new_context('atkanim_sunrider_vanguard')
                     BM.vanguard = True
@@ -377,11 +378,6 @@ init -2 python:
                 renpy.hide_screen('victory2')
                 self.draggable = True
 
-            #free up all the spaces occupied by remaining enemies
-            for ship in enemy_ships:
-                a,b = ship.location
-                BM.grid[a-1][b-1] = False
-
             self.turn_count = 1
             self.ships = []
             self.selectedmode = False
@@ -406,12 +402,16 @@ init -2 python:
                 for modifier in ship.modifiers:
                     ship.modifiers[modifier] = [0,0]
 
+            #reset the entire grid to empty and BM.ships with only the player_ships list
+            clean_grid()
+
             renpy.block_rollback()
 
 #ending a turn
         def end_player_turn(self):
             renpy.hide_screen('commands')
             self.selected = None #some sanity checking
+            self.order_used = False
             self.target = None
             self.moving = False
             self.selectedmode = False
@@ -519,22 +519,22 @@ init -2 python:
             #[display name, level,increase/upgrade,upgrade cost,cost multiplier]
             self.upgrades = {
                 'max_hp':['Hull Plating',1,100,100,1.5],
-                'max_en':['Energy Reactor',1,10,100,1.5],
+                'max_en':['Energy Reactor',1,10,500,2],
                 'move_cost':['Move Cost',1,-1,100,2.5],
                 'evasion':['Evasion',1,5,500,2.5],
                 'kinetic_dmg':['Kinetic Damage',1,0.05,100,1.5],
                 'kinetic_acc':['Kinetic Accuracy',1,0.05,100,1.5],
-                'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.5],
+                'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.0],
                 'energy_dmg':['Energy Damage',1,0.05,100,1.5],
                 'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
-                'energy_cost':['Energy Energy Cost',1,-0.05,100,2.5],
+                'energy_cost':['Energy Energy Cost',1,-0.05,100,2.0],
                 'missile_dmg':['Missile Damage',1,0.05,100,1.5],
                 'missile_acc':['Missile Accuracy',1,0.05,100,1.5],
-                'missile_cost':['Missile Energy Cost',1,-0.05,100,2.5],
+                'missile_cost':['Missile Energy Cost',1,-0.05,100,2.0],
                 'max_missiles':['Missile Storage',1,1,500,3],
                 'melee_dmg':['Melee Damage',1,0.05,100,1.5],
                 'melee_acc':['Melee Accuracy',1,0.05,100,1.5],
-                'melee_cost':['Melee Energy Cost',1,-0.05,100,2.5],
+                'melee_cost':['Melee Energy Cost',1,-0.05,100,2.0],
                 'shield_generation':['Shield Power',1,5,500,2],
                 'shield_range':['Shield Range',1,1,1000,5],
                 'flak':['Flak',1,5,500,2],
@@ -577,6 +577,7 @@ init -2 python:
                 'shield':[0,0],
                 'flak':[0,0],
                 'energy':[0,0],
+                'stealth':[0,0],
                 }
 
         def receive_damage(self,damage,attacker,wtype):
@@ -754,7 +755,10 @@ init -2 python:
                         if pship.damage_estimation[1] < estimation:
                             pship.damage_estimation = [weapon,int(estimation),priority]
                     if weapon.wtype == 'Melee':
-                        estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                        if pship.stype == "Ryder":
+                            estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                        else:
+                            estimation = 0
                         priority = estimation * (pship.hate/100.0)/50.0
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
@@ -771,11 +775,15 @@ init -2 python:
 #AI attacks
         def AI_attack_target(self,pship,weapon):
             update_stats()
+            BM.attacker = self
             BM.target = pship
-            try:
-                renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
-            except:
-                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
+            if weapon.wtype == 'Melee':
+                pass
+            else:
+                try:
+                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
+                except:
+                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
             damage = weapon.fire(self,pship)
             pship.receive_damage(damage,self,weapon.wtype)
             update_stats()
@@ -830,8 +838,19 @@ init -2 python:
                             most_attractive_ship = [eship,eship.attraction]
                     #renpy.log('the most attractive ship weighed by distance is {} at {!s} attraction'.format(most_attractive_ship[0].name,int(most_attractive_ship[1])))
 
+            #check if this ship can use melee attacks
+            can_melee = False
+            for weapon in self.weapons:
+                if weapon.wtype == 'Melee':
+                    can_melee = True
+
+            if can_melee:
+                minimum_damage = 100
+            else:
+                minimum_damage = 10
+
               ##decide whether to shoot or to move
-            if best_target[0] == None or most_attractive_ship[1] < 5000 and best_target[2] < 10:
+            if best_target[0] == None or most_attractive_ship[1] < 5000 and best_target[2] < minimum_damage:
                 #renpy.log('decided on moving towards an enemy ship')
                 if best_target[0] == None:
                     pass
@@ -843,9 +862,17 @@ init -2 python:
 
                   ##find the enemy ships you want to move towards
                 priority_target = [None,0]
+                can_melee = False
+                for weapon in self.weapons:
+                    if weapon.wtype == 'Melee':
+                        can_melee = True
+
                 for ship in player_ships:
                     distance = get_ship_distance(self,ship)
-                    priority = (ship.hate/100+10) / (distance*distance/2.0)
+                    if ship.stype == 'Ryder' and can_melee:
+                        priority = 10*(ship.hate/100+10) / (distance*distance/2.0)
+                    else:
+                        priority = (ship.hate/100+10) / (distance*distance/2.0)
                     if  priority > priority_target[1]:
                         priority_target = [ship,priority]
                 self.target = priority_target[0]
@@ -877,9 +904,17 @@ init -2 python:
 
 #AI move towards
         def AI_move_towards(self, target, melee_distance = False):
-            final_spot = self.location
+            old_spot = self.location
+            final_spot = self.location #going to iterate over this
             max_move_distance = self.en/self.move_cost
             travel_distance = get_ship_distance(self,target)
+
+            if melee_distance == False:
+                if target.stype == 'Ryder':
+                    for weapon in self.weapons:
+                        if weapon.wtype == 'Melee':
+                            melee_distance = True
+
             if max_move_distance == 0:
                 return
 
@@ -903,8 +938,11 @@ init -2 python:
                                     final_spot = (a,b)
 
             ##TO DO: take into account how dangerous spots are. this will NEVER end....
-            self.move_ship(final_spot,BM)
-
+            if old_spot == final_spot:  #calling move_ship() when not needed can lead to double counter attacks.
+                return
+            else:
+                self.move_ship(final_spot,BM)
+            return
 
 #AI START
         def AI(self):
@@ -971,7 +1009,7 @@ init -2 python:
                     bm.moving = False
 
             ## BLIND SIDE ATTACKS
-            if self.faction == 'Player':
+            if self.faction == 'Player' and self.modifiers['stealth'][0] != 1:
                 for enemy in enemy_ships:
                     if get_ship_distance(self,enemy) == 1 and self in player_ships: #if next to enemy and -not dead-
                         counter = None
@@ -982,6 +1020,25 @@ init -2 python:
                             if enemy.en >= counter.energy_use:
                                 show_message('COUNTER ATTACK!')
                                 enemy.AI_attack_target(self,counter)
+            else:
+                for ship in player_ships:
+                    if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
+                        counter = None
+                        for weapon in ship.weapons:
+                            if weapon.wtype == 'Assault':
+                                counter = weapon
+                        if counter != None:
+                            if ship.en >= counter.energy_use:
+                                show_message('COUNTER ATTACK!')
+                                update_stats()
+                                try:
+                                    renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
+                                except:
+                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
+                                damage = counter.fire(ship,self)
+                                self.receive_damage(damage,ship,counter.wtype)
+
+
 
             bm.select_ship(self, play_voice = False) #you can control your ship again
 
@@ -1039,6 +1096,7 @@ init -2 python:
                     if target.shields > 0:
                         damage = damage * (100 - target.shields) / 100.0
                         store.total_shield_negation += int(damage * target.shields / 100.0)
+                    if damage <= 1: damage = 1
                     total_damage += int(damage)
                     store.hit_count += 1
 
@@ -1122,7 +1180,6 @@ init -2 python:
                 if self.ammo_use > parent.missiles:
                     return 'no ammo'
                 else:
-                    parent.en -= self.energy_use
                     parent.missiles -= self.ammo_use
 
             if self.uses_rockets:
@@ -1168,6 +1225,8 @@ init -2 python:
                                     BM.missiles.remove(missile)
                                     moving = False
                                     ship.fireing_flak = False
+                                    for ship in BM.ships:
+                                        ship.flak_used = False
                                     return 'miss'
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')

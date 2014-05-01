@@ -560,7 +560,7 @@ screen battle_screen:
             xalign 1.0
             textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
 
-    if not BM.showing_orders:
+    if not BM.showing_orders and not BM.order_used:
         imagebutton:
             xpos 0
             ypos 0
@@ -614,7 +614,7 @@ screen orders:
 #                    insensitive_background im.MatrixColor('Battle UI/commandbar_button.png',im.matrix.brightness(-0.50))
                     idle_background 'Battle UI/commandbar_button.png'
                     hover_background hoverglow('Battle UI/commandbar_button.png')
-                    action [Return(order),Hide('orders'),SetField(BM,'showing_orders',False)]
+                    action [Return(order),Hide('orders'),SetField(BM,'showing_orders',False),SetField(BM,'order_used',True)]
 #                    action If(BM.cmd >= BM.orders[order][1],[Return(order),Hide('orders'),SetField(BM,'showing_orders',False)])
 
                     has hbox

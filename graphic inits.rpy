@@ -400,12 +400,12 @@ init -5:
     image credits14 = Text("Asaga Oakrun:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits15 = Text("Chigara Ashada:  Mary Morgan", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16 = Text("Cosette Cosmos:  Jill Harris", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
-    image credits16a = Text("Icari Isidolde:  Aimee Smith", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16b = Text("Icari Isidolde:  Aimee Smith", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits17 = Text("Captain Kayto Shields:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits20 = Text("Voice Clean Up{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun- ft.lily-an/Maya Full |{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -1736,16 +1736,24 @@ init -5:
         "CG/epi2_cgset.jpg"
     image cg_epi2_cgset2:
         "CG/epi2_cgset2.jpg"
+    
+    image cg_album:
+        "CG/cg_album.jpg"
         
         
-        
-########################################## APRIL FOOLS
+########################################## JOKE
 
     image bg renpytomback:
         "Background/renpytomback.jpg"
     image backgroundcredit = Text("BACKGROUND ART BY RENPYTOM", size=50, font="Font/GOTHIC.TTF", text_align=0.1)
     image episode1commences = Text("SUNRIDER EPISODE 1 COMMENCES", size=150, font="Font/GOTHIC.TTF", text_align=0.5)
 
+    image asagacorner:
+        "Background/asagacorner.jpg"
+    image pollone:
+        "Background/poll1.jpg"
+    image crash:
+        "Background/crash.jpg"
 
 ########################
 

@@ -60,6 +60,18 @@ init -6 python:
             if ship.boss:
                 return
 
+    def clean_grid():
+        BM.grid = []
+        BM.ships = []
+        for a in range(GRID_SIZE[0]):
+                BM.grid.append([False]*GRID_SIZE[1])
+        for ship in player_ships:
+            BM.ships.append(ship)
+            #should not be needed, as location should be set during each mission init
+#            x,y = ship.location
+#            BM.grid[x-1][y-1] = True
+
+
     def get_acc(weapon, attacker, target, guess = False): #calculate the chance to hit an enemy ship
         accuracy = (weapon.accuracy + attacker.modifiers['accuracy'][0])
         accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))
@@ -102,6 +114,7 @@ init -6 python:
         return result
 
     def get_ship_distance(ship1,ship2):
+        if ship1 == None or ship2 == None: return 999
         result = abs(ship1.location[0] - ship2.location[0])
         result += abs(ship1.location[1] - ship2.location[1])
         return result
@@ -182,7 +195,8 @@ init -6 python:
 
     def create_ship(ship_class,location,weapons):
         if BM.grid[location[0]-1][location[1]-1]:
-            raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
+            return
+#            raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
         else:
             BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
         ship = ship_class

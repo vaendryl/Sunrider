@@ -17,7 +17,7 @@ screen store_union:
         vbox:
 
             imagebutton:
-                action If(BM.money >= 500 and sunrider.rockets < 2,[SetField(BM,'money',(BM.money - 500)),SetField(sunrider,'rockets',sunrider.rockets + 1)])
+                action If(BM.money >= 300 and sunrider.rockets < 2,[SetField(BM,'money',(BM.money - 300)),SetField(sunrider,'rockets',sunrider.rockets + 1)])
                 idle "Menu/store_item.png"
                 hover "Menu/store_item_hover.png"
                 hovered Show("store_rocket", transition=None)
@@ -27,7 +27,7 @@ screen store_union:
             text "Tactical nuclear warhead    [[owned:{!s}]".format(sunrider.rockets) font "Font/segoeui.ttf" size 25 first_indent 100 line_spacing 38 color "#0a0a0a"
 
         vbox:
-            text "500" font "Font/segoeui.ttf" size 25 first_indent 900 line_spacing 38 color "#0a0a0a"
+            text "300" font "Font/segoeui.ttf" size 25 first_indent 900 line_spacing 38 color "#0a0a0a"
 
     text '{!s}$'.format(BM.money):
         size 50

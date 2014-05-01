@@ -28,11 +28,12 @@ init -1 python hide:
     ## This controls the title of the window, when Ren'Py is
     ## running in a window.
 
-    config.name = "Sunrider Beta Release 2 "
-    config.version = "Beta 2 0.1"
+    config.name = "Sunrider Beta Episode 2 "
+    config.version = "Beta 2.0"
     config.window_title = config.name+config.version
 
-    config.image_cache_size = 30
+    config.image_cache_size = 10
+    renpy.music.set_volume(0.75, 0, channel="music")
 
     #########################################
     # Themes
@@ -248,7 +249,7 @@ init -1 python hide:
     ## stored. (It needs to be set early, before any other init code
     ## is run, so the persisten information can be found by the init code.)
 python early:
-    config.save_directory = "Test alpha-1387526394"
+    config.save_directory = "Sunrider Episode 2 Save Data"
 
 init -1 python hide:
     #########################################
@@ -284,12 +285,12 @@ init python:
     ## The name that's used for directories and archive files. For example, if
     ## this is 'mygame-1.0', the windows distribution will be in the
     ## directory 'mygame-1.0-win', in the 'mygame-1.0-win.zip' file.
-    build.directory_name = "SunriderEpisode1"
+    build.directory_name = "SunriderEpisode2"
 
     ## The name that's uses for executables - the program that users will run
     ## to start the game. For example, if this is 'mygame', then on Windows,
     ## users can click 'mygame.exe' to start the game.
-    build.executable_name = "SunriderEpisode1"
+    build.executable_name = "SunriderEpisode2"
 
     ## If True, Ren'Py will include update information into packages. This
     ## allows the updater to run.
