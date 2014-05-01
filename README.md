@@ -5,7 +5,8 @@ Sunrider
 patch notes 2.1
 ---------------
 
- *fixed*:
+*fixed*:
+
   * missiles deducting energy cost twice
   * bonus menu
   * not being able to load from the main menu after credits
@@ -16,7 +17,8 @@ patch notes 2.1
   * player ships sometimes counter attack twice
   * added 2 cruisers in mission 8 to make it harder to end the battle prematurely.
  
- *balance changes*:
+*balance changes*:
+
   * vanguard cannon now costs 1500 command points
   * upgrading maximum EN is significantly more expensive
   * upgrading EN costs of specific weapon types is slightly less expensive (over time)
