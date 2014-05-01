@@ -297,8 +297,9 @@ label tryagain:
     return
 
 label after_load:
-    try:
-        a = BM.order_used
-    except:
-        BM.order_used = False
+    python:
+        try:
+            a = BM.order_used
+        except:
+            BM.order_used = False
     return

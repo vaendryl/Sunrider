@@ -247,7 +247,7 @@ init 2 python:
             self.blbl = 'Battle UI/label_pactbomber.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
-                'standard':'gameplay/Animations/PirateBomber/bomber_side',
+                'standard':'gameplay/Animations/PACTBomber/side.png',
                 }
             self.flak = 0
             self.flak_range = 0
@@ -397,7 +397,7 @@ init 2 python:
     class PirateBomber(Battleship):
         def __init__(self):
             Battleship.__init__(self)
-            self.stype = 'Bomber'
+            self.stype = 'Ryder' #subtype bomber
             self.name = 'Pirate Bomber'
             self.animation_name = 'piratebomber'
             self.faction = 'Pirate'

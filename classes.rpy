@@ -86,6 +86,19 @@ init -2 python:
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
 
+            #sanity check
+            for ship in BM.ships:
+                if ship.hp <= 0:
+                    destroyed_ships.append(ship)
+                    if ship in player_ships:
+                        player_ships.remove(ship)
+                    if ship in enemy_ships:
+                        enemy_ships.remove(ship)
+                    if ship in BM.ships:
+                        BM.ships.remove(ship)
+
+
+
             if result == 'anime':
                 try:
                     renpy.call_in_new_context('atkanim_blackjack_melee') #'atkanim_blackjack_melee')
