@@ -249,7 +249,6 @@ label endofturn:
 
 label battle_start:
     play music PlayerTurnMusic
-    $battlemode(BM)
     $renpy.take_screenshot()
     $renpy.save('battlestart')
     $BM.xadj.value = 872
@@ -297,18 +296,9 @@ label tryagain:
     pause
     return
 
-#label main_menu:
-#    $BM = Battle()
-#    return
-
-
 label after_load:
-    #old versions don't have this variable so if it doesn't exist, make one.
-    python:
-        try:
-            if BM.edgescroll == None:
-                pass
-        except:
-            BM.edgescroll = (0,0)
-
+    try:
+        a = BM.order_used
+    except:
+        BM.order_used = False
     return

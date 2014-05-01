@@ -217,6 +217,9 @@ init 2 python:
             self.armor = 4
             self.blbl = 'Battle UI/label_phoenixboaster.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/Phoenix/boaster_side.png',
+                }
             self.flak = 20
             self.flak_range = 1
             store.BM.ships.append(self)
@@ -224,7 +227,7 @@ init 2 python:
     class PactBomber(Battleship):
         def __init__(self):
             Battleship.__init__(self)
-            self.stype = 'Bomber'
+            self.stype = 'Ryder' #subtype bomber
             self.name = 'PACT Bomber'
             self.animation_name = 'pactbomber'
             self.faction = 'PACT'
@@ -243,6 +246,9 @@ init 2 python:
             self.move_cost = 30
             self.blbl = 'Battle UI/label_pactbomber.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PirateBomber/bomber_side',
+                }
             self.flak = 0
             self.flak_range = 0
             store.BM.ships.append(self)
@@ -323,7 +329,7 @@ init 2 python:
             self.flak = 20
             self.flak_range = 1
             store.BM.ships.append(self)
-            
+
             self.voice_channel = "icavoice"
             self.attack_voice = ["sound/Voice/Icari/Icari Attacking Melee 1.ogg","sound/Voice/Icari/Icari Attacking Melee 2.ogg","sound/Voice/Icari/Icari Attacking Melee 3.ogg","sound/Voice/Icari/Icari Attacking Melee 1.ogg"]
 
@@ -594,10 +600,10 @@ init 2 python:
     class SunriderRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 700
+            self.damage = 800
             self.energy_use = 30
             self.shot_count = 1
-            self.accuracy = 80
+            self.accuracy = 100
             self.uses_rockets = True
             self.uses_missiles = False
             self.wtype = 'Rocket'
@@ -651,7 +657,7 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Sunrider_Assault'
             self.lbl = 'Battle UI/button_assault.png'
-            
+
     class BlackjackMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
@@ -746,7 +752,7 @@ init 2 python:
             self.wtype = 'Rocket'
             self.accuracy = 60
             self.shot_count = 1
-            
+
     class HavocMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
@@ -1036,7 +1042,7 @@ init 2 python:
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
             return 0
-            
+
     class Stealth(store.object):
         def __init__(self):
             self.damage = 0
@@ -1045,21 +1051,21 @@ init 2 python:
             self.uses_rockets = False
             self.energy_use = 20
             self.shot_count = 1
- 
+
             #effective range is 1 cell away and always hits
             self.accuracy = 75
             self.acc_degradation = 200
- 
+
             self.wtype = 'Support'
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
- 
+
         def fire(self, parent, target):
             if parent.en < self.energy_use:
                 return 'no energy'
             else:
                 parent.en -= self.energy_use
- 
+
             parent.modifiers['stealth'] = [1,1]
             parent.getting_buff = True
             BM.selectedmode = False
@@ -1169,7 +1175,7 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Phoenix_Assault'
             self.lbl = 'Battle UI/button_assault.png'
-            
+
     class PhoenixMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
@@ -1194,7 +1200,7 @@ init 2 python:
             self.shot_count = 20
             self.accuracy = 65
             self.wtype = 'Assault'
-            
+
     class PhoenixEnemyMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)

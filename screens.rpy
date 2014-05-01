@@ -107,7 +107,7 @@ screen choice:
                 xfill True
                 idle "Menu/choice.png"
                 hover "Menu/choice_hover.png"
-                
+
     vbox:
         ypos 0.655
         xalign 0.5
@@ -208,6 +208,7 @@ screen nvl:
 screen main_menu:
 
     $BM = Battle()
+    $BM.phase = 'Player'
 
     imagemap:
         ground "Menu/menu_default.jpg"
@@ -261,10 +262,10 @@ screen navigation:
 
 init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
-    
+
     #                                               number of features
     bonus_features = [[0 for x in xrange(2)] for x in xrange(1)]
-    
+
     # bonus 1
     bonus_features[0][0] = "Background/renpytomback.jpg"
     bonus_features[0][1] = " Doki Doki Space Whale:\n Dating Sim 3"
@@ -273,13 +274,13 @@ screen bonus:
 
     modal True
     zorder 200
-    
+
     imagemap:
         ground "Menu/bonus_base.png"
         hover "Menu/bonus_hover.png"
-        
+
         $ page = 0
-        
+
         # we need to make the screen update when the arrows are clicked
         hotspot (1221, 215, 30, 146):
             $ page += 1
@@ -316,14 +317,20 @@ screen bonus:
 
                     xminimum 460
                     yminimum 130
+                    background None #Solid(0,0,0,255)
 
                     has hbox
 
                     # Add the image and text.
                     if page * columns * rows + i - 1 < len(bonus_features):
-                        add bonus_features[i - 1][0] zoom .09
+                        $ bonusimage = 0
+                        imagebutton:
+                            idle bonus_features[i - 1][0]
+                            hover hoverglow(bonus_features[i - 1][0])
+                            at zoom_button(0.09)
+                            action [Hide('main_menu'),Jump('bonus{}'.format(i))]
                         text bonus_features[i - 1][1]
-                        
+
                     else:
                         text str(page * columns * rows + i) + ". Empty Bonus."
 
@@ -345,7 +352,7 @@ screen load:
 
     key 'mouseup_3' action Hide('load')
 
-    if not BM.phase == 'Player':
+    if not (BM.phase == 'Player' or BM.phase == None):
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
             yalign 0.5

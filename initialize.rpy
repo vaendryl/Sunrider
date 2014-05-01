@@ -241,7 +241,7 @@ label mission5_inits:
     $ EnemyTurnMusic = "music/Sui_Generis.ogg"
 
     return
-    
+
 label mission6_inits:
 
     python:
@@ -255,7 +255,7 @@ label mission6_inits:
 
         create_ship(PactMook(),(12,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        
+
         create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
@@ -270,9 +270,9 @@ label mission6_inits:
     $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
 
     return
-    
+
 label mission7_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -281,7 +281,7 @@ label mission7_inits:
         sunrider.set_location(4,6)
         blackjack.set_location(5,6)
         liberty.set_location(5,7)
-        
+
         phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
         phoenix = create_ship(Phoenix(),(5,5),phoenix_weapons)
 
@@ -292,7 +292,7 @@ label mission7_inits:
         create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(13,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(14,10),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        
+
         create_ship(PactBomber(),(13,5),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         #create_ship(PactBomber(),(14,4),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
 
@@ -314,9 +314,9 @@ label mission7_inits:
     $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
 
     return
-    
+
 label mission8_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -327,12 +327,15 @@ label mission8_inits:
         liberty.set_location(5,7)
         agamemnon_weapons = []
         agamemnon = create_ship(Agamemnon(),(2,6),agamemnon_weapons)
-        
+
         create_ship(PactMook(),(12,5),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        
+        create_ship(PactCruiser(),(18,5),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        create_ship(PactCruiser(),(18,8),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+
+
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
