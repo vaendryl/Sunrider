@@ -3,25 +3,25 @@ Sunrider
 
 
 patch notes 2.1
-========
+---------------
 
- fixed:
-  missiles deducting energy cost twice
-  bonus menu
-  not being able to load from the main menu after credits
-  pulse weapons always missing on the pirate base (still only does minimal damage)
-  pirate bombers can now be attacked by melee
-  game crash when attacking the phoenix with the booster attached with a melee attack
-  fixed flak no longer working after shooting down all the missiles in a salvo.
-  player ships sometimes counter attack twice
-  added 2 cruisers in mission 8 to make it harder to end the battle prematurely.
+ *fixed*:
+  * missiles deducting energy cost twice
+  * bonus menu
+  * not being able to load from the main menu after credits
+  * pulse weapons always missing on the pirate base (still only does minimal damage)
+  * pirate bombers can now be attacked by melee
+  * game crash when attacking the phoenix with the booster attached with a melee attack
+  * fixed flak no longer working after shooting down all the missiles in a salvo.
+  * player ships sometimes counter attack twice
+  * added 2 cruisers in mission 8 to make it harder to end the battle prematurely.
  
- balance changes:
-  vanguard cannon now costs 1500 command points
-  upgrading maximum EN is significantly more expensive
-  upgrading EN costs of specific weapon types is slightly less expensive (over time)
-  Tactical nuclear warheads have become cheaper and more powerful. 300$ for 800 damage.                                                                                 recommended against (pirate) bases!
-  you can only use 1 order per turn
+ *balance changes*:
+  * vanguard cannon now costs 1500 command points
+  * upgrading maximum EN is significantly more expensive
+  * upgrading EN costs of specific weapon types is slightly less expensive (over time)
+  * Tactical nuclear warheads have become cheaper and more powerful. 300$ for 800 damage. recommended against (pirate) bases!
+  * you can only use 1 order per turn
 
 beta 2 v2.00
 ========
