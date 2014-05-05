@@ -1,6 +1,15 @@
 Sunrider
 ========
 
+preliminary work on beta 3
+--------------------------
+
+changed:
+* enemy phoenix is immune to blind side attacks
+* changed EN upgrades to go in units of 5 (thanks ledabot)
+* fixed not being able to use a weapon because game didn't check for cost upgrades when deciding when a button is clickable
+* accuracy upgrades affect a weapons base accuracy, which overall makes these upgrades more effective and easier to understand.
+
 
 patch notes 2.1
 ---------------

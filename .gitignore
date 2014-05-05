@@ -4,6 +4,18 @@
 *.pyc
 *.pyo
 
+*.jpg
+*.png
+
+*.mp3
+*.ogg
+*.wav
+
+*.zip
+*.rar
+*.save
+persistent
+
 *~
 *.bak
 

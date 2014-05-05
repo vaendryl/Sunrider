@@ -299,7 +299,12 @@ label tryagain:
 label after_load:
     python:
         try:
-            a = BM.order_used
+            if BM.save_version != config.version:
+                reset_classes()
+                renpy.call('firstvariables')
+                BM.save_version = config.version
         except:
-            BM.order_used = False
+            reset_classes()
+            renpy.call('firstvariables')
+            BM.save_version = config.version
     return

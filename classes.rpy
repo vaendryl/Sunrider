@@ -18,6 +18,7 @@ init -2 python:
         ##it gets initialized into an instance called BM, short for battlemanager
     class Battle(store.object): # handles managing a list of all battle units, handles turns and manages enemy AI
         def __init__(self):
+            self.save_version = config.version
             self.ships = []
             self.missiles = []
             self.selected = None
@@ -39,7 +40,7 @@ init -2 python:
             self.orders = {
                 'FULL FORWARD':[500,'full_forward'],
                 'REPAIR DRONES':[500,'repair_drones'],
-                'VANGUARD CANNON':[1500,'vanguard_cannon']
+                'VANGUARD CANNON':[1500,'vanguard_cannon'],
                 }
             self.order_used = False
               #environment modififiers are initialized here and can be changed later
@@ -532,7 +533,7 @@ init -2 python:
             #[display name, level,increase/upgrade,upgrade cost,cost multiplier]
             self.upgrades = {
                 'max_hp':['Hull Plating',1,100,100,1.5],
-                'max_en':['Energy Reactor',1,10,500,2],
+                'max_en':['Energy Reactor',1,5,200,1.4],
                 'move_cost':['Move Cost',1,-1,100,2.5],
                 'evasion':['Evasion',1,5,500,2.5],
                 'kinetic_dmg':['Kinetic Damage',1,0.05,100,1.5],
@@ -1034,7 +1035,7 @@ init -2 python:
                                 show_message('COUNTER ATTACK!')
                                 enemy.AI_attack_target(self,counter)
             else:
-                for ship in player_ships:
+                for ship in player_ships and ship.name != 'Phoenix':
                     if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
                         counter = None
                         for weapon in ship.weapons:
@@ -1354,6 +1355,20 @@ init -2 python:
             if total_damage == 0: return 'miss'
             return int(total_damage)
 
+    class Cover(store.object):
+        def __init__(self,location = (0,0)):
+            self.location = location
+            self.cover = 25
+            self.max_hp = 500
+            self.hp = self.max_hp
+
+        def receive_damage(self,damage):
+            self.hp -= damage
+            if self.hp <=0: self.destroy()
+
+        def destroy(self):
+            if self in BM.covers:
+                BM.covers.remove(self)
 
 
          ### WEAPONFIRE PARTICLE GENERATOR ###

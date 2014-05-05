@@ -35,6 +35,8 @@ init 2 python:
             self.base_armor = 15
             self.armor = self.base_armor
             store.BM.ships.append(self)  #register itself upon creation
+            self.test = 'test1234'
+            self.test2 = 'test2'
 
             ####################VOICES
             self.voice_channel = "avavoice"

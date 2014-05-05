@@ -29,6 +29,7 @@ screen upgrade:
     $ upgrade_list.append(ship.upgrades['max_hp'])
     $ upgrade_list.append(ship.upgrades['max_en'])
     $ upgrade_list.append(ship.upgrades['evasion'])
+#    $ upgrade_list.append(ship.upgrades['move_cost'])  #probably should be set individually in design
     $ upgrade_list.append(["KINETIC -----------",None,None,None,None])
     $ upgrade_list.append(ship.upgrades['kinetic_dmg'])
     $ upgrade_list.append(ship.upgrades['kinetic_acc'])

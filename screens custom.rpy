@@ -698,6 +698,17 @@ screen commands: ##show the weapon buttons etc##
                 else:
                     $x_offset = -353
                     $y_offset = 345
+
+                $ energy_cost = -weapon.energy_use
+                if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
+                if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.energy_cost)
+                if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.missile_cost)
+                if weapon.wtype == 'Melee':
+                    $ energy_cost = int(-weapon.energy_use * BM.selected.melee_cost)
+
                 if BM.targetingmode:
                     if BM.active_weapon == weapon:
                         imagebutton:
@@ -717,7 +728,7 @@ screen commands: ##show the weapon buttons etc##
                             action NullAction()
                             unhovered SetField(BM,'weaponhover',None)
                 else:
-                    $can_fire = BM.selected.en >= weapon.energy_use
+                    $can_fire = BM.selected.en >= energy_cost
                     if weapon.uses_missiles:
                         $can_fire = can_fire and weapon.ammo_use <= BM.selected.missiles
                     if weapon.uses_rockets:
@@ -733,15 +744,7 @@ screen commands: ##show the weapon buttons etc##
                         unhovered SetField(BM,'weaponhover',None)
 
                   ##show energy cost of weapon on weaponbutton
-                $ energy_cost = -weapon.energy_use
-                if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
-                    $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
-                if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
-                    $ energy_cost = int(-weapon.energy_use * BM.selected.energy_cost)
-                if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
-                    $ energy_cost = int(-weapon.energy_use * BM.selected.missile_cost)
-                if weapon.wtype == 'Melee':
-                    $ energy_cost = int(-weapon.energy_use * BM.selected.melee_cost)
+
                 text str(energy_cost) + 'EN':
                     xanchor 0.5
                     yanchor 0.5
