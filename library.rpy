@@ -97,7 +97,7 @@ init 2 python:
             self.buffed_voice = ['Asaga/Asaga Buffed 1.ogg','Asaga/Asaga Buffed 2.ogg']
             self.cursed_voice = ['Asaga/Asaga Cursed 1.ogg','Asaga/Asaga Cursed 2.ogg','Asaga/Asaga Cursed 3.ogg']
 
-    class Liberty(Battleship):  #you can use any existing blueprint as a base, which makes things really easy.
+    class Liberty(Battleship):
         def __init__(self):
             Battleship.__init__(self)
             self.stype = 'Ryder'
@@ -920,166 +920,49 @@ init 2 python:
 
 
 
-
-
-
-
-
 ### SUPPORT SKILLS ###
-    class Repair(store.object):
+    class Repair(Support):
         def __init__(self):
-            self.damage = 0
-            self.heal = 300
-            self.uses_missiles = False
-            self.uses_rockets = False
-            self.energy_use = 80  #easier testing
-
-            #effective range is 3 cells away and always hits
-            self.accuracy = 350
-            self.acc_degradation = 100
-
-            self.wtype = 'Support'
+            Support.__init__(self)
+            self.repair = True
+            self.damage = 300 #also used for heals
+            self.energy_use = 80
             self.name = 'Repair I'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_repair.png'
 
-        def fire(self, parent, target):
-            if parent.en < self.energy_use:
-                return 'no energy'
-            else:
-                parent.en -= self.energy_use
-
-            healing = self.heal * renpy.random.triangular(0.8,1.2)
-            target.getting_buff = True
-            BM.selectedmode = False
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            if not target == parent:
-                a = renpy.random.randint(0,len(target.buffed_voice)-1)
-                renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
-                del a
-            renpy.pause(1)
-            target.getting_buff = False
-            BM.selectedmode = True
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            return healing
-
-    class AccUp(store.object):
+    class AccUp(Support):
         def __init__(self):
-            self.damage = 0
-            self.heal = 0
-            self.uses_missiles = False
-            self.uses_rockets = False
-            self.energy_use = 60  #easier testing
-            self.stat_boost = 15
-
-            #effective range is 3 cells away and always hits
-            self.accuracy = 350
-            self.acc_degradation = 100
-
-            self.wtype = 'Support'
+            Support.__init__(self)
+            self.modifies = 'accuracy'
+            self.buff_strength = 15
+            self.buff_duration = 3
             self.name = 'Aim Up'
-            self.shot_count = 1
             self.lbl = 'Battle UI/button_aimup.png'
 
-        def fire(self, parent, target):
-            if parent.en < self.energy_use:
-                return 'no energy'
-            else:
-                parent.en -= self.energy_use
-
-            target.modifiers['accuracy'] = [self.stat_boost,3]
-            target.getting_buff = True
-            BM.selectedmode = False
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            if not target == parent:
-                a = renpy.random.randint(0,len(target.buffed_voice)-1)
-                renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
-                del a
-            renpy.pause(1)
-            target.getting_buff = False
-            BM.selectedmode = True
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            return 0
-
-    class DamageUp(store.object):
+    class DamageUp(Support):
         def __init__(self):
-            self.damage = 0
-            self.heal = 0
-            self.uses_missiles = False
-            self.uses_rockets = False
-            self.energy_use = 60  #easier testing
-            self.stat_boost = 20
-
-            #effective range is 3 cells away and always hits
-            self.accuracy = 350
-            self.acc_degradation = 100
-
-            self.wtype = 'Support'
+            Support.__init__(self)
+            self.modifies = 'damage'
+            self.buff_strength = 20
+            self.buff_duration = 3
             self.name = 'Damage Up'
-            self.shot_count = 1
             self.lbl = 'Battle UI/button_atkup.png'
 
-        def fire(self, parent, target):
-            if parent.en < self.energy_use:
-                return 'no energy'
-            else:
-                parent.en -= self.energy_use
-
-            target.modifiers['damage'] = [self.stat_boost,3]
-            target.getting_buff = True
-            BM.selectedmode = False
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            if not target == parent:
-                a = renpy.random.randint(0,len(target.buffed_voice)-1)
-                renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
-                del a
-            renpy.pause(1)
-            target.getting_buff = False
-            BM.selectedmode = True
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            return 0
-
-    class Stealth(store.object):
+    class Stealth(Support):
         def __init__(self):
-            self.damage = 0
-            self.heal = 0
-            self.uses_missiles = False
-            self.uses_rockets = False
+            Support.__init__(self)
+            self.self_buff = True
             self.energy_use = 20
-            self.shot_count = 1
-
-            #effective range is 1 cell away and always hits
-            self.accuracy = 75
-            self.acc_degradation = 200
-
-            self.wtype = 'Support'
+            self.accuracy = 100
+            self.acc_degradation = 100
+            self.modifies = 'stealth'
+            self.buff_strength = 100
+            self.buff_duration = 1
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
 
-        def fire(self, parent, target):
-            if parent.en < self.energy_use:
-                return 'no energy'
-            else:
-                parent.en -= self.energy_use
-
-            parent.modifiers['stealth'] = [1,1]
-            parent.getting_buff = True
-            BM.selectedmode = False
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            renpy.pause(1)
-            target.getting_buff = False
-            BM.selectedmode = True
-            renpy.hide_screen('battle_screen')
-            renpy.show_screen('battle_screen')
-            return 0
-
+## are these still used?
     class Rocket(Missile):
         def __init__(self):
             Missile.__init__(self)

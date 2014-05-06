@@ -205,14 +205,16 @@ screen battle_screen:
 
 
 
-
-#rewrite this. there is no need to loop through all cells
                 ## DISPLAY SHIP AVATARS ##
+
+          ## cycling through every cell in the grid in order is required so that units
+          ## do not overlap units below them making things look weird.
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                for ship in BM.ships: #cycle through every ship in the game
-                    if ship.location == (a,b): #check if we found the right location
 
+                  ##first display the coloured bases that go beneath the units
+                for ship in BM.ships: #cycle through every ship in the battle
+                    if ship.location == (a,b):
                           ##first we show the circle base below every unit
                         $xposition = int((ship.location[0]+0.5) * 192 * zoomlevel)
                         $yposition = int((ship.location[1]+0.5) * 120 * zoomlevel)
@@ -240,143 +242,70 @@ screen battle_screen:
                                 ypos yposition
                                 size (xsize,ysize)
 
-                          #now we add imagebuttons that represent the ships you can click on
-                        $xposition = int((ship.location[0]+0.5) * 192 * zoomlevel)
-                        $yposition = int((ship.location[1]+0.25) * 120 * zoomlevel)
+                        $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
+                        $cell_height = 1080 / ((GRID_SIZE[1]+2)/2)
+
+                        #calculate the position of the ships on the field
+                        $xposition = int((ship.location[0]+0.5) * cell_width * zoomlevel)
+                        $yposition = int((ship.location[1]+0.25) * cell_height * zoomlevel)
 
                         if ship.getting_buff:  #used if you buff someone
                             add 'Battle UI/buff_back.png':
-                                xpos int(xposition-96*zoomlevel)
+                                xpos int(xposition-(cell_width/2)*zoomlevel)
                                 zoom (zoomlevel/2.0)
                                 at buffup(yposition)
 
-                        if BM.targetingmode and not BM.active_weapon.wtype == 'Support':  #makes enemy_ships glow when you should target them. because clicking what you want dead isn't an obvious thing
-                            if ship.faction == 'Player':
-                                if BM.selected == ship:
-                                    imagebutton:   #this is your own selected ship
-                                        xanchor 0.5
-                                        yanchor 0.5
-                                        xpos xposition
-                                        ypos yposition
-                                        action Return(['selection',ship])
-                                        idle hoverglow(ship.lbl)
-                                        hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                        hovered SetField(BM,'hovered',ship)
-                                        unhovered SetField(BM,'hovered',None)
-                                        focus_mask True
-                                        at zoom_button(zoomlevel/2.5)
-                                else:
-                                    imagebutton:   #this is one of your ships, but not the one selected
-                                        xanchor 0.5
-                                        yanchor 0.5
-                                        xpos xposition
-                                        ypos yposition
-                                        action NullAction()
-                                        idle im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                        hover im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                        hovered SetField(BM,'hovered',ship)
-                                        unhovered SetField(BM,'hovered',None)
-                                        focus_mask True
-                                        at zoom_button(zoomlevel/2.5)
-                            else:
-                                if BM.active_weapon.wtype == 'Melee':
-                                    if ship.stype == 'Ryder' and get_ship_distance(BM.selected,ship) == 1:
-                                        imagebutton:  #enemy ship ready to attack with active melee weapon
-                                            xanchor 0.5
-                                            yanchor 0.5
-                                            xpos xposition
-                                            ypos yposition
-                                            action Return(['selection',ship])
-                                            idle hoverglow(ship.lbl)
-                                            hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                            hovered SetField(BM,'hovered',ship)
-                                            unhovered SetField(BM,'hovered',None)
-                                            focus_mask True
-                                            at zoom_button(zoomlevel/2.5)
-                                    else:
-                                        imagebutton:  #enemy ship cannot be attacked by melee weapon!
-                                            xanchor 0.5
-                                            yanchor 0.5
-                                            xpos xposition
-                                            ypos yposition
-                                            action NullAction()
-                                            idle im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                            hover im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                            hovered SetField(BM,'hovered',ship)
-                                            unhovered SetField(BM,'hovered',None)
-                                            focus_mask True
-                                            at zoom_button(zoomlevel/2.5)
+                        #default values
+                        $mode = '' #default
+                        $act = Return(['selection',ship])
+                        $lbl = ship.lbl
+                        $hvr = hoverglow(ship.lbl)
+                        $hvrd = SetField(BM,'hovered',ship)
+                        $unhvrd = SetField(BM,'hovered',None)
 
+                        #some properties of the imagebutton representing a ship change depending on circumstances
+                        if ship.faction == 'Player':
+                            #by default player ships can be selected, which the above values are already set to.
 
-                                else:
-                                    imagebutton:  #enemy ship ready to attack with active (non melee) weapon
-                                        xanchor 0.5
-                                        yanchor 0.5
-                                        xpos xposition
-                                        ypos yposition
-                                        action Return(['selection',ship])
-                                        idle hoverglow(ship.lbl)
-                                        hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                        hovered SetField(BM,'hovered',ship)
-                                        unhovered SetField(BM,'hovered',None)
-                                        focus_mask True
-                                        at zoom_button(zoomlevel/2.5)
+                            if BM.targetingmode:
+                                #you cannot target yourself with an active weapon
+                                $ mode = 'offline'
 
-                        elif BM.targetingmode and BM.active_weapon.wtype == 'Support':
-                            if ship.faction == 'Player':
-                                imagebutton:
-                                    xanchor 0.5
-                                    yanchor 0.5
-                                    xpos xposition
-                                    ypos yposition
-                                    action Return(['selection',ship])
-                                    idle hoverglow(ship.lbl)
-                                    hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                    hovered SetField(BM,'hovered',ship)
-                                    unhovered SetField(BM,'hovered',None)
-                                    focus_mask True
-                                    at zoom_button(zoomlevel/2.5)
-                            else:
-                                imagebutton:
-                                    xanchor 0.5
-                                    yanchor 0.5
-                                    xpos xposition
-                                    ypos yposition
-                                    action NullAction()
-                                    idle im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                    hover im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                                    hovered SetField(BM,'hovered',ship)
-                                    unhovered SetField(BM,'hovered',None)
-                                    focus_mask True
-                                    at zoom_button(zoomlevel/2.5)
+                                if BM.active_weapon.wtype == 'Support':
+                                    #except when the active weapon is a support skill. in that case, player ships become targets
+                                    $ mode = 'target'
 
-                        else:
-                            if ship == BM.selected:
-                                imagebutton:
-                                    xanchor 0.5
-                                    yanchor 0.5
-                                    xpos xposition
-                                    ypos yposition
-                                    action Return(['selection',ship])
-                                    idle hoverglow(ship.lbl)
-                                    hover im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                                    hovered SetField(BM,'hovered',ship)
-                                    unhovered SetField(BM,'hovered',None)
-                                    focus_mask True
-                                    at zoom_button(zoomlevel/2.5)
-                            else:
-                                imagebutton:
-                                    xanchor 0.5
-                                    yanchor 0.5
-                                    xpos xposition
-                                    ypos yposition
-                                    action Return(['selection',ship])
-                                    idle ship.lbl
-                                    hover hoverglow(ship.lbl)
-                                    hovered SetField(BM,'hovered',ship)
-                                    unhovered SetField(BM,'hovered',None)
-                                    focus_mask True
-                                    at zoom_button(zoomlevel/2.5)
+                        else: #ship is an enemy faction
+                            #by default enemy ships can be selected (to view stat details), which the above values are already set to.
+
+                            if BM.targetingmode:
+                                #with an active weapon selected enemies become targets
+                                $ mode = 'target'
+
+                                if BM.active_weapon == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
+                                    #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
+                                    $ mode = 'offline'
+
+                        if mode == 'target':
+                            $ lbl = hoverglow(ship.lbl)
+                            $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
+                        elif mode == 'offline':
+                            $ act = NullAction()
+                            $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                            $ lbl = hvr
+
+                        imagebutton:
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos xposition
+                            ypos yposition
+                            action act
+                            idle lbl
+                            hover hvr
+                            hovered hvrd
+                            unhovered unhvrd
+                            focus_mask True
+                            at zoom_button(zoomlevel/2.5)
 
                         if ship.fireing_flak:
                             add 'Battle UI/warning icon.png':
@@ -412,6 +341,7 @@ screen battle_screen:
                             zoom (zoomlevel/2.5)
                             crop (0,0,energy_size,79)
 
+
           ##show missiles on the map that are currently flying in space##
         if len(BM.missiles) > 0:
             for missile in BM.missiles:
@@ -432,14 +362,15 @@ screen battle_screen:
                     outlines [(1,'000',0,0)]
 
 
-
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
           ##loop again to show the targeting window. this way other ships don't overlap with it.
         if not BM.weaponhover == None or BM.targetingmode:
+
+              #the looping is NEEDED to counter overlap problems. it sucks, I know. I wish I could set zorder to individual images
             for a in range(1,GRID_SIZE[0]+1):
                 for b in range(1,GRID_SIZE[1]+1):
-
                     for ship in BM.ships:
+
                         if BM.weaponhover == None:
                             $BM.weaponhover = BM.active_weapon
                         if BM.weaponhover.wtype == 'Support' and ship.faction != 'Player':
@@ -534,7 +465,7 @@ screen battle_screen:
                     size (20 * zoomlevel)
 
 
-
+          #firing the vanguard cannon
         if BM.vanguard:
             $xposition = int((sunrider.location[0]+0.5) * 192 * zoomlevel)
             $yposition = int((sunrider.location[1]) * 120 * zoomlevel)
@@ -715,6 +646,7 @@ screen commands: ##show the weapon buttons etc##
                     $x_offset = -353
                     $y_offset = 345
 
+                #calculate the cost of this weapon based off of upgrades
                 $ energy_cost = -weapon.energy_use
                 if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
                     $ energy_cost = int(-weapon.energy_use * BM.selected.kinetic_cost)
@@ -725,42 +657,44 @@ screen commands: ##show the weapon buttons etc##
                 if weapon.wtype == 'Melee':
                     $ energy_cost = int(-weapon.energy_use * BM.selected.melee_cost)
 
-                if BM.targetingmode:
+                #check if this weapon can be fired right now
+                $can_fire = BM.selected.en >= -energy_cost
+                if weapon.uses_missiles:
+                    $ can_fire = can_fire and weapon.ammo_use <= BM.selected.missiles
+                if weapon.uses_rockets:
+                    $ can_fire = can_fire and weapon.ammo_use <= BM.selected.rockets
+
+                #default behaviour
+                $ lbl = weapon.lbl
+                $ hvr = hoverglow(weapon.lbl)
+                $ act = If(can_fire,Return(['weapon_fire',weapon]))
+                $ hvrd = Return(['hover',weapon])
+                $ unhvrd = SetField(BM,'weaponhover',None)
+                $ insens = im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
+
+                #the behavior of the imagebutton (representing a weapon) changes depending on various circumstances
+                if BM.targetingmode: #you are selecting a target to attack or use a support skill on.
                     if BM.active_weapon == weapon:
-                        imagebutton:
-                            xpos (x_offset+120*count)
-                            ypos (y_offset+69*count)
-                            idle hoverglow(weapon.lbl)
-                            hover im.MatrixColor(weapon.lbl,im.matrix.brightness(0.2))
-                            action [SetField(BM,'targetingmode',False),SetField(BM,'active_weapon',None)]
-                            hovered Return(['hover',weapon])
-                            unhovered SetField(BM,'weaponhover',None)
+                        $ lbl = hoverglow(weapon.lbl)
+                        $ hvr = im.MatrixColor(weapon.lbl,im.matrix.brightness(0.2))
+                        $ act = [SetField(BM,'targetingmode',False),SetField(BM,'active_weapon',None)]
                     else:
-                        imagebutton:
-                            xpos (x_offset+120*count)
-                            ypos (y_offset+69*count)
-                            idle im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
-                            hover im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
-                            action NullAction()
-                            unhovered SetField(BM,'weaponhover',None)
-                else:
-                    $can_fire = BM.selected.en >= -energy_cost
-                    if weapon.uses_missiles:
-                        $can_fire = can_fire and weapon.ammo_use <= BM.selected.missiles
-                    if weapon.uses_rockets:
-                        $can_fire = can_fire and weapon.ammo_use <= BM.selected.rockets
-                    imagebutton:
-                        insensitive im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
+                        $ lbl = im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
+                        $ hvr = lbl
+                        $ hvrd = None
+                        $ act = NullAction()
+
+                imagebutton:
+                        insensitive insens
                         xpos (x_offset+120*count)
                         ypos (y_offset+69*count)
-                        idle weapon.lbl
-                        hover hoverglow(weapon.lbl)
-                        action If(can_fire,Return(['weapon_fire',weapon]))
-                        hovered Return(['hover',weapon])
-                        unhovered SetField(BM,'weaponhover',None)
+                        idle lbl
+                        hover hvr
+                        action act
+                        hovered hvrd
+                        unhovered unhvrd
 
                   ##show energy cost of weapon on weaponbutton
-
                 text str(energy_cost) + 'EN':
                     xanchor 0.5
                     yanchor 0.5
