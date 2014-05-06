@@ -20,6 +20,7 @@ init -2 python:
         def __init__(self):
             self.save_version = config.version
             self.ships = []
+            self.covers = []
             self.missiles = []
             self.selected = None
             self.hovered = None
@@ -418,6 +419,7 @@ init -2 python:
 
             #reset the entire grid to empty and BM.ships with only the player_ships list
             clean_grid()
+            BM.covers = []
 
             renpy.block_rollback()
 
@@ -637,6 +639,7 @@ init -2 python:
                         damage = int(damage * 1.33)
                     else:
                         damage = int(damage * 0.75)
+
 
                 #havoc isn't allowed to die in the first turn
                 if self.name == 'Havoc' and BM.turn_count == 1 and damage > self.hp:
@@ -1098,6 +1101,11 @@ init -2 python:
             store.total_armor_negation = 0
             store.total_shield_negation = 0
             store.hit_count = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(self.shot_count):
                 if renpy.random.randint(0,100) > accuracy:
                     pass #you missed!
@@ -1142,12 +1150,18 @@ init -2 python:
 
             accuracy = get_acc(self, parent, target)
             if accuracy == 0: return 'miss'
+
             total_damage = 0
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) > accuracy:
+                if renpy.random.randint(1,100) > accuracy:
                     pass #you missed!
                 else:
                     damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
@@ -1261,6 +1275,11 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(missile.shot_count):
                 if renpy.random.randint(0,100) <= accuracy:
                     damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
@@ -1356,11 +1375,13 @@ init -2 python:
             return int(total_damage)
 
     class Cover(store.object):
-        def __init__(self,location = (0,0)):
+        def __init__(self,location = (1,1)):
             self.location = location
-            self.cover = 25
+            self.cover_chance = 25 #percentage chance of blocking an incoming attack
             self.max_hp = 500
             self.hp = self.max_hp
+            self.label = 'Battle UI/asteroid cover.png'
+            self.angle = renpy.random.randint(1,360)
 
         def receive_damage(self,damage):
             self.hp -= damage
@@ -1369,6 +1390,8 @@ init -2 python:
         def destroy(self):
             if self in BM.covers:
                 BM.covers.remove(self)
+                show_message('The asteroid was destroyed!')
+                renpy.pause(0.5)
 
 
          ### WEAPONFIRE PARTICLE GENERATOR ###

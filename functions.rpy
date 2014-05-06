@@ -306,6 +306,24 @@ init -6 python:
         if ship.faction == 'Player':
             return ship
 
+    def create_cover(location):
+        BM.covers.append(Cover(location))
+        return
+
+    def cover_mechanic(weapon,target,accuracy):
+            for cover in BM.covers:
+                if cover.location == target.location:
+                    if renpy.random.randint(1,100) <= cover.cover_chance:
+                        show_message('the shot was blocked by an asteroid!')
+                        renpy.pause(1.0)
+                        total_damage = 0
+                        for shot in range(weapon.shot_count):
+                                total_damage += weapon.damage  #asteroid has no defenses
+                        cover.receive_damage(total_damage)
+                        return True
+            return False
+
+
     def get_movement_tiles(ship):
         if ship == None: return
         move_range = int(float(ship.en) / ship.move_cost)

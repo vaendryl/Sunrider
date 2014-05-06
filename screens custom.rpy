@@ -189,8 +189,24 @@ screen battle_screen:
                                         size (xsize,ysize)
                                         alpha 0.7
 
+                ## DISPLAY COVER ##
+        for cover in BM.covers:
+            $xposition = int((cover.location[0]+0.5) * 192 * zoomlevel)
+            $yposition = int((cover.location[1]+0.5) * 120 * zoomlevel)
+            $xsize = int(210 * zoomlevel)
+            $ysize = int(120 * zoomlevel)
+            add cover.label:
+                xanchor 0.5
+                yanchor 0.5
+                xpos xposition
+                ypos yposition
+                size (xsize,ysize)
+                at Transform(cover.label,rotate = cover.angle)
 
 
+
+
+#rewrite this. there is no need to loop through all cells
                 ## DISPLAY SHIP AVATARS ##
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
@@ -728,7 +744,7 @@ screen commands: ##show the weapon buttons etc##
                             action NullAction()
                             unhovered SetField(BM,'weaponhover',None)
                 else:
-                    $can_fire = BM.selected.en >= energy_cost
+                    $can_fire = BM.selected.en >= -energy_cost
                     if weapon.uses_missiles:
                         $can_fire = can_fire and weapon.ammo_use <= BM.selected.missiles
                     if weapon.uses_rockets:
