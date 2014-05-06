@@ -5,10 +5,11 @@ preliminary work on beta 3
 --------------------------
 
 changed:
-* enemy phoenix is immune to blind side attacks
+* enemy phoenix is immune to counter attacks
 * changed EN upgrades to go in units of 5 (thanks ledabot)
 * fixed not being able to use a weapon because game didn't check for cost upgrades when deciding when a button is clickable
 * accuracy upgrades affect a weapons base accuracy, which overall makes these upgrades more effective and easier to understand.
+* added a cover mechanic. Asteroids can be spawned in a battle that will have a chance of blocking attacks aimed at a unit on the same cell; until the asteroid is destroyed.
 
 
 patch notes 2.1
