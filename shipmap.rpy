@@ -67,6 +67,13 @@ screen deck0:
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if ica_location == "captainsloft":
+                imagebutton:
+                    #xpos 560 ypos 435
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "captainsloft":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -103,6 +110,12 @@ screen deck0:
                     action Jump(asa_event)
                     idle "Menu/asa_button.png"
                     hover "Menu/asa_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if ica_location == "sickbay":
+                imagebutton:
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if chi_location == "sickbay":
                 imagebutton:
@@ -147,6 +160,13 @@ screen deck0:
                     action Jump(chi_event)
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if ica_location == "messhall":
+                imagebutton:
+                    #xpos 1250 ypos 480
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if pro_location == "messhall":
                 imagebutton:
@@ -199,6 +219,13 @@ screen deck1:
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if ica_location == "bridge":
+                imagebutton:
+                    #xpos 660 ypos 470
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "bridge":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -244,6 +271,13 @@ screen deck1:
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if ica_location == "engineering":
+                imagebutton:
+                    #xpos 1080 ypos 520
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "engineering":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -279,6 +313,12 @@ screen deck1:
                     action Jump(chi_event)
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if ica_location == "lab":
+                imagebutton:
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if pro_location == "lab":
                 imagebutton:
@@ -338,7 +378,14 @@ screen deck2:
                     idle "Menu/chi_button.png"
                     hover "Menu/chi_button_hover.png"
                     activate_sound "Sound/click.mp3"
-                    
+            if ica_location == "hangar":
+                imagebutton:
+                    #xpos 1250 ypos 520
+                    action Jump(ica_event)
+                    idle "Menu/ica_button.png"
+                    hover "Menu/ica_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+
             if pro_location == "hangar":
                 imagebutton:
                     #xpos 560 ypos 435

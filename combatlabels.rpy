@@ -32,10 +32,10 @@ label test_battle:
         blackjack_weapons = [Melee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
         blackjack = create_ship(BlackJack(),(10,5),blackjack_weapons)
 
-        liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
+        liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp(),AccDown()]
         liberty = create_ship(Liberty(),(8,7),liberty_weapons)
 
-        phoenix_weapons = [Melee(),Stealth()]
+        phoenix_weapons = [Melee(),Stealth(),GravityGun()]
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])

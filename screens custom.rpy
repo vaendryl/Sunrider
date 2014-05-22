@@ -50,6 +50,16 @@ init -2:  ##0) transforms
             time 0.5
             linear 0.5 alpha 0
 
+    transform cursedown(xx):
+        ypos xx
+        alpha 1
+
+        parallel:
+            linear 1 ypos int(xx+190*zoomlevel)
+        parallel:
+            time 0.5
+            linear 0.5 alpha 0
+
     transform movebutton: #used to make it look cool when you click Move
         zoom zoomlevel
         alpha 0.5
@@ -255,6 +265,12 @@ screen battle_screen:
                                 zoom (zoomlevel/2.0)
                                 at buffup(yposition)
 
+                        if ship.getting_curse:  #used if you curse someone
+                            add 'Battle UI/curse_back.png':
+                                xpos int(xposition-(cell_width/2)*zoomlevel)
+                                zoom (zoomlevel/2.0)
+                                at cursedown(yposition-(190)*zoomlevel)
+
                         #default values
                         $mode = '' #default
                         $act = Return(['selection',ship])
@@ -282,9 +298,14 @@ screen battle_screen:
                                 #with an active weapon selected enemies become targets
                                 $ mode = 'target'
 
-                                if BM.active_weapon == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
+                                if BM.active_weapon.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
                                     #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
                                     $ mode = 'offline'
+
+                                if BM.active_weapon.name == 'Gravity Gun':
+                                    #the gravity gun is a special type weapon
+                                    if ship.stype != 'Ryder':
+                                        $ mode = 'offline'
 
                         if mode == 'target':
                             $ lbl = hoverglow(ship.lbl)
@@ -322,24 +343,58 @@ screen battle_screen:
                                 zoom (zoomlevel/2.0)
                                 at buffup(int(yposition+50*zoomlevel))
 
-                          ##add the HP bar and the EN bar
-                        $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
-                        $yposition = int((ship.location[1]+0.66) * 120 * zoomlevel)
-                        $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                        add 'Battle UI/label hp bar.png':
-                            xpos xposition
-                            ypos yposition
-                            zoom (zoomlevel/2.5)
-                            crop (0,0,hp_size,79)
+                        if ship.getting_curse:
+                            add 'Battle UI/curse_front.png':
+                                xpos int(xposition-96*zoomlevel)
+                                zoom (zoomlevel/2.0)
+                                at cursedown(yposition-(190-50)*zoomlevel)
 
-                        $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
-                        $yposition = int((ship.location[1]+0.72) * 120 * zoomlevel)
-                        $energy_size = int(405*(float(ship.en)/ship.max_en))
-                        add 'Battle UI/label energy bar.png':
-                            xpos xposition
-                            ypos yposition
-                            zoom (zoomlevel/2.5)
-                            crop (0,0,energy_size,79)
+                          ##add the HP bar and the EN bar
+                        if ship.faction == 'Player':
+                            $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
+                            $yposition = int((ship.location[1]+0.66) * 120 * zoomlevel)
+                            $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                            add 'Battle UI/label hp bar.png':
+                                xpos xposition
+                                ypos yposition
+                                zoom (zoomlevel/2.5)
+                                crop (0,0,hp_size,79)
+
+#                            text str(ship.hp):
+#                                xpos (xposition+60*zoomlevel)
+#                                ypos (yposition+30*zoomlevel)
+#                                size int(30 * zoomlevel)
+
+                            $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
+                            $yposition = int((ship.location[1]+0.72) * 120 * zoomlevel)
+                            $energy_size = int(405*(float(ship.en)/ship.max_en))
+                            add 'Battle UI/label energy bar.png':
+                                xpos xposition
+                                ypos yposition
+                                zoom (zoomlevel/2.5)
+                                crop (0,0,energy_size,79)
+
+                        else:    #enemies
+
+                            $xposition = int((ship.location[0]+0.09) * 192 * zoomlevel)
+                            $yposition = int((ship.location[1]+0.70) * 120 * zoomlevel)
+                            $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                            add 'Battle UI/label hp bar.png':
+                                xpos xposition
+                                ypos yposition
+                                zoom (zoomlevel/2.5)
+                                crop (0,0,hp_size,90)
+
+                            text str(ship.hp):
+                                xanchor 0.5
+                                yanchor 0.5
+                                xpos int(xposition+80*zoomlevel)
+                                ypos int(yposition+27*zoomlevel)
+                                size int(16*zoomlevel)
+                                font "Font/sui generis rg.ttf"
+                                outlines [(2,'000',0,0)]
+
+
 
 
           ##show missiles on the map that are currently flying in space##
@@ -361,6 +416,7 @@ screen battle_screen:
                     size (20/zoomlevel)
                     outlines [(1,'000',0,0)]
 
+##targeting window##
 
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
           ##loop again to show the targeting window. this way other ships don't overlap with it.
@@ -379,6 +435,9 @@ screen battle_screen:
                             $continue
                         if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,BM.selected) > 1):
                             $continue
+                        if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
+                            $continue
+
 
                         if ship.location == (a,b):
                             $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
@@ -456,6 +515,7 @@ screen battle_screen:
                     xpos tile[0]
                     ypos tile[1]
                     action Return(['move',(tile[3],tile[4])])
+                    alternate Return("deselect")
 
                 text (str(BM.selected.move_cost*tile[2]) + ' EN'):
                     xpos tile[0]
@@ -628,9 +688,12 @@ screen commands: ##show the weapon buttons etc##
         ##show buffs
         $count = 0
         for modifier in BM.selected.modifiers:
-            if BM.selected.modifiers[modifier][0] > 0:
+            if BM.selected.modifiers[modifier][0] != 0:
                 text modifier xpos 1217 ypos (922+count*24) size 20 outlines [(1,'000',0,0)]
-                $status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                if BM.selected.modifiers[modifier][0] > 0:
+                    $ status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                else:
+                    $ status_effect = '{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
                 text status_effect xanchor 1.0 xpos 1554 ypos (922+count*24) size 19 outlines [(1,'000',0,0)]
                 $count += 1
 

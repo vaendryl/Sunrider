@@ -209,6 +209,13 @@ init -2 python:
                             return #do end the method, this is important.
                         else:
                             BM.attacker = BM.selected
+                            if self.active_weapon.wtype == 'Curse':
+                                weapon.fire(self.selected,self.target)
+                                self.active_weapon = None
+                                self.weaponhover = None
+
+                                return
+
                             if self.active_weapon.wtype == 'Melee':
                                 pass #do not show the atkanim, because there aren't any for melee.
                             else:
@@ -310,8 +317,12 @@ init -2 python:
                     for ship in player_ships:
                         ship.cth = get_acc(result[1], BM.selected, ship)
                 else:
+                    ignore_evasion = False
+                    if self.weaponhover.wtype == 'Curse':
+                        ignore_evasion = True
+
                     for ship in enemy_ships:
-                        ship.cth = get_acc(result[1], BM.selected, ship)
+                        ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
 
             if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
                 if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
@@ -561,6 +572,7 @@ init -2 python:
             self.money_reward = 100
             self.cth = 0
             self.getting_buff = False
+            self.getting_curse = False
             self.boss = False
             self.location = (1,1)
             self.movement_tiles = []
@@ -715,7 +727,8 @@ init -2 python:
             self.location = (xnew,ynew)
 
 #AI estimate damage
-        def AI_estimate_damage(self,pship):  #part of the AI
+        def AI_estimate_damage(self,pship,en = 0):  #part of the AI
+            if en == 0: en = self.en
             #renpy.log('starting estimating damage on {}'.format(pship.name))
 
             pship.damage_estimation = [None,0,0] #weapon,estimation,priority
@@ -1379,7 +1392,6 @@ init -2 python:
             self.accuracy = 350
             self.acc_degradation = 100
 
-            self.wtype = 'Support'
             self.name = 'Empty Support Skill'
             self.shot_count = 1
             self.lbl = ''
@@ -1398,7 +1410,10 @@ init -2 python:
             #if this is a healing skill
             if self.repair:
                 healing = self.damage * renpy.random.triangular(0.8,1.2)
-                target.getting_buff = True
+                if self.wtype == 'Support':
+                    target.getting_buff = True
+                else:
+                    target.getting_curse = True
                 BM.selectedmode = False
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
@@ -1408,6 +1423,7 @@ init -2 python:
                     del a
                 renpy.pause(1)
                 target.getting_buff = False
+                target.getting_curse = False
                 BM.selectedmode = True
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
@@ -1416,7 +1432,10 @@ init -2 python:
             #if it's a buff
             else:
                 target.modifiers[self.modifies] = [self.buff_strength,self.buff_duration]
-                target.getting_buff = True
+                if self.wtype == 'Support':
+                    target.getting_buff = True
+                else:
+                    target.getting_curse = True
                 BM.selectedmode = False
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
@@ -1426,10 +1445,75 @@ init -2 python:
                     del a
                 renpy.pause(1)
                 target.getting_buff = False
+                target.getting_curse = False
                 BM.selectedmode = True
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
                 return 0
+
+    class Curse(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.wtype = 'Curse'
+
+    class GravityGun(store.object):
+        def __init__(self):
+            self.repair = False
+            self.self_buff = False #if true this skill automatically casts on self only
+            self.damage = 0 #also used to repair
+            self.uses_missiles = False
+            self.uses_rockets = False
+            self.energy_use = 60
+            self.wtype = 'Curse'
+            self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
+            self.buff_strength = 0 #how many points does it increase a stat?
+            self.buff_duration = 1
+
+            #effective range is 3 cells away and always hits
+            self.accuracy = 640
+            self.acc_degradation = 100
+
+            self.name = 'Gravity Gun'
+            self.shot_count = 1
+            self.lbl = 'Battle UI/button_gravity.png'
+
+        def fire(self,parent,target):
+
+            if parent.en < self.energy_use:
+                return
+            parent.en -= self.energy_use
+            BM.selectedmode = True
+
+            target_faction = target.faction
+            target_weapons = target.weapons
+
+            target.faction = 'Player'
+            target.weapons = []
+
+            BM.select_ship(target, play_voice = False)
+            target.movement_tiles = get_movement_tiles(target,1)
+
+            looping = True
+            cancel = False
+
+            while looping:
+                result = ui.interact()
+                if result[0] == 'move':
+                    target.faction = target_faction
+                    target.move_ship(result[1],BM) #result[1] is the new location to move towards
+                    looping = False
+                if result == 'deselect':
+                    cancel = True
+                    looping = False
+
+            target.en += target.move_cost
+            target.faction = target_faction
+            target.weapons = target_weapons
+            BM.select_ship(parent, play_voice = False)
+            parent.movement_tiles = get_movement_tiles(parent)
+            return
+
+
 
 
 

@@ -344,3 +344,109 @@ label mission8_inits:
     $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
 
     return
+    
+label mission9_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        
+        if protectmochi == True:
+            if Saveddiplomats == True:
+                phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+                phoenix = create_ship(Phoenix(),(9,5),phoenix_weapons)
+
+            sunrider.set_location(4,6)
+            blackjack.set_location(9,6)
+            liberty.set_location(9,7)
+            phoenix.set_location(9,5)
+            
+        if protectmochi == False:
+            if Saveddiplomats == True:
+                phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+                phoenix = create_ship(Phoenix(),(5,5),phoenix_weapons)
+
+            sunrider.set_location(4,6)
+            blackjack.set_location(5,6)
+            liberty.set_location(5,7)
+            phoenix.set_location(5,5)            
+
+        mochi_weapons = []
+        Mochi = create_ship(Mochi(),(14,7),mochi_weapons)
+
+        create_ship(PirateGrunt(),(13,5),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,9),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(16,5),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(16,9),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+
+        create_ship(PirateBomber(),(17,5),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(17,6),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(17,7),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(17,8),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+
+        create_ship(PirateDestroyer(),(13,4),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(12,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(13,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(12,9),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+
+        create_ship(Havoc(),(18,7),[HavocMelee(),HavocAssault(),HavocMissile(),HavocRocket()])
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+
+    return
+
+    
+label preview_mission:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        #create the sunrider. you only have to create a player ship once:
+        
+        sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault()]
+        sunrider = create_ship(Sunrider(),(5,6),sunrider_weapons)
+        blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+        blackjack = create_ship(BlackJack(),(6,5),blackjack_weapons)
+        liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
+        liberty = create_ship(Liberty(),(6,6),liberty_weapons)
+        phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+        phoenix = create_ship(Phoenix(),(6,7),phoenix_weapons)
+        seraphim_weapons = [SeraphimKinetic()]
+        seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
+        
+        create_ship(PactMook(),(14,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(13,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(12,5),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(13,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(14,10),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactBomber(),(13,5),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        #create_ship(PactBomber(),(14,4),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+
+        create_ship(PactBomber(),(13,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        #create_ship(PactBomber(),(14,9),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+
+        create_ship(MissileFrigate(),(15,3),[PactFrigateMissile()])
+        create_ship(MissileFrigate(),(15,10),[PactFrigateMissile()])
+
+        create_ship(PactCruiser(),(15,5),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        create_ship(PactCruiser(),(15,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+        
+    $ PlayerTurnMusic = "music/Driving_the_Top_Down.ogg"
+    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+
+    return
+

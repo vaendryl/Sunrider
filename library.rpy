@@ -97,7 +97,7 @@ init 2 python:
             self.buffed_voice = ['Asaga/Asaga Buffed 1.ogg','Asaga/Asaga Buffed 2.ogg']
             self.cursed_voice = ['Asaga/Asaga Cursed 1.ogg','Asaga/Asaga Cursed 2.ogg','Asaga/Asaga Cursed 3.ogg']
 
-    class Liberty(Battleship):
+    class Liberty(Battleship):  #you can use any existing blueprint as a base, which makes things really easy.
         def __init__(self):
             Battleship.__init__(self)
             self.stype = 'Ryder'
@@ -165,10 +165,78 @@ init 2 python:
             self.attack_voice = ['sound/Voice/Icari/Icari Attacking Melee 1.ogg','sound/Voice/Icari/Icari Attacking Melee 2.ogg','sound/Voice/Icari/Icari Attacking Melee 3.ogg','sound/Voice/Icari/Icari Attacking Melee 4.ogg']
             self.no_damage_voice = ['Icari/Icari No Damage 1.ogg','Icari/Icari No Damage 2.ogg','Icari/Icari No Damage 3.ogg','Icari/Icari No Damage 4.ogg','Icari/Icari No Damage 5.ogg','Icari/Icari No Damage 6.ogg','Icari/Icari No Damage 7.ogg']
             self.moveforward_voice = ['Icari/Icari Move Forward 1.ogg','Icari/Icari Move Forward 2.ogg','Icari/Icari Move Forward 3.ogg']
-            self.movebackward_voice = ['Icari/Icari Move Backward 1.ogg.ogg','Icari/Icari Move Backward 2.ogg','Icari/Icari Move Backward 3.ogg']
+            self.movebackward_voice = ['Icari/Icari Move Backward 1.ogg','Icari/Icari Move Backward 2.ogg','Icari/Icari Move Backward 3.ogg']
             self.buffed_voice = ['Icari/Icari Buffed 1.ogg','Icari/Icari Buffed 2.ogg']
-            self.cursed_voice = ['Icari/Icari Cursed 1.ogg','Icari/Icari Cursed 2.ogg','Icari/Icari Cursed 3.ogg','Icari Cursed 4.ogg']
+            self.cursed_voice = ['Icari/Icari Cursed 1.ogg','Icari/Icari Cursed 2.ogg','Icari/Icari Cursed 3.ogg','Icari/Icari Cursed 4.ogg']
 
+    class Bianca(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder'
+            self.name = 'Bianca'
+            self.animation_name = 'bianca'
+            self.faction = 'Player'
+            self.max_hp = 400
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.base_armor = 4
+            self.armor = self.base_armor
+            self.en = self.max_en
+            self.move_cost = 30
+            self.evasion = 20
+            self.lbl = 'Battle UI/label_bianca.png'  #this is the battle avatar
+            self.portrait = 'Battle UI/claude_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/Bianca/side.png'
+                }
+            self.flak = 0
+            self.shield_generation = 35
+            self.shields = self.shield_generation
+            self.shield_range = 1
+            store.BM.ships.append(self)  #register itself upon creation
+
+            ####################VOICES
+            self.voice_channel = "clavoice"
+            self.selection_voice = ['Claude/Selection 1.ogg','Claude/Selection 2.ogg','Claude/Selection 3.ogg','Claude/Selection 4.ogg','Claude/Selection 5.ogg','Claude/Selection 6.ogg','Claude/Selection 7.ogg',]
+            self.moveforward_voice = ['Claude/Forward 1.ogg','Claude/Forward 2.ogg','Claude/Forward 3.ogg']
+            self.movebackward_voice = ['Claude/Backward 1.ogg','Claude/Backward 2.ogg','Claude/Backward 3.ogg']
+            self.buffed_voice = ['Claude/Buffed 1.ogg','Claude/Buffed 2.ogg']
+            self.cursed_voice = ['Claude/Cursed 1.ogg','Claude/Cursed 2.ogg','Claude/Cursed 3.ogg','Claude/Cursed 4.ogg','Claude/Cursed 5.ogg']
+
+    class Seraphim(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder'
+            self.name = 'Seraphim'
+            self.animation_name = 'seraphim'
+            self.faction = 'Player'
+            self.max_hp = 375
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.base_armor = 4
+            self.armor = self.base_armor
+            self.en = self.max_en
+            self.max_missiles = 0
+            self.missiles = self.max_missiles
+            self.move_cost = 30
+            self.hate = 100
+            self.evasion = 20
+            self.lbl = 'Battle UI/label_seraphim.png'  #this is the battle avatar
+            self.portrait = 'Battle UI/sola_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/Seraphim/side.png',
+                }
+            self.flak = 0
+            store.BM.ships.append(self)  #register itself upon creation
+
+            ####################VOICES
+            self.voice_channel = "solvoice"
+            self.selection_voice = ['Sola/Selection 1.ogg','Sola/Selection 2.ogg','Sola/Selection 3.ogg','Sola/Selection 4.ogg','Sola/Selection 5.ogg']
+            self.no_damage_voice = ['Sola/Evade 1.ogg','Sola/Evade 2.ogg','Sola/Evade 3.ogg','Sola/Evade 4.ogg','Sola/Evade 5.ogg','Sola/Evade 6.ogg']
+            self.moveforward_voice = ['Sola/Forward 1.ogg','Sola/Forward 2.ogg','Sola/Forward 3.ogg']
+            self.movebackward_voice = ['Sola/Backward 1.ogg','Sola/Backward 2.ogg','Sola/Backward 3.ogg','Sola/Backward 4.ogg']
+            self.buffed_voice = ['Sola/Buffed 1.ogg','Sola/Buffed 2.ogg']
+            self.cursed_voice = ['Sola/Curse 1.ogg','Sola/Curse 2.ogg','Sola/Curse 3.ogg','Sola/Curse 4.ogg']
 
     class Agamemnon(Battleship):
         def __init__(self):
@@ -254,6 +322,37 @@ init 2 python:
             self.flak = 0
             self.flak_range = 0
             store.BM.ships.append(self)
+
+    class Mochi(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ship'
+            self.name = 'Mochi'
+            self.animation_name = 'mochi'
+            self.faction = 'Player'
+            self.max_hp = 900
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.base_armor = 10
+            self.armor = self.base_armor
+            self.en = self.max_en
+            self.max_missiles = 0
+            self.missiles = self.max_missiles
+            self.move_cost = 200
+            self.hate = 300
+            self.evasion = -20
+            self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
+            self.portrait = None
+            self.flak = 0
+            self.flak_range = 0
+            store.BM.ships.append(self)  #register itself upon creation
+
+            self.voice_channel = "avavoice"
+            self.selection_voice = ['Agamemnon/beep1.ogg']
+            self.moveforward_voice = ['Agamemnon/beep2.ogg']
+            self.movebackward_voice = ['Agamemnon/beep2.ogg']
+            self.buffed_voice = ['Agamemnon/beep2.ogg']
+            self.cursed_voice = ['Agamemnon/beep2.ogg']
 
 
 ### PACT ships ###
@@ -920,7 +1019,10 @@ init 2 python:
 
 
 
+
+
 ### SUPPORT SKILLS ###
+
     class Repair(Support):
         def __init__(self):
             Support.__init__(self)
@@ -949,6 +1051,15 @@ init 2 python:
             self.name = 'Damage Up'
             self.lbl = 'Battle UI/button_atkup.png'
 
+    class Restore(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.modifies = 'restore'
+            self.buff_strength = 1
+            self.buff_duration = 1
+            self.name = 'Restore'
+            self.lbl = 'Battle UI/button_restore.png'
+
     class Stealth(Support):
         def __init__(self):
             Support.__init__(self)
@@ -962,7 +1073,48 @@ init 2 python:
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
 
-## are these still used?
+#### curse skills ####
+
+    class AccDown(Curse):
+        def __init__(self):
+            Curse.__init__(self)
+            self.modifies = 'accuracy'
+            self.buff_strength = -25
+            self.buff_duration = 3
+            self.name = 'Aim Down'
+            self.lbl = 'Battle UI/button_aimdown.png'
+
+    class Disable(Curse):
+        def __init__(self):
+            Curse.__init__(self)
+            self.modifies = 'movement_cost'
+            self.buff_strength = 100
+            self.buff_duration = 1
+            self.name = 'Disable'
+            self.lbl = 'Battle UI/button_disable.png'
+
+    class FlakOff(Curse):
+        def __init__(self):
+            Curse.__init__(self)
+            self.modifies = 'flak'
+            self.buff_strength = -100
+            self.buff_duration = 3
+            self.name = 'Flak Off'
+            self.lbl = 'Battle UI/button_flak.png'
+
+    class ShutOff(Curse):
+        def __init__(self):
+            Curse.__init__(self)
+            self.modifies = 'en'
+            self.buff_strength = -100
+            self.buff_duration = 3
+            self.name = 'Aim Down'
+            self.lbl = 'Battle UI/button_aimdown.png'
+
+
+
+###are these still used?##
+
     class Rocket(Missile):
         def __init__(self):
             Missile.__init__(self)
@@ -1098,5 +1250,30 @@ init 2 python:
             self.type = 'Melee'
             self.shot_count = 2
 
-##############OLD STUFF WE KEEP FOR NOW TO AVOID CRASHES
+################################################# SERAPHIM
+    class SeraphimKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 300
+            self.energy_use = 100
+            self.shot_count = 1
+            self.accuracy = 150
+
+################################################### BIANCA
+
+    class BiancaAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 250
+            self.energy_use = 60
+            self.shot_count = 1
+            self.accuracy = 55
+            self.wtype = 'Assault'
+            self.name = 'Bianca Shotgun'
+            self.lbl = 'Battle UI/button_kinetic.png'
+
+
+
+
+
 

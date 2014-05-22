@@ -236,8 +236,54 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
-
-
+    image chigara uniform handonchest smile:
+        "Character/Chigara/chigara_uniform_handonchest_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform palmsup embarrasssurprise:
+        "Character/Chigara/chigara_uniform_palmsup_embarasssurprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handonchest smileblush:
+        "Character/Chigara/chigara_uniform_handonchest_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handonchest ooscienceblush:
+        "Character/Chigara/chigara_uniform_handonchest_ooscienceblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handstogether smileblush:
+        "Character/Chigara/chigara_uniform_handstogether_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handsonchest sad:
+        "Character/Chigara/chigara_uniform_handonchest_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform altneutral neutral:
+        "Character/Chigara/chigara_uniform_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handonchest forcedsmileblush:
+        "Character/Chigara/chigara_uniform_handonchest_forcedsmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 

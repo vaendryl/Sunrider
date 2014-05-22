@@ -42,6 +42,13 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
             xpos 1490 ypos 725
         text "VERSTA" xpos 1550 ypos 725 size 15
 
+    if warpto_nomodorn == True:
+        imagebutton:
+            action Jump("warpto_nomodorn")
+            idle "Map/map_icon_base.png"
+            hover "Map/map_icon_hover.png"
+            xpos 1630 ypos 590
+        text "NOMODORN" xpos 1690 ypos 590 size 15
 
     imagebutton:
         xpos 1600 ypos 950
@@ -344,6 +351,53 @@ label warpto_versta:
     call screen map_travelto
     with dissolve
 
+label warpto_nomodorn:
+
+    $ map_back = "nomodorn_back"
+
+    if missionforryuvia == True:
+        $ galaxymission1 = True
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = "jumptonomodorn"
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = "Main: Find Crown Jewel"
+        $ mission2_name = None
+        $ mission3_name = None
+        
+    else:
+
+        $ galaxymission1 = False
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = None
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = None
+        $ mission2_name = None
+        $ mission3_name = None
+
+    scene bg black
+    show galaxymap:
+        alpha 1 zoom 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 xpos -16900 ypos -5900 zoom 10
+    show map_nomodorn:
+        zoom 0.0268041237113402
+        xpos 1630 ypos 590 alpha 0
+        parallel:
+            ease 1 alpha 1
+        parallel:
+            ease 0.75 zoom 1 xpos 0 ypos -430
+    pause 1
+    show map_nomodorn_info:
+        xpos 1098 ypos 200
+    call screen map_travelto
+    with dissolve
+
 label Tydaria_back:
     hide map_tydariainfo
     scene bg black
@@ -432,6 +486,25 @@ label versta_back:
             ease 1 zoom 0.0268041237113402 xpos 1490 ypos 725
     show galaxymap:
         xpos -14900 ypos -7250 zoom 10 alpha 0
+        parallel:
+            ease 1.1 alpha 1
+        parallel:
+            ease 1 xpos 0 ypos 0 zoom 1
+    pause 1
+    call screen galaxymap_buttons
+
+label nomodorn_back:
+    hide map_nomodorn_info
+    scene bg black
+    show map_nomodorn:
+        zoom 1
+        xpos 0 ypos -430 alpha 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 zoom 0.0268041237113402 xpos 1630 ypos 590
+    show galaxymap:
+        xpos -16900 ypos -5900 zoom 10 alpha 0
         parallel:
             ease 1.1 alpha 1
         parallel:
