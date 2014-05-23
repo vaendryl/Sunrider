@@ -430,13 +430,13 @@ screen battle_screen:
                         if BM.weaponhover == None:
                             $BM.weaponhover = BM.active_weapon
                         if BM.weaponhover.wtype == 'Support' and ship.faction != 'Player':
-                            $continue
-                        if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
-                            $continue
-                        if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,BM.selected) > 1):
-                            $continue
-                        if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
-                            $continue
+                            pass
+                        elif BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
+                            pass
+                        elif BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,BM.selected) > 1):
+                            pass
+                        elif BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
+                            pass
 
 
                         if ship.location == (a,b):
