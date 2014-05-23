@@ -4827,7 +4827,7 @@ label atkanim_pactcruiser_laser:
     $renpy.show_screen('show_background',_layer='master')
     show pactcruiser_side:
         xpos 0.5 ypos 0.5
-    pause 0.75
+    pause 0.1
     play sound2 'sound/legion_laser.ogg'
 
     show pactcruiser_laserfront:
@@ -7418,10 +7418,10 @@ label atkanim_pactmook_laser:
     pause 0.5
 
     show pactmook laser with dissolve
-
-    pause 0.3
-
-    show pactmook_laserbeam1 with dissolve
+    show pactmook_laserbeam1:
+        alpha 0
+        ease 0.3 alpha 1
+        ease 0.7 alpha 0
 
     play sound "sound/Laser 1.ogg"
 
@@ -8051,10 +8051,10 @@ label atkanim_pirategrunt_laser:
     pause 0.5
 
     show pirategrunt laser with dissolve
-
-    pause 0.3
-
-    show pirategrunt_laserbeam1 with dissolve
+    show pirategrunt_laserbeam1:
+        alpha 0
+        ease 0.3 alpha 1
+        ease 0.7 alpha 0
 
     play sound1 'sound/Laser 1.ogg'
 
@@ -10034,10 +10034,10 @@ label atkanim_pactbomber_laser:
     pause 0.5
 
     show pactbomber laser with dissolve
-
-    pause 0.3
-
-    show pactbomber_laserflash with dissolve
+    show pactbomber_laserflash:
+        alpha 0
+        ease 0.3 alpha 1
+        ease 0.7 alpha 0
 
     play sound "sound/Laser 1.ogg"
 
@@ -11021,6 +11021,9 @@ label hit_agamemnon:
 label die_agamemnon:
 
     $renpy.show_screen('show_background',_layer='master')
+
+    show agamemnon_side:
+        xpos 0.5 ypos 0.5
 
     play sound2 "sound/explosion1.ogg"
     show layer master at shake1

@@ -45,7 +45,7 @@ label start:
     with Dissolve(2)
 
     window hide
-    
+
     play music "Music/Tides.ogg" loop
     $ renpy.pause (0.5)
     show introtext0:
@@ -3165,6 +3165,7 @@ label mission5:
 label mission5_end:
 
     $ mission5_complete = True
+    $ mission_pirateattack = False
 
     hide screen battle_screen
     hide screen commands
@@ -5385,6 +5386,13 @@ label mission8:
 
 label aftermission8:
 
+    python:
+        BM.ships.remove(agamemnon)
+        player_ships.remove(agamemnon)
+
+        phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+        phoenix = create_ship(Phoenix(),(9,5),phoenix_weapons)
+
     $ Saveddiplomats = True
 
     hide screen commands
@@ -5660,11 +5668,23 @@ label aftermission8:
     pause 8.0
 
     jump ep3_start
-    
+
 label ep3_start:
-    
+
+    #try to remove the agamemnon from the game
+    python:
+        try:
+            a,b = agamemnon.location
+            BM.grid[a-1][b-1] = False
+            BM.ships.remove(agamemnon)
+            player_ships.remove(agamemnon)
+            del agamemnon  #deletes the last traces. the variable will henceforth not even be defined, as though it was never used.
+        except:
+            show_message('debug: there was an error removing the agamemnon. maybe it already was.')
+
+
     $ renpy.pause (0.1)
-    
+
     window hide
 
     stop music fadeout 1.5
@@ -5679,9 +5699,9 @@ label ep3_start:
     window show
 
     play music "Music/Moonlit_Night.ogg"
-    
+
     scene cg_avateatime with dissolve
-    
+
     "Ava relaxed on the sofa as Shields brought a tray of tea to the table."
     kay "I've been meaning to use this tea set. There you go. Fresh out of the box."
     ava "I didn't know you were into tea."
@@ -5693,30 +5713,30 @@ label ep3_start:
     kay "I guess seeing you again made me nostalgic. You know, you haven't really changed much since those days."
     ava "Well, things are different now, captain."
     ava "Back then, you were the one following me."
-    
+
     menu:
         "I guess I just wanted to see you in action.":
             jump guessseeaction
-        
+
         "Someone had to keep you out of trouble.":
             jump someonekeepouttrouble
-            
+
 label guessseeaction:
-    
+
     ava "Hm?"
     kay "You were always in motion. Getting things done. I guess I was a bit in awe."
     kay "Maybe I wanted to watch you and learn from the best."
     ava "It's strange, hearing you say that now."
-    
+
     menu:
         "That was then. Things are different now.":
             jump thenthingsdifferent
-            
+
         "Do you ever think about what it'd be like if you sat in the captain's seat instead?":
             jump everthinkcaptainsseat
 
 label someonekeepouttrouble:
-    
+
     ava "Ah, was that what it was?"
     kay "Of course. You were always trying to solve other people's problems. It was only a matter of time until you hurt yourself."
     ava "Heh. Alright, I won't deny that."
@@ -5731,18 +5751,18 @@ label someonekeepouttrouble:
     jump highschooldayslaugh
 
 label thenthingsdifferent:
-    
+
     ava "Understood. I'm your first officer before anything else, captain."
-    
+
     jump highschooldayslaugh
 
 label everthinkcaptainsseat:
-    
+
     ava "... ... ..."
     ava "No."
     ava "I'm your first officer. There's nothing more to it than that."
     ava "I'll execute your orders, captain. That's all there is to it."
-    
+
     jump highschooldayslaugh
 
 label highschooldayslaugh:
@@ -5756,10 +5776,10 @@ label highschooldayslaugh:
 
     if Saveddiplomats == True:
         jump tookindstopstopmism
-    
-    if Saveddiplomats == False: 
+
+    if Saveddiplomats == False:
         jump solongagoentangled
-        
+
 label tookindstopstopmism:
 
     ava "You're too kind. Considering our situation, I wonder if it's time for you to drop your optimism and start making the hard calls."
@@ -5779,7 +5799,7 @@ label solongagoentangled:
     ava "Everything you've did was for the greater good."
     ava "None of us wants to see more lives taken by PACT. The crew's behind you in stopping this conflict as quickly as possible."
     kay "Still doesn't make sleeping any easier."
-    
+
     jump guessjustmoveonthose
 
 label guessjustmoveonthose:
@@ -5794,7 +5814,7 @@ label guessjustmoveonthose:
     menu:
         "We'll kill the Veniczar for this. It's the only way justice can be done.":
             jump killveniczaronlyjustice
-        
+
         "We have to stop PACT, so that what happened on Cera will never happen again.":
             jump stoppactwhathappenednever
 
@@ -5802,40 +5822,40 @@ label killveniczaronlyjustice:
 
     $ captain_prince += 1
     ava "Understood, sir. I'll be right behind you every step of the way."
-    
+
     menu:
-        
+
         "Give me your thoughts on the crew.":
             jump givemethoughtscrew
         "Thanks for the chat. I should get back to work.":
             jump thankschatback
-    
+
 label stoppactwhathappenednever:
-    
+
     $ captain_moralist += 1
     ava "Understood, sir. I'll be right behind you every step of the way."
 
     menu:
-        
+
         "Give me your thoughts on the crew.":
             jump givemethoughtscrew
         "Thanks for the chat. I should get back to work.":
             jump thankschatback
-            
+
 label givemethoughtscrew:
-    
+
     ava "A motley bunch, I'll give you that."
     ava "Asaga's been stirring up every sort of trouble you could imagine. I caught her gambling with the crew just the other day."
 
     menu:
         "Oh come on, what's wrong with a little game of cards now and then?":
             jump whatswronggamecard
-        
+
         "I presume you've dealt with her?":
             jump presumedealther
-    
+
 label whatswronggamecard:
-    
+
     $ supportedasagacards = True
 
     ava "Captain, military protocol mandates that gambling be strictly-"
@@ -5847,7 +5867,7 @@ label whatswronggamecard:
     kay "All right… Just don't push yourself too hard, alright? Relax every now and then."
     ava "Understood, captain."
     kay "(She still totally doesn't get what I mean…)"
-    
+
     menu:
         "How's Chigara been doing?":
             jump howschigarabeendoing
@@ -5855,12 +5875,12 @@ label whatswronggamecard:
             jump howmercenaryadjust
         "Thanks for the chat. I should get back to work.":
             jump thankschatback
-            
+
 label howschigarabeendoing:
-    
+
     ava "Things have been going much better with her. I must say I'm impressed. She's really turned engineering around. You should go check out her research lab."
     kay "Sounds good."
-    
+
     menu:
         "How's our mercenary been adjusting?":
             jump howmercenaryadjust
@@ -5868,10 +5888,10 @@ label howschigarabeendoing:
             jump thankschatback
 
 label howmercenaryadjust:
-    
+
     ava "Better than I thought she would. She's been helping us fix the bugs in our security systems. Maybe I was wrong about her."
     kay "Good to hear."
-    
+
     menu:
         "How's Chigara been doing?":
             jump howschigarabeendoing
@@ -5879,9 +5899,9 @@ label howmercenaryadjust:
             jump thankschatback
 
 label presumedealther:
-    
+
     ava "Right. I've restricted her to eating rations for the next week."
-    
+
     menu:
         "How's Chigara been doing?":
             jump howschigarabeendoing
@@ -5889,59 +5909,59 @@ label presumedealther:
             jump howmercenaryadjust
         "Thanks for the chat. I should get back to work.":
             jump thankschatback
-    
+
 label thankschatback:
 
     ava "As should I."
     kay "We should have these talks more often. I could put my tea set to use."
-    
+
     play music "Music/Mission_Briefing.ogg" fadeout 1.5
 
     $ captaindeck = 0
     $ asa_location = "messhall"
     $ asa_event = "ep3_asatalk"
-    
+
     $ chi_location = "engineering"
     $ chi_event = "ep3_chitalk"
-    
+
     $ ica_location = "hangar"
     $ ica_event = "ep3_icatalk"
-    
+
     $ pro_location = "bridge"
     $ pro_event = "missionfromryuvians"
-    
+
     $ gal_location = None
     jump dispatch
-    
+
 label ep3_asatalk:
-    
+
     hide screen ship_map
     scene bg messhall
     show asaga uniform neutral happy
     with dissolve
-    
+
     window show
 
     asa "Oh, did you need me for something, capt'n?"
-    
+
     menu:
         "What are your thoughts about what happened with Icari?":
             jump thoughtshappenedicari
-        
+
         "How are you adjusting to the Sunrider?":
             jump howasaadjustsunrider
-            
+
         "Actually, nevermind.":
             jump gostaytroubleasaga
-        
+
 label howasaadjustsunrider:
-    
+
     show asaga uniform armscrossed talk with dissolve
 
     asa "Eh, I think it's going pretty well. Warm food and a bed to sleep on, anyways. The Sunrider's also much cleaner than Chigara's workshop."
-    
+
     show asaga uniform armscrossed sad with dissolve
-    
+
     asa "Uuu... I really wish the first officer would stop chewing me out though..."
     kay "What happened?"
     asa "Well, first I tried to hook up my Game Master to the holovision in the lounge. Ugh, you won't imagine how red her face was when she told me off for that. Something about contaminating the ship's electronics."
@@ -5953,24 +5973,24 @@ label howasaadjustsunrider:
         jump weremilitarynow
 
 label alreadyspokeavano:
-    
+
     $ affection_asaga += 1
-    
+
     kay "I've already spoken to Ava about it. She won't be giving you any more trouble."
-        
+
     show asaga uniform excited grin with dissolve
-        
+
     asa "Really? Ahaha, you're the best, capt'n!"
     kay "Just try to keep it in moderation, alright?"
-    
+
     show asaga uniform neutral smile with dissolve
-    
+
     asa "Understood..."
-    
+
     menu:
         "What are your thoughts about what happened with Icari?":
             jump thoughtshappenedicari
-                    
+
         "I should go. Try to stay out of trouble, Asaga.":
             jump gostaytroubleasaga
 
@@ -5978,92 +5998,92 @@ label weremilitarynow:
 
     kay "You're on a military vessel now. I like to run a tight ship."
     asa "Understood..."
-    
+
     menu:
         "What are your thoughts about what happened with Icari?":
             jump thoughtshappenedicari
-                    
+
         "I should go. Try to stay out of trouble, Asaga.":
             jump gostaytroubleasaga
-    
+
 label thoughtshappenedicari:
-    
+
     if Saveddiplomats == False:
-        
+
         show asaga uniform armscrossed sad with dissolve
-        
+
         asa "I've been thinking about what happened, and I just don't feel good about it."
         asa "It's good that the Alliance is finally stepping up and getting ready to help us. But I can't believe we had to do something so horrible to get their help."
-        
+
         show asaga uniform armscrossed mad with dissolve
-        
+
         asa "I fly the Black Jack to protect innocents, captain. Letting those children die was wrong."
-        
+
         menu:
             "I can't say it's been easy sleeping. But their deaths will not be in vain.":
                 jump sleepingdeathsnotvain
-            
+
             "This is war, Asaga.  War cannot be won without sacrifice.":
                 jump warasagasacrifice
-                
+
     if Saveddiplomats == True:
-        
+
         show asaga uniform altneutral talk with dissolve
-        
+
         asa "I'm glad we managed to save those kids, but I'm not so sure about keeping the mercenary."
-        
+
         show asaga uniform armscrossed frown with dissolve
-        
+
         asa "Eh... I'm not so sure about having a person like that on our team. Nobody should shoot at civilians."
-        
+
         menu:
             "Icari had her reasons. It's not always so black and white, Asaga.":
                 jump herreasonsblackasaga
             "I'm still keeping my eyes on her. If she causes any more trouble, I'll drop her off on the nearest rock.":
                 jump stilleyesdroprock
 
-    
+
 label sleepingdeathsnotvain:
-    
+
     show asaga uniform armscrossed frown with dissolve
-    
+
     asa "I guess..."
     asa "I just hope something like that doesn't ever happen again."
     asa "Sigh..."
-    
+
     jump supposedtohelp
 
 label warasagasacrifice:
-    
+
     show asaga uniform handsonhips shoutmad with dissolve
-    
+
     asa "Don't think I don't know that already!"
-    
+
     show asaga uniform neutral lookawayfrown with dissolve
-    
+
     asa "W-well, I don't... But..."
-    
+
     show asaga uniform armscrossed shoutclosedeyes with dissolve
-    
+
     asa "Argh, nevermind..."
-    
+
     jump supposedtohelp
 
 label herreasonsblackasaga:
-    
+
     show asaga uniform armscrossed frown with dissolve
-    
+
     asa "Whatever her reasons were, shooting at kids is just too far."
     asa "You can't do something like that and still say you're one of the good guys. Anyone willing to stoop down to that level's no better than PACT!"
 
     jump guessnotstillsame
 
 label stilleyesdroprock:
-    
+
     show asaga uniform armscrossed confident with dissolve
-    
+
     asa "Hmph. I'll tell you right away if I catch her stirrin' up trouble, capt'n!"
-    
+
     jump guessnotstillsame
 
 label supposedtohelp:
@@ -6072,39 +6092,39 @@ label supposedtohelp:
 
     asa "I was supposed to help those kids. That's why I decided to become a freelancer. To stand up for people who were being oppressed by PACT."
     asa "It's just... Disappointing. I've let those kids down."
-    
+
     show asaga uniform neutral lookawayfrown with dissolve
-    
+
     asa "And well, I guess they're not really around to give me a second chance, are they?"
-    
+
     menu:
         "How are you adjusting to the Sunrider?":
             jump howasaadjustsunrider
-            
+
         "I should go. Try to stay out of trouble, Asaga.":
             jump gostaytroubleasaga
 
 label guessnotstillsame:
-    
+
     show asaga uniform armscrossed talk with dissolve
-    
+
     asa "Anyways, I guess it's not all bad since she is a good pilot and all. But still, just because we're on the same team doesn't mean we have to be friends."
     asa "By the way capt'n, did you find out what happened to those kids?"
     kay "They've been placed in Alliance protection. Versta's been annexed by PACT, so it's the best place for the kids right now."
     kay "With all the political attention the rescue's caused, you can bet they'll be well taken care of by the Alliance."
-    
+
     show asaga uniform excited grin with dissolve
-    
+
     asa "I guess it's for the best. Let's hurry up and kick PACT out of the Neutral Rim so that we can get those kids back to their parents!"
     kay "One step at a time, Asaga..."
-    
+
     menu:
         "How are you adjusting to the Sunrider?":
             jump howasaadjustsunrider
-            
+
         "I should go. Try to stay out of trouble, Asaga.":
             jump gostaytroubleasaga
-            
+
 label gostaytroubleasaga:
 
     show asaga uniform neutral happy with dissolve
@@ -6112,28 +6132,28 @@ label gostaytroubleasaga:
     asa "Understood, capt'n!"
 
     jump dispatch
-    
+
 label ep3_chitalk:
-    
+
     hide screen ship_map
     scene bg engineering
     show chigara uniform handsup surprise
     with dissolve
-    
+
     window show
 
     chi "E-eah! Oh, sorry captain, I didn't see you coming there!"
-    
+
     show chigara uniform handonchest forcedsmileblush with dissolve
-    
+
     chi "Ehheh... T-that must be the third time that's happened..."
     kay "Sorry. You really get focused in your work, huh?"
     chi "Whenever I'm working on something, I tend to lose awareness of everything else..."
-    
+
     show chigara uniform handstogether smile with dissolve
-    
+
     chi "Was there something you needed, captain?"
-    
+
     menu:
         "How are you adjusting to the Sunrider?":
             jump howchiajustsunrider
@@ -6141,38 +6161,38 @@ label ep3_chitalk:
             jump whatchimercenary
         "Keep up the good work, Chigara. I'll talk to you later.":
             jump keepgoodchilater
-            
+
 label howchiajustsunrider:
-    
+
     show chigara uniform handonchest smile with dissolve
-    
+
     chi "The Sunrider's a wonderful vessel. In fact, I don't think I've ever been on a ship as advanced in my life."
     chi "In fact, I was just running some energy conversion models the other day and I can say that the Sunrider's core drive is one of the most efficient in the galaxy."
     chi "Since the Sunrider's powered through atomic fusion, we don't have to worry about radiation management. Now, I think if I were to upgrade the fuel feeder with..."
-    
+
     show chigara uniform palmsup embarrasssurprise with dissolve
-    
+
     chi "O-oh! I'm sorry, I didn't mean to bore you with techno babble... Er, I mean, y-you must be busy, so, erm... Uhh... What were we talking about again? "
     chi "C-can you please repeat your question?"
 
     menu:
         "Calm down, Chigara. I was just asking how you were doing.":
             jump calmchigaraaskingdoing
-            
+
         "Actually, I was thinking of upgrading the fuel feeder with the new paraxium coating too.":
             jump actuallyparaxiumcoating
-        
+
 label calmchigaraaskingdoing:
-    
+
     show chigara uniform handonchest smileblush with dissolve
-    
+
     chi "O-oh! Everything's good actually!"
-    
+
     show chigara uniform handstogether smile with dissolve
-    
+
     chi "The first officer's helped me move in all of my things. I even managed to improve the research lab here in engineering too."
     kay "I'm glad to hear that."
-    
+
     menu:
         "What do you think about what happened with the mercenary?":
             jump whatchimercenary
@@ -6180,18 +6200,18 @@ label calmchigaraaskingdoing:
             jump keepgoodchilater
 
 label actuallyparaxiumcoating:
-    
+
     show chigara uniform handonchest ooscienceblush with dissolve
-    
+
     chi "Eh? You mean you knew about the mark II?"
     kay "That just came out a week ago, didn't it?"
-    
+
     show chigara uniform handstogether smileblush with dissolve
-    
+
     chi "Ooohh... I didn't know captain was a gearhead too."
     kay "They wouldn't give me the keys to this ship without me knowing something about it."
     chi "I guess that's true. Ehehe..."
-    
+
     menu:
         "What do you think about what happened with the mercenary?":
             jump whatchimercenary
@@ -6199,28 +6219,28 @@ label actuallyparaxiumcoating:
             jump keepgoodchilater
 
 label whatchimercenary:
-    
+
     if Saveddiplomats == True:
-        
+
         show chigara uniform neutral neutral with dissolve
-        
+
         chi "Mm... So long as Icari's going to be working with us, I guess I don't see a big problem."
         chi "I haven't really spoken with her much since, but I think she regrets what she did."
-        
+
         show chigara uniform handstogether smile with dissolve
-        
+
         chi "I hope we can work together to stop PACT..."
-        
+
     menu:
         "How are you adjusting to the Sunrider?":
             jump howchiajustsunrider
         "Keep up the good work, Chigara. I'll talk to you later.":
             jump keepgoodchilater
-            
+
     if Saveddiplomats == False:
-        
+
         show chigara uniform handsonchest sad with dissolve
-        
+
         chi "It was terrible seeing all those kids die..."
         chi "I..."
         chi "It's not the first time I've seen something like that happen. But you never get used to it."
@@ -6235,83 +6255,83 @@ label whatchimercenary:
 
 
 label keepgoodchilater:
-    
+
     show chigara uniform altneutral neutral with dissolve
-    
+
     chi "Good bye captain."
 
     jump dispatch
-    
+
 label ep3_icatalk:
-    
+
     hide screen ship_map
     scene bg hangar
     show icari uniform handonhip neutral
     with dissolve
-    
+
     window show
-    
+
     ica "Captain."
-    
+
     if Saveddiplomats == True:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-            
+
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-                
+
             "Your ryder was smashed up pretty badly last time. Is it operable?":
                 jump rydersmashedlastoper
-                
+
     if Saveddiplomats == False:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-            
+
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-    
+
 label whatdomercenaryica:
-    
+
     ica "Don't think I was just some goon for hire. I only took out PACT targets."
     ica "Blew up a couple refueling stations here and there. Sank some crippled cruisers. Even impersonated a low level PACT veniczar once."
     kay "I can't really imagine you as a veniczar."
-    
+
     show icari uniform bothhandsonhips grin with dissolve
-    
+
     ica "I had to put on a special latex suit to make myself look 80 pounds fatter. Haha."
     kay "Uh, wow. So what exactly were you doing?"
-    
+
     show icari uniform armscrossed smilesidesmile with dissolve
-    
+
     ica "It was a slave sale bust. The Alliance hired me to bust a transaction between a pirate cell and this PACT veniczar."
     ica "PACT's been... Ah, liberating slaves by paying off their slavers. In exchange for serving as personnel on their ships, of course."
     ica "This was going to be one of the biggest sales ever. Nearly 200 adults. The Alliance got involved when PACT accidentally included a citizen in the group."
     ica "I guess they forgot to check their passports or something."
     kay "So you just impersonated the veniczar to pay the pirates off and free the slaves after?"
-    
+
     show icari uniform handonhip neutral with dissolve
-    
+
     ica "Tsch. If only if it were simple. You see, the cheapskates at the Alliance were only willing to pay to free their own citizen. Something about not wanting to fund piracy."
     ica "Anyways, that was all irrelevant, since it was a double cross and the pirates were planning to slit the veniczar's throat after they got the money anyways."
     ica "Got grazed by a couple of their shots, which melted through my latex suit. That was a sight to see."
     kay "I bet... So how did you get out of that alive?"
-    
+
     show icari uniform altneutral smile with dissolve
-    
+
     ica "I swapped places with the real veniczar just as she arrived. Haha, you should have seen the look on her face as the pirates grabbed her."
     ica "Meanwhile, all the slaves got loose. It was total pandemonium in there."
     ica "Finally, the pirates opened fire on the PACT star liner, spacing everyone on board."
-    
+
     show icari uniform armscrossed smilesidesmile with dissolve
-    
+
     ica "I don't know what happened to the slaves. I managed to get the Alliance citizen out of there though, and in the end, that's all that mattered to my clients."
 
     menu:
@@ -6319,7 +6339,7 @@ label whatdomercenaryica:
             jump crazybelieveonepiece
         "So you couldn’t save the slaves in the end?":
             jump couldntsaveend
-            
+
 label crazybelieveonepiece:
 
     show icari uniform bothhandsonhips grin with dissolve
@@ -6329,13 +6349,13 @@ label crazybelieveonepiece:
     jump prettymuchmerclike
 
 label couldntsaveend:
-    
+
     ica "No. But I still took down a veniczar and a PACT star liner, so I'd call it a good day. "
-    
+
     jump prettymuchmerclike
-    
+
 label prettymuchmerclike:
-    
+
     show icari uniform handonhip neutral with dissolve
 
     ica "Anyways, that's pretty much what being a mercenary was like. It was risky work, but I liked the excitement. It kept my mind off other things."
@@ -6344,31 +6364,31 @@ label prettymuchmerclike:
         menu:
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-                
+
             "Your ryder was smashed up pretty badly last time. Is it operable?":
                 jump rydersmashedlastoper
-                
+
             "I need to get going.":
                 jump dispatch
-                
+
     if Saveddiplomats == False:
         menu:
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-                
+
             "I need to get going.":
                 jump dispatch
 
 label noticedlikedswords:
-    
+
     show icari uniform handonhip neutral with dissolve
-    
+
     ica "In the ancient times, they said the invention of gunpowder ended the age of swordsplay. Well, the creation of personal shielding's brought it back."
     ica "Now that people can emit shields that can deflect small arms, the only way to take them down in to draw your sword and get up close and personal with them."
     kay "Have you ever killed someone with your sword in person?"
@@ -6379,11 +6399,11 @@ label noticedlikedswords:
             jump soundsbarbaric
         "Sounds like a good strategy. I'll keep it in mind.":
             jump soundsgoodkeepmind
-        
+
 label soundsbarbaric:
-    
+
     show icari uniform handonhip snide with dissolve
-    
+
     ica "Heh. Real world's different from officer school, captain. A lot less clean."
     jump stillmostfaces
 
@@ -6392,9 +6412,9 @@ label soundsgoodkeepmind:
     jump stillmostfaces
 
 label stillmostfaces:
-    
+
     show icari uniform handonhip neutral with dissolve
-    
+
     ica "I can still remember most of their faces. It definitely makes you think about what you're doing more than pressing a button and firing a rocket at an enemy space ship."
     ica "They were armed enemies though. It was either their lives or mine."
     kay "Right."
@@ -6403,24 +6423,24 @@ label stillmostfaces:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-                            
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-                
+
             "Your ryder was smashed up pretty badly last time. Is it operable?":
                 jump rydersmashedlastoper
-                
+
             "I need to get going.":
                 jump dispatch
-                
+
     if Saveddiplomats == False:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-                            
+
             "How are you adjusting to the Sunrider?":
                 jump howicaadjustsunrider
-                
+
             "I need to get going.":
                 jump dispatch
 
@@ -6428,90 +6448,90 @@ label stillmostfaces:
 label howicaadjustsunrider:
 
     ica "I'm satisfied with my current accommodations. It's much better than what I'm used to. Thanks for your concern."
-    
+
     if Saveddiplomats == True:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-            
+
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                                
+
             "Your ryder was smashed up pretty badly last time. Is it operable?":
                 jump rydersmashedlastoper
-                
+
             "I need to get going.":
                 jump dispatch
-                
+
     if Saveddiplomats == False:
         menu:
             "So what exactly did you do as a mercenary, Icari?":
                 jump whatdomercenaryica
-            
+
             "I noticed you liked swords.":
                 jump noticedlikedswords
-                
+
             "I need to get going.":
                 jump dispatch
-                
+
 
 label rydersmashedlastoper:
-    
+
     show icari uniform armscrossed lookawayannoyed with dissolve
-    
+
     ica "Not without a bunch of repairs. Your pilot was pretty thorough about taking it down."
     kay "You're lucky you didn't get spaced. Asaga may look silly, but she's pretty dangerous with a ryder."
-    
+
     show icari uniform armscrossed smilesidesmile with dissolve
-    
+
     ica "Heh. That so? I wouldn't mind having a rematch. On the simulator, of course, captain."
-    
+
     show icari uniform handonhip neutral with dissolve
-    
+
     ica "Thankfully, your girl in engineering managed to fix most of the damage. She's really something. I've never seen someone as talented as her."
     kay "Chigara's one of the best minds in the galaxy. We're lucky to have her on our team."
-    
+
     show icari uniform altneutral smile with dissolve
-    
+
     ica "Good thing we're on the same side now. You've got a pretty good crew here."
-    
+
     show icari uniform armscrossed sad with dissolve
-    
+
     ica "... ... ..."
-    
+
     show icari uniform armscrossed tsun with dissolve
-    
+
     ica "Tsch. I can't believe I said that out loud."
-    
+
     show icari uniform point embarassed tsun with dissolve
-    
+
     ica "W-what!? Talk about something else before I embarrass myself even more!"
 
     menu:
         "So what exactly did you do as a mercenary, Icari?":
             jump whatdomercenaryica
-        
+
         "I noticed you liked swords.":
             jump noticedlikedswords
-            
+
         "How are you adjusting to the Sunrider?":
             jump howicaadjustsunrider
-            
+
         "I need to get going.":
             jump dispatch
-    
+
 label missionfromryuvians:
-    
+
     hide screen ship_map
     scene bg bridge
     show ava uniform neutral neutral
     with dissolve
-    
+
     ava "Captain, I've just received a message from the neutral world of Ryuvia."
     kay "Ryuvia? You mean we've been contacted by royalty?"
     ava "Correct. Ryuvia's one of the oldest nations in the galaxy, with a history going back for over 10 000 years. In fact, some historians say that Ryuvia might even have been the birth place of humanity."
     kay "Let's hear what they've got to say. Put them on screen."
-    
+
     show ava uniform neutral neutral:
         zoom 1.0
         ease 0.5 xpos 0.3
@@ -6519,7 +6539,7 @@ label missionfromryuvians:
     show king:
         xpos 0.7
     with wipeup
-    
+
     ryu "Hail Sunrider. I am King Brandr di Ryuvia."
     kay "Greetings, your highness. I'm Captain Kayto Shields of the starship Sunrider. This is my First Officer, Ava Crescentia."
     ryu "I have heard of your deeds in the Neutral Rim, and believe you may be of help."
@@ -6528,14 +6548,14 @@ label missionfromryuvians:
     ryu "The crown jewel of Ryuvia."
     kay "The crown jewel? I presume it's of value?"
     ryu "The kingdom of Ryuvia holds many secrets, captain. You have our request. I shall be waiting."
-    
+
     hide king with wipedown
-    
+
     kay "Uh, that's it? Not much to go off of, is it?"
-    
+
     show ava uniform armscrossed neutral:
         ease 0.5 xpos 0.5
-    
+
     ava "Well, maybe this might shed some light on the matter."
     kay "What?"
     ava "The rumor on the streets of Ryuvia is that the princess has been missing."
@@ -6545,28 +6565,28 @@ label missionfromryuvians:
     ava "It's an encyclopedia of various Ryuvian treasures that have gone missing throughout history."
     ava "According to this book, the crown jewel isn't a carved gem, but rather a highly advanced crystalline device which can pin point the location of royal blood across astronomical distances."
     kay "Ah... And let me guess, the Ryuvians want this crown jewel to help find their princess?"
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "Bingo. At least, that's the best explanation I can think of."
-    
+
     menu:
         "Debrief me on King Brandr and the Ryuvians.":
             jump debriefkingryuvians
-        
+
         "Why would the Ryuvians invent such a crazy device in the first place?":
             jump whyryuvianscrazyplace
-            
+
         "Tell me more about Lost Technology.":
             jump morelosttech
-        
+
         "Well, since we could use the money, we might as well help the Ryuvians get their crown jewel back.":
             jump moneyhelpcrownback
-    
+
 label debriefkingryuvians:
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "A long time ago, the Ryuvian Empire stretched across the galaxy, its vast military powered by technologies which have become long forgotten."
     ava "It was a vast and mighty empire, where culture and the sciences flourished."
     ava "But their glory days could not last forever. Legend speaks of a vast calamity that shook the core of the Ryuvian Empire and caused its ultimate collapse."
@@ -6576,17 +6596,17 @@ label debriefkingryuvians:
     menu:
         "Why would the Ryuvians invent such a crazy device in the first place?":
             jump whyryuvianscrazyplace
-            
+
         "Tell me more about Lost Technology.":
             jump morelosttech
-        
+
         "Well, since we could use the money, we might as well help the Ryuvians get their crown jewel back.":
             jump moneyhelpcrownback
-            
+
 label whyryuvianscrazyplace:
-    
+
     show ava uniform alt neutral neutral with dissolve
-    
+
     ava "Dynastic succession. During ancient times, whoever succeeded the Ryuvian throne essentially ruled the galaxy. Needless to say, there were many imposters who claimed the throne."
     ava "The crown jewel of Ryuvia was made with the utmost precision to detect royal blood. You could even say the fate of the galaxy depended upon its accuracy."
     ava "Much of what we've dug up of the ancient Ryuvian's technology escapes comprehension though. Some of the details of the device may never be understood."
@@ -6594,31 +6614,31 @@ label whyryuvianscrazyplace:
     menu:
         "Debrief me on King Brandr and the Ryuvians.":
             jump debriefkingryuvians
-                    
+
         "Tell me more about Lost Technology.":
             jump morelosttech
-        
+
         "Well, since we could use the money, we might as well help the Ryuvians get their crown jewel back.":
             jump moneyhelpcrownback
 
 label morelosttech:
-    
+
     show ava uniform neutral neutral with dissolve
 
     ava "It's ancient technology left behind by the former Ryuvian Empire."
     ava "A long time ago, even before the formation of the Solar Alliance, the Ryuvian Empire conquered the entire galaxy using technology we could not even conceive of."
     ava "When their empire collapsed, much of their technology was lost in the ensuing chaos."
-    ava "You could say that humanity's scientific knowledge peaked at the height of the Ryuvian Empire, and with its collapse, entered into a dark ages."
+    ava "You could say that humanity's scientific knowledge peaked at the height of the Ryuvian Empire, and with its collapse, entered into a dark age."
     ava "We've been trying to catch up to the Ryuvian's level of sophistication ever since, but it'll still take decades until we have anything as good as the ancient Ryuvians."
     ava "We call the pieces of technology left by the ancient Ryuvians Lost Technology. Whenever one is found, it can dramatically change the power balance of the galaxy."
 
     menu:
         "Debrief me on King Brandr and the Ryuvians.":
             jump debriefkingryuvians
-        
+
         "Why would the Ryuvians invent such a crazy device in the first place?":
             jump whyryuvianscrazyplace
-                    
+
         "Well, since we could use the money, we might as well help the Ryuvians get their crown jewel back.":
             jump moneyhelpcrownback
 
@@ -6631,15 +6651,15 @@ label moneyhelpcrownback:
     $ warpto_nomodorn = True
     $ amissionforalliance = False
     $ missionforryuvia = True
-    
+
     $ captaindeck = 1
     $ gal_location = "bridge"
     $ pro_location = None
-    
+
     jump dispatch
 
 label jumptonomodorn:
-    
+
     $ Random = renpy.random.randint(1,9)
 
     if Random == 1:
@@ -6694,50 +6714,50 @@ label jumptonomodorn:
     show sunrider_warpout_standard
 
     pause 2.0
-    
+
     scene bg bridge
     show ava uniform alt neutral neutral
     with fade
-    
+
     window show
-    
+
     ava "Warp successful, captain. We are arriving at the Nomodorn Corridor."
     kay "This is going to be like trying to find a needle in a haystack. Any ideas where we should start looking?"
     ava "The nearest planet in this sector is the neutral world of Tautenia.  It's what we call a dark planet, or a world where technology has fallen to pre-warp era levels. We're talking civil unrest, violence, and warfare on the surface."
     ava "Nothing we need to worry about though. The Tautenian space force is... Kind of a joke."
     kay "Right. Keep our pilots on alert though. I want to be prepared for anything."
     ava "Aye sir."
-    
+
     play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
-    
+
     show ava uniform fistup angryshout with dissolve
-    
+
     ava "Scratch that. Pirate signatures detected!"
-    
+
     play sound "sound/redalert.ogg"
     scene bg bridgered
     show ava uniform fistup angryshout
     with dissolve
-    
+
     kay "Red alert! Raise shields and power weapons! Ready all ryders for combat!"
-    
+
     show asaga plugsuit excited happy:
         xpos 0.2
     with wipeup
-    
+
     asa "We're all ready down here, capt'n!"
-    
+
     show ava uniform alt neutral mad with dissolve
-    
+
     ava "Wait a minute... I'm reading a distress beacon from another ship."
     kay "A Tautenian ship?"
     ava "No, it's Alliance. Civilian signature, designation \"Mochi.\" Possibly a transport vessel being targeted by the pirates."
     kay "Looks like this just turned into a rescue mission. Patch me through to our pilots."
     ava "Done."
     kay "Asaga, looks like it'll be a rescue mission this time. The pirates are targeting a civilian transport."
-    
+
     show asaga plugsuit handsonhips happy with dissolve
-    
+
     asa "Understood capt'n! We'll keep those civilians safe!"
     ava "The Sunrider will be vulnerable without our ryders. What are your orders, captain?"
 
@@ -6757,19 +6777,19 @@ label riskallforwardsave:
     jump oldfriendcosettetail
 
 label safetyfirstwillescort:
-    
+
     $ protectmochi = False
     $ captain_prince += 2
-    
+
     ava "Understood captain."
-    
+
     jump oldfriendcosettetail
-    
+
 label oldfriendcosettetail:
-    
+
     kay "Our old friend Cosette Cosmos might be out there. Watch your tail, everyone."
     kay "All right! All units, launch!"
-    
+
     play sound "Sound/battle.wav"
     show battlewarning:
         xpos 0.5 ypos 0.5 zoom 20
@@ -6792,9 +6812,6 @@ label oldfriendcosettetail:
     jump battle_start
 
 label mission9:
-    
-    $ BM.ships.remove(Agamemnon)
-    $ player.ships.remove(Agamemnon)
 
     if check1 == False:
         $BM.draggable = False
@@ -6805,9 +6822,9 @@ label mission9:
 
         cos "Heh-heh, I didn't fancy seeing you again, captain..."
         kay "Ah, my favorite space pirate. I see you've still been skimping on the milk."
-        
+
         play sound "sound/hit.ogg"
-        
+
         show cosette plugsuit neutralalt yandereshock onlayer screens:
             ease 0.02 xpos 0.8
             ease 0.02 xpos 0.79
@@ -6815,43 +6832,41 @@ label mission9:
             ease 0.02 xpos 0.8
             repeat 5
         with dissolve
-        
+
         cos "G-gurk..."
         cos "Y-you've interfered with my plans for the last time..."
-        
+
         show cosette plugsuit point yanderegrin onlayer screens with dissolve
-        
+
         cos "Kill him!"
-        
+
         hide cosette onlayer screens with dissolve
 
         play sound "sound/objectives.ogg"
         "Objective: Protect the civilian transport."
-        
+
         if Saveddiplomats == True:
             "Tip:  The Phoenix can briefly become immune to blindside attacks by going into stealth mode."
 
         $ check1 = True
 
         $ BM.draggable = True  #this enables dragging the viewport again.
-        
+
     if check2 == False and BM.turn_count == 2:
-        
+
         $BM.draggable = False
 
         python:
-            create_ship(PactMook(),(11,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactMook(),(12,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactMook(),(13,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactBomber(),(14,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-            create_ship(PactCruiser(),(14,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
-            create_ship(PactMook(),(11,15),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactMook(),(12,15),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactMook(),(13,15),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactBomber(),(14,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-            create_ship(PactCruiser(),(14,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
-            create_ship(MissileFrigate(),(10,2),[PactFrigateMissile()])
-            create_ship(MissileFrigate(),(10,15),[PactFrigateMissile()])
+            create_ship(PactMook(),(8,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(9,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactCruiser(),(9,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactMook(),(8,15),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(9,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactCruiser(),(9,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,8),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(MissileFrigate(),(5,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(5,15),[PactFrigateMissile()])
 
         show cosette plugsuit point evilsmile onlayer screens:
             xpos 0.8
@@ -6859,46 +6874,46 @@ label mission9:
 
         cos "Hahahaha! You won't win this time! We even brought in our friends from PACT!"
         kay "Working for the big bad now, huh? They say birds of the same feather flock together."
-        
+
         hide cosette onlayer screens with dissolve
-        
+
         show cullen onlayer screens:
             xpos 0.8
         with dissolve
-        
+
         cul "Bwah-HAH-HAH! What do we have here? An uppity little rascal?"
         kay "That's Captain Kayto Shields of the starship Sunrider."
         cul "Bah! No matter! You are no match for I, the glorious Veniczar B. Cullen! I will rid the Neutral Rim of vermin like you and unify these poverty stricken worlds into our new galactic order!"
         kay "And where does orbital bombing millions of innocents fit into this unity of yours?"
         cul "Pah! The likes of you will never understand the necessities of war! Now en garde, captain! Allow me to show you the true power of PACT!"
-        
+
         hide cullen onlayer screens with dissolve
-        
+
         kay "(Looks like Veniczar Porkchops means business. We're heavily outnumbered here... Should we fall back?)"
-        
+
         show cg_mochi 1 onlayer screens with dissolve
-        
+
         ava "Captain, I'm reading weird readings coming from that civilian vessel."
         kay "Weird?"
-        
+
         play sound "sound/mechchange.ogg"
         show cg_mochi 2 onlayer screens with dissolve
-        
+
         ava "A sudden spike in power usage... Something inside it is coming online..."
         ava "Wait, this is-"
-        
+
         show claude plugsuit fingeronlip kittysmile onlayer screens:
             xpos 0.8
         with dissolve
-        
+
         cla "I guess it's time to get moving, huh...?"
-        
+
         hide claude onlayer screens with dissolve
-        
+
         show cg_mochi_bianca onlayer screens:
             xpos 0.5 ypos 0.3 zoom 0.2
             ease 1.0 xpos 0.0 ypos 0.0 zoom 1.0
-                        
+
         play sound1 "sound/Laser 1.ogg"
         show cg_mochi 4 onlayer screens with dissolve
 
@@ -6912,41 +6927,45 @@ label mission9:
             repeat 12
         with dissolve
         play sound2 "sound/explosion2.ogg"
-        
+
         pause 2.0
-        
+
         hide cg_mochi onlayer screens
-        
+
         show ava uniform alt neutral angry onlayer screens:
             xpos 0.8
         with dissolve
-        
+
         python:
-            
-            BM.ships.remove(Mochi)
-            player.ships.remove(Mochi)
-            bianca_weapons = [BiancaAssault(),GravityGun()]
-            blackjack = create_ship(Bianca(),(14,7),bianca_weapons)
-        
+            BM.grid[13][6] = False
+            BM.ships.remove(mochi)
+            player_ships.remove(mochi)
+
         ava "Captain, a ryder! Hidden inside the storage compartment in the Alliance vessel!"
+
+        python:
+
+            bianca_weapons = [BiancaAssault(),GravityGun()]
+            bianca = create_ship(Bianca(),(14,7),bianca_weapons)
+
         kay "Patch me through to her."
         kay "This is Captain Kayto Shields of the starship Sunrider, to the unidentified Alliance ryder. State your intentions."
-        
+
         hide ava onlayer screens with dissolve
         show claude plugsuit altneutral neutral onlayer screens:
             xpos 0.8
         with dissolve
-        
+
         cla "This is Claude Trilleo. I was delivering some medical supplies to Tautenia when I was attacked by these pirates. I could sure use a hand here..."
         kay "(One extra ryder. This should even the odds.)"
         kay "All right, Claude. The Sunrider is at your service. Let's get these bogies off of you."
         play sound "sound/objectives.ogg"
         "New Objective: Defeat all enemies."
-        
+
         hide claude onlayer screens with dissolve
-        
+
         $BM.draggable = True
-        
+
         $ check2 = True
 
     $BM.battle()  #continue the battle
@@ -6960,11 +6979,13 @@ label aftermission9:
 
     hide screen commands
     hide screen battle_screen
-    
-    play music "music/Beginning_of_the_Adventure.ogg"
-    
+
+    play music "music/The_Beginning_Of_The_Adventure.ogg"
+
     scene bg bridge with dissolve
-    
+
+    window show
+
     show cullen:
         xpos 0.8
     with wipeup
@@ -6973,69 +6994,665 @@ label aftermission9:
     kay "Looks like today's not your day, Veniczar Porkchops."
     cul "T-tsch... How dare you! I will not stand for this mockery!"
     cul "Mark my words... You will regret crossing me, captain!"
-    
+
     show cosette plugsuit point evilsmile:
         xpos 0.5
     with wipeup
-    
+
     cos "Hah! Your days are numbered now!"
     kay "I'm truly shaking in my boots."
-    
+
     hide cullen with wipedown
     hide cosette with wipedown
-    
+
     show ava uniform handonhip neutral with dissolve
-    
+
     ava "The remaining enemy units are pulling back."
     kay "Good. Let them go for now."
     ava "Aye sir."
     kay "Let's bring our new friend on board."
-    
+
     scene bg hangar with dissolve
-    
+    play music "Music/As_I_Figure.ogg" fadeout 1.5
+
     show claude plugsuit neutral kittyclosedeyessmile with dissolve
-    
+
     cla "Pwahhh... That was close..."
     kay "Welcome aboard the Sunrider."
-    
+
     show claude plugsuit excited hearteye with dissolve
-    
+
     cla "Oooaaahh..."
-        
+
+    play sound "sound/chime.ogg"
+    scene cg_shojocaptain with dissolve
+
     cla "M-my captain in shining armor..."
-    ava "Ugh... And so another weird pilot washes up on our hangar..."
+
+    show ava uniform facepalm:
+        xpos 0.8
+    with dissolve
+
+    ava "Ugh... And so another bizarre being washes up on our hangar..."
+
+    scene bg hangar with dissolve
+
+    show claude plugsuit fingeronlips hearteyekittyblush with dissolve
+
     cla "O-oh my... Eh-heh... You're cuter in person than you looked on the monitor."
 
-    kay "What were you doing out here alone? This area of space is dangerous."
+    menu:
+        "What were you doing out here alone? This area of space is dangerous.":
+            jump hereareaisdangerous
+
+        "You don't look so bad yourself.":
+            jump youlooksoyourself
+
+label youlooksoyourself:
+
+    $ affection_claude += 1
+
+    show claude plugsuit fingerup smileblush with dissolve
+
+    cla "Ahahaha, oh my. It's still too soon to be flirting with your damsel in distress, capt'n. Especially with a hangar full of other women watching."
+
+    show ava uniform facepalm:
+        xpos 0.7
+    with dissolve
+
+    ava "Captain! Just please get to business already! Arggghh!"
+
+    show chigara plugsuit handonchest sadblush:
+        xpos 0.3
+    with dissolve
+
+    chi "Uuuu... I guess the captain is into girls with big boobs, huh..."
+
+    show asaga plugsuit thinking confident:
+        xpos 0.12
+    with dissolve
+
+    asa "Shhh, Chigara... This could be a special form of interrogation!"
+
+    show icari plugsuit armscrossed seriously:
+        xpos 0.88
+    with dissolve
+
+    ica "Seriously..."
+
+    hide asaga with dissolve
+    hide chigara with dissolve
+    hide ava with dissolve
+    hide icari with dissolve
+
+    jump hereareaisdangerous
+
+label hereareaisdangerous:
+
     cla "I was just delivering some medical supplies to a clinic on Tautenia when I was stopped by those pirates. I imagine I would have been killed had you not arrived in time."
+
+    show claude plugsuit handstogether hearteye with dissolve
+
     cla "Looks like I'm in your debt now, captain."
     kay "Medical supplies? But you don't look like a freighter pilot..."
     cla "Oh, no, no. I'm a doctor."
     kay "A doctor, huh? Well, that makes more sense."
     kay "Well, uh, aside from the ryder piloting part."
+
+    show claude plugsuit fingerup smileblush with dissolve
+
     cla "Eh-heh... You pick strange skills like that up when you've stayed in the Neutral Rim too long."
     kay "Well then, we'll just drop you off at Tautenia and you can take a shuttle to the surface. Glad we could be of help."
+
+    show claude plugsuit excited surpriseblush with dissolve
+
     cla "Oh, no, captain! I couldn't possibly leave without first repaying my debt."
+
+    show claude plugsuit handstogether drool with dissolve
+
     cla "Eh-heh... not to mention it'd be a shame to leave a total hottie behind so soon..."
     kay "What's that?"
+
+    show claude plugsuit excited surpriselaugh with dissolve
+
     cla "Oh, nothing, captain!"
+
+    show claude plugsuit fingerup smileblush with dissolve
+
     cla "Say... I don't suppose you need a doctor on board this ship?"
     kay "Actually... We do! Our sickbay's been closed ever since we've left port without our doctor!"
+
+    show claude plugsuit excited happyblush with dissolve
+
     cla "Ka-ching! Dr. Trilleo at your service, captain!"
     kay "Haha, what good luck! Hey Ava, we finally have a doctor for our ship!"
+
+    show claude plugsuit excited closedsmilelaugh with dissolve
+
     cla "Oh captain! I'm so glad we could meet!"
     kay "Nah, I'm glad you're here to help. Haha, I was getting worried about the sickbay!"
+
+    show ava uniform facepalm:
+        xpos 0.15
+    with dissolve
+
     ava "...unbelievable. He's eating completely out of her hand."
+
+    show asaga plugsuit handsonhips annoyed:
+        xpos 0.7
+    with dissolve
+
     asa "Uu-uwah... Chigara, I think you've met quite a formidable rival here..."
+
+    show chigara plugsuit palmsup surpriseblush:
+        xpos 0.85
+    with dissolve
+
     chi "M-me? E-eh? Eehhh!?"
 
-    kay "You don't look so bad yourself."
-    cla "Ahahaha, oh my. It's still too soon to be flirting with your damsel in distress, capt'n. Especially with a hangar full of other women watching."
-    ava "Captain! Just please get to business already! Arggghh!"
-    chi "Uuuu... I guess the captain is into girls with big boobs, huh..."
-    asa "Shhh, Chigara... This could be a special form of interrogation!"
-    ica "Seriously..."
+    $ asa_location = None
+    $ chi_location = None
+    $ ica_location = None
+    $ ava_location = "bridge"
+    $ ava_event = "dubious_credentials"
+    $ pro_location = "sickbay"
+    $ pro_event = "medical_examination"
 
+    $ captaindeck = 2
+
+    jump dispatch
+
+label dubious_credentials:
+
+    hide screen ship_map
+
+    play music "Music/The_Rest_of_the_Ents.ogg" fadeout 1.5
+
+    scene bg bridge
+    show ava uniform armscrossed frowntalk
+    with dissolve
+
+    window show
+
+    ava "Captain. A word with you."
+    kay "Is there an issue?"
+    ava "I've done some research into our new \"doctor.\" The only problem is that I can't find her medical license on the Alliance Medical Association's database."
+    kay "Strange. Maybe she's licensed with a different medical organization?"
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Possibly. Despite the AMA being the most reputable, many neutral planets run their own medical licensing schemes."
+    ava "Still, I've checked through all of the major neutral medical circles too and she's nowhere to be found."
+    kay "...weird..."
+    kay "Well, keep up the search, Ava. She's gotta be licensed with someone."
+
+    show ava uniform armscrossed skeptical with dissolve
+
+    ava "Wouldn't it be better to just ask, captain?"
+    kay "Oh right, I suppose I could do that."
+    ava "Really?"
+    kay "Really."
+    ava "... ... ..."
+    kay "I should go."
+
+    $ captaindeck = 1
+    $ ava_location = None
+
+    jump dispatch
+
+label medical_examination:
+
+    hide screen ship_map
+
+    stop music fadeout 1.5
+
+    scene bg sickbay
+    show chigara uniform handonchest sadblush
+    with dissolve
+
+    window show
+
+    chi "... ... ..."
+    kay "Chigara? Are you all right? You don't look so good..."
+
+    show chigara uniform handsup surprise with dissolve
+
+    chi "O-oh! C-captain..."
+
+    show chigara uniform twiddlefingers forcedsmile with dissolve
+
+    chi "I-it's nothing... I... was just here for my medical exam..."
+    kay "It's important to get checked, Chigara. We've been without a doctor for long. You never know what you'll pick up with all the people and goods which come and go from the ship."
+
+    show chigara uniform twiddlefinger forcedhappy with dissolve
+
+    chi "O-oh yes... C-checked..."
+
+    show chigara uniform handonchest sadblush with dissolve
+
+    chi "... ... ..."
+    chi "I... think I should get going now."
+    kay "All right."
+
+    show chigara uniform palmsup closedeyesscared:
+        zoom 1
+        pause 0.75
+        ease 0.75 xpos -0.5
+    with dissolve
+
+    chi "G-good bye!!"
+
+    hide chigara
+
+    kay "(That was strange... I wonder what happened to her...)"
+
+    play music "Music/As_I_Figure.ogg" fadeout 1.5
+
+    show claude uniform handstogether closedeyeshappy with dissolve
+
+    cla "Oh captain! I was waiting for you!"
+    cla "It's time for your medical exam!"
+    kay "Okay..."
+
+    show claude uniform fingerup kittyblush with dissolve
+
+    cla "I hear you've operated this ship without a doctor for nearly a month! Now that simply will not do!"
+    kay "Let's just say we didn't have much of a choice."
+    "Shields took a seat at one of the beds."
+
+    show claude uniform excited perv with dissolve
+
+    cla "Well, time to unbutton your shirt~"
+    "Shields took his shirt off and laid it on the bed, exposing his abs."
+
+    show claude uniform neutral drool:
+        zoom 1
+        ease 1.00 zoom 1.5 ypos 1.4
+    with dissolve
+
+    cla "O-oohh...."
+    kay "Uh, is something the matter, doc? You're staring pretty intensely here..."
+
+    show claude uniform fingeronlip forcedsmileblush with dissolve
+
+    cla "O-oh? N-no! Absolutely nothing wrong!"
+
+    show claude uniform excited happyblush with dissolve
+
+    cla "I'll just feel up your ribs, make sure nothing misplaced! Haha! Hah!"
+    "Claude felt up Shield's chest, running her palms against Shield's ribs."
+
+    show claude uniform neutral drool with dissolve
+
+    cla "O-oh my..."
+    kay "W-what's wrong?"
+
+    show claude uniform fingeronlip forcedsmileblush with dissolve
+
+    cla "N-nothing! Absolutely nothing!"
+    kay "(There's something fishy going on here...)"
+
+    show claude uniform excited heartdrool with dissolve
+
+    cla "Heh-heh-heh... Now, time for you to stand and take your trousers off too."
+    kay "All right..."
+    "Shields undid his belt and took his pants off, placing them next to the bed."
+    cla "Oooohhh..."
+    "Shields eyed Claude."
+    kay "...Well?"
+
+    show claude uniform fingerup heartdrool with dissolve
+
+    cla "Well, it's time for you to take your underwear off too. Haven't you ever had a medical exam done before?"
+    kay "None quite like this one."
+
+    show claude uniform fingerup poutblush with dissolve
+
+    cla "Now, now captain... Don't be shy. I'm just a trained professional doing her job."
+
+    show claude uniform excited happyblush with dissolve
+
+    cla "Now, off! This is for your sake, captain."
+    kay "Sigh..."
+    "Shields reluctantly pulled down his underwear."
+
+    show claude uniform fingeronlip drool with dissolve
+
+    cla "Ufufufufu..."
+    "Shields grimaced as Claude poked and prodded his privies. For what purpose, he couldn't really tell."
+    cla "O-oh my...!"
+    "Shields eyed Claude suspiciously."
+    kay "(Suspicious... Highly suspicious!)"
+    kay "Say... you are a doctor, aren't you?"
+    cla "What do you mean, captain? Of course I'm a doctor!"
+    kay "Uh... Y-you wouldn't happen to have a certificate, do you?"
+
+    show claude uniform altneutral smileblush with dissolve
+
+    cla "Of course I do! Unfortunately, it was on the Mochi when the pirates got to it."
+    kay "I-is that... REALLY!?"
+    kay "W-WHAT ARE YOU DOING!?"
+
+    show claude uniform neutral hearthappy with dissolve
+
+    cla "Getting a semen sample! What else!?"
+    kay "I-isn't there a standardized device you can use for that!?"
+
+    show claude uniform excited hearthappy with dissolve
+
+    cla "Who needs a fancy device when I got a strong hand right here!"
+    kay "(This is so far from protocol not even I can handle it!)"
+
+    play music "Music/Run Amok.ogg" fadeout 1.5
+
+    show ava uniform fistup shout:
+        xpos 0.2
+    with dissolve
+
+    ava "CAPTAIN!"
+    kay "HURK! A-Ava!?"
+    ava "I found it here!!!"
+    kay "F-found what!?"
+
+    show ava uniform armscrossed angry with dissolve
+
+    ava "That little skeever isn't a doctor at all! Look here on this form!"
+    ava "Medical license suspended due to malpractice!"
+    ava "WARNING: This individual is known to mascaraed as a medical practitioner. Her skills fall beyond all reasonable standards of modern medical care. Patients are advised to seek the advice of a professional medical practitioner instead of this individual."
+    kay "I-I knew it!"
+
+    show ava uniform salute angry with dissolve
+
+    ava "Orders, captain!?"
+    kay "F-fire vanguards!"
+    kay "... ... ..."
+    kay "I mean, get me my clothes damnit!"
+
+    show ava uniform alt neutral angry with dissolve
+
+    ava "You're under arrest!"
+
+    show claude uniform neutral ooshock:
+        ease 0.5 ypos 1.0 zoom 1.0
+    with dissolve
+
+    cla "G-GONG... F-for what?"
+    ava "For impersonating as a medical professional!"
+    kay "(And molesting a starship captain!)"
+
+    show chigara uniform handsonchest sad:
+        xpos 0.8
+    with dissolve
+
+    chi "U-um... I think I forgot my badge here... and what's all this commotion a-"
+
+    show chigara uniform palmsup surpriseblush with dissolve
+
+    chi "H-EH!? C-c-c-c-captain!?"
+
+    show chigara uniform neutral dazed:
+        zoom 1
+        pause 0.5
+        ease 0.8 ypos 2.0
+    with dissolve
+
+    pause 0.5
+
+    play sound "sound/hit.ogg"
+    show layer master at shake1
+
+    chi "O-oh my...."
+
+    kay "C-Chigaraaa...!"
+
+    scene bg captainsoffice with fade
+
+    stop music fadeout 1.5
+
+    show ava uniform armscrossed frown with dissolve
+    show claude uniform neutral sob:
+        xpos 0.75
+    with dissolve
+
+    ava "Captain, I've placed our \"doctor\" under arrest. What should we do with her?"
+    kay "Send a transmission to the Alliance. We'll just turn her over to the authorities."
+    cla "Sniff... sniff..."
+    kay "... ... ..."
+
+    show claude uniform handstogether puppy with dissolve #####REPLACE
+
+    cla "Y-you wouldn't do that to ol' Claude now, captain, would you?"
+    cla "You see... Claude was just trying to help! I didn't mean any harm by it."
+    cla "Whenever I see someone in need, I just can't stop myself from trying to help..."
+
+    show ava uniform armscrossed lookawaymad with dissolve
+
+    ava "Hmph."
+    kay "(This girl's good, I'll give her that. But she's not going to fool me twice.)"
+    kay "We're here on serious Ryuvian business. A warship is no place to fool around, Claude."
+
+    show claude uniform handstogether closedeyesblush with dissolve
+
+    cla "Sniff... If you're looking for Ryuvian treasure, the place you're looking for is the Mnemosyne Abyss."
+    kay "(Damnit! I accidently let slip what we were here for. That was careless.)"
+
+    show ava uniform alt neutral mad with dissolve
+
+    ava "The Mnemosyne Abyss? What do you know about it?"
+
+    show claude uniform neutral sadblush with dissolve
+
+    cla "It's pretty well known among the locals on Tautenia as the site of an ancient Ryuvian battle. Thousands of derelict ships litter the area."
+    cla "This area's largely unexplored, so many hidden treasures still remain there."
+    kay "(Hidden treasures? This sounds like a possible lead for the Crown Jewel...)"
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "What do you think, captain? Could this be a possible lead?"
+    kay "It's the best we have right now. It's worth investigating."
+    kay "We'll set course for the Mnemosyne Abyss."
+    ava "Oh. And what of our \"doctor?\""
+    kay "Looks like we'll have to delay turning her over to the authorities."
+
+    menu:
+        "She'll be confined to quarters in the meantime until we're finished with our mission.":
+            jump confineduntilwithmission
+
+        "Get her to the hangar. She'll be more useful as a pilot than a doctor.":
+            jump hangarusefulpilotdoc
+
+label confineduntilwithmission:
+
+    show ava uniform salute neutral with dissolve
+
+    ava "Understood, sir."
+
+    show claude uniform neutral sob with dissolve
+
+    cla "No way! Captain..."
+
+    show ava uniform armscrossed angry with dissolve
+
+    ava "Come on, this way! Unless you want to be zapped again."
+    cla "Sniffle sniffle..."
+
+label hangarusefulpilotdoc:
+
+    $ affection_claude += 1
+
+    show claude uniform neutral smallsurprise with dissolve
+
+    cla "Does this mean..."
+
+    show claude uniform excited hearthappy with dissolve
+
+    cla "You're still giving me another chance!?"
+
+    play sound "sound/chime.ogg"
+    scene cg_shojocaptain with dissolve
+
+    cla "Oh captain... My hero!"
+
+    scene bg captainsoffice
+    show claude uniform excited hearthappy:
+        xpos 0.75
+    show ava uniform handonhip neutral:
+        xpos 0.5
+    with dissolve
+
+    show ava uniform facepalm with dissolve
+
+    ava "Unbelievable... Come on, the hangar's below us."
+    cla "Oh captain! Thank-you so much! I won't let you down!"
+
+    scene bg black with screenwipe
+    scene bg bridge with screenwipe
+    show ava uniform neutral neutral with dissolve
+
+    play music "Music/La_Busqueda_de_Lanna.ogg"
+
+    ava "Setting in coordinates. Are you sure you want to jump there?"
+    kay "Who knows? Maybe we might also find lost technology which can make the Veniczar magically disappear."
+    ava "Coordinates are in. Spooling up warp drive."
+    kay "Jump!"
+
+    window hide
+    scene map_nomodorn:
+        ypos -0.2
+    show sunrider_warpout_standard:
+        xpos 700 ypos 350
+    with dissolve
+
+    pause 2.0
+
+    play sound "Sound/large_warpout.ogg"
+    show sunrider_warpout_standard_flash:
+        xpos 426 ypos 0 alpha 0
+        linear 0.1 alpha 1
+        linear 0.1 alpha 0
+    show sunrider_warpout_standard out:
+        xpos 700 ypos 350
+        ease 0.2 xpos 200 ypos 300 zoom 0
+    pause 2.0
+
+    stop music fadeout 1.5
+
+    scene bg bridge
+    show ava uniform neutral neutral
+    with dissolve
+
+    window show
+
+    ava "Arrival on target."
+    ava "I'm reading... something strange on scanners."
+    kay "Strange?"
+
+    play music "Music/Arcadia.ogg"
+    scene cg_graveyard:
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.25
+        ease 10.0 ypos 0.7
+    with dissolve
+
+    kay "Sweet mother of god..."
+    kay "I've never seen anything like this. Ava, what am I seeing here?"
+    ava "An... ancient warship of some kind. Over four kilometers long."
+    kay "This could be the biggest finding of lost technology of this decade. All this time, this was hidden here..."
+    ava "So do you really think the crown jewel is out here?"
+
+    scene bg bridge
+    show ava uniform neutral neutral
+    with dissolve
+
+    kay "Let's find out. Asaga, are you there?"
+
+    show asaga plugsuit neutralalt alert:
+        xpos 0.2
+    with wipeup
+
+    asa "We're ready down here, capt'n! What're your orders?"
+    kay "I want our ryders to launch and provide recon for the Sunrider. Find out what's out there and figure out where all this wreckage came from."
+    asa "Understood, captain! Alright, you heard the man! All units, launch after me!"
+
+    scene cg_graveyard:
+        yanchor 0.5 xanchor 0.5 xpos 0.5 ypos 0.6
+    with dissolve
+
+    chi "It's... eerily beautiful."
+    ica "In all my years of flying, I've never seen anything like this. Are you seeing this, captain?"
+    kay "Yeah..."
+    ica "Look up ahead!"
+    chi "It's... a vessel. Almost perfectly preserved, even after all these years."
+    asa "There're more of them! T-they're everywhere!"
+    kay "A dark starship graveyard."
+    ava "My father used to tell me ghost stories about space graveyards when I was younger to scare me... This looks like something that could be right out of one of his tales..."
+    chi "I've dated those ships, captain. They're over two thousand years old."
+    chi "According to those markings, these ships belonged to the Ryuvian princess' royal guard."
+    kay "Then the crown jewel could be nearby. Chigara, we're looking for some kind of crystalline device. See if it's on any of those ships."
+    ica "A battle took place here, there's no doubt about it."
+    ava "How do you know the ships weren't just abandoned here?"
+    ica "Because I'm reading organic material inside the ships. The crew were perfectly preserved in the vacuum of space."
+    ica "Look into the windows. There're frozen bodies inside..."
+    chi "Uuu... C-Chigara's closing her eyes now..."
+    kay "What could have caused this...?"
+    ica "It looks like some kind of... blast. The ships are more and more damaged the deeper we head into the field."
+    kay "Can you determine the epicenter?"
+    chi "It's the super dreadnought, captain. A massive energy blast must have emanated from it, while still keeping most of its own structure intact."
+    chi "The technology inside that ship alone could... improve our current technology by a hundred fold. If you factor in all the ships in this field..."
+    chi "This could be the biggest discovery of Lost Technology in the past hundred years!"
+    kay "I think we've hit the jackpot. Asaga, secure that Ryuvian super battleship."
+    asa "Understood sir."
+    asa "I'm... seeing some kind of a hangar bay."
+    asa "Eh-heh... I'm going to check out what's inside that thing. I'm goin' ahead, capt'n!"
+
+    scene bg bridge with dissolve
+    show ava uniform alt neutral neutral with dissolve
+
+    kay "Hold on Asaga. We don't know what we're up against yet."
+    asa "Ah c'mon capt'n, it's just a big old frozen ghost ship! What's there to be scared about?"
+    kay "Seriously... Would you listen to yourself for a moment?"
+    asa "The inside of the ship's pretty spacious..."
+    asa "It looks like this ship was definitely a carrier... I'm seeing a lot of open space."
+    ica "You could store over a thousand ryders here..."
+    chi "The Ryuvians were the ones who originally invented ryder technology. Of course they'd also have the carriers to support a battalion of ryders."
+    ica "The design of this ship's nothing like any ship I've been on though. It's like the whole ship is one big hangar. Almost like... the inside of a hive."
+    asa "I think the ship's command center should be up above us. Come on, let's go!"
+    ica "Think the crew's still frozen up there?"
+    asa "Who knows? We haven't seen any other crewmen here though."
+    chi "Could the ship have been fully AI controlled? If the ship was frozen in the middle of a battle, you'd think there'd be frozen crewmen all around us..."
+    ica "An AI? Control something this big?"
+    chi "Anything could be possible with Ryuvian technology."
+    asa "We've made it to what looks like the entrance to the ship's bridge."
+    asa "I'm detecting a faint energy signal beyond that airlock. The life support systems are still functional in the bridge!"
+    asa "I'm going to leave my ryder and head in there for a closer look!"
+    ica "Are you crazy! You don't know what's in there!"
+    asa "I'm out of my cockpit. I'm feeding you the camera on my suit, capt'n."
+    kay "I see it..."
+    asa "It's definitely unlike any bridge I've seen. Only one control station. Was this entire ship meant to be flown by just one person?"
+    asa "Wait a minute... I'm seeing... Something weird..."
+    asa "There's... some kind of a capsule..."
+    asa "Oh..."
+    asa "Are you seeing this, captain?"
+    kay "I'll be damned. She's been... perfectly preserved."
+    chi "No... Not preserved....."
+
+    asa "Uh oh!"
+    kay "What did you do!?"
+    asa "N-nothing! I swear! The thing just came to life on its own!"
+    "Ship" "Ga'rk! Sharn-la ree seath ta!"
+    asa "Uuhh... Anyone understand what it's saying?"
+    chi "Captain, I'm reading a sudden increase in power! The super battle ship..."
+    chi "I-It's coming back to life!"
+    ava "Warning! All the Ryuvian vessels have powered up!"
+    kay "What-!? B-but the crew-"
+    ica "I-it's a ghost fleet! This whole place is cursed!"
+    ava "The Ryuvian fleet is powering weapons, sir! Your orders!"
+    kay "Red alert! All hands, battle stations!"
+    kay "Asaga, GET OUT OF THERE!"
+    asa "U-uh... c-captain..."
+    kay "What in hell's-"
+    ava "We've lost contact with Asaga!"
+    ava "The enemy vessels are firing on us! Shall we return fire!?"
+    kay "Tsch... No choice! All units! Defend the Sunrider!"
 
 
 label credits:

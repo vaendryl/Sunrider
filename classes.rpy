@@ -325,9 +325,9 @@ init -2 python:
                         ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
 
             if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
-                if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
-                    show_message('DEBUG: Not enough energy!')
-                    return
+#                if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
+#                    show_message('DEBUG: Not enough energy!')
+#                    return
 
                 if result[1].wtype == 'Support':
                     if result[1].self_buff:
@@ -707,7 +707,7 @@ init -2 python:
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
             if self in BM.ships:
                 BM.ships.remove(self)
-            if self.boss:
+            if self.boss or len(enemy_ships) == 0:
                 BM.battle_end()
 
         def register_weapon(self, weapon):
@@ -1107,18 +1107,17 @@ init -2 python:
                 return 'miss'
 
             for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) > accuracy:
+                if renpy.random.randint(1,100) > accuracy:
                     pass #you missed!
                 else:
                     damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
-                    damage -= target.armor
-                    if damage <= 1: damage = 1
-                    store.total_armor_negation += target.armor
                     if target.shields > 0:
                         damage = damage * (100 - target.shields) / 100.0
                         store.total_shield_negation += int(damage * target.shields / 100.0)
+                    damage -= target.armor
                     if damage <= 1: damage = 1
+                    store.total_armor_negation += target.armor
                     total_damage += int(damage)
                     store.hit_count += 1
 

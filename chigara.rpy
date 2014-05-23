@@ -187,7 +187,19 @@
         zoom 0.6255
         subpixel True 
         
-        
+    image chigara plugsuit handonchest sadblush:
+        "Character/Chigara/chigara_plugsuit_handonchest_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
+    image chigara plugsuit palmsup surpriseblush:
+        "Character/Chigara/chigara_plugsuit_palmsup_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 
@@ -284,6 +296,37 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image chigara uniform handonchest sadblush:
+        "Character/Chigara/chigara_uniform_handonchest_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform twiddlefinger forcedhappy:
+        "Character/Chigara/chigara_uniform_twiddlefinger_forcedhappy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform palmsup closedeyesscared:
+        "Character/Chigara/chigara_uniform_palmsup_closedeyesscared.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform palmsup surpriseblush:
+        "Character/Chigara/chigara_uniform_handsup_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara uniform neutral dazed:
+        "Character/Chigara/chigara_uniform_neutral_dazed.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+
 
 
 

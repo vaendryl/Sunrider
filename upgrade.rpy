@@ -72,7 +72,9 @@ screen upgrade:
         add "Menu/upgrade_blackjack.png"
     if ship == liberty:
         add "Menu/upgrade_liberty.png"
-
+    if ship == phoenix:
+        add "Menu/upgrade_phoenix.png"
+        
     textbutton 'next ship':
         xpos 0.8
         ypos 0.1

@@ -67,6 +67,7 @@ init -5:
         subpixel True
 
     image space back3:
+        "Background/space3.jpg"
         yanchor 0.5 xanchor 0.5
         xpos 0.5 ypos 0.5
         subpixel True
@@ -329,6 +330,12 @@ init -5:
     image cg_mochi_bianca:
         "CG/ep3_bianca.png"
         xanchor 0.0 yanchor 0.0
+        
+    image cg_shojocaptain:
+        "CG/shoujo captain1.jpg"
+        
+    image cg_graveyard:
+        "CG/graveyard.jpg"
 
 
     ########################################MAP

@@ -269,6 +269,18 @@ init 2 python:
             self.buffed_voice = ['Agamemnon/beep2.ogg']
             self.cursed_voice = ['Agamemnon/beep2.ogg']
 
+        def destroy(self,attacker,no_animation = False):
+            if not no_animation:
+                try:
+                    renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
+                except:
+                    show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
+            a = self.location[0]-1  #make the next line of code a little shorter
+            b = self.location[1]-1
+            BM.grid[a][b] = False #tell the BM that the old cell is now free again
+            BM.ships.remove(self)
+            renpy.jump('sunrider_destroyed')
+
     class PhoenixBoaster(Battleship):
         def __init__(self):
             Battleship.__init__(self)
@@ -330,16 +342,16 @@ init 2 python:
             self.name = 'Mochi'
             self.animation_name = 'mochi'
             self.faction = 'Player'
-            self.max_hp = 900
+            self.max_hp = 1200
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 10
+            self.base_armor = 15
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 200
-            self.hate = 300
+            self.hate = 100
             self.evasion = -20
             self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
             self.portrait = None
@@ -354,6 +366,17 @@ init 2 python:
             self.buffed_voice = ['Agamemnon/beep2.ogg']
             self.cursed_voice = ['Agamemnon/beep2.ogg']
 
+        def destroy(self,attacker,no_animation = False):
+            if not no_animation:
+                try:
+                    renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
+                except:
+                    show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
+            a = self.location[0]-1  #make the next line of code a little shorter
+            b = self.location[1]-1
+            BM.grid[a][b] = False #tell the BM that the old cell is now free again
+            BM.ships.remove(self)
+            renpy.jump('sunrider_destroyed')
 
 ### PACT ships ###
 
@@ -445,7 +468,7 @@ init 2 python:
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
-            self.money_reward = 200
+            self.money_reward = 300
             self.max_missiles = 2
             self.max_rockets = 0
             self.missiles = self.max_missiles
@@ -920,7 +943,7 @@ init 2 python:
     class PACTCruiserLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 175
+            self.damage = 200
             self.energy_use = 70
             self.shot_count = 1
             self.accuracy = 100
@@ -928,7 +951,7 @@ init 2 python:
     class PACTCruiserKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 300
+            self.damage = 350
             self.energy_use = 60
             self.shot_count = 1
             self.accuracy = 55

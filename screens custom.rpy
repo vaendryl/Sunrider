@@ -325,7 +325,7 @@ screen battle_screen:
                             hover hvr
                             hovered hvrd
                             unhovered unhvrd
-                            focus_mask True
+                            focus_mask True #im.Scale(Image("Battle UI/focus mask 2.png"),500,400) this is Hard
                             at zoom_button(zoomlevel/2.5)
 
                         if ship.fireing_flak:
@@ -393,6 +393,8 @@ screen battle_screen:
                                 size int(16*zoomlevel)
                                 font "Font/sui generis rg.ttf"
                                 outlines [(2,'000',0,0)]
+
+
 
 
 
@@ -499,7 +501,29 @@ screen battle_screen:
                                     size (14 * zoomlevel)
                                     color 'fff'
 
+          #when you hover over an emeny ship the HP bar and HP text will overlay again on top of other ships.
+        if BM.hovered != None: #when you hover over a ship
+            $ hovered_ship = BM.hovered
+            if hovered_ship.location == None:
+                $ pass
+            elif hovered_ship.faction != 'Player':
+                $xposition = int((hovered_ship.location[0]+0.09) * 192 * zoomlevel)
+                $yposition = int((hovered_ship.location[1]+0.70) * 120 * zoomlevel)
+                $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
+                add 'Battle UI/label hp bar.png':
+                    xpos xposition
+                    ypos yposition
+                    zoom (zoomlevel/2.5)
+                    crop (0,0,hp_size,90)
 
+                text str(BM.hovered.hp):
+                    xanchor 0.5
+                    yanchor 0.5
+                    xpos int(xposition+80*zoomlevel)
+                    ypos int(yposition+27*zoomlevel)
+                    size int(16*zoomlevel)
+                    font "Font/sui generis rg.ttf"
+                    outlines [(2,'000',0,0)]
 
 
                 ##DISPLAY MOVEMENT OPTIONS##
