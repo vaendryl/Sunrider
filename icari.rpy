@@ -255,7 +255,12 @@
         zoom 0.6255
         subpixel True 
 
-
+    image icari plugsuit armscrossed seriously:
+        "Character/Icari/icari_plugsuit_armscrossed_seriously.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
         
@@ -297,6 +302,43 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari uniform handonhip neutral:
+        "Character/Icari/icari_uniform_handonhip_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform bothhandsonhips grin:
+        "Character/Icari/icari_uniform_bothhandsonhips_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform armscrossed smilesidesmile:
+        "Character/Icari/icari_uniform_armscrossed_smallsidesmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform altneutral smile:
+        "Character/Icari/icari_uniform_altneutral_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform handonhip snide:
+        "Character/Icari/icari_uniform_handonhip_snide.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform point embarassed tsun:
+        "Character/Icari/icari_uniform_point_embarassedtsun.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
 
 
 

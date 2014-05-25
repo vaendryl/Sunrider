@@ -29,6 +29,7 @@ screen upgrade:
     $ upgrade_list.append(ship.upgrades['max_hp'])
     $ upgrade_list.append(ship.upgrades['max_en'])
     $ upgrade_list.append(ship.upgrades['evasion'])
+#    $ upgrade_list.append(ship.upgrades['move_cost'])  #probably should be set individually in design
     $ upgrade_list.append(["KINETIC -----------",None,None,None,None])
     $ upgrade_list.append(ship.upgrades['kinetic_dmg'])
     $ upgrade_list.append(ship.upgrades['kinetic_acc'])
@@ -71,7 +72,9 @@ screen upgrade:
         add "Menu/upgrade_blackjack.png"
     if ship == liberty:
         add "Menu/upgrade_liberty.png"
-
+    if ship == phoenix:
+        add "Menu/upgrade_phoenix.png"
+        
     textbutton 'next ship':
         xpos 0.8
         ypos 0.1

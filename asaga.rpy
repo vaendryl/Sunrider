@@ -253,6 +253,19 @@
         zoom 0.6255
         subpixel True 
     
+    image asaga plugsuit thinking confident:
+        "Character/Asaga/asaga_plugsuit_thinking_confident.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
+    image asaga plugsuit handsonhips annoyed:
+        "Character/Asaga/asaga_plugsuit_handsonhips_annoyed.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 
@@ -366,4 +379,58 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
-    
+    image asaga uniform armscrossed talk:
+        "Character/Asaga/asaga_uniform_armscrossed_talk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    image asaga uniform armscrossed mad:
+        "Character/Asaga/asaga_uniform_armscrossed_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    image asaga uniform altneutral talk:
+        "Character/Asaga/asaga_uniform_altneutral_talk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    image asaga uniform armscrossed frown:
+        "Character/Asaga/asaga_uniform_armscrossed_frown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True    
+    image asaga uniform handsonhips shoutmad:
+        "Character/Asaga/asaga_uniform_handsonhip_shoutmad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True    
+    image asaga uniform neutral lookawayfrown:
+        "Character/Asaga/asaga_uniform_neutral_lookawayfrown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform armscrossed shoutclosedeyes:
+        "Character/Asaga/asaga_uniform_armscrossed_shoutclosedeyes.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform altneutral sad:
+        "Character/Asaga/asaga_uniform_altneutral_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+
+
+
+
+
+
+

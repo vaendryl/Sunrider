@@ -13,8 +13,9 @@ init -5:
     define cos = Character('Cosette', who_xalign=0.05)
     define gre = Character('Grey', who_xalign=0.05)
     define ven = Character('Arcadius', who_xalign=0.05)
-    define ryu = Character('Ryuvia', who_xalign=0.05)
+    define ryu = Character('Brandr', who_xalign=0.05)
     define pi = Character('Pilot', who_xalign=0.05)
+    define cul = Character('Cullen', who_xalign=0.05)
     define sop = Character('Sophita', who_xalign=0.05)
     define cen = Character(" ", what_font="Font/PERTILI.TTF", what_size=25, what_xalign=0.5, what_text_align=0.5, what_yalign=0.5)
     define e = Character(" ")
@@ -36,8 +37,20 @@ init -5:
         xanchor 0.5
         zoom 0.6255
         subpixel True 
-    
-    
+        
+    image king:
+        "Character/Side/king.png"
+        yanchor 0.9 ypos 1.0
+        xanchor 0.5
+        zoom 0.62
+        subpixel True 
+        
+    image cullen:
+        "Character/Side/Cullen.png"
+        yanchor 0.9 ypos 1.0
+        xanchor 0.5
+        zoom 0.62
+        subpixel True     
         
 #####################################SPACE BACKGROUNDS
     
@@ -296,6 +309,35 @@ init -5:
     image item album:
         "CG/album.png"
         
+    image cg_avateatime:
+        "CG/avateatime.jpg"
+        
+    image cg_mochi 1:
+        "CG/mochi1.jpg"
+
+    image cg_mochi 2:
+        "CG/mochi2.jpg"
+
+    image cg_mochi 3:
+        "CG/mochi3.jpg"
+        
+    image cg_mochi 4:
+        "CG/mochi4.jpg"
+
+    image cg_mochi 5:
+        "CG/mochi5.jpg"
+
+    image cg_mochi_bianca:
+        "CG/ep3_bianca.png"
+        xanchor 0.0 yanchor 0.0
+        
+    image cg_shojocaptain:
+        "CG/shoujo captain1.jpg"
+        
+    image cg_graveyard:
+        "CG/graveyard.jpg"
+
+
     ########################################MAP
     
     image galaxymap:
@@ -308,6 +350,8 @@ init -5:
         "Map/pactstation.jpg"
     image map_astralexpanse:
         "Map/astralexpanse.jpg"
+    image map_nomodorn:
+        "Map/nomodorn.jpg"
         
     image map_occupiedcerainfo:
         "Map/occupiedcera_info.png"
@@ -321,6 +365,9 @@ init -5:
         "Map/versta.jpg"
     image map_versta_info:
         "Map/versta_info.png"
+    image map_nomodorn_info:
+        "Map/nomodorn_info.png"
+
     
     ########################LOGOS
     
@@ -408,7 +455,7 @@ init -5:
     image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun- ft.lily-an/Maya Full |{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits25 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
 
     ########################PARALAX EFFECTS
@@ -1740,7 +1787,40 @@ init -5:
     image cg_album:
         "CG/cg_album.jpg"
         
+    image seraphim:
+        "gameplay/Animations/Seraphim/side.png"
+        xalign 0.5 yalign 0.5
+    image seraphim kinetic:
+        "gameplay/Animations/Seraphim/kinetic.png"
+        xalign 0.5 yalign 0.5
+    image seraphim_charge1:
+        "gameplay/Animations/Seraphim/charge1.png"
+        xalign 0.5 yalign 0.5
+    image seraphim_charge2:
+        "gameplay/Animations/Seraphim/charge2.png"
+        xalign 0.5 yalign 0.5
+    image seraphim_bullet:
+        "gameplay/Animations/Seraphim/bullet.png"
+        xalign 0.5 yalign 0.5
+
+    image mochi_side:
+        "gameplay/Animations/Mochi/mochi.png"
+        xalign 0.5 yalign 0.5
         
+    image bianca:
+        "gameplay/Animations/Bianca/side.png"
+        xalign 0.5 yalign 0.5
+    image bianca kinetic:
+        "gameplay/Animations/Bianca/kinetic.png"
+        xalign 0.5 yalign 0.5
+    image bianca_kinetic_explode:
+        "gameplay/Animations/Bianca/kinetic_explode.png"
+        xalign 0.5 yalign 0.5
+        
+    image cg_sparklecaptain:
+        "CG/shoujo captain1.jpg"
+        
+
 ########################################## JOKE
 
     image bg renpytomback:

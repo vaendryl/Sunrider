@@ -36,13 +36,21 @@ label firstvariables:
     $ gal_location = None
     $ cal_location = None
     $ res_location = None
+    $ ica_location = None
+    $ sol_location = None
+    $ cla_location = None
+    $ cos_location = None
+    $ kri_location = None
     
     $ warpto_tydaria = False
     $ warpto_occupiedcera = False
     $ warpto_astralexpanse = False
     $ warpto_pactstation1 = False
     $ warpto_versta = False
+    $ warpto_nomodorn = False
     
     $ ep2_cancelwarp = False
+    
+    $ supportedasagacards = False
     
     return

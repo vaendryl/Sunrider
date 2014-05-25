@@ -1,5 +1,20 @@
-Sunrider
+#Sunrider
 ========
+
+preliminary work on beta 3
+==========================
+
+changed:
+* enemy phoenix is now immune to counter attacks
+* changed EN upgrades to go in units of 5 (thanks ledabot)
+* fixed not being able to use a weapon because game didn't check for cost upgrades when deciding when a button is clickable
+* accuracy upgrades affect a weapons base accuracy, which overall makes these upgrades more effective and easier to understand.
+* added a cover mechanic. Asteroids can be spawned in a battle that will have a chance of blocking attacks aimed at a unit on the same cell; until the asteroid is destroyed.
+* rewrote buff code to make it neater and more flexible
+* stealth is now fully auto self-cast. adding more skills like this will be easy.
+* rewrote weapon button display code to be neater. this technique will be useful rewriting ship display code.
+* rewrote selection code so it's neater and more rugged. been wanting to do that for a long time
+* pretty massive rewrite of ship display code. much much less messy now. I don't think I managed to make it more efficient though, regretably.
 
 
 patch notes 2.1
@@ -26,7 +41,7 @@ patch notes 2.1
   * you can only use 1 order per turn
 
 beta 2 v2.00
-------------
+============
 
 * 3 new missions, 1 new unit and 1 new character and lots of story!
 * added melee attacks and created dynamic animations for them  
@@ -37,41 +52,32 @@ beta 2 v2.00
 Beta 1
 ========
 1.06 patch notes
+----------------
 
--disabled saving/loading during the enemy turn. instead, a warning will appear.
+* disabled saving/loading during the enemy turn. instead, a warning will appear.
+* fixed possible crash caused by Vanguard cannon when used to kill a boss (and other units)
+* darkend the background during victory screen and destroyed units don't suddenly pop up anymore
+* increases size of HP and EN values in status window
 
--fixed possible crash caused by Vanguard cannon when used to kill a boss (and other units)
-
--darkend the background during victory screen and destroyed units don't suddenly pop up anymore
-
--increases size of HP and EN values in status window
-
--"end turn' button shows red if there are ships with full energy left. it shows green when there are none. 
+* "end turn' button shows red if there are ships with full energy left. it shows green when there are none. 
 I think a confirmation popup would be too invasive.
-
--fixed transition glitch at the end of mission 2
-
--pressing [ or ] now cycles through player ships. if you start a new game on 1.06 then the middle mouse 
+* fixed transition glitch at the end of mission 2
+* pressing [ or ] now cycles through player ships. if you start a new game on 1.06 then the middle mouse 
 button will also work.
-
--lowered the default volume of music
-
--right click deselects weapon or ship (new game required)
-
--added experimental option for edge scrolling.
+* lowered the default volume of music
+* right click deselects weapon or ship (new game required)
+* added experimental option for edge scrolling.
 
 1.06a
+-------
 
--fixed crash after killing a boss
-
--hopefully really fixed the Vanguard crash issue
-
--fixed crash when clicking middle mouse while selecting an enemy
-
--right click exits the save menu screen
-
--middle click will select the sunrider if no units are selected.
+* fixed crash after killing a boss
+* hopefully really fixed the Vanguard crash issue
+* fixed crash when clicking middle mouse while selecting an enemy
+* right click exits the save menu screen
+* middle click will select the sunrider if no units are selected.
 
 1.06b 
+------
 
--fixed bug introduced by commenting out some critical code
+* fixed bug introduced by commenting out some critical code

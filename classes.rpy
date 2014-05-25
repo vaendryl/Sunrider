@@ -18,7 +18,9 @@ init -2 python:
         ##it gets initialized into an instance called BM, short for battlemanager
     class Battle(store.object): # handles managing a list of all battle units, handles turns and manages enemy AI
         def __init__(self):
+            self.save_version = config.version
             self.ships = []
+            self.covers = []
             self.missiles = []
             self.selected = None
             self.hovered = None
@@ -39,7 +41,7 @@ init -2 python:
             self.orders = {
                 'FULL FORWARD':[500,'full_forward'],
                 'REPAIR DRONES':[500,'repair_drones'],
-                'VANGUARD CANNON':[1500,'vanguard_cannon']
+                'VANGUARD CANNON':[1500,'vanguard_cannon'],
                 }
             self.order_used = False
               #environment modififiers are initialized here and can be changed later
@@ -97,8 +99,6 @@ init -2 python:
                     if ship in BM.ships:
                         BM.ships.remove(ship)
 
-
-
             if result == 'anime':
                 try:
                     renpy.call_in_new_context('atkanim_blackjack_melee') #'atkanim_blackjack_melee')
@@ -118,9 +118,6 @@ init -2 python:
                     self.active_weapon = None
                     self.targetingmode = False
                     self.weaponhover = None
-#                    renpy.restart_interaction()
-#                    renpy.hide_screen('battle_screen')
-#                    renpy.show_screen('battle_screen')
                 elif self.selected != None:
                     self.unselect_ship(self.selected)
                 else:
@@ -152,97 +149,89 @@ init -2 python:
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
                 if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
-                #renpy.pause(0.1)
 
-##this needs to be rewritten so badly >.>
-            if result[0] == 'selection':  #this means you clicked on a ship
-                #result[1] here represents the ship you clicked on
-                if self.selected == result[1] : #check if you clicked on the same ship that is selected. this cancels the selection
-                    if self.targetingmode:  #if you clicked yourself after selecting a support skill, you should not deselect yourself though!
-                        if self.active_weapon.wtype == 'Support':
-                            self.target = result[1]
-                            self.hovered = None
-                              #targetingmode has served it's purpose, as you just selected your target
-                            self.targetingmode = False
+            if result[0] == 'selection':  #this means you clicked on a ship, which could mean various things depending on circumstance.
+                self.target = result[1]
+                self.hovered = None
 
-                              #pass the weapontype to the selected ship and show the attack animation
-                            try:
-                                renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-                            except:
-                                pass
-#                                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+                #if no ship is currently selected select the ship that was just clicked on.
+                if self.selected == None:
+                    self.select_ship(self.target)
+                    return
 
-                              #calculate healing done. if it misses then damage == 'miss'. 2nd parameter is the target you clicked on
-                            healing = self.active_weapon.fire(self.selected,result[1])
-                              #make the target deal with the damage it takes
-                            result[1].receive_damage(healing,self.selected,self.active_weapon.wtype)
-                            self.selected.movement_tiles = get_movement_tiles(self.selected)
-                            self.active_weapon = None #you used the weapon and now it's not selected anymore
-                            update_stats()
-                            return
+                #you do not have a weapon active.
+                if not self.targetingmode:
 
+                    #did you select the active ship?
+                    if self.target == self.selected:
+                        self.unselect_ship(self.selected)
                     else:
-                        self.unselect_ship(result[1])
-                        return
+                        self.select_ship(self.target)
+                    return
+
+                #you do have a weapon active.
                 else:
-                    if self.targetingmode: #check if you were selecting a target to fire upon
-                        BM.weaponhover = None
-                        if self.active_weapon.wtype == 'Support':
-                            self.target = result[1]
-                            self.hovered = None
-                              #targetingmode has served it's purpose, as you just selected your target
-                            self.targetingmode = False
+                    weapon = self.active_weapon
+                    self.targetingmode = False
 
-                              #pass the weapontype to the selected ship and show the attack animation
-                            try:
-                                renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-                            except:
-                                pass
-#                                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+                    #did you click the currently selected ship?
+                    if self.target == self.selected:
+                        if weapon.wtype == 'Support':
+                            pass  #you clicked your selected ship with a support weapon active. do not end the method.
+                        else:
+                            self.unselect_ship(result[1])
+                            return #do end the method. this is important.
 
-                              #calculate healing done. if it misses then damage == 'miss'. 2nd parameter is the target you clicked on
-                            healing = self.active_weapon.fire(self.selected,result[1])
-                              #make the target deal with the damage it takes
-                            result[1].receive_damage(healing,self.selected,self.active_weapon.wtype)
-                            self.selected.movement_tiles = get_movement_tiles(self.selected)
-                            self.active_weapon = None #you used the weapon and now it's not selected anymore
-                            update_stats()
-                            return
-
-                        if not result[1].faction == 'Player':
-                            if result[1].cth <= 0:
+                    #did you click an ally?
+                    elif self.target.faction == 'Player':
+                        if weapon.wtype == 'Support':
+                            if self.target.cth <= 0:
                                 self.draggable = False
                                 renpy.say('Ava','It\'s hopeless, captain!')
                                 self.draggable = True
+                                self.targetingmode = True #try again
+                                return #do end the method, this is important.
                             else:
-                                self.target = result[1]
-                                self.hovered = None
-                                  #targetingmode has served it's purpose, as you just selected your target
-                                self.targetingmode = False
+                                #you clicked an ally unit with a support weapon active. do not end the method.
+                                pass
+                        else:
+                            self.select_ship(self.target)
+                            return
 
-                                  #pass the weapontype to the selected ship and show the attack animation
-
-                                BM.attacker = BM.selected
-                                if self.active_weapon.wtype == 'Melee':
-                                    pass
-                                else:
-                                    try:
-                                        renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-                                    except:
-                                        show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-
-                                  #calculate damage done. if it misses then damage == 'miss'. 2nd parameter is the target you clicked on
-                                damage = self.active_weapon.fire(self.selected,result[1])
-                                  #make the target deal with the damage it takes
-                                result[1].receive_damage(damage,self.selected,self.active_weapon.wtype) #I pass the BM too because .destroy uses it.
-                                if self.selected != None:
-                                    self.selected.movement_tiles = get_movement_tiles(self.selected)
-                                self.active_weapon = None #you used the weapon and now it's not selected anymore
-                                update_stats()
-
+                    #you clicked an enemy with an active weapon.
                     else:
-                        self.select_ship(result[1]) #just select the ship you clicked on
-                        return
+
+                        #check if you can hit the target. if not, let the player know he's stupid.
+                        if self.target.cth <= 0:
+                            self.draggable = False
+                            renpy.say('Ava','It\'s hopeless, captain!')
+                            self.draggable = True
+                            return #do end the method, this is important.
+                        else:
+                            BM.attacker = BM.selected
+                            if self.active_weapon.wtype == 'Curse':
+                                weapon.fire(self.selected,self.target)
+                                self.active_weapon = None
+                                self.weaponhover = None
+
+                                return
+
+                            if self.active_weapon.wtype == 'Melee':
+                                pass #do not show the atkanim, because there aren't any for melee.
+                            else:
+                                try:
+                                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+                                except:
+                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+
+                #up till now nothing ended the method meaning it's okay to fire the weapon at the target - be it support or not.
+                result = weapon.fire(self.selected,self.target)
+                self.target.receive_damage(result,self.selected,weapon.wtype)
+                self.selected.movement_tiles = get_movement_tiles(self.selected)
+                update_stats()
+                self.active_weapon = None
+                self.weaponhover = None
+                return
 
             if result[0] == 'move': #this means you clicked on one of the blue squares indicating you want to move somewhere
                 self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
@@ -328,17 +317,27 @@ init -2 python:
                     for ship in player_ships:
                         ship.cth = get_acc(result[1], BM.selected, ship)
                 else:
+                    ignore_evasion = False
+                    if self.weaponhover.wtype == 'Curse':
+                        ignore_evasion = True
+
                     for ship in enemy_ships:
-                        ship.cth = get_acc(result[1], BM.selected, ship)
+                        ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
 
             if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
+#                if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
+#                    show_message('DEBUG: Not enough energy!')
+#                    return
 
-                if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
-                    show_message('DEBUG: Not enough energy!')
-                else:
-                    self.targetingmode = True   #displays targeting info over enemy_ships
-                    self.active_weapon = result[1]
-                    self.weaponhover = BM.active_weapon
+                if result[1].wtype == 'Support':
+                    if result[1].self_buff:
+                        result[1].fire(BM.selected,BM.selected)
+                        return
+
+                self.targetingmode = True   #displays targeting info over enemy_ships
+                self.active_weapon = result[1]
+                self.weaponhover = BM.active_weapon
+                return
 
             if result == 'endturn':
                 self.end_player_turn()
@@ -417,6 +416,7 @@ init -2 python:
 
             #reset the entire grid to empty and BM.ships with only the player_ships list
             clean_grid()
+            BM.covers = []
 
             renpy.block_rollback()
 
@@ -532,7 +532,7 @@ init -2 python:
             #[display name, level,increase/upgrade,upgrade cost,cost multiplier]
             self.upgrades = {
                 'max_hp':['Hull Plating',1,100,100,1.5],
-                'max_en':['Energy Reactor',1,10,500,2],
+                'max_en':['Energy Reactor',1,5,200,1.4],
                 'move_cost':['Move Cost',1,-1,100,2.5],
                 'evasion':['Evasion',1,5,500,2.5],
                 'kinetic_dmg':['Kinetic Damage',1,0.05,100,1.5],
@@ -572,6 +572,7 @@ init -2 python:
             self.money_reward = 100
             self.cth = 0
             self.getting_buff = False
+            self.getting_curse = False
             self.boss = False
             self.location = (1,1)
             self.movement_tiles = []
@@ -636,6 +637,7 @@ init -2 python:
                         damage = int(damage * 1.33)
                     else:
                         damage = int(damage * 0.75)
+
 
                 #havoc isn't allowed to die in the first turn
                 if self.name == 'Havoc' and BM.turn_count == 1 and damage > self.hp:
@@ -705,7 +707,7 @@ init -2 python:
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
             if self in BM.ships:
                 BM.ships.remove(self)
-            if self.boss:
+            if self.boss or len(enemy_ships) == 0:
                 BM.battle_end()
 
         def register_weapon(self, weapon):
@@ -725,7 +727,8 @@ init -2 python:
             self.location = (xnew,ynew)
 
 #AI estimate damage
-        def AI_estimate_damage(self,pship):  #part of the AI
+        def AI_estimate_damage(self,pship,en = 0):  #part of the AI
+            if en == 0: en = self.en
             #renpy.log('starting estimating damage on {}'.format(pship.name))
 
             pship.damage_estimation = [None,0,0] #weapon,estimation,priority
@@ -1022,7 +1025,7 @@ init -2 python:
                     bm.moving = False
 
             ## BLIND SIDE ATTACKS
-            if self.faction == 'Player' and self.modifiers['stealth'][0] != 1:
+            if self.faction == 'Player' and self.modifiers['stealth'][0] != 100:
                 for enemy in enemy_ships:
                     if get_ship_distance(self,enemy) == 1 and self in player_ships: #if next to enemy and -not dead-
                         counter = None
@@ -1035,21 +1038,22 @@ init -2 python:
                                 enemy.AI_attack_target(self,counter)
             else:
                 for ship in player_ships:
-                    if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
-                        counter = None
-                        for weapon in ship.weapons:
-                            if weapon.wtype == 'Assault':
-                                counter = weapon
-                        if counter != None:
-                            if ship.en >= counter.energy_use:
-                                show_message('COUNTER ATTACK!')
-                                update_stats()
-                                try:
-                                    renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
-                                except:
-                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
-                                damage = counter.fire(ship,self)
-                                self.receive_damage(damage,ship,counter.wtype)
+                    if ship.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
+                        if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
+                            counter = None
+                            for weapon in ship.weapons:
+                                if weapon.wtype == 'Assault':
+                                    counter = weapon
+                            if counter != None:
+                                if ship.en >= counter.energy_use:
+                                    show_message('COUNTER ATTACK!')
+                                    update_stats()
+                                    try:
+                                        renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
+                                    except:
+                                        show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
+                                    damage = counter.fire(ship,self)
+                                    self.receive_damage(damage,ship,counter.wtype)
 
 
 
@@ -1097,19 +1101,23 @@ init -2 python:
             store.total_armor_negation = 0
             store.total_shield_negation = 0
             store.hit_count = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) > accuracy:
+                if renpy.random.randint(1,100) > accuracy:
                     pass #you missed!
                 else:
                     damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
-                    damage -= target.armor
-                    if damage <= 1: damage = 1
-                    store.total_armor_negation += target.armor
                     if target.shields > 0:
                         damage = damage * (100 - target.shields) / 100.0
                         store.total_shield_negation += int(damage * target.shields / 100.0)
+                    damage -= target.armor
                     if damage <= 1: damage = 1
+                    store.total_armor_negation += target.armor
                     total_damage += int(damage)
                     store.hit_count += 1
 
@@ -1141,12 +1149,18 @@ init -2 python:
 
             accuracy = get_acc(self, parent, target)
             if accuracy == 0: return 'miss'
+
             total_damage = 0
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) > accuracy:
+                if renpy.random.randint(1,100) > accuracy:
                     pass #you missed!
                 else:
                     damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
@@ -1260,6 +1274,11 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+
+            #cover mechanic. it returns true if cover is hit. see functions.rpy
+            if cover_mechanic(self,target,accuracy):
+                return 'miss'
+
             for shot in range(missile.shot_count):
                 if renpy.random.randint(0,100) <= accuracy:
                     damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
@@ -1354,6 +1373,167 @@ init -2 python:
             if total_damage == 0: return 'miss'
             return int(total_damage)
 
+
+    class Support(store.object):
+        def __init__(self):
+            self.repair = False
+            self.self_buff = False #if true this skill automatically casts on self only
+            self.damage = 0 #also used to repair
+            self.uses_missiles = False
+            self.uses_rockets = False
+            self.energy_use = 60
+            self.wtype = 'Support'
+            self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
+            self.buff_strength = 0 #how many points does it increase a stat?
+            self.buff_duration = 1
+
+            #effective range is 3 cells away and always hits
+            self.accuracy = 350
+            self.acc_degradation = 100
+
+            self.name = 'Empty Support Skill'
+            self.shot_count = 1
+            self.lbl = ''
+
+        def fire(self,parent,target):
+
+            #energy  management
+            if parent.en < self.energy_use:
+                return 'no energy'
+            else:
+                parent.en -= self.energy_use
+
+            if self.self_buff:
+                target = parent
+
+            #if this is a healing skill
+            if self.repair:
+                healing = self.damage * renpy.random.triangular(0.8,1.2)
+                if self.wtype == 'Support':
+                    target.getting_buff = True
+                else:
+                    target.getting_curse = True
+                BM.selectedmode = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                if not target == parent and target.faction == 'Player':
+                    a = renpy.random.randint(0,len(target.buffed_voice)-1)
+                    renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
+                    del a
+                renpy.pause(1)
+                target.getting_buff = False
+                target.getting_curse = False
+                BM.selectedmode = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                return healing
+
+            #if it's a buff
+            else:
+                target.modifiers[self.modifies] = [self.buff_strength,self.buff_duration]
+                if self.wtype == 'Support':
+                    target.getting_buff = True
+                else:
+                    target.getting_curse = True
+                BM.selectedmode = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                if not target == parent and target.faction == 'Player':
+                    a = renpy.random.randint(0,len(target.buffed_voice)-1)
+                    renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
+                    del a
+                renpy.pause(1)
+                target.getting_buff = False
+                target.getting_curse = False
+                BM.selectedmode = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                return 0
+
+    class Curse(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.wtype = 'Curse'
+
+    class GravityGun(store.object):
+        def __init__(self):
+            self.repair = False
+            self.self_buff = False #if true this skill automatically casts on self only
+            self.damage = 0 #also used to repair
+            self.uses_missiles = False
+            self.uses_rockets = False
+            self.energy_use = 60
+            self.wtype = 'Curse'
+            self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
+            self.buff_strength = 0 #how many points does it increase a stat?
+            self.buff_duration = 1
+
+            #effective range is 3 cells away and always hits
+            self.accuracy = 640
+            self.acc_degradation = 100
+
+            self.name = 'Gravity Gun'
+            self.shot_count = 1
+            self.lbl = 'Battle UI/button_gravity.png'
+
+        def fire(self,parent,target):
+
+            if parent.en < self.energy_use:
+                return
+            parent.en -= self.energy_use
+            BM.selectedmode = True
+
+            target_faction = target.faction
+            target_weapons = target.weapons
+
+            target.faction = 'Player'
+            target.weapons = []
+
+            BM.select_ship(target, play_voice = False)
+            target.movement_tiles = get_movement_tiles(target,1)
+
+            looping = True
+            cancel = False
+
+            while looping:
+                result = ui.interact()
+                if result[0] == 'move':
+                    target.faction = target_faction
+                    target.move_ship(result[1],BM) #result[1] is the new location to move towards
+                    looping = False
+                if result == 'deselect':
+                    cancel = True
+                    looping = False
+
+            target.en += target.move_cost
+            target.faction = target_faction
+            target.weapons = target_weapons
+            BM.select_ship(parent, play_voice = False)
+            parent.movement_tiles = get_movement_tiles(parent)
+            return
+
+
+
+
+
+    class Cover(store.object):
+        def __init__(self,location = (1,1)):
+            self.location = location
+            self.cover_chance = 25 #percentage chance of blocking an incoming attack
+            self.max_hp = 500
+            self.hp = self.max_hp
+            self.label = 'Battle UI/asteroid cover.png'
+            self.angle = renpy.random.randint(1,360)
+
+        def receive_damage(self,damage):
+            self.hp -= damage
+            if self.hp <=0: self.destroy()
+
+        def destroy(self):
+            if self in BM.covers:
+                BM.covers.remove(self)
+                show_message('The asteroid was destroyed!')
+                renpy.pause(0.5)
 
 
          ### WEAPONFIRE PARTICLE GENERATOR ###

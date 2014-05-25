@@ -9,6 +9,7 @@ init -6 python:
         config.keymap['game_menu'].remove('mouseup_3')
 
     import math
+    from copy import deepcopy
 
     def buy_upgrades():
         renpy.show_screen('upgrade')
@@ -73,8 +74,9 @@ init -6 python:
 
 
     def get_acc(weapon, attacker, target, guess = False): #calculate the chance to hit an enemy ship
-        accuracy = (weapon.accuracy + attacker.modifiers['accuracy'][0])
-        accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))
+        accuracy = weapon.accuracy
+
+        #upgrades modify the base stat
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
             accuracy *= attacker.kinetic_acc
         if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
@@ -83,8 +85,18 @@ init -6 python:
             accuracy *= attacker.missile_acc
         if weapon.wtype == 'Melee':
             accuracy *= attacker.melee_acc
+
+        #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
         if not weapon.wtype == 'Support' or guess:
             accuracy -= (target.evasion + target.modifiers['evasion'][0])
+
+        #an acc. buff is added as a flat bonus
+        accuracy += attacker.modifiers['accuracy'][0]
+
+        #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
+        accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))
+
+        #environmental effects are added
         accuracy *= BM.environment['accuracy'] / 100.0
 
         if accuracy > 100: return 100
@@ -154,6 +166,90 @@ init -6 python:
             ship1.armor_color = '000'
             if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
 
+    def reset_classes():
+        """experimental save file compatibility keeper
+        this reruns the __init__() function of every relevant class in the game
+        so that newly added fields can be added to classes from an old save file.
+        deepcopy() is used because creating an alias is exactly what's not needed here"""
+
+#        #store a list of BM.ships. deepcopy() does not create aliased variables
+#        ships = deepcopy(BM.ships)
+
+        #create a non aliased copy of BM so we can extract all the field data
+        BM_copy = deepcopy(BM)
+        #extracting field data
+        fields = deepcopy(BM_copy.__dict__)
+        #re-init the copy. this adds new fields defined in classes.rpy
+        BM_copy.__init__()
+        #store all the default field data into a dict
+        fields = BM_copy.__dict__
+
+        #loop over each field stored in the new dict
+        for key in fields:
+            #check if the fielddata itself is a dictionary (like BM.orders)
+            if type(fields[key]) is dict:
+                #check if the new dict already exists. add it if it does not
+                try:
+                    dict2 = getattr(BM,key)
+                except:
+                    setattr(BM,key,fields[key])
+                    continue
+                #create temporary dicts for easy coding
+                dict1 = fields[key]
+                #loop over every key in the new field list
+                for key in dict1:
+                    #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in BM
+                    if key not in dict2:
+                        dict2[key]=dict1[key]
+            else:
+                #test if BM has this field. if it does not, add it with default value.
+                try:
+                    x = getattr(BM,key)
+                except:
+                    setattr(BM,key,fields[key])
+
+        #going to re-init all the ships
+        for ship in BM.ships:
+            weapons = ship.weapons
+            #re-init all the weapons to default values
+            for weapon in weapons:
+                weapon.__init__()
+
+            #make a copy of the ship instance
+            ship_copy = deepcopy(ship)
+            #re-init the copy
+            ship_copy.__init__()
+            #remove this copy from BM.ships as we don't want it displayed on the map etc
+            del BM.ships[-1]
+            #copy all the fields of the copy into a dict
+            fields = ship_copy.__dict__
+
+            #loop over all the keys in the dict
+            for key in fields:
+                if type(fields[key]) is dict:
+                    #check if the new dict already exists. add it if it does not
+                    try:
+                        dict2 = getattr(ship,key)  #this will be an alias, and it needs to be.
+                    except:
+                        setattr(ship,key,fields[key])
+                        continue
+                    dict1 = fields[key]
+                    #since the dict already existed, loop over every key in the new field list and update it
+                    for key in dict1:
+                        #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in the ship too
+                        if key not in dict2:
+                            dict2[key]=dict1[key]
+                else:
+                    #test if BM has this field. if it does not, add it with default value.
+                    try:
+                        x = getattr(ship,key)
+                    except:
+                        setattr(ship,key,fields[key])
+
+            #restore the old weapon list
+            ship.weapons = weapons
+        return
+
     def time_warp_easeout(t):
         return 1.0 - math.cos(t * math.pi / 2.0)
 
@@ -210,9 +306,28 @@ init -6 python:
         if ship.faction == 'Player':
             return ship
 
-    def get_movement_tiles(ship):
+    def create_cover(location):
+        BM.covers.append(Cover(location))
+        return
+
+    def cover_mechanic(weapon,target,accuracy):
+            for cover in BM.covers:
+                if cover.location == target.location:
+                    if renpy.random.randint(1,100) <= cover.cover_chance:
+                        show_message('the shot was blocked by an asteroid!')
+                        renpy.pause(1.0)
+                        total_damage = 0
+                        for shot in range(weapon.shot_count):
+                                total_damage += weapon.damage  #asteroid has no defenses
+                        cover.receive_damage(total_damage)
+                        return True
+            return False
+
+
+    def get_movement_tiles(ship, move_range = None):
         if ship == None: return
-        move_range = int(float(ship.en) / ship.move_cost)
+        if move_range == None:
+            move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
         tile_locations = []
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
@@ -245,6 +360,20 @@ init -6 python:
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
+
+    def scan_local_area(ship):
+        if ship == None:
+            return
+
+        move_range = ship.en/ship.move_cost
+        cells_in_range = []
+
+        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
+            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+                distance = get_distance(ship.location,(a,b))
+                if distance <= move_range:
+                    for pship in player_ships:
+                        ship.AI_estimate_damage(pship)
 
 
 

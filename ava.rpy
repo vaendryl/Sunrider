@@ -185,9 +185,39 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True    
+        subpixel True
+    image ava uniform fistup angryshout:
+        "Character/Ava/ava_uniform_fistup_angryshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
+    image ava uniform fistup shout:
+        "Character/Ava/ava_uniform_fistup_shout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
         
+    image ava uniform armscrossed angry:
+        "Character/Ava/ava_uniform_armscrossed_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
         
-        
-        
+    image ava uniform armscrossed skeptical:
+        "Character/Ava/ava_uniform_armscrossed_skeptical.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image ava uniform armscrossed lookawaymad:
+        "Character/Ava/ava_uniform_armscrossed_lookawaymad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
         
