@@ -335,6 +335,35 @@ init 2 python:
             self.flak_range = 0
             store.BM.ships.append(self)
 
+    class SeraphimEnemy(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder' #subtype bomber
+            self.name = 'Ryuvian Ryder'
+            self.animation_name = 'seraphimenemy'
+            self.faction = 'PACT'
+            self.max_hp = 375
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.max_missiles = 0
+            self.max_rockets = 0
+            self.money_reward = 150
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.base_armor = 4  #Ryders are not typically armored
+            self.armor = self.base_armor
+            self.evasion = 20
+            self.move_cost = 30
+            self.blbl = 'Battle UI/label_seraphimenemy.png'  #this is the battle avatar
+            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/SeraphimEnemy/side.png',
+                }
+            self.flak = 0
+            self.flak_range = 0
+            store.BM.ships.append(self)
+
     class Mochi(Battleship):
         def __init__(self):
             Battleship.__init__(self)
@@ -392,7 +421,7 @@ init 2 python:
             self.max_en = 100
             self.en = self.max_en
             self.move_cost = 30
-            self.money_reward = 50
+            self.money_reward = 100
             self.max_missiles = 6   #a lot of missiles, but it's all it has. things go wrong when it's out anywway
             self.missiles = self.max_missiles
             self.evasion = 0 # frigates get no penalty and no bonus to evasion
@@ -486,6 +515,35 @@ init 2 python:
             self.armor = self.base_armor
             store.BM.ships.append(self)  #register itself upon creation
 
+    class RyuvianCruiser(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Cruiser'
+            self.name = 'Ryuvian Cruiser'
+            self.faction = 'PACT'
+            self.animation_name = 'ryuviancruiser'
+            self.max_hp = 1200
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.money_reward = 370
+            self.max_missiles = 2
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.evasion = -20  # cruisers are easy to hit
+            self.blbl = 'Battle UI/label_ryuviancruiser.png'  #this is the battle avatar
+            self.lbl = self.blbl
+            self.flak = 0
+            self.flak_range = 0
+            self.shield_generation = 50
+            self.shields = self.shield_generation
+            self.shield_range = 2
+            self.base_armor = 30
+            self.move_cost = 20
+            self.armor = self.base_armor
+            store.BM.ships.append(self)  #register itself upon creation
+
     class PactOutpost(Battleship):
         def __init__(self):
             Battleship.__init__(self)
@@ -531,7 +589,7 @@ init 2 python:
             self.en = self.max_en
             self.max_missiles = 1
             self.max_rockets = 0
-            self.money_reward = 50
+            self.money_reward = 80
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.base_armor = 8  #Ryders are not typically armored
@@ -561,7 +619,7 @@ init 2 python:
             self.boss = True
             self.max_missiles = 2
             self.max_rockets = 1
-            self.money_reward = 200
+            self.money_reward = 300
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.base_armor = 14
@@ -623,7 +681,7 @@ init 2 python:
             self.en = self.max_en
             self.move_cost = 30
             self.evasion = -10
-            self.money_reward = 50
+            self.money_reward = 100
             self.blbl = 'Battle UI/label_piratedestroyer.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.flak = 0
@@ -644,7 +702,7 @@ init 2 python:
             self.max_missiles = 5
             self.max_rockets = 0
             self.boss = True
-            self.money_reward = 500
+            self.money_reward = 1000
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.evasion = -50  # cruisers are easy to hit
@@ -672,7 +730,7 @@ init 2 python:
             self.shot_count = 1
             self.accuracy = 120
             self.wtype = 'Laser'
-            self.name = 'Sunrider_Laser'
+            self.name = 'Trinities'
             self.lbl = 'Battle UI/button_laser.png'
 
     class SunriderMissile(Missile):
@@ -696,7 +754,7 @@ init 2 python:
             self.shot_count = 1
             self.accuracy = 70
             self.wtype = 'Kinetic'
-            self.name = 'Sunrider_Kinetic'
+            self.name = 'Sunrider\'s main guns'
             self.lbl = 'Battle UI/button_kinetic.png'
 
     class SunriderPulse(Laser):
@@ -718,7 +776,7 @@ init 2 python:
             self.shot_count = 20
             self.accuracy = 70
             self.wtype = 'Assault'
-            self.name = 'Sunrider_Assault'
+            self.name = 'Sunrider\'s Flak'
             self.lbl = 'Battle UI/button_assault.png'
 
     class SunriderRocket(Missile):
@@ -731,7 +789,7 @@ init 2 python:
             self.uses_rockets = True
             self.uses_missiles = False
             self.wtype = 'Rocket'
-            self.name = 'Sunrider_Rocket'
+            self.name = 'Thermonuclear warhead'
             self.lbl = 'Battle UI/button_rocket.png'
 
 ###################BLACK JACK WEAPONS
@@ -965,6 +1023,35 @@ init 2 python:
             self.accuracy = 50
             self.wtype = 'Assault'
 
+################################################RYUVIAN CRUISER
+
+    class RyuvianCruiserMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 60
+            self.energy_use = 60
+            self.shot_count = 5
+            self.accuracy = 110
+
+    class RyuvianCruiserKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 350
+            self.energy_use = 60
+            self.shot_count = 1
+            self.accuracy = 60
+
+################################################ENEMY SERAPHIM
+
+    class SeraphimEnemyKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 300
+            self.energy_use = 100
+            self.shot_count = 1
+            self.accuracy = 150
+
+
 ################################################PACT OUTPOST
 
     class PACTOutpostLaser(Laser):
@@ -1128,11 +1215,11 @@ init 2 python:
     class ShutOff(Curse):
         def __init__(self):
             Curse.__init__(self)
-            self.modifies = 'en'
+            self.modifies = 'shield_generation'
             self.buff_strength = -100
-            self.buff_duration = 3
-            self.name = 'Aim Down'
-            self.lbl = 'Battle UI/button_aimdown.png'
+            self.buff_duration = 1
+            self.name = 'Shield Down'
+            self.lbl = 'Battle UI/button_shutoff.png'
 
 
 

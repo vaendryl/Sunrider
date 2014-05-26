@@ -8,7 +8,7 @@ init -5:
     define chi = Character('Chigara', who_xalign=0.05)
     define ica = Character('Icari', who_xalign=0.05)
     define kry = Character('Kryska', who_xalign=0.05)
-    define ser = Character('Sola', who_xalign=0.05)
+    define sol = Character('Sola', who_xalign=0.05)
     define cla = Character('Claude', who_xalign=0.05)
     define cos = Character('Cosette', who_xalign=0.05)
     define gre = Character('Grey', who_xalign=0.05)
@@ -336,6 +336,12 @@ init -5:
         
     image cg_graveyard:
         "CG/graveyard.jpg"
+        
+    image cg_ryuvianbridge:
+        "CG/ryuvianbridge.jpg"
+    image cg_ryuvianbridge_red:
+        "CG/ryuvianbridge_red.jpg"
+
 
 
     ########################################MAP
@@ -557,6 +563,7 @@ init -5:
     $ piratebomber_missilewipe = ImageDissolve("Transitions/left_to_right.jpg", 0.9, reverse=False)    
 
     $ enemy_laserhitwipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
+    $ enemy_laserhitwipequick = ImageDissolve("Transitions/left_to_right.jpg", 0.2, reverse=False)
     $ blackjack_missilewipe = ImageDissolve("Transitions/left_to_right.jpg", 0.87, reverse=True)
     
     $ meleehit = ImageDissolve("Transitions/left_to_right.jpg", 0.3, reverse=False)
@@ -1505,6 +1512,44 @@ init -5:
         xanchor 0.1 yanchor 0.25
         
         
+        
+    image ryuviancruiser_side:
+        "gameplay/Animations/RyuvianCruiser/cruiser.png"
+        xalign 0.5 yalign 0.5
+    image ryuviancruiser_kineticflash1:
+        "gameplay/Animations/RyuvianCruiser/kineticflash.png"
+        xalign 0.5 yalign 0.5
+    image ryuviancruiser_kineticflash2:
+        "gameplay/Animations/RyuvianCruiser/kineticflash.png"
+        xalign 0.5 yalign 0.5
+    image ryuviancruiser_kineticflash_back1:
+        "gameplay/Animations/RyuvianCruiser/kineticflash_back.png"
+        xalign 0.5 yalign 0.5
+    image ryuviancruiser_kineticflash_back2:
+        "gameplay/Animations/RyuvianCruiser/kineticflash_back.png"
+        xalign 0.5 yalign 0.5
+    image ryuviancruiser_kineticround1:
+        "gameplay/Animations/RyuvianCruiser/kineticround.png"
+    image ryuviancruiser_kineticround2:
+        "gameplay/Animations/RyuvianCruiser/kineticround.png"
+    image ryuviancruiser_kineticround3:
+        "gameplay/Animations/RyuvianCruiser/kineticround.png"
+    image ryuviancruiser_kineticround4:
+        "gameplay/Animations/RyuvianCruiser/kineticround.png"
+    image ryuviancruiser_missile1:
+        "gameplay/Animations/RyuvianCruiser/missile.png"
+        xanchor 25 yanchor 50
+    image ryuviancruiser_missile2:
+        "gameplay/Animations/RyuvianCruiser/missile.png"
+    image ryuviancruiser_missile3:
+        "gameplay/Animations/RyuvianCruiser/missile.png"
+    image ryuviancruiser_missiletrail:
+        "gameplay/Animations/RyuvianCruiser/missiletrail.png"
+        xalign 0.5 yalign 0.5
+
+
+
+        
 ##################################################
 
     image pirategrunt:
@@ -1803,6 +1848,23 @@ init -5:
         "gameplay/Animations/Seraphim/bullet.png"
         xalign 0.5 yalign 0.5
 
+    image seraphimenemy:
+        "gameplay/Animations/SeraphimEnemy/side.png"
+        xalign 0.5 yalign 0.5
+    image seraphimenemy kinetic:
+        "gameplay/Animations/SeraphimEnemy/kinetic.png"
+        xalign 0.5 yalign 0.5
+    image seraphimenemy_charge1:
+        "gameplay/Animations/SeraphimEnemy/charge1.png"
+        xalign 0.5 yalign 0.5
+    image seraphimenemy_charge2:
+        "gameplay/Animations/SeraphimEnemy/charge2.png"
+        xalign 0.5 yalign 0.5
+    image seraphimenemy_bullet:
+        "gameplay/Animations/SeraphimEnemy/bullet.png"
+        xalign 0.5 yalign 0.5
+
+
     image mochi_side:
         "gameplay/Animations/Mochi/mochi.png"
         xalign 0.5 yalign 0.5
@@ -1820,7 +1882,33 @@ init -5:
     image cg_sparklecaptain:
         "CG/shoujo captain1.jpg"
         
-
+    image cg_deflectbullet1:
+        "CG/deflectbullet1.jpg"
+    image cg_deflectbullet2:
+        "CG/deflectbullet2.png"
+    image cg_deflectbullet3:
+        "CG/deflectbullet3.jpg"
+    image cg_deflectbullet4:
+        "CG/deflectbullet4.jpg"
+    image cg_deflectbullet5:
+        "CG/deflectbullet5.jpg"
+        
+    image cg_graveyardescape1:
+        "CG/graveyard_escape.jpg"
+    image cg_graveyardescape2:
+        "CG/graveyard_escape2.jpg"
+    image cg_graveyardescape3:
+        "CG/graveyard_escape3.jpg"
+    image cg_graveyardescape4:
+        "CG/graveyard_escape4.png"
+    image cg_graveyardescape5:
+        "CG/graveyard_escape5.png"
+    image cg_graveyardescape6:
+        "CG/graveyard_escape6.png"  
+    image cg_graveyardescape7:
+        "CG/graveyard_escape7.png"  
+        xanchor 0.5 yanchor 0.5
+        
 ########################################## JOKE
 
     image bg renpytomback:

@@ -2564,9 +2564,7 @@ label allocatefunds:
     window hide
 
     python:
-        if blackjack == None: # it shouldn't be possible to kill Havoc on the first turn, but if the player did...
-            blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
-            blackjack = create_ship(BlackJack(),(6,3),blackjack_weapons)
+        BM.active_upgrade = None
 
     $ buy_upgrades()
     jump dispatch
@@ -6977,6 +6975,15 @@ label mission9:
 
 label aftermission9:
 
+    python:
+        #this code will be useful if you shift-P through last battle
+        if mochi in player_ships:
+            BM.ships.remove(mochi)
+            player_ships.remove(mochi)
+            bianca_weapons = [BiancaAssault(),GravityGun()]
+            bianca = create_ship(Bianca(),(14,7),bianca_weapons)
+
+
     hide screen commands
     hide screen battle_screen
 
@@ -7463,6 +7470,8 @@ label medical_examination:
 
 label confineduntilwithmission:
 
+    $ ClaudeConfine = True
+
     show ava uniform salute neutral with dissolve
 
     ava "Understood, sir."
@@ -7476,7 +7485,11 @@ label confineduntilwithmission:
     ava "Come on, this way! Unless you want to be zapped again."
     cla "Sniffle sniffle..."
 
+    jump jumptograveyard
+
 label hangarusefulpilotdoc:
+
+    $ ClaudeConfine = False
 
     $ affection_claude += 1
 
@@ -7504,6 +7517,8 @@ label hangarusefulpilotdoc:
 
     ava "Unbelievable... Come on, the hangar's below us."
     cla "Oh captain! Thank-you so much! I won't let you down!"
+
+label jumptograveyard:
 
     scene bg black with screenwipe
     scene bg bridge with screenwipe
@@ -7590,8 +7605,8 @@ label hangarusefulpilotdoc:
     kay "Then the crown jewel could be nearby. Chigara, we're looking for some kind of crystalline device. See if it's on any of those ships."
     ica "A battle took place here, there's no doubt about it."
     ava "How do you know the ships weren't just abandoned here?"
-    ica "Because I'm reading organic material inside the ships. The crew were perfectly preserved in the vacuum of space."
-    ica "Look into the windows. There're frozen bodies inside..."
+    ica "Because I'm reading organic material inside the ships. The crews were perfectly preserved in the vacuum of space."
+    ica "Look into the windows. There're frozen body parts inside..."
     chi "Uuu... C-Chigara's closing her eyes now..."
     kay "What could have caused this...?"
     ica "It looks like some kind of... blast. The ships are more and more damaged the deeper we head into the field."
@@ -7599,7 +7614,7 @@ label hangarusefulpilotdoc:
     chi "It's the super dreadnought, captain. A massive energy blast must have emanated from it, while still keeping most of its own structure intact."
     chi "The technology inside that ship alone could... improve our current technology by a hundred fold. If you factor in all the ships in this field..."
     chi "This could be the biggest discovery of Lost Technology in the past hundred years!"
-    kay "I think we've hit the jackpot. Asaga, secure that Ryuvian super battleship."
+    kay "I think we've hit the jackpot. Asaga, get us a closer view of that Ryuvian super battleship."
     asa "Understood sir."
     asa "I'm... seeing some kind of a hangar bay."
     asa "Eh-heh... I'm going to check out what's inside that thing. I'm goin' ahead, capt'n!"
@@ -7608,24 +7623,59 @@ label hangarusefulpilotdoc:
     show ava uniform alt neutral neutral with dissolve
 
     kay "Hold on Asaga. We don't know what we're up against yet."
+
+    show asaga plugsuit handsonhips happy:
+        xpos 0.2
+    with wipeup
+
     asa "Ah c'mon capt'n, it's just a big old frozen ghost ship! What's there to be scared about?"
     kay "Seriously... Would you listen to yourself for a moment?"
+
+    show asaga plugsuit neutral content with dissolve
+
     asa "The inside of the ship's pretty spacious..."
-    asa "It looks like this ship was definitely a carrier... I'm seeing a lot of open space."
-    ica "You could store over a thousand ryders here..."
-    chi "The Ryuvians were the ones who originally invented ryder technology. Of course they'd also have the carriers to support a battalion of ryders."
-    ica "The design of this ship's nothing like any ship I've been on though. It's like the whole ship is one big hangar. Almost like... the inside of a hive."
-    asa "I think the ship's command center should be up above us. Come on, let's go!"
+    asa "It looks like this ship was definitely a carrier... I'm seeing a lot of open space. Enough to store a thousand ryders!"
+
+    show chigara plugsuit altneutral neutral:
+        xpos 0.75
+    with wipeup
+
+    chi "The Ryuvians were the ones who originally invented ryder technology. So of course they must have the carriers to support a battalion of ryders."
+    asa "The design of this ship's nothing like any ship I've been on though. It's like the whole ship is one big hangar. Almost like... the inside of a hive."
+    asa "I think the ship's command center should be up above."
+
+    show icari plugsuit armscrossed confident:
+        xpos 0.9
+    with wipeup
+
     ica "Think the crew's still frozen up there?"
     asa "Who knows? We haven't seen any other crewmen here though."
-    chi "Could the ship have been fully AI controlled? If the ship was frozen in the middle of a battle, you'd think there'd be frozen crewmen all around us..."
+
+    show chigara plugsuit handonchest neutral with dissolve
+
+    chi "Could the ship have been fully AI controlled? If the ship was depressurized in the middle of a battle, you'd think there'd be frozen crewmen..."
+
+    show icari plugsuit handonhip neutral with dissolve
+
     ica "An AI? Control something this big?"
     chi "Anything could be possible with Ryuvian technology."
-    asa "We've made it to what looks like the entrance to the ship's bridge."
+
+    show asaga plugsuit neutral neutral with dissolve
+
+    asa "I've made it to what looks like the entrance to the ship's bridge."
     asa "I'm detecting a faint energy signal beyond that airlock. The life support systems are still functional in the bridge!"
+
+    show asaga plugsuit excited closedeyessmile with dissolve
+
     asa "I'm going to leave my ryder and head in there for a closer look!"
+
+    show icari plugsuit point mad with dissolve
+
     ica "Are you crazy! You don't know what's in there!"
-    asa "I'm out of my cockpit. I'm feeding you the camera on my suit, capt'n."
+
+    scene cg_ryuvianbridge with dissolve
+
+    asa "I'm out of my cockpit. I'm feeding you the POV camera on my suit, capt'n."
     kay "I see it..."
     asa "It's definitely unlike any bridge I've seen. Only one control station. Was this entire ship meant to be flown by just one person?"
     asa "Wait a minute... I'm seeing... Something weird..."
@@ -7635,6 +7685,11 @@ label hangarusefulpilotdoc:
     kay "I'll be damned. She's been... perfectly preserved."
     chi "No... Not preserved....."
 
+    play music "Music/Poltergeist_Attack.ogg"
+    play sound "sound/Ryuvian klaxon.ogg"
+
+    scene cg_ryuvianbridge_red with dissolve
+
     asa "Uh oh!"
     kay "What did you do!?"
     asa "N-nothing! I swear! The thing just came to life on its own!"
@@ -7642,18 +7697,925 @@ label hangarusefulpilotdoc:
     asa "Uuhh... Anyone understand what it's saying?"
     chi "Captain, I'm reading a sudden increase in power! The super battle ship..."
     chi "I-It's coming back to life!"
+
+    scene bg bridge
+    show ava uniform alt neutral angry
+    with dissolve
+
     ava "Warning! All the Ryuvian vessels have powered up!"
     kay "What-!? B-but the crew-"
+
+    show icari plugsuit neutral surprise:
+        xpos 0.8
+    with wipeup
+
     ica "I-it's a ghost fleet! This whole place is cursed!"
     ava "The Ryuvian fleet is powering weapons, sir! Your orders!"
+
+    play sound "Sound/redalert.ogg"
+    scene bg bridgered
+    show ava uniform alt neutral angry
+    show icari plugsuit neutral surprise:
+        xpos 0.8
+    with dissolve
+
     kay "Red alert! All hands, battle stations!"
     kay "Asaga, GET OUT OF THERE!"
+
+    scene cg_ryuvianbridge_empty with dissolve
+
     asa "U-uh... c-captain..."
-    kay "What in hell's-"
+    show sola face awakened:
+        ypos 1.0 xpos 0.5 yanchor 935
+        ease 0.5 zoom 2.0 yanchor 1600 alpha 0
+    with dissolvequick
+
+    show white:
+        alpha 0
+        ease 0.5 alpha 1.0
+
+    pause 0.75
+
+    scene bg bridge with dissolve
+    show ava uniform alt neutral angry
+    with dissolve
+
     ava "We've lost contact with Asaga!"
+    kay "What in hell's-"
     ava "The enemy vessels are firing on us! Shall we return fire!?"
     kay "Tsch... No choice! All units! Defend the Sunrider!"
 
+    if ClaudeConfine == True:
+
+        show ava uniform armscrossed frown with dissolve
+
+        ava "What about the Black Jack?"
+        kay "Asaga's a tough girl.  She'll make it out of there."
+        kay "(We're still one ryder short though... This is going to be a challenge...)"
+
+        show claude plugsuit excited determined:
+            xpos 0.2
+        with wipeup
+
+        cla "Captain!"
+        kay "Claude? What are you doing on this line!"
+        cla "Let me help! I might not be a licensed doctor, but I can still fight!"
+        kay "...All right. Doesn't look like we have much of a choice."
+        kay "All units, launch!"
+
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+
+    window hide
+    hide bg bridgered
+    hide ava
+    hide icari
+    hide claude
+    hide battlewarning
+
+    $ check1 = False
+    $ check2 = False
+
+    call mission10_inits
+    $ BM.mission = 10
+    jump battle_start
+
+label mission10:
+
+    $BM.battle_bg = "CG/graveyard.jpg"
+
+    if check1 == False:
+
+        $BM.draggable = False
+
+        "Tip: Take cover in the wreckage to avoid enemy attacks."
+
+        $ check1 = True
+
+        $BM.draggable = True
+
+    if check2 == False and BM.turn_count == 2:
+
+        $BM.draggable = False
+
+        show asaga plugsuit excited focushappy onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        python:
+            blackjack.set_location(10,3)
+
+        asa "Ompf. Sorry I'm late, captain!"
+        kay "Asaga! Are you all right?"
+
+        show asaga plugsuit handsonhips annoyed onlayer screens with dissolve
+
+        asa "Fine... just..."
+
+        python:
+
+            create_ship(SeraphimEnemy(),(16,8),[SeraphimEnemyKinetic()])
+            create_ship(SeraphimEnemy(),(17,9),[SeraphimEnemyKinetic()])
+            create_ship(SeraphimEnemy(),(16,10),[SeraphimEnemyKinetic()])
+
+        hide asaga onlayer screens
+        show icari plugsuit point mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ica "Watch it Black Jack! You have three ryders on your tail!"
+
+        show asaga plugsuit handsonhips determined onlayer screens:
+            xpos 0.8
+        hide icari onlayer screens
+        with dissolve
+
+        asa "Ryder! There's just one pilot!"
+        kay "Did I just hear you right? Pilot!?"
+
+        show chigara plugsuit excited determined onlayer screens:
+            xpos 0.8
+        hide asaga onlayer screens
+        with dissolve
+
+        chi "Captain, two of those three ryders are copies! The super dreadnought appears to be using some kind of holographic emitter!"
+
+        show asaga plugsuit handsonhips determined onlayer screens:
+            xpos 0.8
+        hide chigara onlayer screens
+        with dissolve
+
+        asa "I don't know what kind of holograms these are though, 'cause the two fake ones are just as deadly as the real thing!"
+
+        show icari plugsuit neutral mad onlayer screens:
+            xpos 0.8
+        hide asaga onlayer screens
+        with dissolve
+
+        ica "Tsch...! Even after 2000 years of decay, these enemies are still insane!"
+
+        hide icari onlayer screens
+
+        $ check2 = True
+
+        $BM.draggable = True
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission10 #loop back
+    else:
+        pass #continue down to the next label
+
+label aftermission10:
+
+    hide screen commands
+    hide screen battle_screen
+
+    scene bg bridgered with dissolve
+
+    window show
+
+    show claude plugsuit excited happy with wipeup
+
+    cla "Ah-hah! We got all of them!"
+
+    play music "Music/Battle_Against_Time.ogg"
+
+    scene space back1
+    show seraphimenemy:
+        xpos 0.5 ypos 0.5
+    with dissolve
+
+    asa "Uwah oh! Negative, captain! All three ryders were decoys! The real one's still here!"
+    kay "Take it out!"
+
+    asa "Chigara, watch out! It's targeting you!"
+
+    window hide
+
+    play sound "sound/mech1.ogg"
+    show seraphimenemy kinetic with dissolve
+
+    pause 0.1
+
+    play sound1 "sound/Sola Sniper.ogg"
+    pause 0.6
+    show seraphimenemy_charge1 with dissolve
+    pause 0.6
+
+    show layer master at shake1(pausetime=0.1)
+
+    show seraphimenemy_charge2:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.1 alpha 1
+        pause 0.1
+        ease 0.1 alpha 0 zoom 1.5
+    show seraphimenemy_bullet:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.1
+        alpha 1.0
+        ease 0.2 xpos -2.0 ypos 4.0
+
+    pause 0.8
+
+    scene cg_deflectbullet1 with dissolve
+
+    chi "H-eh??"
+    asa "Argh... As if...!"
+
+    play sound "sound/boasters.ogg"
+    pause 0.7
+    show cg_deflectbullet2:
+        xpos -0.8
+        ease 0.7 xpos 0.0
+
+    pause 1.0
+
+    play sound2 "sound/Sword Shing 2.ogg"
+    scene cg_deflectbullet3 with dissolve
+
+    pause 1.0
+
+    play sound3 "sound/explosion1.ogg"
+    scene cg_deflectbullet4:
+        ease 0.01 xpos 0.02
+        ease 0.02 xpos -0.02
+        ease 0.01 xpos 0.0
+        repeat 8
+    with dissolve
+    play sound4 "sound/explosion2.ogg"
+    scene cg_deflectbullet5:
+        ease 0.01 xpos 0.02
+        ease 0.02 xpos -0.02
+        ease 0.01 xpos 0.0
+        repeat 8
+    with dissolve
+    pause 2.0
+
+    window show
+
+    scene bg bridgered with dissolve
+
+    kay "Chigara! Report! Are you safe!?"
+
+    show chigara plugsuit excited scared with wipeup
+
+    chi "Y-yes, captain! A-Asaga just deflected the bullet!"
+
+    show icari plugsuit point angry:
+        xpos 0.8
+    with wipeup
+
+    ica "A-are you kidding me!? T-that bullet was traveling at 150 percent the speed of light! That's absolute bullshit! There's no way she did that!!!"
+
+    scene space back1
+    show seraphimenemy:
+        xpos 0.5 ypos 0.5
+    with dissolve
+
+    show sola plugsuit neutral madglow:
+        xpos 0.2
+    with dissolve
+
+    sol "You... are..."
+    sol "... ... ..."
+    sol "There is only one capable of fighting like you."
+    sol "Impossible... There cannot be another... And..."
+    sol "How is it that I yet live?"
+
+    show asaga plugsuit point angry:
+        xpos 0.8
+    with dissolve
+
+    asa "You're not makin' any sense!"
+
+    show sola plugsuit altneutral neutral:
+        xzoom -1 xpos 0.2
+    with dissolve
+
+    sol "I yield. The battle has been decided."
+    ava "The Seraphim has powered down!"
+
+    hide asaga
+    show icari plugsuit neutral angry:
+        xpos 0.8
+    with dissolve
+
+    ica "Tsch! The rest of the cruisers are still coming online though! We've got more enemies inbound!"
+    sol "My control over the fleet has been lost. But their power shall soon fail."
+
+    play music "Music/Coming_Soon_Part1.ogg" fadeout 1.5
+    scene bg bridgered with dissolve
+    show chigara plugsuit neutral scared:
+        xpos 0.8
+    with dissolve
+
+    chi "A-ah! C-captain! I'm reading massive power fluctuations coming from the super battleship!"
+    chi "I-it is attempting to power its main weapon!"
+    kay "All ryders! Fall back! We're getting out of here!"
+
+    show chigara plugsuit excited scared with dissolve
+
+    chi "No... The ship's structure has been too badly damaged!"
+    chi "It's overloading its main reactor... At this rate..."
+    chi "There'll be a total reactor core meltdown! We have to get out of here now!"
+
+    play music "Music/Coming_Soon_Part2.ogg" fadeout 0.5 noloop
+
+    kay "Everyone, emergency landing procedures! We're getting out of here!"
+    asa "All units have returned! We're ready here, captain!"
+
+    window hide
+
+    scene cg_graveyardescape1
+    show cg_graveyardescape4
+    with dissolve
+
+    chi "The core's going critical! It's going to-"
+
+    play sound1 "sound/explosion5.ogg"
+    scene cg_graveyardescape2
+    show cg_graveyardescape5
+    with dissolve
+
+    ava "Holy sweet---"
+    kay "Spool up warp drive! WARP! WARP! Get us out of here!!"
+
+    pause 1.0
+
+    play sound2 "sound/large_warpout.ogg"
+    show cg_graveyardescape6:
+        alpha 0
+        ease 0.2 alpha 1
+        ease 0.2 alpha 0
+    hide cg_graveyardescape5
+    show cg_graveyardescape7:
+        xpos 0.5 ypos 0.5
+        ease 0.6 xpos -1.0 ypos 2.0 zoom 10.0
+
+    pause 2.0
+
+    play sound3 "sound/explosion4.ogg"
+    scene cg_graveyardescape3 with dissolve
+    scene white with dissolvelong
+
+    scene bg bridgered with dissolvelong
+
+    window show
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Warp successful, captain. All sections are reporting in."
+    kay "What happened to the Ryuvian ships?"
+    ava "All vaporized by the blast."
+    kay "(Damn! There goes our chance to recover all that lost technology!)"
+    kay "All right.  Stand down red alert."
+
+    scene bg bridge
+    show ava uniform handonhip neutral
+    with dissolve
+
+    ava "The Ryuvian girl has been taken into custody in the hangar. Your orders?"
+    kay "Let's go down there. She's the only clue we have at figuring out what happened back there."
+
+    play music "Music/Mission_Briefing.ogg"
+    scene bg hangar with dissolve
+
+    show sola plugsuit altneutral neutral with dissolve
+
+    sol "... ... ..."
+    kay "I'm Captain Kayto Shields. Welcome aboard the Sunrider."
+    sol "You... are the leader?"
+    kay "What's your name?"
+
+    show sola plugsuit handonchest neutral with dissolve
+
+    sol "I... I am Princess Sola vi Ryuvia."
+    kay "P-Princess!? Are you the Princess who's been missing from Ryuvia all this time?"
+
+    show chigara plugsuit palmsup surprise:
+        xpos 0.2
+    with dissolve
+
+    chi "No... T-that's impossible!"
+    chi "Sola vi Ryuvia's been dead for two thousand years!"
+
+    show sola plugsuit altneutral neutral with dissolve
+
+    sol "... ... ..."
+
+    hide chigara with dissolve
+
+    menu:
+        "Why did you attack us?":
+            jump whydidyouattack
+        "Do you know what destroyed all those Ryuvian ships?":
+            jump destroyedallryuvianships
+        "What were you doing on board that super dreadnought?":
+            jump boardthatsuperdreadnought
+        "You've been frozen for over two millennia on board that ship!":
+            jump youfrozentwomillenia
+        "That's enough questions. We are seeking a Ryuvian artifact known as the crown jewel. Do you know where to find it?":
+            jump enoughryuvianknownjewel
+
+label whydidyouattack:
+
+    sol "The last I remember before the Final Tear was battle."
+    sol "The Fallen had overwhelmed our position. They were about to end us."
+    sol "Then... a flash. Then utter destruction of everything. To me... the sleep felt like an instant. I did not even realize that the battle had been interrupted, or that my adversary had changed."
+    kay "(I'm not sure I follow what she's saying... But it seems like she attacked us by mistake.)"
+
+    menu:
+        "Do you know what destroyed all those Ryuvian ships?":
+            jump destroyedallryuvianships
+        "What were you doing on board that super dreadnought?":
+            jump boardthatsuperdreadnought
+        "You've been frozen for over two millennia on board that ship!":
+            jump youfrozentwomillenia
+        "That's enough questions. We are seeking a Ryuvian artifact known as the crown jewel. Do you know where to find it?":
+            jump enoughryuvianknownjewel
+
+label destroyedallryuvianships:
+
+    show sola plugsuit neutral neutral with dissolve
+
+    sol "Such is the ultimate weapon of the Sharr'Lac."
+    sol "The Final Tear. A devastating power to destroy everything within half a light year radius. And one which cannot be unleashed without paying the ultimate sacrifice."
+    kay "(The Sharr'Lac? She must be referring to the super-dreadnought.)"
+    kay "(To think that single ship was capable of such destruction... It could destroy entire systems!)"
+
+    menu:
+        "Why did you attack us?":
+            jump whydidyouattack
+        "What were you doing on board that super dreadnought?":
+            jump boardthatsuperdreadnought
+        "You've been frozen for over two millennia on board that ship!":
+            jump youfrozentwomillenia
+        "That's enough questions. We are seeking a Ryuvian artifact known as the crown jewel. Do you know where to find it?":
+            jump enoughryuvianknownjewel
+
+label youfrozentwomillenia:
+
+    show sola plugsuit neutral sad with dissolve
+
+    sol "... ... ..."
+    kay "You must be even more shocked than us. Uh, welcome to the future."
+    sol "What of the Fallen? Was... my mission successful?"
+    kay "I don't know. It happened so long ago. Much of our knowledge of your time has been lost."
+    sol "... ... ..."
+    sol "I see..."
+
+    menu:
+        "Why did you attack us?":
+            jump whydidyouattack
+        "Do you know what destroyed all those Ryuvian ships?":
+            jump destroyedallryuvianships
+        "What were you doing on board that super dreadnought?":
+            jump boardthatsuperdreadnought
+        "That's enough questions. We are seeking a Ryuvian artifact known as the crown jewel. Do you know where to find it?":
+            jump enoughryuvianknownjewel
+
+label boardthatsuperdreadnought:
+
+    show sola plugsuit altneutral neutral with dissolve
+
+    sol "... ... ..."
+    sol "In battle."
+    kay "Battle? You mean before you were frozen?"
+    sol "Yes."
+    sol "... ... ..."
+    kay "Who were you fighting?"
+    sol "The Fallen."
+    kay "Who are they?"
+    sol "Imposters to the throne, led by the pretender Crow Harbour."
+    kay "(She's not revealing much... It sounds like she's referring to some kind of civil war within Ryuvia during her time period.)"
+
+    menu:
+        "Why did you attack us?":
+            jump whydidyouattack
+        "Do you know what destroyed all those Ryuvian ships?":
+            jump destroyedallryuvianships
+        "You've been frozen for over two millennia on board that ship!":
+            jump youfrozentwomillenia
+        "That's enough questions. We are seeking a Ryuvian artifact known as the crown jewel. Do you know where to find it?":
+            jump enoughryuvianknownjewel
+
+label enoughryuvianknownjewel:
+
+    sol "The... crown jewel?"
+    ava "It is a crystalline device which shows the location of members of the royal family."
+
+    show sola plugsuit handonchest neutral with dissolve
+
+    sol "You speak of the talbur. It is in my possession."
+
+    show sola plugsuit back neutral with dissolve
+
+    sol "Shall I retrieve it from the Seraphim?"
+    kay "Sure, can you go get it?"
+
+    hide sola with dissolve
+
+    "... ... ..."
+
+    show sola plugsuit neutral neutral with dissolve
+    show item_jewel:
+        xpos 0.2
+    with dissolve
+
+    sol "It is here."
+
+    show claude plugsuit altneutral surprise:
+        xpos 0.8
+    with dissolve
+
+    cla "O-oohh... It's... glowing!"
+    sol "Yes. The talbur illuminates in the presence of the royal family."
+
+    show sola plugsuit handonchest sad with dissolve
+
+    sol "And yet... It shall never glow for I."
+
+    play music "Music/Invasion of Chaos.ogg" fadeout 1.5
+    play sound "sound/redalert.ogg"
+
+    "-warning-"
+    kay "The hell? What's wrong?"
+
+    hide claude
+    show ava uniform altneutral angry:
+        xpos 0.8
+    with dissolve
+
+    ava "Proximity warning! PACT signatures detected!"
+    kay "Damn! Not a moment's peace!"
+    kay "C'mon people, return to battle stations!"
+
+    scene bg bridgered with dissolve
+
+    kay "What's our status!"
+    ava "Multiple PACT signatures detected! U-uh..."
+    kay "How many!?"
+
+    play music "Music/Posthumus_Regium.ogg"
+    scene porkfleet_back with dissolve
+
+    show portfleet_1a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound "sound/large_warpout.ogg"
+    show portfleet_1b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_1c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_2a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound1 "sound/large_warpout.ogg"
+    show portfleet_2b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_2c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_3a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound2 "sound/large_warpout.ogg"
+    show portfleet_3b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_3c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_4a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound3 "sound/large_warpout.ogg"
+    show portfleet_4b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_4c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_5a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound4 "sound/large_warpout.ogg"
+    show portfleet_5b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_5c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_6a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound5 "sound/large_warpout.ogg"
+    show portfleet_6b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_6c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_7a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound6 "sound/large_warpout.ogg"
+    show portfleet_7b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_7c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_8a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound7 "sound/large_warpout.ogg"
+    show portfleet_8b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_8c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_9a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound8 "sound/large_warpout.ogg"
+    show portfleet_9b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_9c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.
+
+    show portfleet_10a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound1 "sound/large_warpout.ogg"
+    show portfleet_10b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_10c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    show portfleet_11a:
+        xpos 2.0 ypos -0.05
+        ease 0.5 xpos 0.0 ypos 0.0
+        alpha 0
+    play sound2 "sound/large_warpout.ogg"
+    show portfleet_11b:
+        alpha 0
+        pause 0.5
+        ease 0.1 alpha 1.0
+        ease 0.1 alpha 0.0
+    show portfleet_11c:
+        alpha 0
+        pause 0.5
+        alpha 1.0
+
+    pause 0.1
+
+    ava "Forty - no... sixty ships, captain! I-it's an entire fleet!"
+    kay "Spool up the warp drive! Get ready to-"
+    ava "It'll take another half hour before we can warp again after our last emergency warp, captain!"
+    kay "Tsch..."
+
+    scene bg bridgered with dissolve
+    show cullen with wipeup
+
+    cul "Haaah-hahahaha! Did I not tell you that you would regret crossing me!?"
+    kay "Veniczar Porkchops!"
+    cul "T-tsch! Curse you and your foul ship!"
+    cul "You are hopelessly outnumbered! I know you have the crown jewel aboard. Why don't you be a good lad and turn it over, eh?"
+    kay "The crown jewel? And what would PACT want with it?"
+    cul "Hah! It seems that little contraption can let us find our dear leader's runaway bride. I have been tasked with finding it on his behalf!"
+    kay "(Veniczar Arcadius' bride? The princess of Ryuvia's engaged to Arcadius?)"
+    kay "(...no wonder she's run away.)"
+
+    menu:
+        "You can take the crown jewel from my cold, dead hands.":
+            jump jewelcolddead
+
+        "All right. But in exchange, you promise me the safety of my crew.":
+            jump exchangepromisesafety
+
+label jewelcolddead:
+
+    cul "Tsk. I was afraid it would come to this."
+    cul "Men! Open fire! Perhaps a little show of force will mellow out this boggart!"
+
+    hide cullen with wipedown
+
+    jump porkfleetopenfire
+
+label exchangepromisesafety:
+    cul "Hah! That's a good boy now."
+    cul "You have my word! Your crew shall not come to harm!"
+    kay "Tsch."
+    "... ... ..."
+
+    show ava uniform alt neutral mad:
+        xpos 0.2
+    with dissolve
+
+    ava "The transfer is complete, captain. PACT has taken the crown jewel."
+
+    hide ava with dissolve
+
+    kay "There. We kept our end of the bargain."
+    cul "Hehh... Too bad for you captain, but a certain pirate has paid me quite handsomely for your head."
+    cul "Men! Open fire! Rid this vermin from my sight!"
+    kay "(I should have known better than to trust this python!)"
+
+    hide cullen with wipedown
+
+    jump porkfleetopenfire
+
+label porkfleetopenfire:
+
+    show ava uniform alt neutral angry with dissolve
+
+    ava "The PACT fleet has opened fire!"
+
+    play sound "sound/explosion1.ogg"
+    show layer master:
+        ease 0.02 xpos 0.05
+        ease 0.04 xpos -0.05
+        ease 0.02 xpos 0
+        repeat 8
+
+    ava "A-argh! W-we can't-"
+    kay "L-launch our ryders!"
+
+    play sound "sound/explosion1.ogg"
+    show layer master:
+        ease 0.02 xpos 0.05
+        ease 0.04 xpos -0.05
+        ease 0.02 xpos 0
+        repeat 8
+
+    ava "Massive damage reports coming from all sectors! W-we're..."
+    ava "Ugh!"
+
+    show ava uniform neutral surpriseangry with dissolve
+
+    ava "T-there's too many of them, captain!"
+
+    play sound "sound/explosion1.ogg"
+    show layer master:
+        ease 0.02 xpos 0.05
+        ease 0.04 xpos -0.05
+        ease 0.02 xpos 0
+        repeat 8
+
+    ava "We've sustained critical damage! O-our weapons are inoperative!"
+    ava "Engineering reports our reactor is at critical levels!"
+    kay "(Is this the end...?)"
+    kay "(... ... ...)"
+    ava "C-Captain!? Y-your orders!?"
+    kay "It's all right, Ava."
+
+    show ava uniform neutral surprise with dissolve
+
+    ava "S-sir?"
+    "Shields smiled wryly and held onto Ava's hand."
+    kay "Been an honor."
+    ava "...T-tsch..."
+    "... ... ..."
+
+    stop music fadeout 1.5
+
+    hide ava
+    show asaga plugsuit excited shout
+    with dissolve
+
+    asa "WAIT!"
+    asa "I'M THE ONE YOU'RE LOOKING FOR!"
+    cul "Oh?"
+
+    show asaga plugsuit handsonhips mad with dissolve
+
+    asa "I... am Princess Asaga di Ryuvia. By my command, I order you to halt your assault, Cullen!"
+
+    show cullen:
+        xpos 0.8
+    with wipeup
+
+    cul "Well, I'll be."
+    cul "My scans indicate that you are indeed the princess. Hah! Who would have ever thought that you'd be hiding here, my grace!"
+    cul "Men, hold your fire! Retrieve the princess for me, and let us be off on our merry way."
+    kay "What!? Asaga...!? All this time....?"
+    kay "(Aarrggghhh... How could I have never known?)"
+
+    show asaga plugsuit armscrossed sadsmile with dissolve ###############REPLACE
+
+    asa "Captain... I'm sorry for lying to you all this time."
+    asa "B-but... this is for the best. Ok?"
+    cul "Bwaahahahaha! You had best say your good byes now, captain. Onwards to the state wedding! Set course for Ryuvia Prime!"
+
+    hide cullen with wipedown
+
+    asa "...F-farewell, captain! A-and..."
+
+    show asaga plugsuit armscrossed sadclosedeyessmile with dissolve
+
+    asa "Thanks for all the fun!"
+
+    hide asaga with dissolvelong
+
+    kay "T-tsch..."
+    kay "(No... This isn't our farewell...)"
+
+    show ava uniform handonhip mad with dissolve
+
+    ava "Captain?"
+    kay "Get our repair drones online."
+    kay "We have a wedding to crash."
+
+    play sound "sound/ToBeContinued.ogg"
+    scene cg_tobecontinued
+
+    pause 5.0
+
+    window hide
 
 label credits:
 

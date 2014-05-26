@@ -394,6 +394,40 @@ label mission9_inits:
 
     return
 
+label mission10_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,6)
+        blackjack.set_location(0,0)
+        liberty.set_location(6,7)
+        phoenix.set_location(6,6)
+        bianca.set_location(6,5)
+                
+        create_cover((8,4))
+        create_cover((12,6))
+        create_cover((10,2))
+        create_cover((14,10))
+        create_cover((11,10))
+        create_cover((7,5))
+        create_cover((10,12))
+        
+        create_ship(RyuvianCruiser(),(10,5),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(10,10),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(14,6),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(14,8),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Poltergeist_Attack.ogg"
+
+    return
 
 label preview_mission:
 

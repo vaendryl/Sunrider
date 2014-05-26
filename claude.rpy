@@ -125,6 +125,16 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+        
+    image claude plugsuit excited determined:
+        "Character/Claude/claude_plugsuit_excited_determined.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+        
+        
+        ########################################### UNIFORM
 
     image claude uniform handstogether closedeyeshappy:
         "Character/Claude/claude_uniform_handstogether_closedeyeshappy.png"

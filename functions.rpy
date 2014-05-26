@@ -146,7 +146,17 @@ init -6 python:
             for ship2 in player_ships:
                 if ship2.shield_generation > 0:
                     if get_ship_distance(ship1,ship2) <= ship2.shield_range:
-                        ship1.shields += ship2.shield_generation
+                        actual_generation = ship2.shield_generation
+                        try:
+                            mod,duration = ship2.modifiers['shield_generation']
+                        except:
+                            ship2.modifiers['shield_generation'] = [0,0]
+                            mod,duration = ship2.modifiers['shield_generation']
+                        if mod != 0:
+                            actual_generation += mod
+                        if actual_generation < 0:
+                            actual_generation = 0
+                        ship1.shields += actual_generation
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
@@ -158,13 +168,35 @@ init -6 python:
             for ship2 in enemy_ships:
                 if ship2.shield_generation > 0:
                     if get_ship_distance(ship1,ship2) <= ship2.shield_range:
-                        ship1.shields += ship2.shield_generation
+                        actual_generation = ship2.shield_generation
+                        try:
+                            mod,duration = ship2.modifiers['shield_generation']
+                        except:
+                            ship2.modifiers['shield_generation'] = [0,0]
+                            mod,duration = ship2.modifiers['shield_generation']
+                        if mod != 0:
+                            actual_generation += mod
+                        if actual_generation < 0:
+                            actual_generation = 0
+                        ship1.shields += actual_generation
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             update_armor(ship1)
             ship1.armor_color = '000'
             if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+
+    def weapon_type(weapon):
+        if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+            return 'Kinetic'
+        elif weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+            return 'Energy'
+        elif weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+            return 'Missile'
+        elif weapon.wtype == 'Melee':
+            return 'Melee'
+        else:
+            return 'notype'
 
     def reset_classes():
         """experimental save file compatibility keeper
@@ -361,6 +393,7 @@ init -6 python:
                         else:
                             ship.modifiers[key][1] -= 1
 
+##experimental AI##
     def scan_local_area(ship):
         if ship == None:
             return
