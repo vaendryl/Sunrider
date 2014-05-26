@@ -15,6 +15,18 @@ changed:
 * rewrote weapon button display code to be neater. this technique will be useful rewriting ship display code.
 * rewrote selection code so it's neater and more rugged. been wanting to do that for a long time
 * pretty massive rewrite of ship display code. much much less messy now. I don't think I managed to make it more efficient though, regretably.
+* added a new secret weapon
+* added HP value on enemy HP bar. removed EN bar
+* added basic debuff functionality
+* shields new deduct damage before armor and 'total damage negated by armor' is a bit more accurate
+* hovering over an enemy unit will make it's HP value show on top of everything else.
+* fixed counter attack bug with phoenix
+* shield curse implemented
+* Kinetics and Energy upgrades now only show up for the units that have weapons of that type
+* added icons and stat details to show the actual effect of upgrades
+* unit voices will now react to HP level after damage instead of before.
+* new move icon
+* added Disable debuff
 
 
 patch notes 2.1

@@ -141,7 +141,13 @@ init -6 python:
           #if they are, the shield generation value of the 2nd gets added to the total shield value of the first
           #we also update armor (to match damage levels) while we are at it.
           #the font color is also updated to show a value is buffed or not from baseline
+
         for ship1 in player_ships:
+            try:
+                if ship1.modifiers['energy regen'][0] == -100:
+                    ship1.en = 0
+            except:
+                ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in player_ships:
                 if ship2.shield_generation > 0:
@@ -164,6 +170,11 @@ init -6 python:
             ship1.armor_color = '000'
             if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
         for ship1 in enemy_ships:
+            try:
+                if ship1.modifiers['energy regen'][0] == -100:
+                    ship1.en = 0
+            except:
+                ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in enemy_ships:
                 if ship2.shield_generation > 0:
@@ -388,7 +399,7 @@ init -6 python:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' lost it\'s buff to it\'s ' +key+ '!')
+                            show_message('the ' +ship.name+ ' recovered from it\'s curse to it\'s ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1

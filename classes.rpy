@@ -332,11 +332,13 @@ init -2 python:
                 if result[1].wtype == 'Support':
                     if result[1].self_buff:
                         result[1].fire(BM.selected,BM.selected)
+                        update_stats()
                         return
 
                 self.targetingmode = True   #displays targeting info over enemy_ships
                 self.active_weapon = result[1]
                 self.weaponhover = BM.active_weapon
+                update_stats()
                 return
 
             if result == 'endturn':
@@ -411,6 +413,7 @@ init -2 python:
                 ship.total_kinetic_damage = 0
                 ship.total_energy_damage = 0
                 ship.missiles = ship.max_missiles
+                ship.location = (-10,-10) #this helps if you add new ships but don't know the current location of the existing ones.
                 for modifier in ship.modifiers:
                     ship.modifiers[modifier] = [0,0]
 
@@ -468,7 +471,14 @@ init -2 python:
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
                 renpy.pause(0.3)
-                eship.AI()
+                try:
+                    if not eship.modifiers['energy regen'][0] == -100:
+                        eship.AI()
+                    else:
+                        show_message('the {} is disabled!'.format(eship.name) )
+                except:
+                    eship.modifiers['energy regen'] = (0,0)
+                    eship.AI()
                 eship.lbl = eship.blbl
 
 
@@ -478,7 +488,14 @@ init -2 python:
                     ship.en = ship.max_en
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(0.3)
-                    ship.AI()
+                    try:
+                        if not eship.modifiers['energy regen'][0] == -100:
+                            eship.AI()
+                        else:
+                            show_message('the {} is disabled!'.format(eship.name) )
+                    except:
+                        eship.modifiers['energy regen'] = (0,0)
+                        eship.AI()
                     ship.lbl = ship.blbl
             renpy.music.play(PlayerTurnMusic)
             renpy.call_in_new_context('endofturn')
@@ -593,6 +610,7 @@ init -2 python:
                 'energy':[0,0],
                 'stealth':[0,0],
                 'shield_generation':[0,0],
+                'energy regen':[0,0],
                 }
 
         def receive_damage(self,damage,attacker,wtype):
@@ -669,6 +687,8 @@ init -2 python:
 
                   #if the attack hits, show the hit animation of the target based on weapon type
 
+                self.hp -= damage
+
                 if wtype == 'Melee':
                     renpy.call_in_new_context('melee_attack_player')
                 else:
@@ -677,14 +697,15 @@ init -2 python:
                     except:
                         show_message('missing animation. "hitanim_{}_{}" doesn\'t seem to exist'.format(self.animation_name,wtype.lower()))
 
-                self.hp -= damage
                 if self.hp <= 0:
                     self.destroy(attacker)
 
         def destroy(self,attacker,no_animation = False):
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy moral too
+            self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
             if not self.faction == 'Player':
+
                 attacker.hate += self.max_hp*0.3
                 attacker.target = None
                 for eship in enemy_ships:
@@ -807,6 +828,10 @@ init -2 python:
 
 #basic loop
         def AI_basic_loop(self):
+            if self in enemy_ships:
+                pass
+            else:
+                return
             #renpy.log('{} starting AI_basic_loop'.format(self.name))
             #renpy.log('I have {} energy'.format(self.en))
 

@@ -6658,6 +6658,8 @@ label moneyhelpcrownback:
 
 label jumptonomodorn:
 
+    $ warpto_nomodorn = False
+
     $ Random = renpy.random.randint(1,9)
 
     if Random == 1:
@@ -7809,6 +7811,7 @@ label mission10:
 
         python:
             blackjack.set_location(10,3)
+            player_ships.append(blackjack)
 
         asa "Ompf. Sorry I'm late, captain!"
         kay "Asaga! Are you all right?"
@@ -7876,6 +7879,10 @@ label aftermission10:
 
     hide screen commands
     hide screen battle_screen
+
+    python:
+        if not blackjack in player_ships:
+            player_ships.append(blackjack)
 
     scene bg bridgered with dissolve
 

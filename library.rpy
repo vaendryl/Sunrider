@@ -1194,12 +1194,12 @@ init 2 python:
             self.name = 'Aim Down'
             self.lbl = 'Battle UI/button_aimdown.png'
 
-    class Disable(Curse):
+    class Disable(Curse): #takes away all EN
         def __init__(self):
             Curse.__init__(self)
-            self.modifies = 'movement_cost'
-            self.buff_strength = 100
-            self.buff_duration = 1
+            self.modifies = 'energy regen'
+            self.buff_strength = -100
+            self.buff_duration = 2 #has to be 2 or else the debuff won't last beyond the start of their next turn
             self.name = 'Disable'
             self.lbl = 'Battle UI/button_disable.png'
 
@@ -1212,7 +1212,7 @@ init 2 python:
             self.name = 'Flak Off'
             self.lbl = 'Battle UI/button_flak.png'
 
-    class ShutOff(Curse):
+    class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
             Curse.__init__(self)
             self.modifies = 'shield_generation'
