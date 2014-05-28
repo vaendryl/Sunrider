@@ -18,6 +18,7 @@ persistent
 
 *~
 *.bak
+*.db
 
 saves
 tmp
