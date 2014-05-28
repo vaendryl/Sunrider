@@ -28,6 +28,7 @@ init -2 python:
             self.selectedmode = False
             self.targetingmode = False
             self.moving = False
+            self.missile_moving = False
             self.phase = 'Player'
             self.weaponhover = None
             self.active_weapon = None
@@ -101,7 +102,7 @@ init -2 python:
 
             if result == 'anime':
                 try:
-                    renpy.call_in_new_context('atkanim_seraphimenemy_kinetic') #'atkanim_blackjack_melee')
+                    renpy.call_in_new_context('atkanim_piratedestroyer_kinetic') #'atkanim_blackjack_melee')
                 except:
                     show_message('animation label does not exist!')
 
@@ -213,7 +214,8 @@ init -2 python:
                                 weapon.fire(self.selected,self.target)
                                 self.active_weapon = None
                                 self.weaponhover = None
-
+                                if BM.selected != None:
+                                    self.selected.movement_tiles = get_movement_tiles(self.selected)
                                 return
 
                             if self.active_weapon.wtype == 'Melee':
@@ -227,10 +229,13 @@ init -2 python:
                 #up till now nothing ended the method meaning it's okay to fire the weapon at the target - be it support or not.
                 result = weapon.fire(self.selected,self.target)
                 self.target.receive_damage(result,self.selected,weapon.wtype)
-                self.selected.movement_tiles = get_movement_tiles(self.selected)
+                if BM.selected != None:
+                    self.selected.movement_tiles = get_movement_tiles(self.selected)
                 update_stats()
                 self.active_weapon = None
                 self.weaponhover = None
+#                renpy.hide_screen('battle_screen')
+#                renpy.show_screen('battle_screen')
                 return
 
             if result[0] == 'move': #this means you clicked on one of the blue squares indicating you want to move somewhere
@@ -339,7 +344,6 @@ init -2 python:
                 self.active_weapon = result[1]
                 self.weaponhover = BM.active_weapon
                 update_stats()
-                return
 
             if result == 'endturn':
                 self.end_player_turn()
@@ -439,12 +443,13 @@ init -2 python:
 
             for ship in self.ships:
                 ship.flak_effectiveness = 100
-                ship.en = ship.max_en
 
             self.enemy_AI() #call the AI to take over
 
             for ship in self.ships:
                 ship.flak_effectiveness = 100
+
+            for ship in player_ships:
                 ship.en = ship.max_en
 
         def enemy_AI(self):
@@ -454,6 +459,7 @@ init -2 python:
               ##offensive, dragging allies along.
             self.lead_ships = []
             total_defense = 0
+            update_stats()
             for eship in enemy_ships:
                 total_defense += eship.shield_generation + eship.flak + eship.armor
             average_defense = total_defense / float(len(enemy_ships))
@@ -485,18 +491,21 @@ init -2 python:
             for ship in enemy_ships:
                 #now all the not-lead ships take their turn
                 if ship not in self.lead_ships:
-                    ship.en = ship.max_en
+                    try:
+                        if ship.modifiers['energy regen'][0] == -100:
+                            show_message('the {} is disabled!'.format(ship.name) )
+                            ship.en = 0
+                        else:
+                            ship.en = ship.max_en
+                    except:
+                        ship.modifiers['energy regen'] = (0,0)
+                        ship.en = ship.max_en
+
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(0.3)
-                    try:
-                        if not eship.modifiers['energy regen'][0] == -100:
-                            eship.AI()
-                        else:
-                            show_message('the {} is disabled!'.format(eship.name) )
-                    except:
-                        eship.modifiers['energy regen'] = (0,0)
-                        eship.AI()
+                    ship.AI()
                     ship.lbl = ship.blbl
+
             renpy.music.play(PlayerTurnMusic)
             renpy.call_in_new_context('endofturn')
             self.active_weapon = None  #I forget, why is this needed?
@@ -524,6 +533,7 @@ init -2 python:
             self.flak_range = 1
             self.flak_effectiveness = 100
             self.flak_used = False
+            self.flaksim = None
             self.fireing_flak = False
             self.morale = 100
             self.enemies = {}
@@ -828,9 +838,7 @@ init -2 python:
 
 #basic loop
         def AI_basic_loop(self):
-            if self in enemy_ships:
-                pass
-            else:
+            if self not in enemy_ships:
                 return
             #renpy.log('{} starting AI_basic_loop'.format(self.name))
             #renpy.log('I have {} energy'.format(self.en))
@@ -1226,6 +1234,7 @@ init -2 python:
             self.shot_count = 8
             self.eccm = 0
             self.lbl = 'Battle UI/button_missile.png'
+            self.flaklist = []
 
         def fire(self, parent, target):
             update_armor(target)
@@ -1251,57 +1260,53 @@ init -2 python:
 
             accuracy = get_acc(self, parent, target)
             BM.selectedmode = False
+            starting_location = parent.location
+            BM.selected = parent
+            BM.target = target
 
-            missile = MissileSprite(parent,target, self.damage,self.shot_count,self.type)
-            BM.missiles.append(missile)
-            vector = calculate_vector(target.location,missile.location) #get what direction to go to
-            missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+            missile = self.simulate(parent,target)
+            BM.missile_moving = True
 
-            moving = True
-            while moving:
-                renpy.hide_screen('battle_screen')
-                renpy.show_screen('battle_screen')
-                renpy.pause(0.1)
-                missile.location = missile.next_location
+#            ##attempt to show the assault hit animation if it has it.
+#            if target.modifiers['flak'][0] >= 0:
+#                try:
+#                    renpy.call_in_new_context('atkanim_{}_assault'.format(target.animation_name))
+#                except:
+#                    pass
 
-                for ship in BM.ships:
-                    if not ship.faction == missile.parent.faction and ship.flak > 0:
-                        if not ship.flak_used:
-                            if get_ship_distance(missile,ship) <= (ship.flak_range+0.5):
-                                ship.fireing_flak = True
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
-                                renpy.pause(0.1)
-                                if ship == target:
 
-                                    ##attempt to show the assault hit animation if it has it.
-                                    try:
-                                        renpy.call_in_new_context('atkanim_{}_assault'.format(ship.animation_name))
-                                    except:
-                                        pass
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
 
-                                missile.flak_intercept(ship)
-                                if missile.shot_count == 0:
-                                    BM.missiles.remove(missile)
-                                    moving = False
-                                    ship.fireing_flak = False
-                                    for ship in BM.ships:
-                                        ship.flak_used = False
-                                    return 'miss'
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
-                                renpy.pause(0.1)
-                                ship.fireing_flak = False
-                if get_ship_distance(missile,target) <= 0.5:
-                    moving = False
-                    BM.missiles.remove(missile)
-                else:
-                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
-                    vector = calculate_vector(target.location,missile.location) #get what direction to go to
-                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+## this is a nice idea and -almost- works perfectly, but when the game returns from the animation
+## the missile starts back at the parent's location. I can't think of a way to fix that.
+#            target_wait = 0
+#            if target.flaksim != None:
+#                target_wait = target.flaksim[0]
+#            if target_wait > 0:
+#                renpy.pause(target_wait)
+
+#                try:
+#                    renpy.call_in_new_context('atkanim_{}_assault'.format(target.animation_name))
+#                except:
+#                    pass
+
+            remaining_wait = get_ship_distance(parent,target)*(MISSILE_SPEED)*10 # - target_wait
+            remaining_wait = int(remaining_wait)/10.0  #round to 1 decimal
+            renpy.pause(remaining_wait)
+            BM.missile_moving = False
+
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
 
             for ship in BM.ships:
                 ship.flak_used = False
+                ship.flaksim = None
+
+            if missile == 'miss':
+                return 'miss'
+            else:
+                pass
 
             total_damage = 0
             store.hit_count = 0
@@ -1321,8 +1326,53 @@ init -2 python:
                     store.total_armor_negation += target.armor
                     total_damage += damage
                     store.hit_count += 1
+
+            BM.missiles.remove(missile)
             if total_damage == 0: return 'miss'
             return int(total_damage)
+
+        def simulate(self,parent,target):
+
+            missile = MissileSprite(parent,target, self.damage,self.shot_count,self.type)
+            BM.missiles.append(missile)
+            vector = calculate_vector(target.location,missile.location) #get what direction to go to
+            missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+
+            self.flaklist = [] #stores the ships that intercept this missile
+            time = 0 #stores how much time has passed since the missile was launched. used to time the flak icon etc
+
+            moving = True
+            while moving:
+                missile.location = missile.next_location
+                for ship in BM.ships:
+                    effective_flak = ship.flak + ship.modifiers['flak'][0]
+                    if effective_flak > 100:
+                        effective_flak = 100
+                    elif effective_flak < 0:
+                        effective_flak = 0
+
+                    if not ship.faction == missile.parent.faction and effective_flak > 0:
+                        if not ship.flak_used:
+                            if get_ship_distance(missile,ship) <= (ship.flak_range+0.5):
+                                ship.flaksim = None
+                                ship.flaksim = (time,missile.flak_intercept(ship))
+                                if missile.shot_count == 0:
+                                    BM.missiles.remove(missile)
+                                    moving = False
+                                    ship.fireing_flak = False
+                                    for ship in BM.ships:
+                                        ship.flak_used = False
+                                    return 'miss'
+                                ship.fireing_flak = False
+                if get_ship_distance(missile,target) <= 0.5:
+                    moving = False
+                    return missile
+                else:
+                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+                    vector = calculate_vector(target.location,missile.location) #get what direction to go to
+                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+                    time += 0.2
+
 
 
           ##this class is the missile shown on screen when missiles are fired##
@@ -1350,14 +1400,12 @@ init -2 python:
             for shot in range(self.shot_count):
                 if renpy.random.randint(0,100) <= effective_flak:
                     shots_remaining -= 1
+            shot_down = 0
             if self.shot_count > shots_remaining:
                 shot_down = self.shot_count - shots_remaining
-                if shot_down == 1:
-                    show_message('1 missile was shot down!')
-                else:
-                    show_message('{} missiles were shot down!'.format(shot_down))
             interceptor.flak_effectiveness -= (self.shot_count * self.flak_degradation)
             self.shot_count = shots_remaining
+            return shot_down
 
 
     class Melee(Weapon):

@@ -79,6 +79,18 @@ init -2:  ##0) transforms
             xpos x1 ypos y1
             linear speed xpos x2 ypos y2
 
+    transform delayed_image(wait,img):
+        alpha 0
+        pause wait
+        alpha 0.8
+
+    transform delay_float_text(yy,wait):
+        ypos yy
+        alpha 0
+        time wait
+        alpha 1
+        easein 1.0 ypos int(yy-80*zoomlevel)
+
 screen battle_screen:
     tag tactical
     modal False
@@ -146,58 +158,68 @@ screen battle_screen:
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                     for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
                         if get_distance(BM.hovered.location,(a,b)) <= BM.hovered.shield_range:
-                            $xposition = a * int(192 * zoomlevel)
-                            $yposition = b * int(120 * zoomlevel)
-                            $xsize = int(196 * zoomlevel)
-                            $ysize = int(124 * zoomlevel)
-                            add "Battle UI/blue square.png":
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
-                                alpha 0.7
+                            $ ship = BM.hovered
+                            $ effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
+                            if effective_shielding > 0:
+                                $xposition = a * int(192 * zoomlevel)
+                                $yposition = b * int(120 * zoomlevel)
+                                $xsize = int(196 * zoomlevel)
+                                $ysize = int(124 * zoomlevel)
+                                add "Battle UI/blue square.png":
+                                    xpos xposition
+                                    ypos yposition
+                                    size (xsize,ysize)
+                                    alpha 0.7
             if BM.hovered.flak > 0:
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                     for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
                         if get_distance(BM.hovered.location,(a,b)) <= BM.hovered.flak_range:
-                            $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
-                            $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
-                            $xsize = int(188 * zoomlevel)
-                            $ysize = int(116 * zoomlevel)
-                            add "Battle UI/red square.png":
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
-                                alpha 0.9
+                            $ ship = BM.hovered
+                            $effective_flak = ship.flak + ship.modifiers['flak'][0]
+                            if effective_flak > 0:
+                                $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
+                                $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
+                                $xsize = int(188 * zoomlevel)
+                                $ysize = int(116 * zoomlevel)
+                                add "Battle UI/red square.png":
+                                    xpos xposition
+                                    ypos yposition
+                                    size (xsize,ysize)
+                                    alpha 0.9
 
         if not BM.weaponhover == None: #when you hover over a weapon button
-            if BM.weaponhover.wtype == 'Missile' or BM.weaponhover.wtype == 'Rocket':
+            if BM.weaponhover.wtype == 'Missile' or BM.weaponhover.wtype == 'Rocket' or BM.weaponhover.name == 'Flak Off':
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                         for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
                             for ship in enemy_ships:
                                 if get_distance(ship.location,(a,b)) <= ship.flak_range:
-                                    $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
-                                    $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
-                                    $xsize = int(188 * zoomlevel)
-                                    $ysize = int(116 * zoomlevel)
-                                    add "Battle UI/red square.png":
-                                        xpos xposition
-                                        ypos yposition
-                                        size (xsize,ysize)
-                                        alpha 0.9
-            if BM.weaponhover.wtype == 'Laser' or BM.weaponhover.wtype == 'Pulse':
+                                    $effective_flak = ship.flak + ship.modifiers['flak'][0]
+                                    if effective_flak > 0:
+                                        $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
+                                        $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
+                                        $xsize = int(188 * zoomlevel)
+                                        $ysize = int(116 * zoomlevel)
+                                        add "Battle UI/red square.png":
+                                            xpos xposition
+                                            ypos yposition
+                                            size (xsize,ysize)
+                                            alpha 0.9
+            if BM.weaponhover.wtype == 'Laser' or BM.weaponhover.wtype == 'Pulse' or BM.weaponhover.name == 'Shield Down':
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                         for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
                             for ship in enemy_ships:
                                 if get_distance(ship.location,(a,b)) <= ship.shield_range:
-                                    $xposition = a * int(192 * zoomlevel)
-                                    $yposition = b * int(120 * zoomlevel)
-                                    $xsize = int(196 * zoomlevel)
-                                    $ysize = int(124 * zoomlevel)
-                                    add "Battle UI/blue square.png":
-                                        xpos xposition
-                                        ypos yposition
-                                        size (xsize,ysize)
-                                        alpha 0.7
+                                    $effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
+                                    if effective_shielding > 0:
+                                        $xposition = a * int(192 * zoomlevel)
+                                        $yposition = b * int(120 * zoomlevel)
+                                        $xsize = int(196 * zoomlevel)
+                                        $ysize = int(124 * zoomlevel)
+                                        add "Battle UI/blue square.png":
+                                            xpos xposition
+                                            ypos yposition
+                                            size (xsize,ysize)
+                                            alpha 0.7
 
                 ## DISPLAY COVER ##
         for cover in BM.covers:
@@ -328,15 +350,6 @@ screen battle_screen:
                             focus_mask True #im.Scale(Image("Battle UI/focus mask 2.png"),500,400) this is Hard
                             at zoom_button(zoomlevel/2.5)
 
-                        if ship.fireing_flak:
-                            add 'Battle UI/warning icon.png':
-                                xanchor 0.5
-                                yanchor 0.5
-                                xpos xposition
-                                ypos yposition
-                                zoom (zoomlevel/2.5)
-                                alpha 0.8
-
                         if ship.getting_buff:
                             add 'Battle UI/buff_front.png':
                                 xpos int(xposition-96*zoomlevel)
@@ -394,29 +407,62 @@ screen battle_screen:
                                 font "Font/sui generis rg.ttf"
                                 outlines [(2,'000',0,0)]
 
+##show flak icon and intercept text
+        if BM.missile_moving:
+            for ship in BM.ships:
+                if ship.flaksim != None:
+                    $ xposition = int((ship.location[0]+0.5) * cell_width * zoomlevel)
+                    $ yposition = int((ship.location[1]+0.25) * cell_height * zoomlevel)
+                    $ wait = ship.flaksim[0]
+                    $ intercept_count = ship.flaksim[1]
+
+                    add 'Battle UI/warning icon.png':
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        zoom (zoomlevel/2.5)
+                        alpha 0.8
+                        at delayed_image(wait)
+
+                    $ textcolor = 'f00'
+                    if ship.faction == 'Player':
+                        $ textcolor = '0f0'
+
+                    text '{} intercepted!'.format(intercept_count):
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        size 30
+                        color textcolor
+                        outlines [(2,'000',0,0)]
+                        at delay_float_text(yposition,wait)
 
 
+##show missiles on the map that are currently flying in space##
 
-
-
-          ##show missiles on the map that are currently flying in space##
-        if len(BM.missiles) > 0:
+        if BM.missile_moving:
             for missile in BM.missiles:
-                $xposition = int((missile.location[0]+0.5) * 192 * zoomlevel)
-                $yposition = int((missile.location[1]+0.25) * 120 * zoomlevel)
-                $next_xposition = int((missile.next_location[0]+0.5) * 192 * zoomlevel)
-                $next_yposition = int((missile.next_location[1]+0.25) * 120 * zoomlevel)
+                $xposition = int((missile.parent.location[0]+0.5) * 192 * zoomlevel)
+                $yposition = int((missile.parent.location[1]+0.25) * 120 * zoomlevel)
+                $next_xposition = int((missile.target.location[0]+0.5) * 192 * zoomlevel)
+                $next_yposition = int((missile.target.location[1]+0.25) * 120 * zoomlevel)
+                $travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
                 add missile.lbl:
-                    at move_ship(xposition,yposition,next_xposition,next_yposition,0.1)
+                    at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
                     xanchor 0.5
                     yanchor 0.5
                     zoom (zoomlevel/4.0)
-                text str(missile.shot_count):
-                    at move_ship(xposition,yposition,next_xposition,next_yposition,0.1)
-                    xanchor 0.5
-                    yanchor 0.5
-                    size (20/zoomlevel)
-                    outlines [(1,'000',0,0)]
+
+#                text str(missile.shot_count):
+#                    at move_ship(xposition,yposition,next_xposition,next_yposition,0.1)
+#                    xanchor 0.5
+#                    yanchor 0.5
+#                    size (20/zoomlevel)
+#                    outlines [(1,'000',0,0)]
+
+
 
 ##targeting window##
 
@@ -461,7 +507,13 @@ screen battle_screen:
                                 color '000'
                             $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
                             $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
-                            text str(ship.flak):
+                            $effective_flak = ship.flak + ship.modifiers['flak'][0]
+                            if effective_flak < 0:
+                                $ effective_flak = 0
+                            elif effective_flak > 100:
+                                $ effective_flak = 100
+
+                            text str(effective_flak):
                                 xpos xposition
                                 ypos yposition
                                 xanchor 1.0
@@ -684,6 +736,7 @@ screen commands: ##show the weapon buttons etc##
 
         ##show status window and it's data
     if not BM.selected == None:
+        $ ship = BM.selected
         add 'Battle UI/statuswindow.png' xalign 1.0 yalign 1.0
         if not BM.selected.portrait == None:
             add BM.selected.portrait xalign 1.0 yalign 1.0
@@ -695,19 +748,27 @@ screen commands: ##show the weapon buttons etc##
         add 'Battle UI/status window_EN.png' xpos 1133 ypos 805 crop (0,0,en_size,19)
         text (str(BM.selected.hp) + '/' + str(BM.selected.max_hp)) xanchor 0.5 xpos 1510 ypos 779 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
         text (str(BM.selected.en) + '/' + str(BM.selected.max_en)) xanchor 0.5 xpos 1490 ypos 805 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
-        text (str(BM.selected.flak)) xanchor 1.0 xpos 1149 ypos 847 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+
+        $effective_flak = ship.flak + ship.modifiers['flak'][0]
+        if effective_flak < 0:
+            $ effective_flak = 0
+        elif effective_flak > 100:
+            $ effective_flak = 100
+        text (str(effective_flak)) xanchor 1.0 xpos 1149 ypos 847 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+
         text (str(BM.selected.shields)) xanchor 1.0 xpos 1149 ypos 897 size 24 font "Font/sui generis rg.ttf" outlines [(1,BM.selected.shield_color,0,0)]
         text (str(BM.selected.armor)) xanchor 1.0 xpos 1149 ypos 947 size 24 font "Font/sui generis rg.ttf" outlines [(1,BM.selected.armor_color,0,0)]
         text (str(BM.selected.evasion)) xanchor 1.0 xpos 1149 ypos 997 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
 
         ##show weapon stats in status window on hover
+
         if not BM.weaponhover == None or not BM.active_weapon == None:
             if BM.weaponhover == None:
                 $weapon = BM.active_weapon
             else:
                 $weapon = BM.weaponhover
-            text (str(weapon.damage)) xanchor 1.0 xpos 1380 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
-            text (str(weapon.damage*weapon.shot_count)) xanchor 1.0 xpos 1380 ypos 870 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+            text (str(real_damage(weapon,ship))) xanchor 1.0 xpos 1380 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+            text (str(real_damage(weapon,ship)*weapon.shot_count)) xanchor 1.0 xpos 1380 ypos 870 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
             text (str(weapon.shot_count)) xanchor 1.0 xpos 1515 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
 
         ##show buffs
@@ -832,12 +893,17 @@ screen animation_hp:
     add 'Battle UI/dmgstatus.png':
         xalign 1.0
 
-    $hp_size1 = int(409*(float(BM.target.hp)/BM.target.max_hp))
+    if store.damage == 'miss':
+        $current_hp = BM.target.hp
+    else:
+        $current_hp = BM.target.hp+ store.damage
+
+    $hp_size1 = int(409*(float(current_hp)/BM.target.max_hp))
     add 'Battle UI/dmgstatus_bar.png':
         xpos 1340
         ypos 3
         crop (0,0,hp_size1,42)
-    text 'HP: {!s}/{!s}'.format(BM.target.hp,BM.target.max_hp):
+    text 'HP: {!s}/{!s}'.format(current_hp,BM.target.max_hp):
         xpos 1750
         ypos 8
         size 19
@@ -851,17 +917,19 @@ screen animation_hp2:
 
     if store.damage == 'miss':
         $damage = 0
+        $current_hp = BM.target.hp
     else:
         $damage = store.damage
-    $hp_size1 = int(409*(float(BM.target.hp)/BM.target.max_hp))
-    $hp_size2 = int(409*(float(BM.target.hp-damage)/BM.target.max_hp))
+        $current_hp = BM.target.hp+ store.damage
+    $hp_size1 = int(409*(float(current_hp)/BM.target.max_hp))
+    $hp_size2 = int(409*(float(current_hp-damage)/BM.target.max_hp))
 
     add 'Battle UI/dmgstatus_bar.png':
         xpos 1340
         ypos 3
         at hp_falls(hp_size1,hp_size2)
 
-    text 'HP: {!s}/{!s}'.format((BM.target.hp-damage),BM.target.max_hp):
+    text 'HP: {!s}/{!s}'.format((current_hp-damage),BM.target.max_hp):
         xpos 1750
         ypos 8
         size 19
@@ -1056,7 +1124,7 @@ screen message:
     text message:
         at message_transform(xpos,ypos)
         size 24
-        outlines [(3,'fff',0,0)]
+        outlines [(1,'fff',0,0)]
 
     timer 3.25 action Hide('message')
 

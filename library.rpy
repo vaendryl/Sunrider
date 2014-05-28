@@ -961,7 +961,7 @@ init 2 python:
     class PirateBomberAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 10
+            self.damage = 14
             self.energy_use = 50
             self.shot_count = 10
             self.accuracy = 60
@@ -970,7 +970,7 @@ init 2 python:
     class PirateBomberRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 200
+            self.damage = 240
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
@@ -1188,7 +1188,9 @@ init 2 python:
     class AccDown(Curse):
         def __init__(self):
             Curse.__init__(self)
+            self.energy_use = 30
             self.modifies = 'accuracy'
+            self.accuracy = 9999
             self.buff_strength = -25
             self.buff_duration = 3
             self.name = 'Aim Down'
@@ -1197,6 +1199,8 @@ init 2 python:
     class Disable(Curse): #takes away all EN
         def __init__(self):
             Curse.__init__(self)
+            self.energy_use = 100
+            self.accuracy = 9999
             self.modifies = 'energy regen'
             self.buff_strength = -100
             self.buff_duration = 2 #has to be 2 or else the debuff won't last beyond the start of their next turn
@@ -1206,7 +1210,9 @@ init 2 python:
     class FlakOff(Curse):
         def __init__(self):
             Curse.__init__(self)
+            self.energy_use = 40
             self.modifies = 'flak'
+            self.accuracy = 9999
             self.buff_strength = -100
             self.buff_duration = 3
             self.name = 'Flak Off'
@@ -1215,6 +1221,8 @@ init 2 python:
     class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
             Curse.__init__(self)
+            self.energy_use = 60
+            self.accuracy = 9999
             self.modifies = 'shield_generation'
             self.buff_strength = -100
             self.buff_duration = 1

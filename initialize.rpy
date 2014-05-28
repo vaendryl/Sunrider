@@ -11,6 +11,7 @@ init -10 python:
     MOVE_IN_SPEED = 0.5 #for buttons and status displays
     MOVE_OUT_SPEED = 0.5
     MESSAGE_PAUSE = 0.75
+    MISSILE_SPEED = 0.3
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16)
     BM = renpy.store.object()
@@ -70,6 +71,8 @@ label initialize:
         sunrider = None
         blackjack = None
         liberty = None
+        phoenix = None
+        bianca = None
 
     return
 
@@ -375,12 +378,10 @@ label mission9_inits:
         create_ship(PirateGrunt(),(16,9),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
 
         create_ship(PirateBomber(),(17,5),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
-        create_ship(PirateBomber(),(17,8),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(17,9),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
 
-        create_ship(PirateDestroyer(),(13,4),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(12,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(13,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(12,9),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(12,4),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(12,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
         create_ship(Havoc(),(18,7),[HavocMelee(),HavocAssault(),HavocMissile(),HavocRocket()])
         enemy_ships[-1].boss=False
@@ -404,6 +405,7 @@ label mission10_inits:
         sunrider.set_location(4,6)
         blackjack.set_location(0,0)
         player_ships.remove(blackjack)
+        BM.selected = sunrider  #just in case blackjack is still selected.
         liberty.set_location(6,7)
         phoenix.set_location(6,6)
         bianca.set_location(6,5)

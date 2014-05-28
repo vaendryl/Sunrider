@@ -2428,7 +2428,7 @@ label attackonpiratesnest:
 
     $ mission_pirateattack = True
 
-    $ liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
+    $ liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
     $ liberty = create_ship(Liberty(),(5,7),liberty_weapons)
     $ sunrider.register_weapon(SunriderPulse()) #add a new weapon
 
@@ -5671,6 +5671,9 @@ label ep3_start:
 
     #try to remove the agamemnon from the game
     python:
+
+        res_location = "lab"
+        res_event = "allocatefunds"
         try:
             a,b = agamemnon.location
             BM.grid[a-1][b-1] = False
@@ -5678,7 +5681,8 @@ label ep3_start:
             player_ships.remove(agamemnon)
             del agamemnon  #deletes the last traces. the variable will henceforth not even be defined, as though it was never used.
         except:
-            show_message('debug: there was an error removing the agamemnon. maybe it already was.')
+            pass
+#            show_message('debug: there was an error removing the agamemnon. maybe it already was.')
 
 
     $ renpy.pause (0.1)
@@ -5927,6 +5931,9 @@ label thankschatback:
 
     $ pro_location = "bridge"
     $ pro_event = "missionfromryuvians"
+
+    $ res_location = "lab"
+    $ res_event = "allocatefunds"
 
     $ gal_location = None
     jump dispatch
@@ -6852,17 +6859,15 @@ label mission9:
 
         $ BM.draggable = True  #this enables dragging the viewport again.
 
-    if check2 == False and BM.turn_count == 2:
+    if check2 == False and BM.turn_count == 3:
 
         $BM.draggable = False
 
         python:
             create_ship(PactMook(),(8,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
             create_ship(PactBomber(),(9,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-            create_ship(PactCruiser(),(9,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
             create_ship(PactMook(),(8,15),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
             create_ship(PactBomber(),(9,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-            create_ship(PactCruiser(),(9,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
             create_ship(PactCruiser(),(18,8),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
             create_ship(PactCruiser(),(18,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
             create_ship(MissileFrigate(),(5,2),[PactFrigateMissile()])
@@ -6945,7 +6950,7 @@ label mission9:
 
         python:
 
-            bianca_weapons = [BiancaAssault(),GravityGun()]
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
         kay "Patch me through to her."
@@ -6956,7 +6961,7 @@ label mission9:
             xpos 0.8
         with dissolve
 
-        cla "This is Claude Trilleo. I was delivering some medical supplies to Tautenia when I was attacked by these pirates. I could sure use a hand here..."
+        cla "This is Claude Trillo. I was delivering some medical supplies to Tautenia when I was attacked by these pirates. I could sure use a hand here..."
         kay "(One extra ryder. This should even the odds.)"
         kay "All right, Claude. The Sunrider is at your service. Let's get these bogies off of you."
         play sound "sound/objectives.ogg"
@@ -6982,7 +6987,7 @@ label aftermission9:
         if mochi in player_ships:
             BM.ships.remove(mochi)
             player_ships.remove(mochi)
-            bianca_weapons = [BiancaAssault(),GravityGun()]
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
 
@@ -7133,7 +7138,7 @@ label hereareaisdangerous:
 
     show claude plugsuit excited happyblush with dissolve
 
-    cla "Ka-ching! Dr. Trilleo at your service, captain!"
+    cla "Ka-ching! Dr. Trillo at your service, captain!"
     kay "Haha, what good luck! Hey Ava, we finally have a doctor for our ship!"
 
     show claude plugsuit excited closedsmilelaugh with dissolve
@@ -7363,7 +7368,7 @@ label medical_examination:
     ava "I found it here!!!"
     kay "F-found what!?"
 
-    show ava uniform armscrossed angry with dissolve
+    show ava uniform point angry with dissolve
 
     ava "That little skeever isn't a doctor at all! Look here on this form!"
     ava "Medical license suspended due to malpractice!"
@@ -8135,7 +8140,8 @@ label whydidyouattack:
 
     sol "The last I remember before the Final Tear was battle."
     sol "The Fallen had overwhelmed our position. They were about to end us."
-    sol "Then... a flash. Then utter destruction of everything. To me... the sleep felt like an instant. I did not even realize that the battle had been interrupted, or that my adversary had changed."
+    sol "Then... a flash, followed by utter destruction."
+    sol "To me... the sleep felt like an instant. I did not even realize that the battle had been interrupted, or that my adversary had changed."
     kay "(I'm not sure I follow what she's saying... But it seems like she attacked us by mistake.)"
 
     menu:
@@ -8518,6 +8524,17 @@ label exchangepromisesafety:
 
 label porkfleetopenfire:
 
+    scene porkfleet_assembled with dissolve
+    pause 0.5
+
+    play sound "sound/legion_laser.ogg"
+    show porkfleet_fire with horizontalwipereversefast
+    hide porkfleet_fire with horizontalwipereversefast
+
+    pause 2.0
+
+    scene bg bridgered with dissolve
+
     show ava uniform alt neutral angry with dissolve
 
     ava "The PACT fleet has opened fire!"
@@ -8565,14 +8582,14 @@ label porkfleetopenfire:
     ava "S-sir?"
     "Shields smiled wryly and held onto Ava's hand."
     kay "Been an honor."
+
+    show ava uniform armscrossed tearsadblush with dissolve
+
     ava "...T-tsch..."
     "... ... ..."
-
+    hide ava with dissolve
+    show asaga plugsuit excited shout with wipeup
     stop music fadeout 1.5
-
-    hide ava
-    show asaga plugsuit excited shout
-    with dissolve
 
     asa "WAIT!"
     asa "I'M THE ONE YOU'RE LOOKING FOR!"
@@ -8592,7 +8609,7 @@ label porkfleetopenfire:
     kay "What!? Asaga...!? All this time....?"
     kay "(Aarrggghhh... How could I have never known?)"
 
-    show asaga plugsuit armscrossed sadsmile with dissolve ###############REPLACE
+    show asaga plugsuit armscrossed sadtear with dissolve
 
     asa "Captain... I'm sorry for lying to you all this time."
     asa "B-but... this is for the best. Ok?"
@@ -8602,7 +8619,7 @@ label porkfleetopenfire:
 
     asa "...F-farewell, captain! A-and..."
 
-    show asaga plugsuit armscrossed sadclosedeyessmile with dissolve
+    show asaga plugsuit neutral forcedsmiletear with dissolve
 
     asa "Thanks for all the fun!"
 
@@ -8615,7 +8632,6 @@ label porkfleetopenfire:
 
     ava "Captain?"
     kay "Get our repair drones online."
-    kay "We have a wedding to crash."
 
     play sound "sound/ToBeContinued.ogg"
     scene cg_tobecontinued
@@ -8719,6 +8735,16 @@ label credits:
         ypos 1.1
         linear 15 ypos -0.25
     $ renpy.pause(3.0)
+    show credits16c:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25
+    $ renpy.pause(3.0)
+    show credits16d:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25
+    $ renpy.pause(3.0)
     show credits17:
         xalign 0.5
         ypos 1.1
@@ -8765,7 +8791,63 @@ label credits:
         linear 6.666666666666667 ypos 0.5
     $ renpy.pause(15.0)
 
-    jump aftercreditsep2
+    jump aftercreditsep3
+
+label aftercreditsep3:
+
+    scene black with dissolve
+
+    window show
+    play music "Music/March_of_Immortals.ogg"
+
+    "NEXT TIME ON SUNRIDER..."
+    "Captain Shields and the Sunrider crew race against time to rescue Asaga from the clutches of Veniczar Arcadius!"
+    "A daring rescue!"
+    "Will the Alliance arrive in time to help?"
+    "The full Sunrider team is assembled!"
+    "An ancient secret is revealed!"
+    "Two armadas clash to determine the fate of the galaxy!"
+    "And don't forget... There'll also be lots of space whales next time too!"
+
+    show dontmissit:
+        zoom 10
+        ease 0.5 zoom 1
+
+    pause 0.5
+    play sound "sound/drum.ogg"
+
+    $ renpy.pause(1.0)
+
+    stop music fadeout 1.5
+    scene white with dissolvelong
+
+    play sound "sound/drumroll.ogg"
+
+    "And now... The results of our second character popularity contest!"
+    "And the winner is..."
+
+    show polltwo:
+        xalign 0.5 yalign 0.5
+    with dissolve
+
+    show icari plugsuit armscrossed embarassedtsun:
+        xpos 0.8
+    with dissolve
+
+    ica "S-seriously... Winning such an embarrassing contest..."
+
+    show icari plugsuit point angry with dissolve
+
+    ica "This doesn't mean that I'm gonna do anything special for you in the beach episode, all right!?"
+
+    show icari plugsuit point angry:
+        ease 0.5 zoom 2.0 ypos 1.7
+
+    ica "ALL RIGHT!?"
+
+    "Who will win next time? Don't forget to vote at our forums!"
+
+    return
 
 label aftercreditsep2:
 
@@ -8775,11 +8857,7 @@ label aftercreditsep2:
     scene asagacorner with dissolve
     show asaga uniform neutral happy with dissolve
 
-    asa "Welcome to the first edition of Asaga's Corner! Oh, what a dramatic episode we had today! I hope nobody cried in front of their monitor!"
 
-    show asaga uniform excited grin with dissolve
-
-    asa "Well, ya better put those tissues away, 'cause it's time to unveil the results of our first ever character popularity poll!"
 
     play sound "sound/drumroll.ogg"
     show asaga uniform neutral happy with dissolve

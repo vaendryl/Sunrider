@@ -221,3 +221,18 @@
         zoom 0.6255
         subpixel True
         
+    image ava uniform armscrossed tearsadblush:
+        "Character/Ava/ava_uniform_armscrossed_tearsadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+        
+    image ava uniform point angry:
+        "Character/Ava/ava_uniform_point_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+        
+        
