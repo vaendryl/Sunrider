@@ -101,7 +101,7 @@ init -2 python:
 
             if result == 'anime':
                 try:
-                    renpy.call_in_new_context('atkanim_blackjack_melee') #'atkanim_blackjack_melee')
+                    renpy.call_in_new_context('atkanim_seraphimenemy_kinetic') #'atkanim_blackjack_melee')
                 except:
                     show_message('animation label does not exist!')
 
@@ -332,11 +332,13 @@ init -2 python:
                 if result[1].wtype == 'Support':
                     if result[1].self_buff:
                         result[1].fire(BM.selected,BM.selected)
+                        update_stats()
                         return
 
                 self.targetingmode = True   #displays targeting info over enemy_ships
                 self.active_weapon = result[1]
                 self.weaponhover = BM.active_weapon
+                update_stats()
                 return
 
             if result == 'endturn':
@@ -411,6 +413,7 @@ init -2 python:
                 ship.total_kinetic_damage = 0
                 ship.total_energy_damage = 0
                 ship.missiles = ship.max_missiles
+                ship.location = (-10,-10) #this helps if you add new ships but don't know the current location of the existing ones.
                 for modifier in ship.modifiers:
                     ship.modifiers[modifier] = [0,0]
 
@@ -468,7 +471,14 @@ init -2 python:
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
                 renpy.pause(0.3)
-                eship.AI()
+                try:
+                    if not eship.modifiers['energy regen'][0] == -100:
+                        eship.AI()
+                    else:
+                        show_message('the {} is disabled!'.format(eship.name) )
+                except:
+                    eship.modifiers['energy regen'] = (0,0)
+                    eship.AI()
                 eship.lbl = eship.blbl
 
 
@@ -478,7 +488,14 @@ init -2 python:
                     ship.en = ship.max_en
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(0.3)
-                    ship.AI()
+                    try:
+                        if not eship.modifiers['energy regen'][0] == -100:
+                            eship.AI()
+                        else:
+                            show_message('the {} is disabled!'.format(eship.name) )
+                    except:
+                        eship.modifiers['energy regen'] = (0,0)
+                        eship.AI()
                     ship.lbl = ship.blbl
             renpy.music.play(PlayerTurnMusic)
             renpy.call_in_new_context('endofturn')
@@ -592,6 +609,8 @@ init -2 python:
                 'flak':[0,0],
                 'energy':[0,0],
                 'stealth':[0,0],
+                'shield_generation':[0,0],
+                'energy regen':[0,0],
                 }
 
         def receive_damage(self,damage,attacker,wtype):
@@ -668,6 +687,8 @@ init -2 python:
 
                   #if the attack hits, show the hit animation of the target based on weapon type
 
+                self.hp -= damage
+
                 if wtype == 'Melee':
                     renpy.call_in_new_context('melee_attack_player')
                 else:
@@ -676,14 +697,15 @@ init -2 python:
                     except:
                         show_message('missing animation. "hitanim_{}_{}" doesn\'t seem to exist'.format(self.animation_name,wtype.lower()))
 
-                self.hp -= damage
                 if self.hp <= 0:
                     self.destroy(attacker)
 
         def destroy(self,attacker,no_animation = False):
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy moral too
+            self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
             if not self.faction == 'Player':
+
                 attacker.hate += self.max_hp*0.3
                 attacker.target = None
                 for eship in enemy_ships:
@@ -806,6 +828,10 @@ init -2 python:
 
 #basic loop
         def AI_basic_loop(self):
+            if self in enemy_ships:
+                pass
+            else:
+                return
             #renpy.log('{} starting AI_basic_loop'.format(self.name))
             #renpy.log('I have {} energy'.format(self.en))
 
@@ -1036,25 +1062,27 @@ init -2 python:
                             if enemy.en >= counter.energy_use:
                                 show_message('COUNTER ATTACK!')
                                 enemy.AI_attack_target(self,counter)
+                                enemy.en = enemy.max_en
             else:
-                for ship in player_ships:
-                    if ship.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
+                if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
+                    for ship in player_ships:
                         if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
                             counter = None
                             for weapon in ship.weapons:
                                 if weapon.wtype == 'Assault':
                                     counter = weapon
                             if counter != None:
-                                if ship.en >= counter.energy_use:
-                                    show_message('COUNTER ATTACK!')
-                                    update_stats()
-                                    try:
-                                        renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
-                                    except:
-                                        show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
-                                    damage = counter.fire(ship,self)
-                                    self.receive_damage(damage,ship,counter.wtype)
-
+                                EN = ship.en
+                                ship.en = 200
+                                show_message('COUNTER ATTACK!')
+                                update_stats()
+                                try:
+                                    renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
+                                except:
+                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
+                                damage = counter.fire(ship,self)
+                                self.receive_damage(damage,ship,counter.wtype)
+                                ship.en = EN
 
 
             bm.select_ship(self, play_voice = False) #you can control your ship again
@@ -1113,11 +1141,16 @@ init -2 python:
                     damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if target.shields > 0:
-                        damage = damage * (100 - target.shields) / 100.0
-                        store.total_shield_negation += int(damage * target.shields / 100.0)
-                    damage -= target.armor
-                    if damage <= 1: damage = 1
-                    store.total_armor_negation += target.armor
+                        negation = damage * target.shields / 100.0
+                        damage -= negation
+                        store.total_shield_negation += int(negation)
+
+                    if damage <= target.armor:
+                        damage = 1
+                        store.total_armor_negation += damage
+                    else:
+                        damage -= target.armor
+                        store.total_armor_negation += target.armor
                     total_damage += int(damage)
                     store.hit_count += 1
 
@@ -1519,7 +1552,7 @@ init -2 python:
     class Cover(store.object):
         def __init__(self,location = (1,1)):
             self.location = location
-            self.cover_chance = 25 #percentage chance of blocking an incoming attack
+            self.cover_chance = 50 #percentage chance of blocking an incoming attack
             self.max_hp = 500
             self.hp = self.max_hp
             self.label = 'Battle UI/asteroid cover.png'

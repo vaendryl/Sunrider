@@ -261,8 +261,24 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
-
-
+    image icari plugsuit handonhip neutral:
+        "Character/Icari/icari_plugsuit_handonhip_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit point mad:
+        "Character/Icari/icari_plugsuit_point_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit neutral surprise:
+        "Character/Icari/icari_plugsuit_neutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
         
     ##########################################################UNIFORM
         

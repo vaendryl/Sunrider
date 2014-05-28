@@ -141,12 +141,28 @@ init -6 python:
           #if they are, the shield generation value of the 2nd gets added to the total shield value of the first
           #we also update armor (to match damage levels) while we are at it.
           #the font color is also updated to show a value is buffed or not from baseline
+
         for ship1 in player_ships:
+            try:
+                if ship1.modifiers['energy regen'][0] == -100:
+                    ship1.en = 0
+            except:
+                ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in player_ships:
                 if ship2.shield_generation > 0:
                     if get_ship_distance(ship1,ship2) <= ship2.shield_range:
-                        ship1.shields += ship2.shield_generation
+                        actual_generation = ship2.shield_generation
+                        try:
+                            mod,duration = ship2.modifiers['shield_generation']
+                        except:
+                            ship2.modifiers['shield_generation'] = [0,0]
+                            mod,duration = ship2.modifiers['shield_generation']
+                        if mod != 0:
+                            actual_generation += mod
+                        if actual_generation < 0:
+                            actual_generation = 0
+                        ship1.shields += actual_generation
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
@@ -154,17 +170,44 @@ init -6 python:
             ship1.armor_color = '000'
             if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
         for ship1 in enemy_ships:
+            try:
+                if ship1.modifiers['energy regen'][0] == -100:
+                    ship1.en = 0
+            except:
+                ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in enemy_ships:
                 if ship2.shield_generation > 0:
                     if get_ship_distance(ship1,ship2) <= ship2.shield_range:
-                        ship1.shields += ship2.shield_generation
+                        actual_generation = ship2.shield_generation
+                        try:
+                            mod,duration = ship2.modifiers['shield_generation']
+                        except:
+                            ship2.modifiers['shield_generation'] = [0,0]
+                            mod,duration = ship2.modifiers['shield_generation']
+                        if mod != 0:
+                            actual_generation += mod
+                        if actual_generation < 0:
+                            actual_generation = 0
+                        ship1.shields += actual_generation
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             update_armor(ship1)
             ship1.armor_color = '000'
             if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+
+    def weapon_type(weapon):
+        if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+            return 'Kinetic'
+        elif weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+            return 'Energy'
+        elif weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+            return 'Missile'
+        elif weapon.wtype == 'Melee':
+            return 'Melee'
+        else:
+            return 'notype'
 
     def reset_classes():
         """experimental save file compatibility keeper
@@ -356,11 +399,12 @@ init -6 python:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' lost it\'s buff to it\'s ' +key+ '!')
+                            show_message('the ' +ship.name+ ' recovered from it\'s curse to it\'s ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
 
+##experimental AI##
     def scan_local_area(ship):
         if ship == None:
             return

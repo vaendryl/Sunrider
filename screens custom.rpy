@@ -61,7 +61,7 @@ init -2:  ##0) transforms
             linear 0.5 alpha 0
 
     transform movebutton: #used to make it look cool when you click Move
-        zoom zoomlevel
+        zoom zoomlevel/4.0
         alpha 0.5
         on start:
             alpha 0.5
@@ -547,6 +547,7 @@ screen battle_screen:
                     xanchor 0.5
                     yanchor 0.5
                     size (20 * zoomlevel)
+                    outlines [(2,'000',0,0)]
 
 
           #firing the vanguard cannon
@@ -1055,7 +1056,7 @@ screen message:
     text message:
         at message_transform(xpos,ypos)
         size 24
-        outlines [(1,'fff',0,0)]
+        outlines [(3,'fff',0,0)]
 
     timer 3.25 action Hide('message')
 

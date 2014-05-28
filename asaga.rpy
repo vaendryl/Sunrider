@@ -267,7 +267,12 @@
         zoom 0.6255
         subpixel True 
 
-
+    image asaga plugsuit neutral neutral:
+        "Character/Asaga/asaga_plugsuit_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 ###################### UNIFORM
 
