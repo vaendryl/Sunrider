@@ -341,6 +341,13 @@ init -5:
         "CG/ryuvianbridge.jpg"
     image cg_ryuvianbridge_red:
         "CG/ryuvianbridge_red.jpg"
+    image cg_ryuvianbridge_empty:
+        "CG/ryuvianbridge_empty.jpg"
+
+
+    image cg_tobecontinued:
+        "CG/trollo.jpg"
+
 
 
 
@@ -450,10 +457,12 @@ init -5:
     image credits11 = Text("Additional Programming{p}         Renpytom, Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits12 = Text("Cast", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits13 = Text("Ava Crescentia:  Amber Lee Connors", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits14 = Text("Asaga Oakrun:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits14 = Text("Asaga di Ryuvia:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits15 = Text("Chigara Ashada:  Mary Morgan", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16 = Text("Cosette Cosmos:  Jill Harris", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16b = Text("Icari Isidolde:  Aimee Smith", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16c = Text("Claude Trillo:  Sydney P", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16d = Text("Sola di Ryuvia:  Tina Kim", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits17 = Text("Captain Kayto Shields:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -1909,6 +1918,85 @@ init -5:
         "CG/graveyard_escape7.png"  
         xanchor 0.5 yanchor 0.5
         
+        
+    image item_jewel:
+        "CG/item_jewel.png"
+        
+    image portfleet_1a:
+        "CG/porkfleet_1a.png"
+    image portfleet_1b:
+        "CG/porkfleet_1b.png"
+    image portfleet_1c:
+        "CG/porkfleet_1c.png"
+    image portfleet_2a:
+        "CG/porkfleet_2a.png"
+    image portfleet_2b:
+        "CG/porkfleet_2b.png"
+    image portfleet_2c:
+        "CG/porkfleet_2c.png"
+    image portfleet_3a:
+        "CG/porkfleet_3a.png"
+    image portfleet_3b:
+        "CG/porkfleet_3b.png"
+    image portfleet_3c:
+        "CG/porkfleet_3c.png"
+    image portfleet_4a:
+        "CG/porkfleet_4a.png"
+    image portfleet_4b:
+        "CG/porkfleet_4b.png"
+    image portfleet_4c:
+        "CG/porkfleet_4c.png"
+    image portfleet_5a:
+        "CG/porkfleet_5a.png"
+    image portfleet_5b:
+        "CG/porkfleet_5b.png"
+    image portfleet_5c:
+        "CG/porkfleet_5c.png"
+    image portfleet_6a:
+        "CG/porkfleet_6a.png"
+    image portfleet_6b:
+        "CG/porkfleet_6b.png"
+    image portfleet_6c:
+        "CG/porkfleet_6c.png"
+    image portfleet_7a:
+        "CG/porkfleet_7a.png"
+    image portfleet_7b:
+        "CG/porkfleet_7b.png"
+    image portfleet_7c:
+        "CG/porkfleet_7c.png"
+    image portfleet_8a:
+        "CG/porkfleet_8a.png"
+    image portfleet_8b:
+        "CG/porkfleet_8b.png"
+    image portfleet_8c:
+        "CG/porkfleet_8c.png"
+    image portfleet_9a:
+        "CG/porkfleet_9a.png"
+    image portfleet_9b:
+        "CG/porkfleet_9b.png"
+    image portfleet_9c:
+        "CG/porkfleet_9c.png"
+    image portfleet_10a:
+        "CG/porkfleet_10a.png"
+    image portfleet_10b:
+        "CG/porkfleet_10b.png"
+    image portfleet_10c:
+        "CG/porkfleet_10c.png"
+    image portfleet_11a:
+        "CG/porkfleet_11a.png"
+    image portfleet_11b:
+        "CG/porkfleet_11b.png"
+    image portfleet_11c:
+        "CG/porkfleet_11c.png"
+    image porkfleet_back:
+        "CG/porkfleet_back.jpg"        
+        
+    image porkfleet_assembled:
+        "CG/porkfleet_assembled.jpg"
+    image porkfleet_fire:
+        "CG/porkfleet_fire.png"
+    
+        
 ########################################## JOKE
 
     image bg renpytomback:
@@ -1922,6 +2010,13 @@ init -5:
         "Background/poll1.jpg"
     image crash:
         "Background/crash.jpg"
+        
+    image dontmissit:
+        "CG/dontmissit.png"
+        xalign 0.5 yalign 0.5
+        
+    image polltwo:
+        "CG/popularity2.jpg"
 
 ########################
 

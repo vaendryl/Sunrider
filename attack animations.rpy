@@ -4828,6 +4828,8 @@ label atkanim_pactcruiser_laser:
     show pactcruiser_side:
         xpos 0.5 ypos 0.5
     play sound2 'sound/legion_laser.ogg'
+    
+    pause 0.001
 
     show pactcruiser_laserfront:
         xpos 0.5 ypos 0.5
@@ -6770,14 +6772,13 @@ label atkanim_piratedestroyer_kinetic: ################################# PIRATE 
 
     show piratedestroyer:
 
-    pause 0.5
+    pause 0.2
 
     show layer master at shake1
     show piratedestroyer_kineticflash:
         alpha 0
         ease 0.1 alpha 1
         ease 0.1 alpha 0
-    show layer master
     show piratedestroyer_kineticround1:
         xpos 1052 ypos 335
         linear 0.15 xpos -400 ypos 100
@@ -6793,7 +6794,6 @@ label atkanim_piratedestroyer_kinetic: ################################# PIRATE 
         alpha 0
         ease 0.1 alpha 1
         ease 0.1 alpha 0
-    show layer master
     show piratedestroyer_kineticround3:
         xpos 1052 ypos 335
         linear 0.15 xpos -400 ypos 100
@@ -6811,7 +6811,7 @@ label atkanim_piratedestroyer_laser:
     $renpy.show_screen('show_background',_layer='master')
     show piratedestroyer:
         xpos 0.5 ypos 0.5
-    pause 0.75
+    pause 0.001
     play sound2 'sound/laser2.ogg'
 
     show piratedestroyer_laserfront:
@@ -6824,7 +6824,7 @@ label atkanim_piratedestroyer_laser:
     hide piratedestroyer_laserback
     with enemy_laserhitwipe
 
-    pause 0.5
+    pause 0.2
     return
 
 label hitanim_piratedestroyer_kinetic:   ##############PIRATE DESTROYER HIT ANIMATIONS

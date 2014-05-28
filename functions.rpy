@@ -134,6 +134,22 @@ init -6 python:
     def update_armor(parent):
         parent.armor = (parent.base_armor + parent.modifiers['armor'][0]) * parent.hp / parent.max_hp
 
+    def real_damage(weapon,parent):
+        if weapon == None or parent == None:
+            return 0
+        wtype = weapon_type(weapon)
+        if wtype == 'Kinetic':
+            return int(weapon.damage*parent.kinetic_dmg)
+        elif wtype == 'Energy':
+            return int(weapon.damage*parent.energy_dmg)
+        elif wtype == 'Missile':
+            return int(weapon.damage*parent.missile_dmg)
+        elif wtype == 'Melee':
+            return int(weapon.damage*parent.melee_dmg)
+        else:
+            return 0
+
+
     def update_stats():
           #first update the shields
           #we loop through all ships and then loop through all ships again
@@ -150,7 +166,10 @@ init -6 python:
                 ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in player_ships:
-                if ship2.shield_generation > 0:
+                effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
+                if effective_shielding < 0: effective_shielding = 0
+                elif effective_shielding > 100: effective_shielding = 100
+                if effective_shielding > 0:
                     if get_ship_distance(ship1,ship2) <= ship2.shield_range:
                         actual_generation = ship2.shield_generation
                         try:
@@ -209,6 +228,13 @@ init -6 python:
         else:
             return 'notype'
 
+    def add_new_vars():
+        firstvars = deepcopy(AllVariables().__dict__)
+        for key in firstvars:
+            if not hasattr(store,key):
+                setattr(store,key,firstvars[key])
+
+
     def reset_classes():
         """experimental save file compatibility keeper
         this reruns the __init__() function of every relevant class in the game
@@ -217,6 +243,8 @@ init -6 python:
 
 #        #store a list of BM.ships. deepcopy() does not create aliased variables
 #        ships = deepcopy(BM.ships)
+
+        show_message('You loaded a save file from a previous version of the game. reinitializing game data...')
 
         #create a non aliased copy of BM so we can extract all the field data
         BM_copy = deepcopy(BM)
@@ -250,6 +278,9 @@ init -6 python:
                     x = getattr(BM,key)
                 except:
                     setattr(BM,key,fields[key])
+
+        #repeat same concept for basic variables inside firstvariables.rpy
+        add_new_vars()
 
         #going to re-init all the ships
         for ship in BM.ships:
@@ -291,6 +322,8 @@ init -6 python:
 
             #restore the old weapon list
             ship.weapons = weapons
+
+        show_message('Reinitialization complete.')
         return
 
     def time_warp_easeout(t):

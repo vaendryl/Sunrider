@@ -25,8 +25,11 @@ changed:
 * Kinetics and Energy upgrades now only show up for the units that have weapons of that type
 * added icons and stat details to show the actual effect of upgrades
 * unit voices will now react to HP level after damage instead of before.
-* new move icon
-* added Disable debuff
+* new missile animation on map. much faster and more fluid.
+* expanded old save file compatibility. affection ratings etc no longer are reset. 
+* upgrades are reflected in the status window details about the currently hovered weapon
+* flak/shield ranges and values now take into account flakoff/shutoff debuffs
+* target of a missile attack no longer shows assault animation.
 
 
 patch notes 2.1

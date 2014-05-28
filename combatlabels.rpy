@@ -39,12 +39,12 @@ label test_battle:
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
-#        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-#        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-#        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
 
-#        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-#        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -300,14 +300,27 @@ label tryagain:
     return
 
 label after_load:
+
     python:
+        try:
+            test = bianca
+            del test
+        except:
+            bianca = None
+
         try:
             if BM.save_version != config.version:
                 reset_classes()
-                renpy.call('firstvariables')
+#                renpy.call('firstvariables')
                 BM.save_version = config.version
+                res_location = "lab"
+                res_event = "allocatefunds"
+                liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
         except:
             reset_classes()
-            renpy.call('firstvariables')
+#            renpy.call('firstvariables')
             BM.save_version = config.version
+            res_location = "lab"
+            res_event = "allocatefunds"
+            liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
     return
