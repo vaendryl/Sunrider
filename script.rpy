@@ -2437,7 +2437,6 @@ label attackonpiratesnest:
 label jumptogalaxy:
 
     hide screen deck1
-    window show
     jump galaxymap
 
 label meetsophita:
