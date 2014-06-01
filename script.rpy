@@ -2437,7 +2437,6 @@ label attackonpiratesnest:
 label jumptogalaxy:
 
     hide screen deck1
-    window show
     jump galaxymap
 
 label meetsophita:
@@ -5815,26 +5814,12 @@ label guessjustmoveonthose:
 
     menu:
         "We'll kill the Veniczar for this. It's the only way justice can be done.":
-            jump killveniczaronlyjustice
+            $ captain_prince += 1
 
         "We have to stop PACT, so that what happened on Cera will never happen again.":
-            jump stoppactwhathappenednever
-
-label killveniczaronlyjustice:
+            $ captain_moralist += 1
 
     $ captain_prince += 1
-    ava "Understood, sir. I'll be right behind you every step of the way."
-
-    menu:
-
-        "Give me your thoughts on the crew.":
-            jump givemethoughtscrew
-        "Thanks for the chat. I should get back to work.":
-            jump thankschatback
-
-label stoppactwhathappenednever:
-
-    $ captain_moralist += 1
     ava "Understood, sir. I'll be right behind you every step of the way."
 
     menu:
