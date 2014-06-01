@@ -402,7 +402,9 @@ init -6 python:
 
     def get_movement_tiles(ship, move_range = None):
         if ship == None: return
-        move_range = int(float(ship.en) / ship.move_cost)
+        if move_range == None:
+            move_range = int(float(ship.en) / ship.move_cost)
+        if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
         tile_locations = []
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
