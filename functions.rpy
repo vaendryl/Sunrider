@@ -11,6 +11,22 @@ init -6 python:
     import math
     from copy import deepcopy
 
+    def reset_upgrades(ship):
+        money_returned = 0
+        upgrades = ship.upgrades
+        for key in upgrades:
+            name,level,increase,cost,multiplier = upgrades[key]
+            if level > 1:
+                for count in range(level-1):
+                    cost = int(cost / float(multiplier) )
+                    money_returned += cost
+                    new_value = getattr(ship,key)-increase
+                    setattr(ship,key,new_value)
+        tempship = deepcopy(ship)
+        tempship.__init__()
+        ship.upgrades = tempship.upgrades
+        BM.money += money_returned
+
     def buy_upgrades():
         renpy.show_screen('upgrade')
         active = True
@@ -26,7 +42,7 @@ init -6 python:
                 active = False
                 return
 
-            if result == 'next':
+            elif result == 'next':
                 if BM.selected != None and len(player_ships) > 1:
                     index = player_ships.index(BM.selected)
                     if index == (len(player_ships)-1):
@@ -34,6 +50,9 @@ init -6 python:
                     else:
                         index += 1
                     BM.selected = player_ships[index]
+
+            elif result == 'reset':
+                reset_upgrades(BM.selected)
 
             elif result != None:
                 ship = BM.selected #shorter
@@ -82,7 +101,7 @@ init -6 python:
         if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
             accuracy *= attacker.energy_acc
         if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
-            accuracy *= attacker.missile_acc
+            pass
         if weapon.wtype == 'Melee':
             accuracy *= attacker.melee_acc
 
@@ -166,22 +185,16 @@ init -6 python:
                 ship1.modifiers['energy regen'] = (0,0)
             ship1.shields = 0
             for ship2 in player_ships:
-                effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
-                if effective_shielding < 0: effective_shielding = 0
-                elif effective_shielding > 100: effective_shielding = 100
-                if effective_shielding > 0:
-                    if get_ship_distance(ship1,ship2) <= ship2.shield_range:
-                        actual_generation = ship2.shield_generation
-                        try:
-                            mod,duration = ship2.modifiers['shield_generation']
-                        except:
-                            ship2.modifiers['shield_generation'] = [0,0]
-                            mod,duration = ship2.modifiers['shield_generation']
-                        if mod != 0:
-                            actual_generation += mod
-                        if actual_generation < 0:
-                            actual_generation = 0
-                        ship1.shields += actual_generation
+                if get_ship_distance(ship1,ship2) <= ship2.shield_range:
+                    actual_generation = ship2.shield_generation
+                    try:
+                        mod,duration = ship2.modifiers['shield_generation']
+                    except:
+                        ship2.modifiers['shield_generation'] = [0,0]
+                        mod,duration = (0,0)
+                    if mod != 0: actual_generation += mod
+                    if actual_generation < 0: actual_generation = 0
+                    ship1.shields += actual_generation
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
@@ -231,7 +244,7 @@ init -6 python:
     def add_new_vars():
         firstvars = deepcopy(AllVariables().__dict__)
         for key in firstvars:
-            if not hasattr(store,key):
+            if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
 
 
@@ -245,6 +258,7 @@ init -6 python:
 #        ships = deepcopy(BM.ships)
 
         show_message('You loaded a save file from a previous version of the game. reinitializing game data...')
+        renpy.pause(1.0)
 
         #create a non aliased copy of BM so we can extract all the field data
         BM_copy = deepcopy(BM)
@@ -366,11 +380,13 @@ init -6 python:
         bm.yadj.value = int(top_distance)
 
     def create_ship(ship_class,location,weapons):
-        if BM.grid[location[0]-1][location[1]-1]:
-            return
-#            raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
-        else:
-            BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
+
+        if location != None:
+            if BM.grid[location[0]-1][location[1]-1]:
+                return
+#               raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
+            else:
+                BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
         ship = ship_class
         ship.location = location
         for weapon in weapons:

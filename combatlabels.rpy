@@ -252,15 +252,16 @@ label endofturn:
 
 label battle_start:
     play music PlayerTurnMusic
-    $renpy.take_screenshot()
-    $renpy.save('battlestart')
-    $BM.xadj.value = 872
-    $BM.yadj.value = 370
     python:
+        BM.stopAI = False
+        renpy.take_screenshot()
+        renpy.save('battlestart')
+        BM.xadj.value = 872
+        BM.yadj.value = 370
         for ship in player_ships:
             ship.hp = ship.max_hp
             ship.en = ship.max_en
-    $BM.start()
+        BM.start()
 
 
     return
@@ -269,6 +270,8 @@ label sunrider_destroyed:
     hide screen commands
     hide screen battle_screen
     scene badend
+
+    #$ BM.phase = 'Player' #this makes it so you can save and load again, as it's normally blocked during the enemy's turn
 
     menu:
         "Try Again":
@@ -279,18 +282,18 @@ label sunrider_destroyed:
 
     return
 
-label loadsavedgame:
+label loadsavedgame:   #used when the player chooses to load a saved game after game over
     show screen load
     pause
     jump sunrider_destroyed
     return
 
-label battle:
-    $BM.battle()
-    if BM.battlemode == True:
-        jump battle
-    else:
-        return
+#label battle:
+#    $BM.battle()
+#    if BM.battlemode == True:
+#        jump battle
+#    else:
+#        return
 
 label tryagain:
     $renpy.load('battlestart')
@@ -307,6 +310,12 @@ label after_load:
             del test
         except:
             bianca = None
+        try:
+            if phoenix == None:
+                phoenix = create_ship(Phoenix(),None,[PhoenixAssault(),PhoenixMelee(),Stealth()])
+        except:
+            phoenix = create_ship(Phoenix(),None,[PhoenixAssault(),PhoenixMelee(),Stealth()])
+
 
         try:
             if BM.save_version != config.version:

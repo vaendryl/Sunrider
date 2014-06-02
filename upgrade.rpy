@@ -54,7 +54,7 @@ screen upgrade:
     if ship.max_missiles > 0:
         $ upgrade_list.append(["MISSILE -----------",None,None,None,None])
         $ upgrade_list.append(ship.upgrades['missile_dmg'])
-        $ upgrade_list.append(ship.upgrades['missile_acc'])
+        $ upgrade_list.append(ship.upgrades['missile_eccm'])
         $ upgrade_list.append(ship.upgrades['missile_cost'])
         $ upgrade_list.append(ship.upgrades['max_missiles'])
 
@@ -88,6 +88,14 @@ screen upgrade:
         add "Menu/upgrade_phoenix.png"
     if ship == bianca:
         add "Menu/upgrade_bianca.png"
+
+    textbutton 'DEBUG: reset upgrades (refunds money)':
+        xalign 1.0
+        ypos 0.0
+        text_size 30
+        text_color 'fff'
+        text_outlines [(1,'000',0,0)]
+        action Return('reset')
 
     textbutton 'next ship':
         xpos 0.8
@@ -168,7 +176,7 @@ screen upgrade:
     if BM.active_upgrade != None:
         $ name,level,increase,cost,multiplier = BM.active_upgrade
         $ quantifier = ''
-        if increase < 1:
+        if increase < 1 or name == 'Missile Flak Resistance':
             $ type = None
             if name.find('Damage') != -1:
                 $ type = 'damage'
@@ -179,6 +187,9 @@ screen upgrade:
             if name.find('Energy Cost') != -1:
                 $ type = 'energy_use'
                 $ quantifier = 'EN'
+            if name.find('Flak Resistance') != -1:
+                $ type = 'eccm'
+                $ quantifier = ' Flak Resistance'
 
             $ count = 0
             for weapon in ship.weapons:
@@ -195,10 +206,15 @@ screen upgrade:
                         has vbox
 
                         $ stat = getattr(weapon,type)
-                        $ current = int(stat * (1.0+increase*(level-1)) )
-                        $ next = int(stat * (1.0+increase * level ))
+                        if increase < 1:
+                            $ current = int(stat * (1.0+increase*(level-1)) )
+                            $ next = int(stat * (1.0+increase * level ))
+                        else:
+                            $ current = stat + increase * (level-1)
+                            $ next = stat + increase * level
 
-
+                        if weapon.wtype == 'Rocket':
+                            $ stat += 10
 
 #                        text weapon.name:
 #                            color '000'

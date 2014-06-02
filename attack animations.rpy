@@ -11192,8 +11192,8 @@ label atkanim_pactbomber_laser:
 
     play sound "sound/Laser 1.ogg"
 
-    show pactbomber_laserbeam behind pactbomber_laserflash with enemy_laserhitwipequickquick
-    hide pactbomber_laserbeam behind pactbomber_laserflash with enemy_laserhitwipequickquick
+    show pactbomber_laserbeam behind pactbomber_laserflash with enemy_laserhitwipequick
+    hide pactbomber_laserbeam behind pactbomber_laserflash with enemy_laserhitwipequick
 
     pause 0.5
 

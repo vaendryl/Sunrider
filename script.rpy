@@ -37,6 +37,9 @@ label start:
 
 #####################################VARIABLE SET UP
 
+    #temporary
+    jump test_battle
+
 
     stop music fadeout 3.0
     play sound "Sound/buttonclick.wav"
@@ -2437,7 +2440,7 @@ label attackonpiratesnest:
 label jumptogalaxy:
 
     hide screen deck1
-    window show
+    with dissolve
     jump galaxymap
 
 label meetsophita:
@@ -2565,8 +2568,12 @@ label allocatefunds:
 
     python:
         BM.active_upgrade = None
+        config.rollback_enabled = False
+        buy_upgrades()
+        renpy.block_rollback()
+        config.rollback_enabled = True
+        captaindeck = 1
 
-    $ buy_upgrades()
     jump dispatch
 
 label humantraffickers:

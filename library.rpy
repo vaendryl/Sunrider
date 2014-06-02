@@ -48,6 +48,7 @@ init 2 python:
 
           ##the sunrider gets personal death code!
         def destroy(self,attacker,no_animation = False):
+            BM.stopAI = True
             if not no_animation:
                 try:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
@@ -56,6 +57,7 @@ init 2 python:
             a = self.location[0]-1  #make the next line of code a little shorter
             b = self.location[1]-1
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
+            player_ships.remove(self)
             BM.ships.remove(self)
             renpy.jump('sunrider_destroyed')
 
@@ -270,6 +272,7 @@ init 2 python:
             self.cursed_voice = ['Agamemnon/beep2.ogg']
 
         def destroy(self,attacker,no_animation = False):
+            BM.stopAI = True
             if not no_animation:
                 try:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
@@ -279,6 +282,7 @@ init 2 python:
             b = self.location[1]-1
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
+            player_ships.remove(self)
             renpy.jump('sunrider_destroyed')
 
     class PhoenixBoaster(Battleship):
@@ -396,6 +400,7 @@ init 2 python:
             self.cursed_voice = ['Agamemnon/beep2.ogg']
 
         def destroy(self,attacker,no_animation = False):
+            BM.stopAI = True
             if not no_animation:
                 try:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
@@ -405,6 +410,7 @@ init 2 python:
             b = self.location[1]-1
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
+            player_ships.remove(self)
             renpy.jump('sunrider_destroyed')
 
 ### PACT ships ###
@@ -788,6 +794,7 @@ init 2 python:
             self.accuracy = 100
             self.uses_rockets = True
             self.uses_missiles = False
+            self.eccm = 10
             self.wtype = 'Rocket'
             self.name = 'Thermonuclear warhead'
             self.lbl = 'Battle UI/button_rocket.png'
@@ -810,7 +817,7 @@ init 2 python:
             Missile.__init__(self)
             self.damage = 40
             self.energy_use = 20
-            self.shot_count = 10
+            self.shot_count = 6
             self.accuracy = 70
             self.uses_rockets = False
             self.uses_missiles = True
@@ -931,6 +938,7 @@ init 2 python:
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
+            self.eccm = 10
             self.wtype = 'Rocket'
             self.accuracy = 60
             self.shot_count = 1
@@ -974,6 +982,7 @@ init 2 python:
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
+            self.eccm = 10
             self.wtype = 'Rocket'
             self.accuracy = 60
             self.shot_count = 1
@@ -1240,6 +1249,7 @@ init 2 python:
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
+            self.eccm = 10
             self.accuracy = 60    #seems low, but missiles have very low accuracy degradation over distance.
             self.wtype = 'Rocket'
             self.name = 'Basic Rockets'
@@ -1306,6 +1316,7 @@ init 2 python:
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
+            self.eccm = 10
             self.wtype = 'Rocket'
             self.accuracy = 60
             self.shot_count = 1

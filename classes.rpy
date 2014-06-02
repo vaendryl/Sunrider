@@ -6,12 +6,6 @@
 # 5) Weapon blueprint class
 # 6) library (specific ships/weapons)
 
-
-init -5:
-    image vanguard_cannon:
-        'Battle UI/sunrider vanguard.jpg'
-#        xcenter ycenter
-
 init -2 python:
 
         ##here the Battle class gets defined. it forms the core and spine of the entire combat engine.
@@ -28,6 +22,7 @@ init -2 python:
             self.selectedmode = False
             self.targetingmode = False
             self.moving = False
+            self.just_moved = False
             self.missile_moving = False
             self.phase = 'Player'
             self.weaponhover = None
@@ -88,6 +83,7 @@ init -2 python:
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
+            self.just_moved = False
 
             #sanity check
             for ship in BM.ships:
@@ -131,20 +127,28 @@ init -2 python:
                 if self.selected != None and len(player_ships) > 1:
                     if self.selected.faction == 'Player':
                         index = player_ships.index(self.selected)
-                        if index == (len(player_ships)-1):
-                            index = 0
-                        else:
-                            index += 1
+                        looping = True
+                        while looping:
+                            if index == (len(player_ships)-1):
+                                index = 0
+                            else:
+                                index += 1
+                            if player_ships[index].location[0] == None:
+                                looping = False
                         self.select_ship(player_ships[index])
 
             if result == "previous ship":
                 if self.selected != None and len(player_ships) > 1:
                     if self.selected.faction == 'Player':
                         index = player_ships.index(self.selected)
-                        if index == 0:
-                            index = len(player_ships)-1
-                        else:
-                            index -= 1
+                        looping = True
+                        while looping:
+                            if index == 0:
+                                index = len(player_ships)-1
+                            else:
+                                index -= 1
+                            if player_ships[index].location[0] == None:
+                                looping = False
                         self.select_ship(player_ships[index])
 
             if result[0] == "zoom":
@@ -242,6 +246,21 @@ init -2 python:
                 self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
                 update_stats()
 
+            if result == 'cancel movement':
+                ship = BM.selected
+                ship.en += get_distance(ship.location,ship.current_location)*ship.move_cost
+                a = ship.location[0]-1  #make the next line of code a little shorter
+                b = ship.location[1]-1
+                self.grid[a][b] = False #tell the BM that the old cell is now free again
+
+                ship.location = ship.current_location
+
+                a = ship.location[0]-1  #make the next line of code a little shorter
+                b = ship.location[1]-1
+                self.grid[a][b] = True #tell the BM that the old cell is now free again
+
+                ship.movement_tiles = get_movement_tiles(ship)
+
             if result == 'FULL FORWARD':
                 if self.cmd >= 500:
                     self.cmd -= 500
@@ -338,6 +357,7 @@ init -2 python:
                     if result[1].self_buff:
                         result[1].fire(BM.selected,BM.selected)
                         update_stats()
+                        BM.selected.movement_tiles = get_movement_tiles(BM.selected)
                         return
 
                 self.targetingmode = True   #displays targeting info over enemy_ships
@@ -446,6 +466,16 @@ init -2 python:
 
             self.enemy_AI() #call the AI to take over
 
+             ##I have NO idea why this dumb workaround is needed, but the destroy() method -somehow- doesn't want to jump to this label sometimes.
+            if sunrider.hp < 0:
+                renpy.jump('sunrider_destroyed')
+
+            renpy.music.play(PlayerTurnMusic)
+            renpy.call_in_new_context('endofturn')
+            self.active_weapon = None  #I forget, why is this needed?
+            self.selected = None
+            self.selectedmode = False
+
             for ship in self.ships:
                 ship.flak_effectiveness = 100
 
@@ -472,11 +502,16 @@ init -2 python:
                 if defense > average_defense:
                     self.lead_ships.append(eship)
 
+
                 ##the lead ships are heaving a go first
             for eship in self.lead_ships:
+                if BM.stopAI:
+                    return
+
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
                 renpy.pause(0.3)
+
                 try:
                     if not eship.modifiers['energy regen'][0] == -100:
                         eship.AI()
@@ -487,10 +522,13 @@ init -2 python:
                     eship.AI()
                 eship.lbl = eship.blbl
 
-
+                ## the rest of the enemy units take their turns after
             for ship in enemy_ships:
+                if BM.stopAI:
+                    return
                 #now all the not-lead ships take their turn
                 if ship not in self.lead_ships:
+
                     try:
                         if ship.modifiers['energy regen'][0] == -100:
                             show_message('the {} is disabled!'.format(ship.name) )
@@ -506,11 +544,7 @@ init -2 python:
                     ship.AI()
                     ship.lbl = ship.blbl
 
-            renpy.music.play(PlayerTurnMusic)
-            renpy.call_in_new_context('endofturn')
-            self.active_weapon = None  #I forget, why is this needed?
-            self.selected = None
-            self.selectedmode = False
+
 
     ## Displayables ##
     #none anymore
@@ -551,7 +585,7 @@ init -2 python:
             self.energy_acc = 1
             self.energy_cost = 1
             self.missile_dmg = 1
-            self.missile_acc = 1
+            self.missile_eccm = 0
             self.missile_cost = 1
             self.melee_dmg = 1
             self.melee_acc = 1
@@ -568,9 +602,9 @@ init -2 python:
                 'energy_dmg':['Energy Damage',1,0.05,100,1.5],
                 'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
                 'energy_cost':['Energy Energy Cost',1,-0.05,100,2.0],
-                'missile_dmg':['Missile Damage',1,0.05,100,1.5],
-                'missile_acc':['Missile Accuracy',1,0.05,100,1.5],
-                'missile_cost':['Missile Energy Cost',1,-0.05,100,2.0],
+                'missile_dmg':['Missile Damage',1,0.10,100,1.5],
+                'missile_eccm':['Missile Flak Resistance',1,1,100,1.5],
+                'missile_cost':['Missile Energy Cost',1,-0.10,100,2.0],
                 'max_missiles':['Missile Storage',1,1,500,3],
                 'melee_dmg':['Melee Damage',1,0.05,100,1.5],
                 'melee_acc':['Melee Accuracy',1,0.05,100,1.5],
@@ -764,6 +798,8 @@ init -2 python:
             #renpy.log('starting estimating damage on {}'.format(pship.name))
 
             pship.damage_estimation = [None,0,0] #weapon,estimation,priority
+            if pship.hp < 1:
+                return
               #cycle through all the weapons and find out which one is likely to be most
               #effective for each player ship
             for weapon in self.weapons:
@@ -825,6 +861,8 @@ init -2 python:
             update_stats()
             BM.attacker = self
             BM.target = pship
+            if BM.target.hp < 0:
+                return
             if weapon.wtype == 'Melee':
                 pass
             else:
@@ -847,7 +885,7 @@ init -2 python:
             for pship in player_ships:
                 self.AI_estimate_damage(pship)
                   ##first, if we can finish off an enemy in one hit we will try.
-                if pship.hp < pship.damage_estimation[1]:
+                if pship.hp < pship.damage_estimation[1] and pship.hp > 0:
                     self.AI_attack_target(pship,pship.damage_estimation[0])
                     #renpy.log('I took an attack of opportunity against {}'.format(pship.name))
                       ##loop again and see what to do with the rest of the ships EN power
@@ -1002,11 +1040,21 @@ init -2 python:
                 pass
                 #renpy.log('I am a lead ship!')
 
+            if BM.stopAI:
+                return
+
             self.target = None
             BM.selected = self
             self.AI_running = True
             while self.AI_running:
+                #if for whatever reason the AI should stop doing stuff BM.stopAI will be True
+                if BM.stopAI:
+                    self.AI_running = False
+                    return
+
+                #store the current EN value. if this doesn't change during a loop than there's nothing more the ship can do.
                 starting_en = self.en
+
                 #if self.target == None: ##I need to get back to this
                 self.AI_basic_loop()
                 if starting_en == self.en:
@@ -1032,31 +1080,29 @@ init -2 python:
             a = self.location[0]-1  #make the next line of code a little shorter
             b = self.location[1]-1
             bm.grid[a][b] = False #tell the BM that the old cell is now free again
+
             self.current_location = self.location #store a temporary location
-            vector = calculate_vector(new_location,self.location) #get what direction to go to
-            self.next_location = (self.location[0]+vector[0],self.location[1]+vector[1])
+            self.next_location = new_location
+            self.travel_time = get_distance(self.location,new_location) * SHIP_SPEED
             self.location = None #this makes the imagebutton of this ship not be displayed on battle_screen
             bm.moving = True
-            anti_stall = 0
-            while bm.moving:
-#
-                result = ui.interact()
-                if result[0] == 'timer': #this gets returned every half second or so when ships are moving from grid to grid
-                    if self.next_location == new_location:
-                        self.location = new_location #we have arrived
-                        bm.selected = None #completely deselect unit
-                        bm.moving = False #stop the loop
-                        bm.grid[new_location[0]-1][new_location[1]-1] = True #tell the BM the new cell is occupied
-                    else:
-                        self.current_location = self.next_location
-                        vector = calculate_vector(new_location,self.current_location)
-                        self.next_location = (self.current_location[0]+vector[0],self.current_location[1]+vector[1])
 
-                #this probably shouldn't take 15 loops. if it does, something bad is happening
-                anti_stall += 1
-                if anti_stall == 15:
-                    show_message('debug: infinite loop detected while moving. breaking off....')
-                    bm.moving = False
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
+
+            renpy.pause(self.travel_time)
+            BM.moving = False
+
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
+
+            self.location = new_location
+            a = self.location[0]-1
+            b = self.location[1]-1
+            bm.grid[a][b] = True
+            BM.just_moved = True
+
+
 
             ## BLIND SIDE ATTACKS
             if self.faction == 'Player' and self.modifiers['stealth'][0] != 100:
@@ -1071,6 +1117,7 @@ init -2 python:
                                 show_message('COUNTER ATTACK!')
                                 enemy.AI_attack_target(self,counter)
                                 enemy.en = enemy.max_en
+                                BM.just_moved = False
             else:
                 if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
                     for ship in player_ships:
@@ -1238,6 +1285,7 @@ init -2 python:
 
         def fire(self, parent, target):
             update_armor(target)
+            BM.missiles = []
 
             energy_cost = int(self.energy_use * parent.missile_cost)
             if parent.en < energy_cost:  #energy handling
@@ -1255,7 +1303,6 @@ init -2 python:
                 if self.ammo_use > parent.rockets:
                     return 'no ammo'
                 else:
-                    parent.en -= self.energy_use
                     parent.rockets -= self.ammo_use
 
             accuracy = get_acc(self, parent, target)
@@ -1291,8 +1338,11 @@ init -2 python:
 #                except:
 #                    pass
 
-            remaining_wait = get_ship_distance(parent,target)*(MISSILE_SPEED)*10 # - target_wait
-            remaining_wait = int(remaining_wait)/10.0  #round to 1 decimal
+            if missile.shot_down != None:
+                remaining_wait = missile.shot_down
+            else:
+                remaining_wait = get_ship_distance(parent,target)*(MISSILE_SPEED)*10 # - target_wait
+                remaining_wait = int(remaining_wait)/10.0  #round to 1 decimal
             renpy.pause(remaining_wait)
             BM.missile_moving = False
 
@@ -1304,6 +1354,7 @@ init -2 python:
                 ship.flaksim = None
 
             if missile == 'miss':
+                BM.missiles = []
                 return 'miss'
             else:
                 pass
@@ -1327,43 +1378,50 @@ init -2 python:
                     total_damage += damage
                     store.hit_count += 1
 
-            BM.missiles.remove(missile)
+            BM.missiles = []
             if total_damage == 0: return 'miss'
             return int(total_damage)
 
         def simulate(self,parent,target):
+            """simulate the path the missile takes on it's way to the target.
+            the missile takes a tiny step every part of the main while loop and scans
+            for enemy ships in range that have a flak greater than zero. when it finds one
+            it runs the flak_intercept() method part of the MissileSprite class. the result is stored in
+            the flaksim field on enemy units and is later used to show how many missiles
+            got intercepted and when"""
 
-            missile = MissileSprite(parent,target, self.damage,self.shot_count,self.type)
+            missile = MissileSprite(parent,target,self)
             BM.missiles.append(missile)
             vector = calculate_vector(target.location,missile.location) #get what direction to go to
             missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
+            missile.shot_down = None
 
-            self.flaklist = [] #stores the ships that intercept this missile
-            time = 0 #stores how much time has passed since the missile was launched. used to time the flak icon etc
+            time = 0.5 #stores how much time has passed since the missile was launched. used to time the flak icon etc
 
             moving = True
             while moving:
                 missile.location = missile.next_location
                 for ship in BM.ships:
                     effective_flak = ship.flak + ship.modifiers['flak'][0]
-                    if effective_flak > 100:
-                        effective_flak = 100
-                    elif effective_flak < 0:
-                        effective_flak = 0
+                    if effective_flak > 100: effective_flak = 100
+                    elif effective_flak < 0: effective_flak = 0
 
-                    if not ship.faction == missile.parent.faction and effective_flak > 0:
+                    if ship.faction != missile.parent.faction and effective_flak > 0:
+
+                          #pirates and PACT shouldn't shoot each other's missiles.
+                        if missile.parent.faction != 'Player' and ship.faction != 'Player':
+                            continue
+
                         if not ship.flak_used:
                             if get_ship_distance(missile,ship) <= (ship.flak_range+0.5):
                                 ship.flaksim = None
                                 ship.flaksim = (time,missile.flak_intercept(ship))
                                 if missile.shot_count == 0:
-                                    BM.missiles.remove(missile)
+                                    missile.shot_down = time + MISSILE_SPEED
                                     moving = False
-                                    ship.fireing_flak = False
                                     for ship in BM.ships:
                                         ship.flak_used = False
-                                    return 'miss'
-                                ship.fireing_flak = False
+                                    return missile
                 if get_ship_distance(missile,target) <= 0.5:
                     moving = False
                     return missile
@@ -1371,13 +1429,13 @@ init -2 python:
                     missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
                     vector = calculate_vector(target.location,missile.location) #get what direction to go to
                     missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
-                    time += 0.2
+                    time += MISSILE_SPEED / 2.0
 
 
 
           ##this class is the missile shown on screen when missiles are fired##
     class MissileSprite(store.object):
-        def __init__(self,parent,target,damage=60,shot_count=8,type='standard'):
+        def __init__(self,parent,target,weapon):
             self.location = parent.location
             self.parent = parent
             self.target = target
@@ -1385,21 +1443,24 @@ init -2 python:
             b = (parent.location[1] - target.location[1])*120
               #calculate the angle between the attacker and the target
             self.angle = math.degrees(math.atan2(a,b))
-            self.damage = damage
-            self.shot_count = shot_count
-            self.type = type
+            self.damage = weapon.damage
+            self.shot_count = weapon.shot_count
+            self.type = weapon.wtype
             self.lbl = im.Rotozoom('Battle UI/map missile (2).png',self.angle,1.0)
-            self.eccm = 0
+            self.eccm = parent.missile_eccm + weapon.eccm
             self.flak_degradation = 3  #this is how much flak effectiveness gets reduced by each missile
             self.next_location = None
+            self.shot_down = None
 
         def flak_intercept(self,interceptor):
             shots_remaining = self.shot_count
             interceptor.flak_used = True
             effective_flak = (interceptor.flak-self.eccm)*interceptor.flak_effectiveness/100.0
-            for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) <= effective_flak:
-                    shots_remaining -= 1
+
+            if effective_flak > 0:
+                for shot in range(self.shot_count):
+                    if renpy.random.randint(0,100) <= effective_flak:
+                        shots_remaining -= 1
             shot_down = 0
             if self.shot_count > shots_remaining:
                 shot_down = self.shot_count - shots_remaining
