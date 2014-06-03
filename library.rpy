@@ -817,7 +817,7 @@ init 2 python:
             Missile.__init__(self)
             self.damage = 40
             self.energy_use = 20
-            self.shot_count = 6
+            self.shot_count = 10
             self.accuracy = 70
             self.uses_rockets = False
             self.uses_missiles = True

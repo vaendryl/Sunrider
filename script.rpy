@@ -6950,14 +6950,17 @@ label mission9:
 
         python:
             BM.grid[13][6] = False
-            BM.ships.remove(mochi)
-            player_ships.remove(mochi)
+            try:
+                BM.ships.remove(mochi)
+                player_ships.remove(mochi)
+            except:
+                pass
 
         ava "Captain, a ryder! Hidden inside the storage compartment in the Alliance vessel!"
 
         python:
 
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
         kay "Patch me through to her."
@@ -6994,8 +6997,8 @@ label aftermission9:
         if mochi in player_ships:
             BM.ships.remove(mochi)
             player_ships.remove(mochi)
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
-            bianca = create_ship(Bianca(),(14,7),bianca_weapons)
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+            bianca = create_ship(Bianca(),None,bianca_weapons)
 
 
     hide screen commands

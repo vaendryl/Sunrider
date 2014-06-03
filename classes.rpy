@@ -85,6 +85,9 @@ init -2 python:
             result = ui.interact()
             self.just_moved = False
 
+            if self.stopAI:
+                renpy.jump('sunrider_destroyed')
+
             #sanity check
             for ship in BM.ships:
                 if ship.hp <= 0:
@@ -133,7 +136,7 @@ init -2 python:
                                 index = 0
                             else:
                                 index += 1
-                            if player_ships[index].location[0] == None:
+                            if player_ships[index].location != None:
                                 looping = False
                         self.select_ship(player_ships[index])
 
@@ -147,7 +150,7 @@ init -2 python:
                                 index = len(player_ships)-1
                             else:
                                 index -= 1
-                            if player_ships[index].location[0] == None:
+                            if player_ships[index].location != None:
                                 looping = False
                         self.select_ship(player_ships[index])
 
@@ -787,8 +790,10 @@ init -2 python:
                 self.weapons.remove(weapon)
 
         def set_location(self,xnew,ynew):
-            a,b = self.location
-            BM.grid[a-1][b-1] = False
+            if self.location != None:
+                a,b = self.location
+                if a > 0 and b > 0:
+                    BM.grid[a-1][b-1] = False
             BM.grid[xnew-1][ynew-1] = True
             self.location = (xnew,ynew)
 
@@ -1076,7 +1081,14 @@ init -2 python:
 
             bm.selectedmode = False #this disables showing movement tiles
             renpy.hide_screen('commands')
-            self.en -= self.move_cost * get_distance(self.location,new_location)
+
+            #sanity check and deduct movement cost
+            total_move_cost = self.move_cost * get_distance(self.location,new_location)
+            if self.en < total_move_cost:
+                return
+            else:
+                self.en -= total_move_cost
+
             a = self.location[0]-1  #make the next line of code a little shorter
             b = self.location[1]-1
             bm.grid[a][b] = False #tell the BM that the old cell is now free again
@@ -1100,7 +1112,8 @@ init -2 python:
             a = self.location[0]-1
             b = self.location[1]-1
             bm.grid[a][b] = True
-            BM.just_moved = True
+            if self.faction == 'Player':
+                BM.just_moved = True
 
 
 
@@ -1573,6 +1586,7 @@ init -2 python:
             #if it's a buff
             else:
                 target.modifiers[self.modifies] = [self.buff_strength,self.buff_duration]
+                update_stats()
                 if self.wtype == 'Support':
                     target.getting_buff = True
                 else:

@@ -146,6 +146,7 @@ init -6 python:
 
     def get_ship_distance(ship1,ship2):
         if ship1 == None or ship2 == None: return 999
+        if ship1.location == None or ship2.location == None: return 999
         result = abs(ship1.location[0] - ship2.location[0])
         result += abs(ship1.location[1] - ship2.location[1])
         return result

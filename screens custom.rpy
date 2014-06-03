@@ -755,7 +755,7 @@ screen commands: ##show the weapon buttons etc##
             add BM.selected.portrait xalign 1.0 yalign 1.0
         else:
             $ index = ''
-            if config.developer:
+            if config.developer and BM.selected.faction != 'Player':
                 $ index = ' ' + str(enemy_ships.index(BM.selected))
                 # text str(index) xanchor 1.0 xpos 1880 ypos 800 size 20 outlines [(1,'000',0,0)]
             text (BM.selected.name + index) xanchor 1.0 xpos 1880 ypos 726 outlines [(1,'000',0,0)]
@@ -1054,6 +1054,11 @@ screen victory2:
         size 50
         outlines [(2,'000',0,0)]
 
+    if len(destroyed_ships) > 12:
+        $ textsize = 40
+    else:
+        $ textsize = 50
+
     for ship in destroyed_ships:
         if not ship.faction == 'Player':
             add ship.blbl:
@@ -1062,7 +1067,7 @@ screen victory2:
             text '{}$'.format(ship.money_reward):
                 xanchor 0.5
                 yanchor 1.0
-                size 50
+                size textsize
                 outlines [(2,'000',0,0)]
                 at victory_ships(xx,wait,1)
 
