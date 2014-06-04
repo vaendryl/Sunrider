@@ -127,7 +127,10 @@ init -6 python:
     def show_message(message,xpos=0.5,ypos=0.7):
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
-        renpy.pause(MESSAGE_PAUSE)
+        try:
+            renpy.pause(MESSAGE_PAUSE)
+        except:
+            pass
 
     def calculate_vector(location1,location2):  #target location, current location
         if location1[0]-location2[0] == 0:
@@ -261,7 +264,10 @@ init -6 python:
 #        ships = deepcopy(BM.ships)
 
         show_message('You loaded a save file from a previous version of the game. reinitializing game data...')
-        renpy.pause(1.0)
+        try:
+            renpy.pause(1.0)
+        except:
+            pass
 
         #create a non aliased copy of BM so we can extract all the field data
         BM_copy = deepcopy(BM)

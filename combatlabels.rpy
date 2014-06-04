@@ -305,31 +305,29 @@ label tryagain:
 label after_load:
 
     python:
-        try:
-            test = bianca
-            del test
-        except:
+        if not hasattr(store,'bianca'):
             bianca = None
-        try:
-            if phoenix == None:
-                phoenix = create_ship(Phoenix(),None,[PhoenixAssault(),PhoenixMelee(),Stealth()])
-        except:
-            phoenix = create_ship(Phoenix(),None,[PhoenixAssault(),PhoenixMelee(),Stealth()])
-
+        if hasattr(store,'phoenix'):
+            if phoenix != None:
+                phoenix.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+        else:
+            phoenix = None
 
         try:
             if BM.save_version != config.version:
                 reset_classes()
-#                renpy.call('firstvariables')
                 BM.save_version = config.version
                 res_location = "lab"
                 res_event = "allocatefunds"
-                liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+                if hasattr(store,'liberty'):
+                    if liberty != None:
+                        liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
         except:
             reset_classes()
-#            renpy.call('firstvariables')
             BM.save_version = config.version
             res_location = "lab"
             res_event = "allocatefunds"
-            liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+            if hasattr(store,'liberty'):
+                if liberty != None:
+                    liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
     return

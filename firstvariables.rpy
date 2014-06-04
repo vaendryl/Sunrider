@@ -127,8 +127,16 @@ init python:
 
             ##new constants##
 
+            self.TURN_SPEED = 0.5  #in seconds
+            self.MOVE_IN_SPEED = 0.5 #for buttons and status displays
+            self.MOVE_OUT_SPEED = 0.5
+            self.MESSAGE_PAUSE = 0.75
             self.MISSILE_SPEED = 0.3
             self.SHIP_SPEED = 0.3
+            self.ZOOM_SPEED = 0.1
+            self.GRID_SIZE = (18,16)
+            self.BM = renpy.store.object()
+            self.BM.phase = None
 
 
 
