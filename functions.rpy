@@ -12,6 +12,8 @@ init -6 python:
     from copy import deepcopy
 
     def reset_upgrades(ship):
+        if ship == None:
+            return
         money_returned = 0
         upgrades = ship.upgrades
         for key in upgrades:
@@ -345,6 +347,10 @@ init -6 python:
         return 1.0 - math.cos(t * math.pi / 2.0)
 
     def zoom_handling(result,bm):
+        if result == None:
+            return
+        if bm == None:
+            return
         mouse_xpos, mouse_ypos = renpy.get_mouse_pos() #such a handy function. Thanks Tom!  I use this to zoom in onto your mouse position
         if result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
             if mouse_xpos > 960:
@@ -385,7 +391,6 @@ init -6 python:
         if location != None:
             if BM.grid[location[0]-1][location[1]-1]:
                 return
-#               raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
             else:
                 BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
         ship = ship_class
