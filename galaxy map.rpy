@@ -95,8 +95,9 @@ screen map_travelto:
 
 label galaxymap:
 
+    window hide
     play music "Music/Star_of_Bethlehem.ogg" fadeout 1.5
-    show galaxymap
+    show galaxymap with dissolve
 
     call screen galaxymap_buttons
 
