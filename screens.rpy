@@ -307,8 +307,8 @@ screen bonus:
             #style_group "file_picker"
             xpos 753
             ypos 216
-
-            # We need to make the bonus features clickable
+            
+            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
