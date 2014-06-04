@@ -95,19 +95,16 @@ screen battle_screen:
     tag tactical
     modal False
     zorder -5
-    if BM.moving == False:
-        key "mousedown_4" action Return(["zoom", "in"])    #scroll in and out
-        key "mousedown_5" action Return(["zoom", "out"])
-        key "K_PAGEUP" action Return(["zoom", "in"])
-        key "K_PAGEDOWN" action Return(["zoom", "out"])
-        if 'mouseup_2' not in config.keymap['hide_windows']:
-            key "mousedown_2" action Return("next ship")
-        if 'mouseup_3' not in config.keymap['game_menu']:
-            key "mousedown_3" action Return("deselect")
-        key "]" action Return("next ship")
-        key "[" action Return("previous ship")
-    else:
-        timer 0.5 repeat True action Return(['timer',0])   #this is used when a ship is moving from grid to grid
+    key "mousedown_4" action Return(["zoom", "in"])    #scroll in and out
+    key "mousedown_5" action Return(["zoom", "out"])
+    key "K_PAGEUP" action Return(["zoom", "in"])
+    key "K_PAGEDOWN" action Return(["zoom", "out"])
+    if 'mouseup_2' not in config.keymap['hide_windows']:
+        key "mousedown_2" action Return("next ship")
+    if 'mouseup_3' not in config.keymap['game_menu']:
+        key "mousedown_3" action Return("deselect")
+    key "]" action Return("next ship")
+    key "[" action Return("previous ship")
 
     if config.developer: #a release version should have set this to False
         key "Q" action Jump('quit')  ##DEBUG FAST QUIT##
@@ -448,7 +445,10 @@ screen battle_screen:
                 $yposition = int((missile.parent.location[1]+0.25) * 120 * zoomlevel)
                 $next_xposition = int((missile.target.location[0]+0.5) * 192 * zoomlevel)
                 $next_yposition = int((missile.target.location[1]+0.25) * 120 * zoomlevel)
-                $travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
+#                if missile.shot_down != None:
+#                    $ travel_time = missile.shot_down
+#                else:
+                $ travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
                 add missile.lbl:
                     at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
                     xanchor 0.5
@@ -507,7 +507,11 @@ screen battle_screen:
                                 color '000'
                             $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
                             $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
-                            $effective_flak = ship.flak + ship.modifiers['flak'][0]
+                            if BM.weaponhover.wtype == 'Rocket':
+                                $effective_flak = ship.flak + ship.modifiers['flak'][0] - BM.selected.missile_eccm - BM.weaponhover.eccm
+                            else:
+                                $effective_flak = ship.flak + ship.modifiers['flak'][0] - BM.selected.missile_eccm
+
                             if effective_flak < 0:
                                 $ effective_flak = 0
                             elif effective_flak > 100:
@@ -621,9 +625,10 @@ screen battle_screen:
             $yposition = int((BM.selected.current_location[1]+0.25) * 120 * zoomlevel)
             $next_xposition = int((BM.selected.next_location[0]+0.5) * 192 * zoomlevel)
             $next_yposition = int((BM.selected.next_location[1]+0.25) * 120 * zoomlevel)
+            $travel_time = BM.selected.travel_time
 
             add BM.selected.lbl:
-                at move_ship(xposition,yposition,next_xposition,next_yposition)
+                at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
                 xanchor 0.5
                 yanchor 0.5
                 zoom (zoomlevel/2.5)
@@ -644,6 +649,12 @@ screen battle_screen:
             xalign 1.0
             textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
 
+    if BM.just_moved:
+        textbutton 'cancel movement':
+            ypos 70
+            text_size 30
+            action Return('cancel movement')
+
     if not BM.showing_orders and not BM.order_used:
         imagebutton:
             xpos 0
@@ -659,17 +670,19 @@ screen battle_screen:
             color 'fff'
             outlines [(1,'000',0,0)]
 
-    $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(0.6, 1.0, 0.5))
-    for ship in player_ships:
-        if ship.en >= ship.max_en:
-            $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
 
-    imagebutton:
-        xpos 90
-        yalign 1.0
-        idle endturnbutton_idle
-        hover hoverglow(endturnbutton_idle)
-        action Return('endturn')
+    if BM.phase == 'Player':
+        $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(0.6, 1.0, 0.5))
+        for ship in player_ships:
+            if ship.en >= ship.max_en:
+                $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
+
+        imagebutton:
+            xpos 90
+            yalign 1.0
+            idle endturnbutton_idle
+            hover hoverglow(endturnbutton_idle)
+            action Return('endturn')
 
 transform move_down(ystart,yend,xx=0):
     xpos xx
@@ -741,7 +754,12 @@ screen commands: ##show the weapon buttons etc##
         if not BM.selected.portrait == None:
             add BM.selected.portrait xalign 1.0 yalign 1.0
         else:
-            text BM.selected.name xanchor 1.0 xpos 1880 ypos 726 outlines [(1,'000',0,0)]
+            $ index = ''
+            if config.developer and BM.selected.faction != 'Player':
+                $ index = ' ' + str(enemy_ships.index(BM.selected))
+                # text str(index) xanchor 1.0 xpos 1880 ypos 800 size 20 outlines [(1,'000',0,0)]
+            text (BM.selected.name + index) xanchor 1.0 xpos 1880 ypos 726 outlines [(1,'000',0,0)]
+
         $hp_size = int(374*(float(BM.selected.hp)/BM.selected.max_hp))
         $en_size = int(298*(float(BM.selected.en)/BM.selected.max_en))
         add 'Battle UI/status window_HP.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
@@ -1036,6 +1054,11 @@ screen victory2:
         size 50
         outlines [(2,'000',0,0)]
 
+    if len(destroyed_ships) > 12:
+        $ textsize = 40
+    else:
+        $ textsize = 50
+
     for ship in destroyed_ships:
         if not ship.faction == 'Player':
             add ship.blbl:
@@ -1044,7 +1067,7 @@ screen victory2:
             text '{}$'.format(ship.money_reward):
                 xanchor 0.5
                 yanchor 1.0
-                size 50
+                size textsize
                 outlines [(2,'000',0,0)]
                 at victory_ships(xx,wait,1)
 

@@ -123,9 +123,12 @@ init python:
 
             self.supportedasagacards = False
 
+            #self.phoenix = create_ship(Phoenix(),(5,5),[PhoenixAssault(),PhoenixMelee(),Stealth()])
+
             ##new constants##
 
-            self.MISSILE_SPEED = 0.4
+            self.MISSILE_SPEED = 0.3
+            self.SHIP_SPEED = 0.3
 
 
 

@@ -1,22 +1,29 @@
 #################################################MAP MOVEMENT
-        
+
 label dispatch:
-    
+
+
+    #dissolve to black so that previous scene doesn't briefly appear when going to new scene
+    window hide
+    scene Solid((0, 0, 0, 255))
+    with dissolve
+
     hide screen store_missile
     hide screen store_rocket
-    
+
+
     if captaindeck == 0:
         window hide
         $ renpy.transition(dissolve)
         show screen deck0
         $ ui.interact()
-        
+
     if captaindeck == 1:
         window hide
         $ renpy.transition(dissolve)
         show screen deck1
         $ ui.interact()
-        
+
     if captaindeck == 2:
         window hide
         $ renpy.transition(dissolve)
@@ -31,8 +38,8 @@ screen deck0:
     imagemap:
         ground "Menu/deck0_inactive.jpg"
         hover "Menu/deck0_hover.jpg"
-        idle "Menu/deck0.jpg" 
-        
+        idle "Menu/deck0.jpg"
+
         hotspot (1610, 858, 310, 70):
             action Show("deck1", dissolve)
         hotspot (1610, 960, 310, 70):
@@ -44,8 +51,8 @@ screen deck0:
         xpos 500
         ypos 400
         background None
-    
-        vbox:    
+
+        vbox:
             if ava_location == "captainsloft":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -102,8 +109,8 @@ screen deck0:
         xpos 750
         ypos 525
         background None
-    
-        vbox:    
+
+        vbox:
             if ava_location == "sickbay":
                 imagebutton:
                     #xpos 1140 ypos 595
@@ -152,7 +159,7 @@ screen deck0:
         xpos 1150
         ypos 380
         background None
-    
+
         vbox:
             if ava_location == "messhall":
                 imagebutton:
@@ -198,25 +205,25 @@ screen deck0:
                     activate_sound "Sound/click.mp3"
 
 screen deck1:
- 
+
     tag ship_map
 
     imagemap:
         ground "Menu/deck1_inactive.jpg"
         hover "Menu/deck1_hover.jpg"
         idle "Menu/deck1.jpg"
-         
+
         hotspot (1610, 758, 310, 70):
             action Show("deck0", dissolve)
         hotspot (1610, 960, 310, 70):
             action Show("deck2", dissolve)
-            
+
     frame:##################################### BRIDGE
         xmaximum 300
         xpos 620
         ypos 440
         background None
-    
+
         vbox:
 
             if ava_location == "bridge":
@@ -275,9 +282,9 @@ screen deck1:
         xpos 1000
         ypos 350
         background None
-        
+
         vbox:
-            
+
             if ava_location == "engineering":
                 imagebutton:
                     #xpos 1080 ypos 520
@@ -320,13 +327,13 @@ screen deck1:
                     idle "Menu/pro_button.png"
                     hover "Menu/pro_button_hover.png"
                     activate_sound "Sound/click.mp3"
-                    
+
     frame:##################################### LAB
         xmaximum 300
         xpos 1170
         ypos 440
         background None
-        
+
         vbox:
             if ava_location == "lab":
                 imagebutton:
@@ -375,27 +382,27 @@ screen deck1:
                     idle "Menu/res_button.png"
                     hover "Menu/res_button_hover.png"
                     activate_sound "Sound/click.mp3"
-            
+
 screen deck2:
- 
+
     tag ship_map
 
     imagemap:
         ground "Menu/deck2_inactive.jpg"
         hover "Menu/deck2_hover.jpg"
         idle "Menu/deck2.jpg"
- 
+
         hotspot (1610, 758, 310, 70):
             action Show("deck0", dissolve)
         hotspot (1610, 858, 310, 70):
             action Show("deck1", dissolve)
-            
+
     frame:##################################### LAB
         xmaximum 300
         xpos 1170
         ypos 440
         background None
-        
+
         vbox:
             if ava_location == "hangar":
                 imagebutton:

@@ -12,6 +12,7 @@ init -10 python:
     MOVE_OUT_SPEED = 0.5
     MESSAGE_PAUSE = 0.75
     MISSILE_SPEED = 0.3
+    SHIP_SPEED = 0.3
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16)
     BM = renpy.store.object()

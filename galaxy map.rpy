@@ -96,8 +96,8 @@ screen map_travelto:
 label galaxymap:
 
     window hide
-    play music "Music/Star_of_Bethlehem.ogg" fadeout 1.5
     show galaxymap with dissolve
+    play music "Music/Star_of_Bethlehem.ogg" fadeout 1.5
 
     call screen galaxymap_buttons
 
@@ -160,7 +160,7 @@ label warpto_Tydaria:
         $ mission1_name = "Main: Attack Pirate Nest"
         $ mission2_name = None
         $ mission3_name = None
-        
+
     if warpto_versta == True:
         $ galaxymission1 = False
         $ galaxymission2 = False
@@ -198,20 +198,20 @@ label warpto_astralexpanse:
     $ map_back = "astralexpanse_back"
 
     if mission_pirateattack == True:
-        if mission3_complete == False and mission4_complete == False:       
+        if mission3_complete == False and mission4_complete == False:
             $ galaxymission1 = True
         else:
             $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
-        
-        if mission3_complete == False and mission4_complete == False:       
+
+        if mission3_complete == False and mission4_complete == False:
             $ mission1 = "humantraffickers"
         else:
             $ mission1 = None
         $ mission2 = None
         $ mission3 = None
-        if mission3_complete == False and mission4_complete == False:       
+        if mission3_complete == False and mission4_complete == False:
             $ mission1_name = "Side: Stop slavers"
         else:
             $ mission1 = None
@@ -253,20 +253,20 @@ label warpto_pactstation:
     $ map_back = "pactstation_back"
 
     if mission_pirateattack == True:
-        if mission3_complete == False and mission4_complete == False:       
+        if mission3_complete == False and mission4_complete == False:
             $ galaxymission1 = True
         else:
             $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
-        
-        if mission3_complete == False and mission4_complete == False:       
+
+        if mission3_complete == False and mission4_complete == False:
             $ mission1 = "pactstationattack"
         else:
             $ mission1 = None
         $ mission2 = None
         $ mission3 = None
-        if mission3_complete == False and mission4_complete == False:       
+        if mission3_complete == False and mission4_complete == False:
             $ mission1_name = "Side: Destroy PACT outpost"
         else:
             $ mission1_name = None
@@ -318,7 +318,7 @@ label warpto_versta:
         $ mission1_name = "Main: Rescue Diplomats"
         $ mission2_name = None
         $ mission3_name = None
-        
+
     else:
 
         $ galaxymission1 = False
@@ -365,7 +365,7 @@ label warpto_nomodorn:
         $ mission1_name = "Main: Find Crown Jewel"
         $ mission2_name = None
         $ mission3_name = None
-        
+
     else:
 
         $ galaxymission1 = False
@@ -473,7 +473,7 @@ label pactstation_back:
             ease 1 xpos 0 ypos 0 zoom 1
     pause 1
     call screen galaxymap_buttons
-    
+
 label versta_back:
     hide map_versta_info
     scene bg black

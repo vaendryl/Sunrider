@@ -37,6 +37,9 @@ label start:
 
 #####################################VARIABLE SET UP
 
+    #temporary
+    jump test_battle
+
 
     stop music fadeout 3.0
     play sound "Sound/buttonclick.wav"
@@ -2437,7 +2440,7 @@ label attackonpiratesnest:
 label jumptogalaxy:
 
     hide screen deck1
-    window show
+    with dissolve
     jump galaxymap
 
 label meetsophita:
@@ -2565,8 +2568,12 @@ label allocatefunds:
 
     python:
         BM.active_upgrade = None
+        config.rollback_enabled = False
+        buy_upgrades()
+        renpy.block_rollback()
+        config.rollback_enabled = True
+        captaindeck = 1
 
-    $ buy_upgrades()
     jump dispatch
 
 label humantraffickers:
@@ -6943,14 +6950,17 @@ label mission9:
 
         python:
             BM.grid[13][6] = False
-            BM.ships.remove(mochi)
-            player_ships.remove(mochi)
+            try:
+                BM.ships.remove(mochi)
+                player_ships.remove(mochi)
+            except:
+                pass
 
         ava "Captain, a ryder! Hidden inside the storage compartment in the Alliance vessel!"
 
         python:
 
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
         kay "Patch me through to her."
@@ -6987,8 +6997,8 @@ label aftermission9:
         if mochi in player_ships:
             BM.ships.remove(mochi)
             player_ships.remove(mochi)
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
-            bianca = create_ship(Bianca(),(14,7),bianca_weapons)
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+            bianca = create_ship(Bianca(),None,bianca_weapons)
 
 
     hide screen commands

@@ -1,8 +1,32 @@
 #Sunrider
 ========
 
-preliminary work on beta 3
-==========================
+patch 3.1
+========
+* fixed not being able to load after a game over.
+* fixed the game crashing after loading an old save file where the phoenix hadn't been created.
+* fixed old missiles showing up when you fire your own.
+* fixed non-player factions shooting each other's missiles
+* fixed rockets taking their EN cost twice
+* fixed shielding not getting calculated properly
+* fixed being able to roll back by scrolling up in the wrong place in the upgrade screen.
+* fixed 'end turn' button remaining on screen (and active) during enemy turn
+
+
+
+* improved various scene transitions
+* improved unit movement animation
+* rockets are now less likely to get shot down by flak compared to regular missiles. warning: this means enemy rockets are more dangerous too!
+* blackjacks missiles are nerfed. from 10 misiles per salvo to 6 missiles. this cuts her max damage by 40%. the Sunrider should logically be able to fire a lot more missiles than a Ryder could.
+* missile accuracy upgrade has been replaced by flak resistance upgrade. every point in this new stat reduces enemy flak% by 1. this change is visually reflected in the targeting window when hovering over a missile or rocket weapon.
+* added a button on the R&D screen that will remove all upgrades and refunds (most) of the money you spent on them. this will also update new balance changes. this feature is not guaranteed to be in the final game and mostly is there for debug/testing purposes.
+* added a button that will undo your previous movement. this button is only available right after making a momevement and only when you did not trigger a counter attack. known issue: hovering over a weapon button wil also make the button disappear.
+
+
+
+
+beta 3
+=======
 
 changed:
 * enemy phoenix is now immune to counter attacks
