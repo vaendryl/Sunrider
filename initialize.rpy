@@ -356,6 +356,14 @@ label mission9_inits:
         enemy_ships = []
         destroyed_ships = []
 
+        #check if phoenix exists. create it if it doesn't.
+        if not hasattr(store,'phoenix'):
+            phoenix = None
+        if phoenix == None:
+            phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+            phoenix = create_ship(Phoenix(),None,phoenix_weapons)
+
+
         if protectmochi == True:
 
             sunrider.set_location(4,6)

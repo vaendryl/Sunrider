@@ -265,7 +265,7 @@ init -6 python:
 
         show_message('You loaded a save file from a previous version of the game. reinitializing game data...')
         try:
-            renpy.pause(1.0)
+            renpy.pause(1.0) #this will typically fail when a ui.interact is running, like it usually is during battle
         except:
             pass
 
@@ -316,8 +316,6 @@ init -6 python:
             ship_copy = deepcopy(ship)
             #re-init the copy
             ship_copy.__init__()
-            #remove this copy from BM.ships as we don't want it displayed on the map etc
-            del BM.ships[-1]
             #copy all the fields of the copy into a dict
             fields = ship_copy.__dict__
 
@@ -407,8 +405,11 @@ init -6 python:
             store.player_ships.append(ship)
         else:
             store.enemy_ships.append(ship)
+        store.BM.ships.append(ship)
         if ship.faction == 'Player':
             return ship
+        else:
+            return
 
     def create_cover(location):
         BM.covers.append(Cover(location))

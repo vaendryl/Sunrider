@@ -305,29 +305,59 @@ label tryagain:
 label after_load:
 
     python:
-        if not hasattr(store,'bianca'):
-            bianca = None
-        if hasattr(store,'phoenix'):
-            if phoenix != None:
-                phoenix.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
-        else:
-            phoenix = None
-
-        try:
+        reset = False
+        if hasattr(BM,'save_version'):
             if BM.save_version != config.version:
-                reset_classes()
-                BM.save_version = config.version
-                res_location = "lab"
-                res_event = "allocatefunds"
-                if hasattr(store,'liberty'):
-                    if liberty != None:
-                        liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
-        except:
+                reset = True
+            else:
+                pass #everything is fine, do not reset
+        else:
+            reset = True
+
+        if reset:
             reset_classes()
             BM.save_version = config.version
             res_location = "lab"
             res_event = "allocatefunds"
-            if hasattr(store,'liberty'):
-                if liberty != None:
-                    liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+
+             #check if the ship variable is defined or not. if not, define it
+            if not hasattr(store,'bianca'):
+                bianca = None
+             #it should now be defined. if it's None create the ship at location None
+            if bianca == None:
+                pass
+#                bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+#                bianca = create_ship(Bianca(),None,bianca_weapons)
+             #if it does exist as a ship, update it's weapon load-out
+            else:
+                bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+
+            if not hasattr(store,'liberty'):
+                liberty = None
+            if bianca == None:
+                pass
+#                liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+#                liberty = create_ship(Liberty(),None,liberty_weapons)
+            else:
+                liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+
+            if not hasattr(store,'phoenix'):
+                phoenix = None
+            if phoenix == None:
+                pass
+#                phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+#                phoenix = create_ship(Phoenix(),None,phoenix_weapons)
+            else:
+                phoenix.weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+
+        #cleanup
+        BM.ships = []
+        for ship in player_ships:
+            BM.ships.append(ship)
+        for ship in enemy_ships:
+            BM.ships.append(ship)
     return
+
+
+
+
