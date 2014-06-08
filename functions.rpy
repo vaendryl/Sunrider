@@ -12,6 +12,8 @@ init -6 python:
     from copy import deepcopy
 
     def reset_upgrades(ship):
+        if ship == None:
+            return
         money_returned = 0
         upgrades = ship.upgrades
         for key in upgrades:
@@ -125,7 +127,10 @@ init -6 python:
     def show_message(message,xpos=0.5,ypos=0.7):
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
-        renpy.pause(MESSAGE_PAUSE)
+        try:
+            renpy.pause(MESSAGE_PAUSE)
+        except:
+            pass
 
     def calculate_vector(location1,location2):  #target location, current location
         if location1[0]-location2[0] == 0:
@@ -259,7 +264,10 @@ init -6 python:
 #        ships = deepcopy(BM.ships)
 
         show_message('You loaded a save file from a previous version of the game. reinitializing game data...')
-        renpy.pause(1.0)
+        try:
+            renpy.pause(1.0) #this will typically fail when a ui.interact is running, like it usually is during battle
+        except:
+            pass
 
         #create a non aliased copy of BM so we can extract all the field data
         BM_copy = deepcopy(BM)
@@ -308,8 +316,6 @@ init -6 python:
             ship_copy = deepcopy(ship)
             #re-init the copy
             ship_copy.__init__()
-            #remove this copy from BM.ships as we don't want it displayed on the map etc
-            del BM.ships[-1]
             #copy all the fields of the copy into a dict
             fields = ship_copy.__dict__
 
@@ -345,6 +351,10 @@ init -6 python:
         return 1.0 - math.cos(t * math.pi / 2.0)
 
     def zoom_handling(result,bm):
+        if result == None:
+            return
+        if bm == None:
+            return
         mouse_xpos, mouse_ypos = renpy.get_mouse_pos() #such a handy function. Thanks Tom!  I use this to zoom in onto your mouse position
         if result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
             if mouse_xpos > 960:
@@ -385,7 +395,6 @@ init -6 python:
         if location != None:
             if BM.grid[location[0]-1][location[1]-1]:
                 return
-#               raise Exception('DEBUG: {} can not be created because the location is not free!'.format(ship_class.name))
             else:
                 BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
         ship = ship_class
@@ -396,8 +405,11 @@ init -6 python:
             store.player_ships.append(ship)
         else:
             store.enemy_ships.append(ship)
+        store.BM.ships.append(ship)
         if ship.faction == 'Player':
             return ship
+        else:
+            return
 
     def create_cover(location):
         BM.covers.append(Cover(location))

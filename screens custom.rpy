@@ -468,7 +468,8 @@ screen battle_screen:
 
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
           ##loop again to show the targeting window. this way other ships don't overlap with it.
-        if not BM.weaponhover == None or BM.targetingmode:
+        if not BM.weaponhover == None or BM.targetingmode and BM.selected != None:
+            $ selected = BM.selected
 
               #the looping is NEEDED to counter overlap problems. it sucks, I know. I wish I could set zorder to individual images
             for a in range(1,GRID_SIZE[0]+1):
@@ -481,7 +482,7 @@ screen battle_screen:
                             $continue
                         if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
                             $continue
-                        if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,BM.selected) > 1):
+                        if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
                             $continue
                         if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
                             $continue
@@ -507,10 +508,13 @@ screen battle_screen:
                                 color '000'
                             $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
                             $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
-                            if BM.weaponhover.wtype == 'Rocket':
-                                $effective_flak = ship.flak + ship.modifiers['flak'][0] - BM.selected.missile_eccm - BM.weaponhover.eccm
+                            if selected == None:  #workarounds
+                                $ effective_flak = 0
                             else:
-                                $effective_flak = ship.flak + ship.modifiers['flak'][0] - BM.selected.missile_eccm
+                                if BM.weaponhover.wtype == 'Rocket':
+                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - weaponhover.eccm
+                                else:
+                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm
 
                             if effective_flak < 0:
                                 $ effective_flak = 0

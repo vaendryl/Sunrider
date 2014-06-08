@@ -34,7 +34,6 @@ init 2 python:
             self.shield_range = 0
             self.base_armor = 15
             self.armor = self.base_armor
-            store.BM.ships.append(self)  #register itself upon creation
             self.test = 'test1234'
             self.test2 = 'test2'
 
@@ -87,7 +86,6 @@ init 2 python:
                 'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
                 }
             self.flak = 35
-            store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "asavoice"
@@ -123,7 +121,6 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-            store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "chivoice"
@@ -159,7 +156,6 @@ init 2 python:
                 'character':"Character/Icari/icari_plugsuit_point_angry.png"
                 }
             self.flak = 20
-            store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "icavoice"
@@ -195,7 +191,6 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-            store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "clavoice"
@@ -229,7 +224,6 @@ init 2 python:
                 'standard':'gameplay/Animations/Seraphim/side.png',
                 }
             self.flak = 0
-            store.BM.ships.append(self)  #register itself upon creation
 
             ####################VOICES
             self.voice_channel = "solvoice"
@@ -262,7 +256,6 @@ init 2 python:
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)  #register itself upon creation
 
             self.voice_channel = "avavoice"
             self.selection_voice = ['Agamemnon/beep1.ogg']
@@ -308,7 +301,6 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 1
-            store.BM.ships.append(self)
 
     class PactBomber(Battleship):
         def __init__(self):
@@ -337,7 +329,6 @@ init 2 python:
                 }
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)
 
     class SeraphimEnemy(Battleship):
         def __init__(self):
@@ -366,7 +357,6 @@ init 2 python:
                 }
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)
 
     class Mochi(Battleship):
         def __init__(self):
@@ -390,7 +380,6 @@ init 2 python:
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)  #register itself upon creation
 
             self.voice_channel = "avavoice"
             self.selection_voice = ['Agamemnon/beep1.ogg']
@@ -435,7 +424,6 @@ init 2 python:
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)
 
     class PactMook(Battleship):
         def __init__(self):
@@ -460,7 +448,6 @@ init 2 python:
                 }
             self.flak = 10
             self.flak_range = 1
-            store.BM.ships.append(self)
 
     class PhoenixEnemy(Battleship):
         def __init__(self):
@@ -487,7 +474,6 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 1
-            store.BM.ships.append(self)
 
             self.voice_channel = "icavoice"
             self.attack_voice = ["sound/Voice/Icari/Icari Attacking Melee 1.ogg","sound/Voice/Icari/Icari Attacking Melee 2.ogg","sound/Voice/Icari/Icari Attacking Melee 3.ogg","sound/Voice/Icari/Icari Attacking Melee 1.ogg"]
@@ -519,7 +505,6 @@ init 2 python:
             self.base_armor = 30
             self.move_cost = 30
             self.armor = self.base_armor
-            store.BM.ships.append(self)  #register itself upon creation
 
     class RyuvianCruiser(Battleship):
         def __init__(self):
@@ -548,7 +533,6 @@ init 2 python:
             self.base_armor = 30
             self.move_cost = 20
             self.armor = self.base_armor
-            store.BM.ships.append(self)  #register itself upon creation
 
     class PactOutpost(Battleship):
         def __init__(self):
@@ -578,7 +562,6 @@ init 2 python:
             self.base_armor = 20
             self.armor = self.base_armor
             self.move_cost = 1000
-            store.BM.ships.append(self)  #register itself upon creation
 
 ### pirate ships ###
 
@@ -609,7 +592,6 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 1
-            store.BM.ships.append(self)
 
     class Havoc(PirateBomber):
         def __init__(self):
@@ -641,7 +623,6 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 2
-            store.BM.ships.append(self)
             ##voices##
             self.voice_channel = "cosvoice"
             self.attack_voice = ["sound/Voice/Cosette/Cosette Melee Attack 1.ogg","sound/Voice/Cosette/Cosette Melee Attack 2.ogg","sound/Voice/Cosette/Cosette Melee Attack 3.ogg","sound/Voice/Cosette/Cosette Melee Attack 4.ogg"]
@@ -672,7 +653,6 @@ init 2 python:
                 }
             self.flak = 15
             self.flak_range = 1
-            store.BM.ships.append(self)
 
     class PirateDestroyer(Battleship):
         def __init__(self):
@@ -692,7 +672,6 @@ init 2 python:
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.flak = 0
             self.flak_range = 0
-            store.BM.ships.append(self)
 
     class PirateBase(Battleship):
         def __init__(self):
@@ -722,7 +701,6 @@ init 2 python:
             self.base_armor = 50
             self.armor = self.base_armor
             self.move_cost = 1000
-            store.BM.ships.append(self)  #register itself upon creation
 
 
 ### Weapons ###

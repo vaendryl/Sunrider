@@ -48,6 +48,7 @@ init -2 python:
                 'energyregen':0,
                 }
             self.battlemode = False
+            self.stopAI = False
             self.edgescroll = (0,0)
             self.xadj = ui.adjustment() #used by the viewport in the battlescreen
             self.yadj = ui.adjustment()
@@ -389,6 +390,8 @@ init -2 python:
         def battle_end(self, lost = False):
             self.battlemode = False #this ends the battle loop
             if self.selected != None: self.unselect_ship(self.selected)
+            self.targetingmode = False
+            self.weaponhover = None
 
             if not lost:
                 renpy.music.stop()
@@ -440,7 +443,7 @@ init -2 python:
                 ship.total_kinetic_damage = 0
                 ship.total_energy_damage = 0
                 ship.missiles = ship.max_missiles
-                ship.location = (-10,-10) #this helps if you add new ships but don't know the current location of the existing ones.
+                ship.location = None #this helps if you add new ships but don't know the current location of the existing ones.
                 for modifier in ship.modifiers:
                     ship.modifiers[modifier] = [0,0]
 

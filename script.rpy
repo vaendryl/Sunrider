@@ -38,7 +38,7 @@ label start:
 #####################################VARIABLE SET UP
 
     #temporary
-    jump test_battle
+#    jump test_battle
 
 
     stop music fadeout 3.0
