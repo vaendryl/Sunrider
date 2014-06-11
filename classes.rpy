@@ -1797,4 +1797,8 @@ init -2 python:
                 planets.append(self)
         
         def shouldShowOnMap(self):
+        # showOnMapCondition is evaluated as a python expression.
+        # the variable can contain something like "not bool" or "bool == False"
+        # and it will be evaluated. This makes it perfect in the event that you
+        # have multiple conditions that need to be true
             return eval(self.showOnMapCondition)
