@@ -5,6 +5,7 @@
 # 4) battleship blueprint class
 # 5) Weapon blueprint class
 # 6) library (specific ships/weapons)
+# 7) planet class
 
 init -2 python:
 
@@ -1785,15 +1786,15 @@ init -2 python:
             self.running = False
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    class Planet(store.object):
+        def __init__(self, name, jumpLocation, xPos, yPos, showOnMapCondition):
+            self.name = name
+            self.jumpLocation = jumpLocation
+            self.xPos = xPos
+            self.yPos = yPos
+            self.showOnMapCondition = showOnMapCondition
+            if self not in planets:
+                planets.append(self)
+        
+        def shouldShowOnMap(self):
+            return eval(self.showOnMapCondition)

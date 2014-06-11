@@ -17,6 +17,8 @@ init -10 python:
     GRID_SIZE = (18,16)
     BM = renpy.store.object()
     BM.phase = None
+    
+    planets = []
 
 init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.register_channel("sound1", "sfx", False)
@@ -74,8 +76,10 @@ label initialize:
         liberty = None
         phoenix = None
         bianca = None
-
+        
     return
+    
+    
 
 label mission1_inits:
 
