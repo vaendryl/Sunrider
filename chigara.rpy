@@ -6,7 +6,7 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-    image chigara plugsuitlabcoat altneutral smile:
+    image chigara plugsuitlabcoat altneutral shysmile:
         "Character/Chigara/chigara_plugsuitlabcoat_shysmile.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
