@@ -2,53 +2,14 @@ screen galaxymap_buttons: ###################################GALAXY MAP BUTTONS
 
     modal True
 
-    if warpto_occupiedcera == True:
-        imagebutton:
-            action Jump("warpto_OccupiedCera")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1297 ypos 480
-        text "CERA" xpos 1350 ypos 480 size 15
-
-    if warpto_tydaria == True:
-        imagebutton:
-            action Jump("warpto_Tydaria")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1371 ypos 519
-        text "TYDARIA" xpos 1424 ypos 519 size 15
-
-    if warpto_astralexpanse == True:
-        imagebutton:
-            action Jump("warpto_astralexpanse")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1250 ypos 540
-        text "ASTRAL EXPANSE" xpos 1302 ypos 540 size 15
-
-    if warpto_pactstation1 == True:
-        imagebutton:
-            action Jump("warpto_pactstation")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1390 ypos 440
-        text "PACT Outpost" xpos 1442 ypos 440 size 15
-
-    if warpto_versta == True:
-        imagebutton:
-            action Jump("warpto_versta")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1490 ypos 725
-        text "VERSTA" xpos 1550 ypos 725 size 15
-
-    if warpto_nomodorn == True:
-        imagebutton:
-            action Jump("warpto_nomodorn")
-            idle "Map/map_icon_base.png"
-            hover "Map/map_icon_hover.png"
-            xpos 1630 ypos 590
-        text "NOMODORN" xpos 1690 ypos 590 size 15
+    for planet in planets:
+        if planet.shouldShowOnMap():
+            imagebutton:
+                action Jump(planet.jumpLocation)
+                idle "Map/map_icon_base.png"
+                hover "Map/map_icon_hover.png"
+                xpos planet.xPos ypos planet.yPos
+            text planet.name xpos planet.xPos + 55 ypos planet.yPos size 15
 
     imagebutton:
         xpos 1600 ypos 950
@@ -504,7 +465,7 @@ label nomodorn_back:
         parallel:
             ease 1 zoom 0.0268041237113402 xpos 1630 ypos 590
     show galaxymap:
-        xpos -16900 ypos -5900 zoom 10 alpha 0
+        xpos -16300 ypos -5900 zoom 10 alpha 0
         parallel:
             ease 1.1 alpha 1
         parallel:

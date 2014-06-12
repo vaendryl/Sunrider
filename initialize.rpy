@@ -17,6 +17,8 @@ init -10 python:
     GRID_SIZE = (18,16)
     BM = renpy.store.object()
     BM.phase = None
+    
+    planets = []
 
 init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.register_channel("sound1", "sfx", False)
@@ -44,6 +46,15 @@ init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.set_volume(0.75)
 
     Difficulty = 2
+
+init python:
+    
+    Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
+    Planet("TYDARIA", "warpto_Tydaria", 1371, 519, "warpto_tydaria")
+    Planet("ASTRAL EXPANSE", "warpto_astralexpanse", 1250, 540, "warpto_astralexpanse")
+    Planet("PACT Outpost", "warpto_pactstation", 1390, 540, "warpto_pactstation1")
+    Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
+    Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
 
 init -5:
     image sunrider_phase:
@@ -74,8 +85,10 @@ label initialize:
         liberty = None
         phoenix = None
         bianca = None
-
+        
     return
+    
+    
 
 label mission1_inits:
 
