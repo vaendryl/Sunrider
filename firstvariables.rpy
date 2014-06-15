@@ -29,6 +29,8 @@ label firstvariables:
 
     $ mission3_complete = False
     $ mission4_complete = False
+    $ mission5_complete = False
+    $ mission6_complete = False
 
     $ asa_location = None
     $ chi_location = None
@@ -99,6 +101,8 @@ init python:
 
             self.mission3_complete = False
             self.mission4_complete = False
+            self.mission5_complete = False
+            self.mission6_complete = False
 
             self.asa_location = None
             self.chi_location = None
