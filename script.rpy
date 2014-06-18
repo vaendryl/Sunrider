@@ -1,4 +1,4 @@
-﻿## this is the main script file; everything starts here
+## this is the main script file; everything starts here
 ## the goal is to offload as much declaring to the init module and jump
 ## back here for main control
 
@@ -5381,7 +5381,7 @@ label mission8:
 
     $BM.battle()  #continue the battle
 
-    if agamemnon.location[0] == 18:
+    if BM.battlemode == True and agamemnon.location[0] == 18:
         $ BM.battle_end()
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
