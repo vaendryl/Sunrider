@@ -454,6 +454,49 @@ label mission10_inits:
 
     return
 
+label mission11_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,6)
+        blackjack.set_location(6,4)
+        liberty.set_location(6,7)
+        phoenix.set_location(6,6)
+        bianca.set_location(6,5)
+        seraphim.set_location(6,8)
+
+        create_ship(PactBattleship(),(15,5),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(15,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactCruiser(),(13,5),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        create_ship(PactCruiser(),(13,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        create_ship(MissileFrigate(),(14,4),[PactFrigateMissile()])
+        create_ship(MissileFrigate(),(14,8),[PactFrigateMissile()])
+        
+        create_ship(PactMook(),(12,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(13,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(14,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactMook(),(12,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(13,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(14,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactBomber(),(15,4),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(15,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+
+    return
+
 label preview_mission:
 
     python:

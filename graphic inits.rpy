@@ -12,11 +12,12 @@ init -5:
     define cla = Character('Claude', who_xalign=0.05)
     define cos = Character('Cosette', who_xalign=0.05)
     define gre = Character('Grey', who_xalign=0.05)
-    define ven = Character('Arcadius', who_xalign=0.05)
-    define ryu = Character('Brandr', who_xalign=0.05)
+    define arc = Character('Arcadius', who_xalign=0.05)
+    define ryu = Character('Jaylor', who_xalign=0.05)
     define pi = Character('Pilot', who_xalign=0.05)
     define cul = Character('Cullen', who_xalign=0.05)
     define sop = Character('Sophita', who_xalign=0.05)
+    define fon = Character('Fontana', who_xalign=0.05)
     define cen = Character(" ", what_font="Font/PERTILI.TTF", what_size=25, what_xalign=0.5, what_text_align=0.5, what_yalign=0.5)
     define e = Character(" ")
     define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)            
@@ -50,8 +51,48 @@ init -5:
         yanchor 0.9 ypos 1.0
         xanchor 0.5
         zoom 0.62
-        subpixel True     
+        subpixel True  
+    image cullen smile:
+        "Character/Side/cullen_smile.png"
+        yanchor 0.9 ypos 1.0
+        xanchor 0.5
+        zoom 0.62
+        subpixel True  
+
         
+        
+    image fontana:
+        "Character/Side/Fontana.png"
+        yanchor 0.9 ypos 1.0
+        xanchor 0.5
+        zoom 0.62
+        subpixel True   
+        
+    image arcadius altneutral:
+        "Character/Side/arcadius_altneutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+    image arcadius neutral:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+    image arcadius laugh:
+        "Character/Side/arcadius_laugh.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+    image arcadius fist:
+        "Character/Side/arcadius_fist.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+
 #####################################SPACE BACKGROUNDS
     
     image space back1:
@@ -182,6 +223,28 @@ init -5:
         "Background/brig_over.png"
         yalign 0.5
         xalign 0.5
+    image bg starpalace:
+        "Background/starpalace.jpg"
+        yalign 0.5
+        xalign 0.5
+    image bg legionwindows:
+        "Background/legionwindows.jpg"
+        yalign 0.5
+        xalign 0.5
+    image bg weddinghall:
+        "Background/starpalace.jpg"
+        yalign 0.5
+        xalign 0.5
+    image bg bridgeredtilt:
+        "Background/bridge_redtilt.jpg"
+        yalign 0.5
+        xalign 0.5
+    image bridgeredtiltfore:
+        "Background/bridge_redtiltfore.png"
+        yalign 0.5
+        xalign 0.5
+
+        
     image bg battlegrid = "Gameplay/battlegrid.jpg"
     image bg black = "Gameplay/Space/parallax_spacebase.jpg"
     image bg black2 = "Menu/black.jpg"
@@ -347,9 +410,73 @@ init -5:
 
     image cg_tobecontinued:
         "CG/trollo.jpg"
+        
+    image cg_sunrider_afterkidnap:
+        "CG/sunrider_afterkidnap.jpg"
+    image cg_sunrider_afterkidnap_text:
+        "CG/sunrider_afterkidnap_text.png"
 
+    image cg_weddinghall_ceiling:
+        "CG/weddinghall_ceiling.png"
+    image cg_weddinghall_ceilingspace:
+        "CG/weddinghall_ceilingspace.jpg"
+    image cg_weddinghall_sunrider:
+        "CG/weddinghall_sunrider.png"
+    image cg_weddinghall_sunrider warp:
+        "CG/weddinghall_sunriderwarp.png"
 
+    image cg_weddingcrash1:
+        "CG/weddingcrash1.jpg"
+    image cg_weddingcrash2:
+        "CG/weddingcrash2.jpg"
+        
+    image cg_crosshairs:
+        "CG/crosshair.png"
+        
+    image cg_legionsurprise1:
+        "CG/legionsurprise1.jpg"
+    image cg_legionsurprise2:
+        "CG/legionsurprise2.jpg"
+    image cg_legionsurprise3:
+        "CG/legionsurprise3.jpg"
 
+    image cg_legionsurprise_sunrider:
+        "CG/legionsurprise_sunrider.png"
+    image cg_legionsurprise_sunriderflash:
+        "CG/legionsurprise_sunrider_flash.png"
+        
+    image cg_asagakidnap_legion:
+        "CG/asagakidnap_legion.jpg"
+    image cg_asagakidnap_legion_text:
+        "CG/asagakidnap_legion_text.png"
+
+    image cg_asagashower1:
+        "CG/asagashower1.jpg"
+    image cg_asagashower2:
+        "CG/asagashower2.jpg"
+        
+    image cg_chigarateatime_sad:
+        "CG/chigarateatimesad.jpg"
+    image cg_chigarateatime_embarassed:
+        "CG/chigarateatimeembarassed.jpg"
+        
+    image cg_farport 1:
+        "CG/farport_map1.jpg"
+    image cg_farport 2:
+        "CG/farport_map2.jpg"
+    image cg_farport 3:
+        "CG/farport_map3.jpg"
+    image cg_farport 4:
+        "CG/farport_map4.jpg"
+    image cg_farport 5:
+        "CG/farport_map5.jpg"
+    image cg_farport 6:
+        "CG/farport_map6.jpg"
+    image cg_farport 7:
+        "CG/farport_map7.jpg"
+
+    image cg_farport_charge1:
+        "CG/farport_charge1.jpg"
 
     ########################################MAP
     
@@ -1995,7 +2122,69 @@ init -5:
         "CG/porkfleet_assembled.jpg"
     image porkfleet_fire:
         "CG/porkfleet_fire.png"
-    
+        
+    image pactbattleship_side:
+        "gameplay/Animations/PACTBattleship/side.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_kineticflash1:
+        "gameplay/Animations/PACTBattleship/kineticflash1.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_kineticflash2:
+        "gameplay/Animations/PACTBattleship/kineticflash2.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_kineticflash3:
+        "gameplay/Animations/PACTBattleship/kineticflash3.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_kineticbullet1:
+        "gameplay/Animations/PACTBattleship/kineticfly.png"
+        xanchor 80 yanchor 65
+    image pactbattleship_kineticbullet2:
+        "gameplay/Animations/PACTBattleship/kineticfly.png"
+        xanchor 80 yanchor 65
+    image pactbattleship_kineticbullet3:
+        "gameplay/Animations/PACTBattleship/kineticfly.png"
+        xanchor 80 yanchor 65
+
+    image pactbattleship_flakflash1:
+        "gameplay/Animations/PACTBattleship/assaultflash1.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_flakflash2:
+        "gameplay/Animations/PACTBattleship/assaultflash2.png"
+        xalign 0.5 yalign 0.5
+
+    image pactbattleship_laserfront:
+        "gameplay/Animations/PACTBattleship/lasers.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_laserback:
+        "gameplay/Animations/PACTBattleship/lasers_back.png"
+        xalign 0.5 yalign 0.5
+
+    image pactbattleship_missiletrail:
+        "gameplay/Animations/PACTBattleship/missile_trail.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_missile1:
+        "gameplay/Animations/PACTBattleship/missilefly.png"
+        xanchor 40 yanchor 65
+    image pactbattleship_missile2:
+        "gameplay/Animations/PACTBattleship/missilefly.png"
+        xanchor 40 yanchor 65
+    image pactbattleship_missile3:
+        "gameplay/Animations/PACTBattleship/missilefly.png"
+        xanchor 40 yanchor 65
+
+    image pactbattleship_rockettrail:
+        "gameplay/Animations/PACTBattleship/rocket_trail.png"
+        xalign 0.5 yalign 0.5
+    image pactbattleship_rocket:
+        "gameplay/Animations/PACTBattleship/rocketfly.png"
+        xalign 0.5 yalign 0.5
+
+
+    image pactbattleship_side:
+        "gameplay/Animations/PACTBattleship/side.png"
+        xalign 0.5 yalign 0.5
+
+
         
 ########################################## JOKE
 

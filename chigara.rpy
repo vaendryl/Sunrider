@@ -6,7 +6,7 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-    image chigara plugsuitlabcoat altneutral shysmile:
+    image chigara plugsuitlabcoat altneutral smile:
         "Character/Chigara/chigara_plugsuitlabcoat_shysmile.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
@@ -207,6 +207,12 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image chigara plugsuit handstogether sadblush:
+        "Character/Chigara/chigara_uniform_handstogther_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 
@@ -296,7 +302,7 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True 
+        subpixel True
     image chigara uniform handonchest forcedsmileblush:
         "Character/Chigara/chigara_uniform_handonchest_forcedsmileblush.png"
         yanchor 0.51 ypos 1.0
@@ -333,6 +339,120 @@
         xanchor 0.5
         zoom 0.625
         subpixel True
+    image chigara uniform pad neutral:
+        "Character/Chigara/chigara_uniform_pad_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform handstogether sad:
+        "Character/Chigara/chigara_uniform_handstogether_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform handstogether sadclosedeyes:
+        "Character/Chigara/chigara_uniform_handstogether_sadclosedeyes.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform altneutral sad:
+        "Character/Chigara/chigara_uniform_altneutral_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform neutral mad:
+        "Character/Chigara/chigara_uniform_neutral_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform twiddlefingers closedeyes:
+        "Character/Chigara/chigara_uniform_twiddlefingers_closedeyes.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True
+    image chigara uniform altneutral happy:
+        "Character/Chigara/chigara_uniform_altneutral_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True    
+    image chigara uniform handonchest closedeyessmile:
+        "Character/Chigara/chigara_uniform_handonchest_closedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True 
+    image chigara uniform altneutral mad:
+        "Character/Chigara/chigara_uniform_altneutral_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True 
+    image chigara uniform excited determined:
+        "Character/Chigara/chigara_uniform_excited_determined.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True 
+    image chigara uniform twiddlefingers sadsmileblush:
+        "Character/Chigara/chigara_uniform_twiddlefingers_sadsmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.625
+        subpixel True         
+    image chigara uniform handonchest sad:
+        "Character/Chigara/chigara_uniform_handonchest_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handstogether embarassedsmile:
+        "Character/Chigara/chigara_uniform_handstogether_embarassedsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handonchest worried:
+        "Character/Chigara/chigara_uniform_handonchest_worried.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handstogether sadopenmouthblush:
+        "Character/Chigara/chigara_uniform_handstogether_sadopenmouthblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform fingerstwiddle gloom:
+        "Character/Chigara/chigara_uniform_fingerstwiddle_gloom.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handonchest surprise:
+        "Character/Chigara/chigara_uniform_handonchest_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform handstogether narroweyessmileblush:
+        "Character/Chigara/chigara_uniform_handstogether_narroweyessmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image chigara uniform twiddlefingers scaredsad:
+        "Character/Chigara/chigara_uniform_twiddlefingers_scaredsad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 

@@ -235,4 +235,48 @@
         zoom 0.6255
         subpixel True
         
+    image ava uniform armscrossed narroweyefrown:
+        "Character/Ava/ava_uniform_armscrossed_narroweyefrown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
+    image ava uniform handonhip forcednarrowsmile:
+        "Character/Ava/ava_uniform_handonhip_forcednarrowsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
+    image ava uniform altneutral frown:
+        "Character/Ava/ava_uniform_altneutral_frown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True    
+    image ava uniform altneutral annoyed:
+        "Character/Ava/ava_uniform_altneutral_annoyed.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image ava uniform altneutral neutral:
+        "Character/Ava/ava_uniform_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
         

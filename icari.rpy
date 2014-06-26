@@ -354,6 +354,49 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari uniform handonhip smile:
+        "Character/Icari/icari_uniform_handonhip_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform armscrossed neutral:
+        "Character/Icari/icari_uniform_armscrossed_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform neutral neutral:
+        "Character/Icari/icari_uniform_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform point angry:
+        "Character/Icari/icari_uniform_point_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform armscrossed madtalk:
+        "Character/Icari/icari_uniform_armscrossed_madtalk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform armscrossed closedeyesshout:
+        "Character/Icari/icari_uniform_armscrossed_closedeyesshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari uniform bothhandsonhips angry:
+        "Character/Icari/icari_uniform_bothhandsonhips_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
 
 
 

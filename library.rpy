@@ -563,6 +563,36 @@ init 2 python:
             self.armor = self.base_armor
             self.move_cost = 1000
 
+class PactBattleship(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Battleship'
+            self.name = 'PACT Battleship'
+            self.faction = 'PACT'
+            self.animation_name = 'pactbattleship'
+            self.max_hp = 1600
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.money_reward = 500
+            self.max_missiles = 2
+            self.max_rockets = 1
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.evasion = -40  # cruisers are easy to hit
+            self.blbl = 'Battle UI/label_pactbattleship.png'  #this is the battle avatar
+            self.lbl = self.blbl
+            self.flak = 40
+            self.flak_range = 2
+            self.shield_generation = 40
+            self.shields = self.shield_generation
+            self.shield_range = 2
+            self.base_armor = 40
+            self.move_cost = 50
+            self.armor = self.base_armor
+            store.BM.ships.append(self)  #register itself upon creation
+
+
 ### pirate ships ###
 
     class PirateBomber(Battleship):
@@ -1056,6 +1086,55 @@ init 2 python:
             self.energy_use = 60
             self.shot_count = 2
             self.accuracy = 50
+
+################################################PACT BATTLESHIP
+
+    class PACTBattleshipLaser(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 250
+            self.energy_use = 70
+            self.shot_count = 1
+            self.accuracy = 100
+
+    class PACTBattleshipKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 500
+            self.energy_use = 60
+            self.shot_count = 2
+            self.accuracy = 55
+
+    class PACTBattleshipAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 25
+            self.energy_use = 30
+            self.shot_count = 15
+            self.accuracy = 50
+            self.wtype = 'Assault'
+            
+    class PACTBattleshipMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 40
+            self.energy_use = 40
+            self.shot_count = 10
+            self.accuracy = 80
+            self.wtype = 'Missile'
+
+    class PACTBattleshipRocket(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 800
+            self.energy_use = 50
+            self.uses_rockets = True
+            self.uses_missiles = False
+            self.eccm = 10
+            self.wtype = 'Rocket'
+            self.accuracy = 80
+            self.shot_count = 1
+
 
 #################################################PACT MOOK
 

@@ -270,8 +270,102 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-
-
+    image claude uniform neutral smallsurprise:
+        "Character/Claude/claude_uniform_handstogether_perv.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform fingeronlip hearteyeblush:
+        "Character/Claude/claude_uniform_fingeronlip_hearteyeblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform altneutral yawn:
+        "Character/Claude/claude_uniform_altneutral_yawn.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform fingerup neutral:
+        "Character/Claude/claude_uniform_fingerup_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform altneutral lookawaykitty:
+        "Character/Claude/claude_uniform_altneutral_lookawaykitty.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform altneutral laugh:
+        "Character/Claude/claude_uniform_altneutral_laugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform neutral neutral:
+        "Character/Claude/claude_uniform_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform fingerup happy:
+        "Character/Claude/claude_uniform_fingerup_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform excited concern:
+        "Character/Claude/claude_uniform_excited_concern.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform altneutral mad:
+        "Character/Claude/claude_uniform_altneutral_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform excited surprise:
+        "Character/Claude/claude_uniform_excited_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform neutral sleepdrool:
+        "Character/Claude/claude_uniform_neutral_sleepdrool.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform fingeronlip kittycurious:
+        "Character/Claude/claude_uniform_fingeronlip_kittycurious.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform excited happy:
+        "Character/Claude/claude_uniform_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform fingerup laugh:
+        "Character/Claude/claude_uniform_fingerup_laugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude uniform altneutral smile:
+        "Character/Claude/claude_uniform_altneutral_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
 
 
 
