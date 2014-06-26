@@ -150,7 +150,7 @@ screen battle_screen:
 
           ##display shield and flak ranges
 
-        if not BM.hovered == None: #when you hover over a ship
+        if not BM.hovered == None and BM.hovered in BM.ships: #when you hover over a ship
             if BM.hovered.shield_generation > 0:
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                     for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
@@ -512,7 +512,7 @@ screen battle_screen:
                                 $ effective_flak = 0
                             else:
                                 if BM.weaponhover.wtype == 'Rocket':
-                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - weaponhover.eccm
+                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm
                                 else:
                                     $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm
 

@@ -393,6 +393,7 @@ init -2 python:
             if self.selected != None: self.unselect_ship(self.selected)
             self.targetingmode = False
             self.weaponhover = None
+            self.hovered = None
 
             if not lost:
                 renpy.music.stop()
