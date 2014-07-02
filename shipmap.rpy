@@ -5,7 +5,7 @@ label dispatch:
 
     #dissolve to black so that previous scene doesn't briefly appear when going to new scene
     window hide
-    scene Solid((0, 0, 0, 255))
+#    scene Solid((0, 0, 0, 255))
     with dissolve
 
     hide screen store_missile
@@ -88,6 +88,18 @@ screen deck0:
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if sol_location == "captainsloft":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "captainsloft":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "captainsloft":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -145,6 +157,18 @@ screen deck0:
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if sol_location == "sickbay":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "sickbay":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "sickbay":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -195,6 +219,18 @@ screen deck0:
                     action Jump(cla_event)
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if sol_location == "messhall":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "messhall":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if pro_location == "messhall":
                 imagebutton:
@@ -261,6 +297,18 @@ screen deck1:
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if sol_location == "bridge":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "bridge":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "bridge":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -320,6 +368,18 @@ screen deck1:
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
                     activate_sound "Sound/click.mp3"
+            if sol_location == "engineering":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "engineering":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
+                    activate_sound "Sound/click.mp3"
             if pro_location == "engineering":
                 imagebutton:
                     #xpos 560 ypos 435
@@ -368,6 +428,18 @@ screen deck1:
                     action Jump(cla_event)
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if sol_location == "lab":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "lab":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if pro_location == "lab":
                 imagebutton:
@@ -440,6 +512,18 @@ screen deck2:
                     action Jump(cla_event)
                     idle "Menu/cla_button.png"
                     hover "Menu/cla_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if sol_location == "hangar":
+                imagebutton:
+                    action Jump(sol_event)
+                    idle "Menu/sol_button.png"
+                    hover "Menu/sol_button_hover.png"
+                    activate_sound "Sound/click.mp3"
+            if kry_location == "hangar":
+                imagebutton:
+                    action Jump(kry_event)
+                    idle "Menu/kry_button.png"
+                    hover "Menu/kry_button_hover.png"
                     activate_sound "Sound/click.mp3"
             if pro_location == "hangar":
                 imagebutton:

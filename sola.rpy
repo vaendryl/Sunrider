@@ -54,7 +54,55 @@
         subpixel True
             
     
+###################UNIFORM
+
+    image sola uniform backturn neutral:
+        "Character/Sola/sola_uniform_backturn_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
     
-    
+    image sola uniform altneutral neutral:
+        "Character/Sola/sola_uniform_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image sola uniform handonchest sad:
+        "Character/Sola/sola_uniform_handonchest_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image sola uniform handsbehindback sad:
+        "Character/Sola/sola_uniform_handsbehindback_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image sola uniform handonchest neutral:
+        "Character/Sola/sola_uniform_handonchest_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image sola uniform neutral neutral:
+        "Character/Sola/sola_uniform_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image sola uniform handsbehindback lookleft:
+        "Character/Sola/sola_uniform_handsbehindback_lookleft.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
 
 

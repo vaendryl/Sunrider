@@ -302,8 +302,50 @@
         zoom 0.6255
         subpixel True 
         
-        
-    
+    image asaga plugsuit neutral crush:
+        "Character/Asaga/asaga_plugsuit_neutral_crush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga plugsuit neutral smileblush:
+        "Character/Asaga/asaga_plugsuit_neutral_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga plugsuit armscrossed narroweyeshout:
+        "Character/Asaga/asaga_plugsuit_armscrossed_narroweyeshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga plugsuit armscrossed madtears:
+        "Character/Asaga/asaga_plugsuit_armscrossed_madtears.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga plugsuit neutral awakenangry:
+        "Character/Asaga/asaga_plugsuit_neutral_awakenangry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga plugsuit neutral angry:
+        "Character/Asaga/asaga_plugsuit_neutral_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asagaplugsuitneutralangry:
+        "Character/Asaga/asaga_plugsuit_neutral_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+
+
 
 ###################### UNIFORM
 
@@ -463,8 +505,235 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True   
+    image asaga uniform altneutral content:
+        "Character/Asaga/asaga_uniform_altneutral_content.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform excited determined:
+        "Character/Asaga/asaga_uniform_excited_determined.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform armscrossed blushsmile:
+        "Character/Asaga/asaga_uniform_armscrossed_blushsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform altneutral sorryblush:
+        "Character/Asaga/asaga_uniform_altneutral_sorryblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image asaga uniform handsonhips confidentblush:
+        "Character/Asaga/asaga_uniform_handsonhips_confidentblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image asaga uniform handonchin thinking:
+        "Character/Asaga/asaga_uniform_handonchin_thinking.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image asaga uniform armscrossed neutral:
+        "Character/Asaga/asaga_uniform_armscrossed_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True               
+    image asaga uniform armscrossed thinkingfrown:
+        "Character/Asaga/asaga_uniform_armscrossed_thinkingfrown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                
+    image asaga uniform altneutral sadblush:
+        "Character/Asaga/asaga_uniform_altneutral_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image asaga uniform handonhips sadsmile:
+        "Character/Asaga/asaga_uniform_handsonhips_sadsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image asaga uniform armscrossed smileblush:
+        "Character/Asaga/asaga_uniform_armscrossed_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image asaga uniform armscrossed grin:
+        "Character/Asaga/asaga_uniform_armscrossed_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image asaga uniform excited happy:
+        "Character/Asaga/asaga_uniform_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image asaga uniform handonhips happy:
+        "Character/Asaga/asaga_uniform_handonhips_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image asaga uniform thinking thinking:
+        "Character/Asaga/asaga_uniform_thinking_thinking.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform handsonhips closedeyesgrin:
+        "Character/Asaga/asaga_uniform_handsonhips_closedeyesgrin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform armscrossed sadwideeyesblush:
+        "Character/Asaga/asaga_uniform_armscrossed_sadwideeyesblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image asaga uniform excited focusedpoutblush:
+        "Character/Asaga/asaga_uniform_excited_focusedpoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                 
+    image asaga uniform altneutral gloomblush:
+        "Character/Asaga/asaga_uniform_altneutral_gloomblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image asaga uniform altneutral embarassedsurpriseblush:
+        "Character/Asaga/asaga_uniform_altneutral_embarassedsurpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                
+    image asaga uniform altneutral neutral:
+        "Character/Asaga/asaga_uniform_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image asaga uniform neutral shockooblush:
+        "Character/Asaga/asaga_uniform_neutral_shockooblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image asaga uniform neutral laughooblush:
+        "Character/Asaga/asaga_uniform_armscrossed_laughooblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image asaga uniform armscrossed happyblush:
+        "Character/Asaga/asaga_uniform_armscrossed_happyblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image asaga uniform thinking forcedsmilekittyblush:
+        "Character/Asaga/asaga_uniform_thinking_forcedsmilekittyblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image asaga uniform excited forcedlaughblush:
+        "Character/Asaga/asaga_uniform_excited_forcedlaughblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image asaga uniform altneutral grinblush:
+        "Character/Asaga/asaga_uniform_altneutral_grinblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image asaga uniform altneutral confidentaggressivesmile:
+        "Character/Asaga/asaga_uniform_altneutral_confidentaggressivesmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image asaga uniform armscrossed laugh:
+        "Character/Asaga/asaga_uniform_armscrossed_laugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+
+    image asaga uniform altneutral zomg:
+        "Character/Asaga/asaga_uniform_altneutral_zomg.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
 
 
+
+
+        
+        
+    image asaga wedding angry:
+        "Character/Asaga/asaga_wedding_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding scared:
+        "Character/Asaga/asaga_wedding_scared.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding sad:
+        "Character/Asaga/asaga_wedding_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding sadtear:
+        "Character/Asaga/asaga_wedding_sadtear.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding surprisetears:
+        "Character/Asaga/asaga_wedding_surprisetears.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding surprise:
+        "Character/Asaga/asaga_wedding_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga wedding happy:
+        "Character/Asaga/asaga_wedding_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
 
 
 

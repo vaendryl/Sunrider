@@ -1,4 +1,4 @@
-## this is the main script file; everything starts here
+﻿## this is the main script file; everything starts here
 ## the goal is to offload as much declaring to the init module and jump
 ## back here for main control
 
@@ -38,7 +38,7 @@ label start:
 #####################################VARIABLE SET UP
 
     #temporary
-#    jump test_battle
+    #jump test_battle
 
 
     stop music fadeout 3.0
@@ -2523,22 +2523,15 @@ label introsophita:
 
 label ftltransponder:
 
-    $ captaindeck = 0
-
-    hide screen deck0
-    show window
-    scene bg captainsoffice with dissolve
-
-    menu:
-        "(Call Sopita Brooks)":
-            jump unionstore
-        "(Return)":
-            jump dispatch
+    hide screen ship_map
+    jump unionstore
 
 label unionstore:
 
     scene store_back with dissolve
     window hide
+
+    $sunrider_rocket = sunrider.weapons[3]
 
     call screen store_union
     hide screen store_rocket
@@ -4735,6 +4728,7 @@ label findherandstopher:
     $ check3 = False
     $ check4 = False
     $ check5 = False
+    $ check6 = False
 
     jump battle_start
 
@@ -4952,6 +4946,7 @@ label cancelwarpagaout:
     $ check3 = False
     $ check4 = False
     $ check5 = False
+    $ check6 = False
 
     jump battle_start
 
@@ -5379,9 +5374,34 @@ label mission8:
 
         $ check5 = True
 
+    if check6 == False and BM.turn_count == 10:
+
+        show ava uniform facepalm onlayer screens with dissolve
+
+        ava "That's enough heroics, captain! We have to get out of here now!!"
+
+        hide ava onlayer screens with dissolve
+
+        python:
+            create_ship(PactCruiser(),(16,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(MissileFrigate(),(16,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(17,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(18,2),[PactFrigateMissile()])
+
+            create_ship(MissileFrigate(),(16,15),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(17,15),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(18,15),[PactFrigateMissile()])
+            create_ship(PactCruiser(),(16,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+
+        $ check6 = True
+
     $BM.battle()  #continue the battle
 
-    if BM.battlemode == True and agamemnon.location[0] == 18:
+    if agamemnon.location[0] == 18:
         $ BM.battle_end()
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
@@ -6552,7 +6572,7 @@ label missionfromryuvians:
         xpos 0.7
     with wipeup
 
-    ryu "Hail Sunrider. I am King Brandr di Ryuvia."
+    ryu "Hail Sunrider. I am King Jaylor di Ryuvia."
     kay "Greetings, your highness. I'm Captain Kayto Shields of the starship Sunrider. This is my First Officer, Ava Crescentia."
     ryu "I have heard of your deeds in the Neutral Rim, and believe you may be of help."
     ryu "There is a treasure known to our people which we seek to retrieve from the Nomodorn Corridor. Perform well, and we shall bestow you with great riches."
@@ -6583,7 +6603,7 @@ label missionfromryuvians:
     ava "Bingo. At least, that's the best explanation I can think of."
 
     menu:
-        "Debrief me on King Brandr and the Ryuvians.":
+        "Debrief me on King Jaylor and the Ryuvians.":
             jump debriefkingryuvians
 
         "Why would the Ryuvians invent such a crazy device in the first place?":
@@ -6624,7 +6644,7 @@ label whyryuvianscrazyplace:
     ava "Much of what we've dug up of the ancient Ryuvian's technology escapes comprehension though. Some of the details of the device may never be understood."
 
     menu:
-        "Debrief me on King Brandr and the Ryuvians.":
+        "Debrief me on King Jaylor and the Ryuvians.":
             jump debriefkingryuvians
 
         "Tell me more about Lost Technology.":
@@ -6645,7 +6665,7 @@ label morelosttech:
     ava "We call the pieces of technology left by the ancient Ryuvians Lost Technology. Whenever one is found, it can dramatically change the power balance of the galaxy."
 
     menu:
-        "Debrief me on King Brandr and the Ryuvians.":
+        "Debrief me on King Jaylor and the Ryuvians.":
             jump debriefkingryuvians
 
         "Why would the Ryuvians invent such a crazy device in the first place?":
@@ -6950,17 +6970,14 @@ label mission9:
 
         python:
             BM.grid[13][6] = False
-            try:
-                BM.ships.remove(mochi)
-                player_ships.remove(mochi)
-            except:
-                pass
+            BM.ships.remove(mochi)
+            player_ships.remove(mochi)
 
         ava "Captain, a ryder! Hidden inside the storage compartment in the Alliance vessel!"
 
         python:
 
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
         kay "Patch me through to her."
@@ -6997,8 +7014,8 @@ label aftermission9:
         if mochi in player_ships:
             BM.ships.remove(mochi)
             player_ships.remove(mochi)
-            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
-            bianca = create_ship(Bianca(),None,bianca_weapons)
+            bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+            bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
 
     hide screen commands
@@ -7897,6 +7914,7 @@ label aftermission10:
 
     python:
         if not blackjack in player_ships:
+            blackjack.set_location(10,3)
             player_ships.append(blackjack)
 
     scene bg bridgered with dissolve
@@ -8597,9 +8615,11 @@ label porkfleetopenfire:
 
     ava "...T-tsch..."
     "... ... ..."
+
+    play music "Music/One_Day_in_August.ogg" fadeout 1.5
+
     hide ava with dissolve
     show asaga plugsuit excited shout with wipeup
-    stop music fadeout 1.5
 
     asa "WAIT!"
     asa "I'M THE ONE YOU'RE LOOKING FOR!"
@@ -8642,11 +8662,4211 @@ label porkfleetopenfire:
 
     ava "Captain?"
     kay "Get our repair drones online."
+    kay "We've got a wedding to crash."
 
     play sound "sound/ToBeContinued.ogg"
-    scene cg_tobecontinued
+    scene black
+    window hide
 
+    stop music fadeout 1.5
+
+    show eyecatch_logo with dissolve
+    $ renpy.pause (2.0)
+    scene bg black2 with dissolvelong
+    scene cg_asagakidnap_legion with dissolvelong
+
+    play music "Music/A_Dark_Dream.ogg"
+
+    pause 1.0
+
+    show cg_asagakidnap_legion_text with horizontalwipereversefast
+    pause 2.0
+    hide cg_asagakidnap_legion_text with horizontalwipereversefast
+    pause 1.0
+
+    scene bg legionwindows with dissolve
+
+    show asaga plugsuit altneutral sad with dissolve
+    window show
+
+    asa "... ... ..."
+
+    show cullen behind asaga:
+        xpos 0.2
+    with dissolve
+
+    cul "There you are, my princess. I was beginning to fear that I had lost you again!"
+    cul "Not that there's anywhere to hide on board our flagship anyways! Bwah-hahah!"
+
+    show asaga plugsuit neutral mad with dissolve
+
+    asa "You are arrogant, Cullen. You will do well to remember I am still royal consort to Veniczar Arcadius and above your station."
+    cul "Hah! Above my station, you say? It is you who must consider your position."
+
+    show cullen smile with dissolve
+    show cullen smile:
+        ease 0.5 xpos 0.34
+
+    cul "As long as you are onboard my ship, you belong to me. Muufufufu..."
+
+    show asaga plugsuit armscrossed narroweyeshout with dissolve
+
+    asa "Leave me alone!"
+    cul "Your position in that sad little kingdom is meaningless. The Ryuvia of the old is gone. It is I, the governor of the Neutral Rim, who you should obey!"
+
+    show cullen smile:
+        ease 0.1 xpos 0.335
+        ease 0.2 xpos 0.345
+        ease 0.1 xpos 0.34
+        repeat 4
+    show asaga plugsuit armscrossed madtears with dissolve
+
+    cul "Mmmfuuufuu... Such a shame that you must be turned over to our dear leader so soon, my little flower."
+    cul "But I'm sure just a small taste is all right..."
+
+
+    asa "Y-you're disgusting..."
+
+    show fontana:
+        xpos 0.75
+    with dissolve
+
+    fon "Heh... I see you are busy entertaining our guest, Cullen."
+
+    show cullen with dissolve
+    show cullen:
+        ease 0.5 xpos 0.2
+
+    cul "Tsch. And what do you want?"
+    fon "We will reach Ryuvia momentarily. I've received orders from headquarters that Veniczar Arcadius himself is to take command of the fleet for the state wedding. We are to prepare for his arrival."
+    fon "And you will do well to keep your hands off things which do not belong to you, Cullen."
+    cul "Hmph! I was doing no such thing. Now, get me the security plans for the wedding!"
+
+    show cullen:
+        ease 1.5 xpos -0.5
+
+    cul "Merely because he is young, he thinks he owns this place! I'll show that whelp who owns what once I'm governor of Ryuvia... Hmph! Always interfering at the worst of times..."
+    fon "Heh. I see our old Imperial is still up to his usual habits."
+    fon "Well then, your highness, it is time for me to take my leave as well."
+
+    show asaga plugsuit handsonhips frown with dissolve
+
+    asa "You're... Veniczar Fontana."
+    fon "A pleasure. I'm sure we will be seeing each other more often."
+    fon "Well then... my regards, your highness."
+
+    hide fontana with dissolve
+    window hide
+
+    play music "Music/Mission_Briefing.ogg" fadeout 1.5
+
+    scene cg_sunrider_afterkidnap with dissolve
+    pause 0.5
+    show cg_sunrider_afterkidnap_text with horizontalwipereversefast
+    pause 2.0
+    hide cg_sunrider_afterkidnap_text with horizontalwipereversefast
+
+    scene bg captainsoffice
+    show ava uniform neutral neutral
+    with dissolve
+
+    window show
+    
+    $ sunrider.repair_drones = 0
+
+    ava "...repairs on the ship are nearly complete, captain. We've been working around the clock to patch her back together after that last assault."
+    ava "However, we've used up our last stock of repair drones for the emergency repairs."
+    kay "See if we can get some more from the Mining Union."
+    ava "Aye captain."
+    kay "What's the situation on Ryuvia?"
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Alliance intel reports that four PACT fleets have converged on the planet. The Veniczar's flagship, the Legion, just arrived there. All together, I estimate Asaga is behind approximately six hundred PACT ships and one super dreadnought."
+    ava "The whole place is in lockdown. Any rescue operation will be akin to suicide now."
+    kay "... ... ..."
+
+    show ava uniform armscrossed narroweyefrown with dissolve
+
+    ava "I know that look. It means you're going to say something I don't like."
+    kay "Asaga's a member of our crew. I'm not going to abandon her."
+
+    show ava uniform armscrossed frowntalk with dissolve
+
+    ava "Captain, Asaga is merely one person."
+    ava "You have a duty to protect this ship. Throwing all our lives away for the life of one would be a foolhardy decision."
+    kay "Not if we have a plan."
+    ava "Plan?"
+    kay "Chigara, come in."
+
+    show ava uniform armscrossed frown:
+        zoom 1.0
+        ease 0.5 xpos 0.3
+
+    show chigara uniform handonchest smile:
+        xpos 0.7
+    with dissolve
+
+    chi "Ah... captain."
+    kay "Tell us what you've managed to devise from looking at the data we gathered from the Seraphim."
+
+    show chigara uniform pad neutral with dissolve
+
+    chi "I've managed to reverse engineer the Seraphim's targeting computer, which allowed some substantial upgrades to the Sunrider's navigational computer."
+    chi "We will now be able to make pin point FTL jumps with an exit area within eight centimeters of our target and speed control within 0.01 meters per second."
+    chi "In other words, if you could find a watermelon floating in space, the Sunrider's warp drive is now precise enough to place the watermelon inside a large bowl in the mess hall when we warp out."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "And how's that going to help us?"
+    kay "According to Alliance intel, the marriage will take place in low orbit around Ryuvia in the Star Palace."
+    kay "We'll make a pin point jump right next to the wedding hall, pick Asaga up, then high tail it out of Ryuvia before the PACT fleet can respond."
+
+    show ava uniform neutral neutral with dissolve
+
+    ava "Captain, you do realize that once you warp the Sunrider into low orbit, you won't be able to warp out until you've cleared the planet's gravity well?"
+    kay "One thing at a time, Ava."
+    kay "We'll have the element of surprise. Nobody will expect the Sunrider to warp past the entire PACT fleet and come out on top of the Star Palace."
+
+    show ava uniform facepalm with dissolve
+
+    ava "Sigh..."
+    ava "You're as reckless as ever."
+    kay "I'm going to protect everyone on this ship, Ava. Nobody gets left behind. Not while I'm the captain."
+
+    show ava uniform handonhip forcednarrowsmile with dissolve
+
+    ava "Understood, captain. I... will be in my quarters, readying the battle plans."
+    kay "Everyone's dismissed."
+
+    hide ava with dissolve
+    hide chigara with dissolve
+
+    play music "Music/One_Day_in_August.ogg" fadeout 1.5
+
+    $ seraphim_weapons = [SeraphimKinetic(),Awaken()]
+    $ seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
+
+    $ captaindeck = 0
+    $ chi_location = "lab"
+    $ chi_event = "sorryfordeceiving"
+
+    $ sol_location = "messhall"
+    $ sol_event = "sol_intro"
+
+    $ cla_location = "messhall"
+    $ cla_event = "icecreamclaude"
+
+    $ pro_location = None
+    $ ava_location = None
+    $ gal_location = None
+
+    jump dispatch
+
+label sorryfordeceiving:
+
+
+    hide screen ship_map
+    scene bg lab
+    show chigara uniform altneutral neutral
+    with dissolve
+
+    window show
+
+    chi "Ah... captain."
+    kay "You wanted to see me?"
+
+    show chigara uniform handstogether sad with dissolve
+
+    chi "Yes. Um... I don't think I've ever apologized to you for lying to you all this time about Asaga."
+
+    show chigara uniform handstogether sadclosedeyes with dissolve
+
+    chi "So... You have my apology, captain."
+
+    menu:
+        "You were just trying to protect Asaga. Apology accepted.":
+            jump protectasagaapology
+
+        "Keeping secrets like that could place the crew in danger. Don't lie to me again.":
+            jump secretsdangerlie
+
+
+label protectasagaapology:
+
+    $ affection_chigara += 1
+
+    show chigara uniform handonchest smileblush with dissolve
+
+    chi "Thank you, captain..."
+    jump shockfirstfoundryuvia
+
+label secretsdangerlie:
+
+    show chigara uniform handsonchest sad with dissolve
+
+    chi "Yes captain. I promise I won't ever do it again."
+    jump shockfirstfoundryuvia
+
+label shockfirstfoundryuvia:
+
+    show chigara uniform altneutral sad with dissolve
+
+    chi "It was a shock to me too when I first found out Asaga was the princess of Ryuvia many years ago."
+    chi "I certainly understand how it must feel for you. But please, don't blame Asaga for deceiving you."
+
+    show chigara uniform neutral mad with dissolve
+
+    chi "To be engaged to marry to such a vile man... She must have had no choice but to run away and hide her identity."
+
+    menu:
+        "How did you find out Asaga was the princess?":
+            jump howfindasagaprincess
+        "PACT is nothing more than a tyrannical regime led by a madman. Veniczar Arcadius will never honor a political alliance with Ryuvia.":
+            jump pacttyrannicalmadman
+        "This is going to be our hardest mission yet. Prepare yourself, Chigara.":
+            jump goinghardestyet
+
+label howfindasagaprincess:
+
+    show chigara uniform altneutral neutral with dissolve
+
+    chi "It was a long time ago, when I first met Asaga, years before any of us knew the name Arcadius."
+    chi "It was near the time when I arrived on Ryuvia as a refugee from Diode."
+
+    show chigara uniform twiddlefingers closedeyes with dissolve
+
+    chi "I was lost on my way to my work and panicking when some gentlemen came by to help give some directions. Then all of a sudden, Asaga burst into the scene and started shouting at the men."
+    chi "They didn't take kindly to what Asaga was saying and things started getting dangerous..."
+
+    show chigara uniform twiddlefingers forcedsmile with dissolve
+
+    chi "Luckily, I had my handy hair ribbon on, so I used it to temporarily stun the men and ran away with Asaga."
+
+    menu:
+        "Uhh... The story was really different when I heard it from Asaga...":
+            jump storydifferentasaga
+
+        "That Asaga causes nothing but trouble...":
+            jump asaganothingbuttrouble
+
+        "Your hair ribbon can do that!?":
+            jump hairribboncando
+
+label asaganothingbuttrouble:
+
+    show chigara uniform handonchest smile with dissolve
+
+    chi "She may be a bit of a loose cannon and she carries things too far sometimes... But she's got a good heart, captain."
+    jump shortlyaftertruereally
+
+label storydifferentasaga:
+
+    show chigara uniform twiddlefingers closedeyes with dissolve
+
+    chi "Uuu... Asaga does tend to exaggerate her stories so much..."
+    jump shortlyaftertruereally
+
+label hairribboncando:
+
+    show chigara uniform handonchest smile with dissolve
+
+    chi "Yes, captain... It's actually one of my inventions, you see..."
+
+    show chigara uniform altneutral happy with dissolve
+
+    chi "In addition to various defensive mechanisms, can also store music, tell me the time, turn into a flashlight, and keep my hair clean. Ah, with an assortment of other miscellaneous features, of course..."
+    kay "Your hair ribbon really is indispensable, isn't it?"
+
+    show chigara uniform handonchest closedeyessmile with dissolve
+
+    chi "Yes captain, I put it on wherever I go."
+
+    show chigara uniform neutral dazed with dissolve
+
+    chi "Umm... what were we talking about again? Mmm... Ah, yes, about how I found out about Asaga."
+    jump shortlyaftertruereally
+
+label shortlyaftertruereally:
+
+    show chigara uniform neutral neutral with dissolve
+
+    chi "Shortly after I ran away with Asaga, I found out her true identity."
+    chi "I was really shocked to meet the Princess of Ryuvia, but Asaga made it seem like it wasn't anything special."
+
+    show chigara uniform handonchest smile with dissolve
+
+    chi "To her, being the princess didn't define who she was."
+    chi "She was going to leave Ryuvia one day and find adventure among the stars. She was never meant to be in politics."
+
+    show chigara uniform handstogether sad with dissolve
+
+    chi "But then, the war approached Ryuvia. Asaga's mother passed away and her father fell ill. The royal court was darkened by talk of succession and fear of PACT's power."
+    chi "I still remember Asaga bursting into my apartment after finding out what her father had done. Then we decided to run away together. It was the only thing I could do to protect Asaga."
+    chi "And that's how we became freelancers and met you, captain."
+
+    menu:
+        "PACT is nothing more than a tyrannical regime led by a madman. Veniczar Arcadius will never honor a political alliance with Ryuvia.":
+            jump pacttyrannicalmadman
+        "This is going to be our hardest mission yet. Prepare yourself.":
+            jump goinghardestyet
+
+label pacttyrannicalmadman:
+
+    show chigara uniform handsonchest sad with dissolve
+
+    chi "I don't understand much of politics, but I know that the Veniczar is evil."
+
+    show chigara uniform altneutral mad with dissolve
+
+    chi "He... merely wants Asaga. He does not care about anything about alliances or Ryuvia."
+    chi "To a man like him... she is merely a prize to be won. The Veniczar will not stop until the entire galaxy and everyone in it is under his power. And he will use any means to accomplish that."
+    chi "To think the King sold Asaga to such a person..."
+    kay "Don't worry, Chigara. We'll go in there and rescue Asaga before the Veniczar can even lay a finger on her."
+
+    menu:
+        "How did you find out Asaga was the princess?":
+            jump howfindasagaprincess
+        "This is going to be our hardest mission yet. Prepare yourself.":
+            jump goinghardestyet
+
+label goinghardestyet:
+
+    show chigara uniform excited determined with dissolve
+
+    chi "Yes, captain. I'll do everything in my power to save Asaga from the Veniczar!"
+    kay "Good. We'll be counting on your expertise to pull this off."
+
+    show chigara uniform altneutral neutral with dissolve
+
+    chi "One more thing, captain. Asaga gave me this."
+    kay "A holo recording?"
+    chi "She told me to give it to you if anything like this ever happened. With everything that's been going on, I couldn't give it to you until now."
+    chi "She made me promise not to look at it, so it is meant only for you."
+    kay "Thanks. I'll take a look at it in my office."
+    chi "Thank you captain."
+
+    show chigara uniform handonchest closedeyessmile with dissolve
+
+    chi "I was worried before... but now I feel better. We'll rescue Asaga and end this!"
+
+    $ captaindeck = 1
+    $ chi_location = None
+    $ asa_location = "captainsloft"
+    $ asa_event = "Asagarecording"
+
+    jump dispatch
+
+label Asagarecording:
+
+    hide screen ship_map
+    scene bg captainsoffice
+    with dissolve
+
+    window show
+
+    kay "(Let's play this recording and find out what Asaga has to say.)"
+
+    show asaga uniform neutral funnysmile with dissolve
+
+    asa "Ah. Is this thing on? Hello? Hello? Can you hear me?"
+    kay "(You know, you could have edited this part off, Asaga...)"
+
+    show asaga uniform altneutral content with dissolve
+
+    asa "Captain? I sure hope you're the one hearing this. If you're playing this message, then it means that I've left the Sunrider and probably on route to Ryuvia."
+
+    show asaga uniform altneutral sad with dissolve
+
+    asa "First, let me say that I'm really sorry for fooling you! I didn't mean to have been lying to you all this time!"
+    asa "I thought it could really work out. That we could just travel the stars forever and beat PACT in the ass for good measure."
+    asa "But... I guess you've gotta wake up from all dreams eventually."
+    asa "When the time comes and I go back to Ryuvia..."
+    asa "Please don't come after me."
+    asa "Even though I don't agree with it... My father is still doing the right thing."
+    asa "Without the royal marriage, what happened at Cera will happen again at Ryuvia."
+    asa "Millions of people will be killed. Worse, what little remains of our way of life will be destroyed."
+    asa "Ryuvia's already suffered too much in the past one hundred years... If we take one more hit, it'll be the end of our entire way of life."
+    asa "It just takes the sacrifice of one life to save the lives of millions and the preservation of a history which spans longer than the length of the known galaxy."
+
+    show asaga uniform excited determined with dissolve
+
+    asa "If that's the case... then I'll gladly become the Veniczar's bride!"
+
+    show asaga uniform altneutral sad with dissolve
+
+    asa "There's a legend in Ryuvian... Whenever the kingdom is in danger, the sacrifice of the king's only daughter is necessary to save the kingdom."
+    asa "Things like this have occurred throughout our history. I'm... ready to play my role, even though it wasn't the role I wanted!"
+
+    show asaga uniform excited determined with dissolve
+
+    asa "Because that's what it takes to be a true hero, capt'n! And that's the only thing I ever wanted to become!"
+
+    hide asaga with dissolve
+
+    "... ... ..."
+    kay "(No Asaga... We're coming for you.)"
+    kay "(You know the Veniczar is fooling the king! PACT will never honor an alliance with Ryuvia!)"
+
+    $ captaindeck = 0
+    $ asa_location = None
+    $ ava_location = "bridge"
+    $ ava_event = "sawasagarecording"
+    $ pro_location = "bridge"
+    $ pro_event = "operationweddingcrash"
+
+    jump dispatch
+
+label sol_intro:
+
+    hide screen ship_map
+    scene bg messhallwindows
+    show sola uniform backturn neutral
+    with dissolve
+
+    window show
+
+    sol "... ... ..."
+    kay "You must be confused."
+    sol "...It is dark. I cannot tell if I have truly awakened, or if I still sleep on board the Sharr'Lac, and this is merely a strange dream."
+    kay "Trust me, you're among the living again."
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "You wish something of me?"
+
+    menu:
+        "What do you plan on doing now?":
+            jump whatsoladoingnow
+        "Tell me more of your time.":
+            jump tellmoretime
+        "Your eye was glowing during the battle. What was that?":
+            jump eyeglowingthat
+        "We need help. The technology of your time far surpasses our own. Help us rescue our friend.":
+            jump helptimeourfriend
+
+label whatsoladoingnow:
+
+    show sola uniform handonchest sad with dissolve
+
+    sol "... ... ..."
+    sol "I do not know."
+    sol "The world I know is no more."
+    sol "The war against the Fallen is long concluded, and history no longer even remembers who the victors were."
+    sol "All which I swore to protect are now long dead or destroyed."
+    sol "I now live a hollow existence."
+    sol "I wish to close my eyes once more, and disappear into nothingness. As it was meant to be."
+
+    menu:
+        "Your story isn't over yet. New enemies now challenge Ryuvia. You must raise your sword once more and fight.":
+            jump storynotchallenge
+        "You'll find new friends here with us. You can rebuild your life.":
+            jump newhererebuild
+
+label storynotchallenge:
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "You speak of your enemy, PACT?"
+    sol "I know not of what quarrels you have with them."
+    sol "War is an ugly affair. The truth is lost amidst the sea of blood. No side can claim the moral high ground."
+    kay "I understand that you must be confused. But PACT has murdered millions of my people. They'll pay for what they did to us."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "... ... ..."
+    sol "Even after countless millenia, leaders still speak the same words before leading men to battle."
+    sol "... ... ..."
+
+    show sola uniform handonchest sad with dissolve
+
+    sol "Very well. My guns belong to Ryuvia alone. If there be a threat which threatens my people in this timeline, then I shall once again offer my life to the Holy Ryuvian Empire."
+    sol "The defense of Ryuvia is the only reason for my existence. That is all, captain."
+
+    menu:
+        "Tell me more of your time.":
+            jump tellmoretime
+        "Your eye was glowing during the battle. What was that?":
+            jump eyeglowingthat
+        "We need help. The technology of your time far surpasses our own. Help us rescue our friend.":
+            jump helptimeourfriend
+
+
+label newhererebuild:
+
+    show sola uniform handonchest sad with dissolve
+
+    sol "... ... ..."
+    sol "Friends?"
+    kay "Like a family connected not by blood, but by bonds."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "I know naught of either friends or family."
+    kay "You're just lonely. I don't know what happened to you before you ended up in that tube, but you can join our crew here onboard the Sunrider."
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "... ... ..."
+    sol "I have no desire for friendship. But neither does this time have another place for me."
+    sol "Very well. I shall choose to remain with your crew."
+    sol "But merely because I belong nowhere else in this galaxy."
+    sol "I need not become part of your family nor find camaraderie among those who live now. That is all, captain."
+
+    menu:
+        "Tell me more of your time.":
+            jump tellmoretime
+        "Your eye was glowing during the battle. What was that?":
+            jump eyeglowingthat
+        "We need help. The technology of your time far surpasses our own. Help us rescue our friend.":
+            jump helptimeourfriend
+
+label tellmoretime:
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "It was a violent time for the Holy Ryuvian Empire."
+    sol "The Emperor and the Crown Prince were killed in an assassination, leaving the throne to my father, the second prince."
+    sol "Yet Crow Harbour, the jealous bastard son of the Emperor, laid a competing claim to the throne. He gathered forces across the galaxy. His ambition: to seize the throne for himself."
+    sol "For fourteen years, Ryuvia was caught in a bloody civil war. It seemed as if the Empire itself would crumble if drastic measures were not taken."
+    kay "Drastic measures? Like what?"
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "The awakening of the Sharr'Lac."
+    kay "You mean the super dreadnought we found in that grave yard?"
+    sol "It is a weapon of unimaginable power. Yet, it can only be helmed by one of the King's daughters."
+    sol "The Sharr'Lac cannot be awakened without also sealing the fate of the princess. For when the Sharr'Lac unleashes its ultimate power, it also takes the life of its user."
+    kay "That just sounds like a fantasy legend, not the stuff of real life."
+    sol "Our ships are operated by the power of science, just like yours. Not magic."
+    sol "Long before my time, countless warships bearing the same power as the Sharr'Lac were built. War became horrible. Humanity possessed the power to not only destroy itself, but to collapse the entire universe into a singularity."
+    sol "It was fear of our own power which led to the creation of the Sharr'Lac. The wise Emperors of the past decreed such almighty power could only be used with the sacrifice of the Emperor's most precious daughter."
+    sol "With the price of infinite power so high, even the most arrogant of Emperors bid second thought before awakening the Sharr'Lac."
+    sol "And so, with our most devastating weapon so limited, the Holy Ryuvian Empire could continue to exist in peace."
+    kay "But despite that, your father still choose to sacrifice you to awaken the Sharr'Lac."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "... ... ..."
+    sol "It was a desperate time."
+    kay "You unleashed the Sharr'Lac's final weapon in that battle and destroyed all those ships. But I thought you were supposed to die after you did that."
+    sol "... ... ..."
+    sol "I believed the same."
+    sol "... ... ..."
+    kay "Why is it that you're still alive?"
+    sol "... ... ..."
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "I have already spoken too much. I do not wish to speak of this further."
+
+    menu:
+        "What do you plan on doing now?":
+            jump whatsoladoingnow
+        "Your eye was glowing during the battle. What was that?":
+            jump eyeglowingthat
+        "We need help. The technology of your time far surpasses our own. Help us rescue our friend.":
+            jump helptimeourfriend
+
+label eyeglowingthat:
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "... ... ..."
+    sol "You find me unnatural?"
+    kay "I've never seen anything like that before."
+    sol "Perhaps I am not of your species, captain. Or do you fancy that I am some kind of android?"
+    kay "(...That's got to be the most deadpan joke ever.)"
+
+    show sola uniform neutral neutral with dissolve
+
+    sol "... ... ..."
+    sol "Fear not. I am as human as your mother and father."
+    sol "My eye is merely the result of millennia of scientific research. Thanks to genetic modification, I can momentarily increase the vision in my right eye one hundred fold."
+    sol "The effect is not only limited to my eye, but also provides a brief but tremendous boast to both my muscle control and brain function."
+    sol "Perhaps such technology appears radical to you, but it was a trite affair during my time."
+    kay "So everyone during your time possessed super human abilities?"
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "No. The Holy Ryuvian Emperors feared the power the masses would wield if they had access to such technology."
+    sol "Thus, the law across the galaxy was that only royalty could augment their own DNA."
+    kay "That makes sense. The Ryuvian rulers would want to use such powers to make themselves more powerful."
+
+    menu:
+        "What do you plan on doing now?":
+            jump whatsoladoingnow
+        "Tell me more of your time.":
+            jump tellmoretime
+        "We need help. The technology of your time far surpasses our own. Help us rescue our friend.":
+            jump helptimeourfriend
+
+label helptimeourfriend:
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "The current princess?"
+    kay "Ryuvia needs your help."
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "This timeline is not my own. Your fights are not mine."
+    sol "Yet, even if I so wished, I would be of no use in improving your technology. Such matters are beyond my skills."
+    sol "I am merely a marksman, nothing more. I am no technologist."
+    kay "Okay. But still help us rescue Asaga. We could really use your skills out there."
+
+    show sola uniform handonchest neutral with dissolve
+
+    sol "... ... ..."
+    sol "Very well. I am still sworn to protect Ryuvia, even millennia in the future."
+    sol "I will defend Ryuvia with my life. I have already cast down my body for Ryuvia once, and I do not flinch at the thought of doing so again."
+
+    menu:
+
+        "We're all going to come out of this alive. Watch yourself out there.":
+            jump goingalivethere
+        "We'll give PACT hell until our dying breath.":
+            jump giveuntilbreath
+
+label goingalivethere:
+
+    $ affection_sola += 1
+    $ captain_moralist += 1
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "Now... farewell, captain. Leave me to my peace."
+
+    $ captaindeck = 0
+    $ sol_location = None
+
+    jump dispatch
+
+label giveuntilbreath:
+
+    $ captain_prince += 1
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "Now... farewell, captain. Leave me to my peace."
+
+    $ captaindeck = 0
+    $ sol_location = None
+
+    jump dispatch
+
+label sawasagarecording:
+
+    hide screen ship_map
+    scene bg bridge
+    show ava uniform handonhip neutral
+    with dissolve
+
+    window show
+
+    ava "The battle plans for the rescue operation are nearly complete, captain."
+    kay "Right. Thanks, Ava."
+    ava "Was there something else you needed?"
+
+    menu:
+        "Asaga left me a recording asking us not to follow her.":
+            jump recordingnotfollow
+        "Looks like Claude's going to stay on board for awhile longer.":
+            jump claudestayonboard
+        "Thanks Ava. I'll keep you posted on additional developments.":
+            jump postedthanksdevelopments
+
+label recordingnotfollow:
+
+    show ava uniform altneutral frown with dissolve
+
+    ava "Sounds like even she has more common sense than you do."
+
+    show ava uniform neutral lookleft with dissolve
+
+    ava "Uh, sir."
+    kay "Ava..."
+    kay "If you were captain and I was the one captured, I know you'd dive into the heart of the Veniczar's palace to rescue me."
+
+    show ava uniform armscrossed frown with dissolve
+
+    ava "You presume too much, captain."
+    kay "O-oh. Ouch."
+    kay "What are your thoughts?"
+
+    show ava uniform neutral talk with dissolve
+
+    ava "While Ryuvia is no longer a galactic power, the stories of its former glory are known throughout the galaxy."
+
+    show ava uniform alt neutral neutral with dissolve
+
+    ava "Marrying the princess of Ryuvia will place Veniczar Arcadius in line to eventually become the king. And what tyrant could ever pass up the opportunity to restore the Holy Ryuvian Empire and become Emperor of the infinite cosmos?"
+    ava "Many millennia ago, the Ryuvian Emperor was the ruler of all life. Legend speaks that he controlled time itself, and indeed, he was worshipped throughout the galaxy not as a man, but as a god."
+    kay "Exactly the sort of power a man like Arcadius would dream of wielding."
+    ava "But that was then. Today, Ryuvia is merely an obscure backwater planet."
+    ava "It's former glory is gone. Just look. We had the Princess of Ryuvia on board our ship for two months and nobody even recognized her."
+    ava "Intergalactic treaties are only as powerful as the guns backing the paper. And Ryuvia has none."
+    ava "Offering Asaga to Arcadius was merely a form of surrender. An offering, by a dying world to the new rising galactic power, in the hopes of being spared from the coming fire."
+    ava "Asaga's sacrifice, however tragic, will spare Ryuvia from a PACT invasion."
+
+    show ava uniform armscrossed neutral with dissolve
+
+    ava "Are you willing to doom Ryuvia to share the same fate as Cera merely to rescue Asaga?"
+    kay "... ... ..."
+    ava "I prepare the battle plans just the same, captain."
+
+    menu:
+        "Looks like Claude's going to stay on board for awhile longer.":
+            jump claudestayonboard
+        "Thanks Ava. I'll keep you posted on additional developments.":
+            jump postedthanksdevelopments
+
+label claudestayonboard:
+
+    show ava uniform facepalm with dissolve
+
+    ava "Peh..."
+
+    show ava uniform armscrossed frowntalk with dissolve
+
+    ava "She's already made a total mess out of the crew quarters. She always leaves her belongings in the showers, gets tooth paste splattered all over the mirrors, and has already spilled coffee on the lounge twice."
+    ava "And of course, instead of getting any work done, all she does is stay in bed in her pajamas all day! Arrggghhh!"
+    kay "Sounds like you've finally met your match."
+
+    show ava uniform facepalm with dissolve
+
+    ava "I swear, why do all the ryder pilots in the galaxy have to have such crippling personality defects! I honestly can't believe we're entrusting fusion powered weapons of mass destruction to these people!"
+    kay "Now Ava... Claude's been a big help to our team..."
+
+    menu:
+        "Asaga left me a recording asking us not to follow her.":
+            jump recordingnotfollow
+        "Thanks Ava. I'll keep you posted on additional developments.":
+            jump postedthanksdevelopments
+
+label postedthanksdevelopments:
+
+    show ava uniform neutral neutral with dissolve
+
+    ava "Alright. I'll see you later, captain."
+
+    $ ava_location = None
+    $ captaindeck = 1
+
+    jump dispatch
+
+label icecreamclaude:
+
+    play music "Music/As_I_Figure.ogg" fadeout 1.5
+
+    hide screen ship_map
+    scene bg messhall
+    with dissolve
+
+    show claude uniform handstogether closedeyeshappy with dissolve
+
+    cla "Oh captain... Care to join me for some ice cream?"
+    kay "All right, I have some time to chat."
+
+    show claude uniform neutral smallsurprise with dissolve
+
+    cla "Chocolate or vanilla? Or would you just like to eat out of my bowl--"
+    kay "Uh... no thanks."
+
+    menu:
+        "Do you flirt with every single space captain you happen to meet, Claude?":
+            jump flirtcaptainmeet
+        "So, what are you going to do now?":
+            jump whatgoingnow
+        "Ava says that you've been causing her problems...":
+            jump avatcausingproblems
+        "I'm going to go back to work now. Enjoy your ice cream.":
+            jump goingworkicecream
+
+label flirtcaptainmeet:
+
+    show claude uniform fingeronlip hearteyeblush with dissolve
+
+    cla "Eh-heh... Only the cute ones---"
+    kay "Uh, alright. Sorry I asked."
+
+    show claude uniform handstogether puppy with dissolve
+
+    cla "What's the matter, capt'n? You don't think Claude's cute?"
+
+    menu:
+        "I'm the captain of a military vessel. We have to be serious around here or else people will get hurt.":
+            jump captainserioushurt
+        "Sure... But Ava will be after me with chains if she saw me with you.":
+            jump sureavachainssaw
+
+label captainserioushurt:
+
+    show claude uniform altneutral yawn with dissolve
+
+    cla "Boorrriinnggg..."
+    kay "I never was the dashing space captain type, I'm afraid."
+
+    show claude uniform fingerup neutral with dissolve
+
+    cla "Mmm... I wouldn't be so sure about that."
+    kay "What?"
+
+    show claude uniform altneutral lookawaykitty with dissolve
+
+    cla "Eh-heh... I actually caught the girl in engineering looking over some photos she took of you the other day. Are you sure you don't have an admirer?"
+    kay "You're making that up."
+
+    show claude uniform excited heartdrool with dissolve
+
+    cla "Why would I? Besides, I'd like to keep you all for myself, capt'n--"
+    kay "Ugh, please, no more..."
+
+    menu:
+        "So, what are you going to do now?":
+            jump whatgoingnow
+        "Ava says that you've been causing her problems...":
+            jump avatcausingproblems
+        "I'm going to go back to work now. Enjoy your ice cream.":
+            jump goingworkicecream
+
+label sureavachainssaw:
+
+    show claude uniform altneutral laugh with dissolve
+
+    cla "Ahahaha. Just what's your relationship with your first officer anyways?  Ex-wife?"
+    kay "Hell no. I think we have regulations against that."
+    kay "We went to high school together, that's all. We used to be pretty close back in the days, but it's not like we were dating or anything."
+    kay "I guess she's always been more like an older sister."
+
+    show claude uniform fingerup happy with dissolve
+
+    cla "Haha. And now she's your first officer? That's awkward!"
+    kay "(You wouldn't know half of it.)"
+
+    menu:
+        "So, what are you going to do now?":
+            jump whatgoingnow
+        "Ava says that you've been causing her problems...":
+            jump avatcausingproblems
+        "I'm going to go back to work now. Enjoy your ice cream.":
+            jump goingworkicecream
+
+label whatgoingnow:
+
+    show claude uniform neutral neutral with dissolve
+
+    cla "Well, my ship was wrecked by the pirates, so looks like I'm stuck here."
+
+    show claude uniform fingerup kittyblush with dissolve
+
+    cla "Eh-heh, not that I have any problems with that."
+    kay "I wouldn't count on becoming a doctor here, but you still helped us out with those Ryuvian cruisers. We could use a pilot like you."
+
+    show claude uniform excited perv with dissolve
+
+    cla "Eh-heh... In that case, you can command me any time, captain!"
+    kay "All right. Just... uhh..."
+    kay "No more medical exams."
+
+    show claude uniform excited concern with dissolve
+
+    cla "Oh but captain! It's for your own health!"
+    kay "(More like just to fuel your own perversions!)"
+
+    menu:
+        "Do you flirt with every single space captain you happen to meet, Claude?":
+            jump flirtcaptainmeet
+        "Ava says that you've been causing her problems...":
+            jump avatcausingproblems
+        "I'm going to go back to work now. Enjoy your ice cream.":
+            jump goingworkicecream
+
+label avatcausingproblems:
+
+    show claude uniform altneutral mad with dissolve
+
+    cla "Bleh. That woman just never lets up. Just 'cause I'm staying here for now doesn't mean I have to do the whole military thing."
+
+    menu:
+        "I know Ava can be frustrating at times, but she's only doing her job. Can't you two at least try to get along?":
+            jump suddenzzz
+
+        "Like it or not, you're on a military vessel now. We have a chain of command here.":
+            jump suddenzzz
+
+label suddenzzz:
+
+    show claude uniform excited surprise with dissolve
+
+    cla "Oh! Captain!"
+    kay "W-what?"
+
+    show claude uniform neutral sleepdrool with dissolve
+
+    cla "I think I've been hit with a sudden sleep spell. Good night!"
+    cla "Zzzzzzz..."
+    kay "Claude?"
+    cla "Zzzzzzz...."
+    kay "Quit fooling around."
+    cla "Zzzzzzz...... Mmm..."
+    kay "Your ice cream's melting..."
+    cla "Mmm... Nom..."
+    kay "You're kidding me..."
+
+    menu:
+        "Do you flirt with every single space captain you happen to meet, Claude?":
+            jump flirtcaptainmeet
+        "So, what are you going to do now?":
+            jump whatgoingnow
+        "I'm going to go back to work now. Enjoy your ice cream.":
+            jump goingworkicecream
+
+label goingworkicecream:
+
+    show claude uniform neutral neutral with dissolve
+
+    cla "Bye bye, captain-- Feel free to join me again."
+
+    $ cla_location = None
+    $ captaindeck = 0
+
+    play music "Music/One_Day_in_August.ogg" fadeout 1.5
+
+    jump dispatch
+
+label operationweddingcrash:
+
+    $ cla_location = None
+    $ sol_location = None
+
+    play music "Music/The Tumbrel.ogg" fadeout 1.5
+
+    hide screen ship_map
+    scene bg bridge
+    with dissolve
+
+    window show
+
+    show ava uniform handonhip neutral with dissolve
+
+    kay "Report."
+    ava "I've completed the battle plans for Operation Wedding Crash."
+    kay "Show me."
+
+    show ava uniform alt neutral neutral with dissolve
+
+    ava "We will make a pin point jump past the entire PACT fleet and come out mere meters away from the Star Palace. A security team supported with combat drones will then launch from modified escape pods into the wedding hall, secure Asaga, then return to the Sunrider."
+    ava "Following that, the Sunrider will hit full thrusters and attempt to shake the PACT fleet by swinging around the first Ryuvian moon while we prep our warp drive for a second emergency warp."
+    kay "Sounds like the best we've got. All right, Operation Wedding Crash is approved."
+
+    show ava uniform neutral lookleft with dissolve
+
+    ava "Also, there is an alternative plan..."
+    kay "Alternative?"
+    ava "You could say it's something far more daring..."
+    kay "Right on, I'm listening..."
+
+    scene black with screenwipe
+    scene bg starpalace with screenwipe
+
+    play music "Music/The_Flight_of_the_Crow.ogg"
+
+    "The Star Palace - T-minus 4 hours until the state wedding"
+
+    show fontana:
+        xpos 0.8
+    with dissolve
+
+    fon "My Veniczar. Welcome to Ryuvia."
+
+    show arcadius altneutral with dissolve
+
+    arc "... ... ..."
+    arc "This world was once the center of humanity."
+    arc "Such a pity that we cannot see the halls of the Star Palace as they were millennia ago, lavished with the splendors of the Holy Empire."
+
+    show cullen:
+        xpos 0.2
+    with dissolve
+
+    cul "Hah! Fear not, my lord. The Star Palace is still plenty baroque to this day!"
+
+    show arcadius neutral with dissolve
+
+    arc "Cullen. How goes the invasion of the Neutral Rim?"
+    cul "It is nearly complete, my lord. Day after day, more worlds eagerly join our cause! And those that don't? Well, hah! Our cannons prove them most cooperative!"
+    arc "The Neutral Rim is but a testing ground of our power. Our true objective lies at Far Port."
+    cul "Those Alliance cowards don't see what's coming! Five of our best fleets are poised to strike Far Port within days!"
+    cul "With the fall of Far Port, the gateway to Alliance space will be broken! We will break through the enemy's gates and march to Solaris before the Solar Congress can muster its forces."
+    fon "Careful Cullen. The Alliance is different from the backwater planets you have dealt with in the Neutral Rim. They will not be defeated as easily."
+    cul "Hah! Perhaps to your fleets, Fontana! They are no match for mine!"
+    arc "Very well. Veniczar Cullen. You will lead our forces at Far Port."
+    arc "Let us see if you can translate your words into actions."
+    cul "Thank you, my lord!"
+    fon "This way, my leader, to your chambers. We've prepared a special guest for you."
+
+    scene bg legionwindows with dissolve
+    show arcadius neutral:
+        xpos 0.3
+    with dissolve
+
+    arc "Our... beloved. Are you ready for eternity?"
+
+    show asaga wedding angry:
+        xpos 0.7
+    with dissolve
+
+    asa "Y-you...!"
+    arc "Hahahaha!"
+    arc "Truly your father is naïve to believe offering such a pathetic girl to us will save his dying world from the coming revolution."
+    arc "Ryuvia and its secrets will be mine."
+
+    show arcadius fist with dissolve
+
+    arc "Just as the old Ryuvian Emperors of the past, we shall hold the galaxy upon our palms. But it will not be around the halls of the ancient Star Palace that the galaxy revolves, but from our mighty fortress at New Eden!"
+    asa "Not if I stop you!"
+
+    show arcadius neutral with dissolve
+
+    arc "Oh? And what would a naïve school girl do to oppose us, the Veniczar of the crimson armada?"
+
+    show arcadius neutral:
+        ease 0.5 xpos 0.5
+
+    arc "Your life now belongs to me. Your body is now mine. Your soul will be crushed, until you are but an obedient dog, eagerly licking her master's boots."
+    asa "Never!"
+
+    show arcadius neutral:
+        ease 0.1 xpos 0.7
+        ease 0.1 xpos 0.5
+    pause 0.1
+
+    play sound "sound/punch.ogg"
+
+    show layer master at shake1
+    show asaga wedding scared:
+        zoom 1.0
+        ease 0.1 ypos 1.2
+
+    arc "Silence!"
+    asa "Eah!"
+    arc "How cruel is destiny, that it is we who must suffer, while a little doll like you holds a destiny greater than us."
+    arc "But in mere hours... You will be mine. And with that, the keys to a weapon which shall send a frozen shiver down the galaxy's spine will be in our hands."
+
+    show arcadius laugh with dissolve
+
+    arc "Hahahaha... HAHAHAHAHA!!!"
+
+    scene bg weddinghall with dissolve
+    play music "Music/wedding_march.ogg" fadeout 1.5
+
+    show king with dissolve
+    show arcadius altneutral:
+        xpos 0.8
+    with dissolve
+    show asaga wedding sad:
+        xpos 0.2 xzoom -1
+    with dissolve
+
+    ryu "Dear our kind guests. We are gathered here to witness the marriage of the righteous Veniczar S. Arcadius to my lovely daughter, Princess Asaga di Ryuvia."
+    ryu "Does the honorable Veniczar S. Arcadius take Princess Asaga di Ryuvia as his lawfully wedded wife, to love unconditionally, in sickness and in health, in good times and in bad, and in joy as well in sorrow, to cherish and to hold for as long as he shall live?"
+    arc "Yes."
+    ryu "And does Princess Asaga di Ryuvia solemnly pledge to take Veniczar S. Arcadius as her lawfully wedded husband, to love unconditionally, in sickness and in health, in good times and in bad, and in joy as well in sorrow, to cherish and to hold for as long as she shall live?"
+    asa "I..."
+    asa "... ... ..."
+    ryu "Ahem..."
+
+    show asaga wedding sadtear with dissolve
+
+    asa "I........"
+    asa "... ... ..."
+    ryu "Then I do declare you husband and wife. You may now kiss the bride."
+    asa "... ... ..."
+
+    play music "Music/The_Flight_of_the_Crow.ogg" fadeout 1.5
+
+    show arcadius laugh with dissolve
+
+    arc "Hahahahahahaha!"
+
+    show arcadius neutral with dissolve
+
+    arc "We are afraid this charade is now over, your majesty. Your pathetic kingdom shall now be extinguished from the face of the galaxy."
+
+    play sound "sound/hit.ogg"
+    show king at shake1:
+        zoom 1.0
+
+
+    ryu "What? We had a deal, Veniczar!"
+
+    show arcadius fist with dissolve
+
+    arc "A deal made only of paper. Men! Seize our guests."
+
+    hide king with dissolve
+
+    show asaga wedding angry:
+        ease 0.5 xpos 0.3
+    with dissolve
+
+    show arcadius fist:
+        ease 0.5 xpos 0.7
+
+    asa "You! I knew this was all a trick!"
+
+    show arcadius altneutral with dissolve
+
+    arc "Silence, our little princess. You shall learn to serve us."
+    arc "We hope your cooperation is forthcoming, for the life of your father depends on it."
+    asa "Y-you..."
+    arc "How fitting it is that our marriage hall is high above the skies of Ryuvia. From here, you will all witness the true power of PACT... And the end of your pathetic kingdom."
+    arc "For ten thousand years, Ryuvia has ruled the galaxy... And now... PACT shall earn its place in history as the power to finally extinguish Ryuvia's last flickering ember."
+
+    show asaga wedding angry:
+        ease 0.5 xpos 0.2
+    show arcadius altneutral:
+        ease 0.5 xpos 0.8
+    show king with dissolve
+
+    ryu "... ... ..."
+    ryu "Hahaha..."
+    ryu "Empty words, Veniczar..."
+    ryu "I have ruled Ryuvia for all my life... And I have long realized, all our traditions... All our rites... All our culture..."
+    ryu "They are but sad remnants of our former selves, meant to cloak us from the truth: That we have become weak."
+    ryu "Ryuvia, the infinite kingdom of all space and time, is no longer... All that is left is embodied in this old, frail man."
+    ryu "Go ahead. Shoot. You will only have killed an old, dying man, whose time has long come. That... Is all that you have accomplished today..."
+    arc "Hah. You speak too much. Farewell, my king."
+
+    play sound "sound/pistol.ogg"
+    show white:
+        alpha 0
+        ease 0.3 alpha 1.0
+        ease 0.3 alpha 0
+
+    show king:
+        zoom 1.0
+        ease 0.5 ypos 1.3 zoom 1.0
+
+    ryu "Eaah!!!"
+
+    show asaga wedding surprisetears with dissolve
+
+    asa "Father!"
+    ryu "Asaga... I'm sorry."
+    ryu "It was... The only way... The Veniczar promised your safety if you would wed him..."
+    asa "You didn't have to..."
+    ryu "Forgive me... Asaga..."
+
+    hide king with dissolve
+
+    show asaga wedding surprisetears:
+        ease 0.5 xpos 0.3
+    show arcadius altneutral:
+        ease 0.5 xpos 0.7
+
+    asa "NO!!"
+
+    show arcadius fist with dissolve
+
+    arc "Seize them. They shall now be made to serve PACT. Prepare my shuttle for the Legion. We shall dissect Ryuvia until all its secrets are ours!"
+    asa "No! Let me go!! You'll pay for this, Veniczar!!"
+
+    show arcadius altneutral with dissolve
+
+    arc "Oh?"
+
+    show arcadius laugh with dissolve
+
+    arc "We are Veniczar Arcadius! It is us who will rule the known cosmos! There is no force left in this galaxy to challenge us!"
+    arc "Our power is infinite! And you, our pretty little doll... will belong to us for eternity!"
+    arc "With the key to the galaxy in our hand... We shall be unstoppable!"
+
+    window hide
+
+    play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
+
+    scene cg_weddinghall_ceilingspace
+    show cg_weddinghall_ceiling
+    with dissolve
+
+    show cg_weddinghall_sunrider warp behind cg_weddinghall_ceiling:
+        zoom 0.7 xanchor 0.5 xpos 0.5 ypos 0.5
+        ease 0.1 zoom 1.0 ypos -0.2
+
+    pause 0.5
+
+    play sound "sound/large_warpout.ogg"
+
+    show cg_weddinghall_sunrider behind cg_weddinghall_ceiling
+    show white:
+        alpha 0
+        ease 0.2 alpha 0.8
+        ease 0.2 alpha 0
+
+    $ renpy.pause(3.0)
+
+    scene bg weddinghall
+    show arcadius neutral
+    with dissolve
+
+    window show
+
+    arc "What-? What is that vessel!?"
+
+    show cullen:
+        xpos 0.88
+    with dissolve
+
+    cul "G-guck!"
+
+    show asaga wedding surprise:
+        xpos 0.2
+    with dissolve
+
+    asa "It's... the Sunrider!"
+
+    scene bg bridgered with dissolve
+
+    show ava uniform alt neutral angry with dissolve
+
+    ava "Warp successful! We've dropped out 10 meters from the wedding hall!"
+    kay "Begin operation! Launch our drones and take out the guard ships!"
+    ava "Aye captain."
+    ava "I will lead the security squad as planned. You have the bridge captain."
+    kay "No. I'm coming with you."
+
+    show ava uniform armscrossed frown with dissolve
+
+    ava "Captain, protocol strictly states that during all high risk away missions, the captain is to remain on the bridge at all times."
+    "Ava pulled out a handbook from her pocket and rapidly flipped through the pages."
+    ava "Section 48, paragraph 8 clearly states, when engaging in level 9 security protocols, the ranking officer must-"
+
+    menu:
+        "No.":
+            jump justno
+        "COMMAND DECISION: HELL no. (50 CMD)":
+            jump hellno
+
+label justno:
+
+    kay "I'm not letting you do this alone."
+
+    show ava uniform armscrossed neutral with dissolve
+
+    ava "... ... ..."
+
+    show ava uniform alt neutral mad with dissolve
+
+    ava "All right. Come this way."
+
+    jump theweddingcrash
+
+label hellno:
+
+    if BM.cmd >= 50:
+        $ BM.cmd -= 50
+
+        play sound "sound/swordhit.ogg"
+        show captainflash:
+            xpos 1.1 ypos 0.2
+            ease 0.7 xpos 0.35
+            pause 0.5
+            ease 0.8 alpha 0
+
+        "Shields grabbed the handbook from Ava's hands, shredded it to pieces, and scattered it to the winds."
+
+        show ava uniform altneutral annoyed with dissolve
+
+        ava "... ... ..."
+
+        show ava uniform salute talk with dissolve
+
+        ava "Right this way, sir."
+
+        jump theweddingcrash
+
+    if BM.cmd < 50:
+        "Insufficient command points."
+        menu:
+            "No.":
+                jump justno
+            "COMMAND DECISION: HELL no. (50 CMD)":
+                jump hellno
+
+label theweddingcrash:
+
+    scene bg weddinghall with dissolve
+    show arcadius fist with dissolve
+    show fontana:
+        xpos 0.7
+    with dissolve
+
+    fon "Take cover sir! We've got a security breach!"
+
+    show cullen:
+        xpos 0.23
+    with dissolve
+
+    cul "Bah! Destroy those drones!"
+    arc "Fools! It is merely one ship! Blow it out of the sky!"
+
+    show asaga wedding surprise:
+        xpos 0.34
+    with dissolve
+
+    asa "Captain! Over here!"
+
+    show cullen:
+        ease 0.5 xpos 0.3
+
+    cul "Oh no, your highness! You're not going anywhere!"
+
+    show asaga wedding angry:
+        ease 0.2 xpos 0.35
+        ease 0.2 xpos 0.34
+        repeat 5
+
+    asa "Eah! Lemme go ya fatty!"
+    cul "Disrespectful little whelp! I'll show you, you little-"
+    kay "Veniczar Porkchops! Let her go!"
+
+    play sound "sound/hit.ogg"
+    show cullen:
+        ease 0.01 xpos 0.295
+        ease 0.02 xpos 0.305
+        ease 0.01 xpos 0.3
+        repeat 5
+
+    cul "Y-you! I should have killed you when I had the chance!"
+
+    play sound "sound/punch.ogg"
+
+    show asaga wedding angry:
+        ease 0.1 xpos 0.3
+        ease 0.1 xpos 0.34
+
+    asa "Eah!"
+
+    show cullen:
+        ease 0.5 ypos 1.2
+        block:
+            ease 0.1 xpos 0.31
+            ease 0.1 xpos 0.29
+            repeat 8
+
+    cul "AAARRGGHH!!!!! My foot!"
+    cul "ARGGHHH!!! That bitch just crushed my foot with her heels! ARRGGHHH MEDIC!!!"
+
+    show asaga wedding angry:
+        ease 0.5 xpos -0.4
+
+    fon "Men! Seize the princess! Don't let her-"
+
+    scene cg_weddingcrash1 with dissolve
+
+    kay "Asaga, here! We're getting you out of here!"
+    asa "Captain!"
+    kay "Hang on!"
+    cul "YOU!!!"
+    kay "Sorry to bride snatch, but I think this marriage's been annulled!"
+    asa "Careful captain! Two, up in the rafters!"
+
+    scene cg_weddingcrash2 with dissolve
+    play sound "sound/pistol.ogg"
+
+    pause 0.4
+    play sound1 "sound/pistol.ogg"
+
+    pause 0.3
+    play sound2 "sound/pistol.ogg"
+    pause 0.3
+    play sound2 "sound/pistol.ogg"
+
+    asa "Eaaahh!!!"
+    kay "U-uh. Thanks for the cover."
+    kay "Ava, I've secured Asaga."
+    kay "Commence Stage Two."
+    ava "Aye captain."
+
+    scene bg weddinghall
+    show arcadius fist:
+        xpos 0.49
+    with dissolve
+
+    arc "Fools! Do not allow the princess to escape!"
+
+    show cg_crosshairs with dissolve
+
+    ava "Sola, eliminate the target."
+    sol "Understood."
+    sol "Acquiring target."
+
+    play sound "sound/rifle.ogg"
+    hide arcadius with dissolve
+
+    sol "Target neutralized."
+    kay "Ava, confirm! Is the target down?"
+
+    show arcadius fist behind cg_crosshairs with dissolve
+
+    ava "Negative!"
+    ava "It was just a hologram. Arcadius was never even in the wedding hall."
+
+    scene cg_weddingcrash1 with dissolve
+
+    kay "Damn!"
+    kay "Abort mission! Get out of there! Return to the Sunrider!"
+    ava "Understood captain. We're falling back!"
+    kay "C'mon Asaga, back into the escape pod! We're getting out of here!"
+
+    scene bg hangar with dissolve
+
+    kay "We've made it back, Ava! What's the situation!"
+    ava "The space around us just lit up like a Christmas tree! We've got 200 ships, closing in fast!"
+    kay "All ahead full! Launch all our ryders to protect the Sunrider as we make it to the moon!"
+    ava "Aye captain!"
+
+    stop music fadeout 1.5
+
+    scene black with screenwipe
+    scene bg hangar with screenwipe
+    show asaga plugsuit neutral crush:
+        ypos 1.4 zoom 1.6 xpos 0.5
+    with dissolve
+
+    kay "Here's the Black Jack. We kept her warm for you."
+    asa "Captain..."
+    asa "You came for me. Even after..."
+    kay "Of course I did. You're a member of my crew."
+    kay "Stay safe out there."
+
+    show asaga plugsuit neutral smileblush with dissolve
+
+    pause 0.5
+
+    play sound "sound/heartbeat.ogg"
+
+    show asaga plugsuit neutral smileblush:
+        ypos 1.4
+        ease 0.03 xpos 0.495
+        ease 0.05 xpos 0.505
+        ease 0.03 xpos 0.5
+        repeat 3
+
+    asa "... ... ..."
+    asa "Uu..."
+
+    show asaga plugsuit vpose with dissolve
+
+    asa "Asaga di Ryuvia, returnin' to duty, sah!"
+    kay "Good to have you back."
+    kay "Now go get 'em."
+
+    scene bg weddinghall with dissolve
+    show arcadius neutral:
+        xpos 0.3
+    with dissolve
+    show fontana:
+        xpos 0.7
+    with dissolve
+
+    play music "Music/March_to_Glory.ogg"
+
+    fon "Sir, the Sunrider is attempting to escape behind the first moon. We've already scrambled all our forces to intercept. What are your orders?"
+    arc "We will not be humiliated at our own wedding."
+
+    show arcadius fist with dissolve
+
+    arc "Slaughter them all. But bring the princess to us alive."
+    arc "Death is too lenient of a sentence for the humiliation she has caused us today."
+    fon "Yes sir."
+
+    hide fontana with dissolve
+    show arcadius altneutral with dissolve
+    show arcadius altneutral:
+        ease 0.5 xpos 0.5
+
+    arc "Her struggle is meaningless, for Ryuvia is already ours."
+    arc "Soon, we will have the means to rule the galaxy just as the Ryuvian Emperors of the old."
+
+    show arcadius laugh with dissolve
+
+    arc "Hahahaha...."
+    arc "HAHAHAHAHAHAHAHAHAHAHA!!!"
+
+    scene bg bridgered with dissolve
+
+    show ava uniform alt neutral angry with dissolve
+
+    ava "Captain, we've got PACT vessels coming from every direction to intercept us."
+    kay "Make it to Ryuvia's moon as fast as possible. We'll slingshot ourselves out of Ryuvia's gravity well and block off the PACT fleet while we're at it."
+
+    show ava uniform alt order angry with dissolve
+
+    ava "Aye captain! All hands, prepare for emergency maneuvers!"
+
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+
+    window hide
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    $ check6 = False
+
+    call mission11_inits
+    $ BM.mission = 11
+    jump battle_start
+
+label mission11:
+
+    $BM.battle_bg = "Background/space6.jpg"
+
+    if check1 == False:
+
+        $BM.draggable = False
+
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ava "The two PACT battleships are trying to cut us off!"
+        ava "Tractor beam detected! We'll have to sink the battleships before we can warp!"
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+
+        play sound "Sound/objectives.ogg"
+        "Objective: Sink the two PACT battleships."
+
+        $ check1 = True
+        $ BM.draggable = True
+
+    if check2 == False and BM.turn_count == 4:
+
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactMook(),(16,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(17,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(MissileFrigate(),(13,3),[PactFrigateMissile()])
+
+            create_ship(PactMook(),(16,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactCruiser(),(15,14),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(MissileFrigate(),(13,14),[PactFrigateMissile()])
+
+
+        $ check2 = True
+
+    if check3 == False and BM.turn_count == 6:
+
+        play sound "sound/Voice/Ava/Ava Others 5.ogg"
+        python:
+            create_ship(MissileFrigate(),(17,6),[PactFrigateMissile()])
+            create_ship(PactCruiser(),(17,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        $ check3 = True
+
+    if check4 == False and BM.turn_count == 8:
+
+        $BM.draggable = False
+
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ava "Incoming more enemy reinforcements!"
+        ava "Hurry up, captain! We're running out of time!"
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactCruiser(),(17,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(18,1),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(16,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactMook(),(14,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(16,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(15,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(16,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(16,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactMook(),(16,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(17,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(15,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(MissileFrigate(),(13,14),[PactFrigateMissile()])
+
+        $BM.draggable = True
+        $ check4 = True
+        
+    if check6 == False and BM.turn_count == 10:
+
+        $BM.draggable = False
+
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactMook(),(14,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(16,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(15,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactBomber(),(14,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(14,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(15,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(15,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(16,2),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactBomber(),(16,15),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+            create_ship(PactMook(),(16,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(17,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(PactMook(),(15,14),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+            create_ship(MissileFrigate(),(13,12),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(14,12),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(15,12),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(13,5),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(14,5),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(15,5),[PactFrigateMissile()])
+
+        $BM.draggable = True
+        $ check4 = True
+        
+    python:
+        
+        battleships_remaining = 0
+        for ship in enemy_ships:
+            if ship.stype == 'Battleship':
+                battleships_remaining += 1
+                
+    if battleships_remaining == 0 and check5 == False:
+        
+        $BM.draggable = False
+        
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ava "All battleships destroyed, captain!"
+        ava "Now let's get out of here before more enemies show up!"
+        
+        play sound "Sound/objectives.ogg"
+        "Objective: Get the Sunrider to the far right edge of the map."
+        
+        $BM.draggable = True
+        $ check5 = True
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+        
+    $BM.battle()  #continue the battle
+    
+    if sunrider.location[0] == 18 and check5 == True:
+        $ BM.battle_end()
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission11 #loop back
+    else:
+        pass #continue down to the next label
+
+
+label aftermission11:
+
+    hide screen commands
+    hide screen battle_screen
+
+    scene bg bridgered
+    show ava uniform alt neutral angry
+    with dissolve
+
+    window show
+
+    ava "We have made it to the moon captain!"
+    kay "Retrieve our ryders! Slingshot us around the moon close enough to graze the sand!"
+    ava "Aye captain! Our artificial gravity generator is nearing its limit!"
+
+    play music "Music/Posthumus_Regium.ogg"
+
+    scene cg_legionsurprise1 with dissolve
+
+    ava "Holy----!"
+    ava "It's the Legion, waiting for us on the other side of the moon!"
+
+    play sound "sound/legion_maincannon_charge.ogg"
+    scene cg_legionsurprise2 with dissolve
+
+    ava "It is preparing to fire!"
+    kay "Break off! HARD TO PORT!!!"
+
+    scene bg bridgeredtilt
+    show bridgeredtiltfore
+    show ava uniform altneutral surpriseshout behind bridgeredtiltfore:
+        rotate -45 xpos 0.8 ypos 0.8 zoom 1.2
+        ease 1.0 xpos 0.2 ypos 2.0
+    with dissolve
+
+    pause 0.2
+
+    show layer master at shake1
+    play sound "sound/hit.ogg"
+
+    ava "Arrggghhh!!!"
+
+    show ava uniform altneutral surpriseshout behind bridgeredtiltfore:
+        rotate -20 xpos 0.4 ypos 1.2
+    with dissolve
+
+    ava "We're exceeding our safeties, captain!"
+    kay "All hands, BRACE FOR IMPACT!!!"
+
+    scene cg_legionsurprise2 with dissolve
+
+    ava "Warp preparations are complete!"
+    kay "WARP!!!"
+
+    play sound "sound/legion_maincannon_fire.ogg"
+    pause 0.6
+    scene cg_legionsurprise3
+
+    play sound1 "sound/large_warpout.ogg"
+
+    show cg_legionsurprise_sunrider:
+        xpos 0.0 ypos 0.0
+        ease 0.4 zoom 10 xpos 1.1 ypos -6.5
+    show cg_legionsurprise_sunriderflash:
+        alpha 0
+        parallel:
+            ease 0.2 alpha 1.0
+            ease 0.1 alpha 0
+        parallel:
+            ease 0.3 zoom 1.5 ypos -0.32
+    with dissolve
+
+    pause 3.0
+
+    stop music fadeout 3.0
+    scene black with dissolvelong
+
+    pause 1.0
+
+    scene bg bridgered
+    show ava uniform neutral neutral
+    with dissolvelong
+
+    ava "Captain, we're now safely inside Alliance space. No sign of further PACT pursuit."
+
+    play music "Music/The_Beginning_of_the_Adventure.ogg"
+
+    kay "Good. Stand down red alert."
+
+    scene bg bridge
+    show ava uniform armscrossed smile
+    with dissolve
+
+    ava "That was one hell of a rescue, captain. Tell the truth, I can't believe we made it out of that alive."
+    kay "You did well, Ava. I knew I could count on you."
+
+    show ava uniform salute neutral with dissolve
+
+    ava "Thank-you, captain."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "We're receiving a message from the Alliance vessel Aristotle. They want to know our status."
+    kay "Tell them we mean no harm. We'll be approaching the nearest safe harbor for supplies and repairs."
+    ava "Aye sir."
+    kay "Take us into port, Ava. I think we've had more than enough adventure for one day."
+    ava "Understood, captain. Setting course for the Alliance planet of Far Port. ETA: 18 hours."
+
+    scene black with screenwipe
+    scene bg captainsoffice with screenwipe
+
+    kay "Begin captain's log. We've arrived at the Alliance world of Far Port. News of Ryuvia's fall has spread throughout Alliance space like wildfire."
+    kay "Now, there can be no doubt about Arcadius' ambitions. With PACT now at its doorsteps, the Solar Congress has convened for an emergency session. The only possible outcome is a declaration of war."
+    kay "The Sunrider is now caught right in the middle of the biggest intergalactic war of our time."
+    kay "I'm not sure just where we stand here..."
+
+    menu:
+        "My gut feeling is that we shouldn't get too close to the Alliance.":
+            jump gutshouldntalliance
+        "My gut feeling is that we should assist the Alliance in whatever capacity we can.":
+            jump thatassistalliance
+
+label gutshouldntalliance:
+
+    kay "The Alliance is mired in politics. Whatever is good for the Alliance may not be in the best interests of my ship."
+    kay "For now, it'll be better to wait and see just what the Alliance wants out of this war."
+
+    jump asagaafterrescue
+
+label thatassistalliance:
+
+    kay "The Alliance is our best hope of defeating PACT. We have to accept the fact that we're just one ship against an entire empire. We need powerful allies if we're going to survive."
+
+    jump asagaafterrescue
+
+label asagaafterrescue:
+
+    play music "Music/Colors_of_an_Orchestra.ogg" fadeout 1.5
+
+    play sound "sound/doorbell.ogg"
+    "(Doorbell)"
+
+    kay "End log. Come in."
+
+    show asaga uniform armscrossed blushsmile with dissolve
+
+    asa "Uh, how's it going, capt'n."
+    kay "Asaga. Have a seat."
+    kay "I've been meaning to speak to you about what happened on Ryuvia."
+    asa "You must have so many questions."
+
+    show asaga uniform altneutral sorryblush with dissolve
+
+    asa "First, I'm sorry for lying to you. I didn't mean to place the crew in danger like that."
+
+    show asaga uniform altneutral sadblush with dissolve
+
+    asa "I guess... I was just naïve. I thought I could just keep pretending to be Asaga Oakrun for the rest of my life. I guess real life doesn't work like that..."
+    kay "That doesn't matter now. I'm just glad to have you back."
+
+    menu:
+        "You saw your own father get killed. Are you feeling all right?":
+            jump sawfatherkilled
+        "You must know more about Arcadius. Is there anything you can tell me about him?":
+            jump knowarcadiustell
+        "You're now the Queen of Ryuvia. What are you going to do?":
+            jump nowqueendo
+        "That'll be all. I'm glad to have you back, Asaga.":
+            jump allgladback
+
+label sawfatherkilled:
+
+    show asaga uniform altneutral sadblush with dissolve
+
+    asa "Yeah..."
+    asa "Even though I hated my father for marrying me to the Veniczar, I think in the end, he was just trying to do his best to protect me..."
+
+    show asaga uniform handonhips sadsmile with dissolve
+
+    asa "I'm not the type to get all depressed, captain. Not while there's still something I can do."
+    asa "I'm going to avenge my father by ending PACT once and for all. As long as I still have my Black Jack, I'll keep fighting for my father's memory."
+    kay "I'm glad to hear you're taking this strong. But remember, we're all here for you. You don't have to carry your burdens alone."
+
+    menu:
+        "You must know more about Arcadius. Is there anything you can tell me about him?":
+            jump knowarcadiustell
+        "You're now the Queen of Ryuvia. What are you going to do?":
+            jump nowqueendo
+        "That'll be all. I'm glad to have you back, Asaga.":
+            jump allgladback
+
+label knowarcadiustell:
+
+    show asaga uniform handonchin thinking with dissolve
+
+    asa "I'm sorry captain, but not even I know much about him."
+    asa "I hardly ever saw him, and even when I did, he always hid his face and voice behind a mask. I have no idea who or what he is."
+    asa "All I know is that he has always been obsessed with old Ryuvian legends."
+
+    show asaga uniform armscrossed neutral with dissolve
+
+    asa "He's always spurting nonsense about lost technology and becoming immortal. I think conquering Ryuvia has been an obsession of his for years."
+    asa "Rumor has it that he's amassing a collection of Ryuvian relics from across the galaxy. For what purpose, nobody knows."
+    kay "Whatever purpose it is, it's not for ending world hunger. Someone like Arcadius finding lost technology is bad news for the entire galaxy. We have to act fast to stop him before he becomes unstoppable."
+
+    menu:
+        "You saw your own father get killed. Are you feeling all right?":
+            jump sawfatherkilled
+        "You're now the Queen of Ryuvia. What are you going to do?":
+            jump nowqueendo
+        "That'll be all. I'm glad to have you back, Asaga.":
+            jump allgladback
+
+label nowqueendo:
+
+    show asaga uniform armscrossed thinkingfrown with dissolve
+
+    asa "Ugh... I don't even want to think about being called that..."
+    asa "I'm through with being royalty, capt'n. It's just not what I was meant to be."
+
+    menu:
+        "You have every right to choose your own destiny, Asaga.":
+            jump rightchoosedestiny
+
+        "Even if it's not what you wanted, you still have a responsibility to your people.":
+            jump notwantresponsibility
+
+label rightchoosedestiny:
+
+    show asaga uniform altneutral sad with dissolve
+
+    asa "Ryuvia's been ruled by a monarch for too long."
+    asa "After all of this is over, I'm abdicating."
+
+    jump nobodykingsday
+
+label notwantresponsibility:
+
+    show asaga uniform altneutral sad with dissolve
+
+    asa "I know that..."
+    asa "I'm going to fight to liberate Ryuvia from PACT. I won't stop until Arcadius is defeated and my people are free again."
+    asa "Then, after all of this is over, I'm abdicating."
+
+    jump nobodykingsday
+
+label nobodykingsday:
+
+    asa "Nobody needs kings and queens in this age, captain. The people deserve elected officials. Not royals."
+    kay "You're right. That's the best you can do for your people right now."
+
+    menu:
+        "You saw your own father get killed. Are you feeling all right?":
+            jump sawfatherkilled
+        "You must know more about Arcadius. Is there anything you can tell me about him?":
+            jump knowarcadiustell
+        "That'll be all. I'm glad to have you back, Asaga.":
+            jump allgladback
+
+label allgladback:
+
+    show asaga uniform armscrossed smileblush with dissolve
+
+    asa "I'm glad to be back too, capt'n!"
+
+    hide asaga with dissolve
+
+    $ sol_location = "messhall"
+    $ sol_event = "fallofryuvia"
+
+    $ chi_location = "engineering"
+    $ chi_event = "chigarathankrescue"
+
+    $ ica_location = "hangar"
+    $ ica_event = "icarithoughtsalliance"
+
+    $ cla_location = None
+    $ ava_location = None
+    $ asa_location = None
+    $ pro_location = None
+
+    $ captaindeck = 0
+
+    jump dispatch
+
+label fallofryuvia:
+
+    hide screen ship_map
+    scene bg messhallwindows
+    show sola uniform backturn neutral
+    with dissolve
+
+    window show
+
+    sol "Captain."
+    kay "I thought I'd find you here."
+    kay "Thanks for helping us out with that rescue."
+    sol "... ... ..."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "The worst has come to pass. Ryuvia has fallen."
+    kay "Not yet. The Queen still lives. We'll liberate Ryuvia and free your people."
+
+    show sola uniform handonchest sad with dissolve
+
+    sol "My sacrifice was meaningless. In my time, the Holy Ryuvian Empire stretched across the galaxy. It was the center of all of the sciences, civilization, and produce."
+    sol "And yet... you tell me the Ryuvia of today is nothing more than a forgotten world, to be conquered so easily by barbarians?"
+    kay "Your sacrifice was not in vain. For over a millennia after your death, the flame of Ryuvia burned on. It was only within the last 400 years that Ryuvia lost its power, and only due to infighting within the royal court."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "... ... ..."
+    sol "And so it was us who sabotaged our own empire and caused our eventual collapse?"
+    kay "Yes."
+    sol "... ... ..."
+    sol "Then nothing has changed."
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "Leave me. I wish solitude."
+    kay "All right."
+    sol "... ... ..."
+    kay "You don't have to be alone, Sola. We're all here for you."
+    sol "Farewell."
+
+    $ sol_location = None
+    $ captaindeck = 0
+
+    jump dispatch
+
+label chigarathankrescue:
+
+    hide screen ship_map
+    scene bg engineering
+    show chigara uniform handonchest smile
+    with dissolve
+
+    window show
+
+    chi "Ah, captain. Umm... Thank-you for helping Asaga."
+    chi "As her friend, it means a lot to me, what you did for her..."
+    kay "Of course we had to rescue her. Asaga's a member of our crew."
+
+    show chigara uniform handonchest closedeyessmile with dissolve
+
+    chi "Eh-heh. I'm glad to have you as our captain... Captain."
+
+    show chigara uniform altneutral neutral with dissolve
+
+    chi "Was there anything else you needed? Perhaps an anomaly to scan? A new research project? Eh-heh..."
+    kay "Nothing at the moment, Chigara."
+    chi "Please come by my lab any time you need anything, captain."
+    kay "By the way... You're not startled any more when I come around."
+    chi "Ah, I installed some cameras around engineering which now warn me whenever you approach."
+    kay "O-oh. I, uh... didn't know you did that."
+
+    show chigara uniform handsonchest sad with dissolve
+
+    chi "Is it not allowed?"
+    kay "Well, I'm sure it's fine. Just, uh... don't let Ava find out about it."
+
+    show chigara uniform handstogether smileblush with dissolve
+
+    chi "Yes captain. Maybe I could test out my new camouflage composite on them..."
+
+    $ chi_location = None
+    $ captaindeck = 1
+    $ pro_location = "captainsloft"
+    $ pro_event = "alliancedeclareswar"
+
+    jump dispatch
+
+label icarithoughtsalliance:
+
+    hide screen ship_map
+    scene bg hangar
+    show icari uniform handonhip smile
+    with dissolve
+
+    window show
+
+    ica "I must say, that was quite a rescue captain. I wasn't sure if we could have pulled it off."
+
+    menu:
+        "Of course we had to pull it off. Asaga's a member of our crew.":
+            jump pulloffcrew
+        "To tell the truth, I'm surprised we made it out of there myself.":
+            jump truthsurprisedthere
+
+label pulloffcrew:
+
+    show icari uniform armscrossed smilesidesmile with dissolve
+
+    ica "Heh. One day captain, that heart of yours is going to get you killed. I just hope I'm there to save your ass when that happens."
+    kay "That heart's the reason why you're onboard this ship, Icari. Doing the right thing and doing the expedient thing aren't mutually exclusive, you know. You can stand for what's right and still make it out alright."
+    ica "Alright, captain."
+
+    jump icarianywaysforsomething
+
+label truthsurprisedthere:
+
+    show icari uniform armscrossed smilesidesmile with dissolve
+
+    ica "Haha, just don't go around looking so unconfident in front of the crew. You know, there are even some rumors circulating about you."
+    kay "What rumors?"
+    ica "Haven't you been checking the holonet? You've just rescued the Ryuvian princess. People are starting to take notice of what you've been doing."
+    ica "The more things are looking like it's going down the chute, the more people want to rally around a leader. So make sure you live up to expectations, alright?"
+
+    menu:
+        "I'm just doing what's good for the galaxy, Icari. I'm not in this for the attention.":
+            jump doinggoodgalaxy
+        "The galaxy needs to rally against PACT. I'll do everything I can to inspire people in the war against PACT.":
+            jump needsagainsteverything
+
+label doinggoodgalaxy:
+
+    $ captain_moralist += 1
+
+    ica "Right. Well, it won't be long until holovision news crews are begging you for interviews."
+
+    jump icarianywaysforsomething
+
+label needsagainsteverything:
+
+    $ captain_prince += 1
+
+    ica "You better get a new suit then. From the look of things, you'll be in the limelight much more from now."
+
+    jump icarianywaysforsomething
+
+label icarianywaysforsomething:
+
+    show icari uniform altneutral smile with dissolve
+
+    ica "Anyways, did you need me for something?"
+
+    menu:
+        "Do you think we should fight alongside the Alliance?":
+            jump youshouldalongsidefight
+        "Nothing more. Keep up the good work, Icari.":
+            jump morekeepwork
+
+label youshouldalongsidefight:
+
+    show icari uniform armscrossed neutral with dissolve
+
+    ica "I meant what I said earlier. The only chance we have of stopping PACT is to work with the Alliance. Right now, practically the entire Neutral Rim belongs to PACT and the few independent planets left don't stand a chance by themselves."
+    ica "PACT needs to be stopped no matter the cost. I say working with the Alliance is the best chance we've got at ending this war quickly."
+
+    menu:
+        "I think we can trust the Alliance. They're the biggest democracy the galaxy has known. Better working with them than letting PACT rule the galaxy with an iron fist.":
+            jump trustdemocracyworking
+        "I don't know if I like this yet. If the Alliance does defeat PACT, what will that mean for planets like Cera? Won't we be replacing one dictator for another?":
+            jump likewillreplace
+
+label trustdemocracyworking:
+
+    $ captain_moralist += 1
+
+    show icari uniform handonhip smile with dissolve
+
+    ica "Sure. Although I like the fact they carry the biggest guns in the galaxy more than the fact they're a democracy. Haha."
+
+    show icari uniform armscrossed neutral with dissolve
+
+    ica "Look captain, democracies don't win wars. Warships and cannon do. We need warships and the Alliance has warships. So we work together. It's as simple as that."
+
+    jump offerhelpnoway
+
+label likewillreplace:
+
+    $ captain_prince += 1
+
+    show icari uniform neutral neutral with dissolve
+
+    ica "Heh. Well, once PACT's gone, the Alliance will probably fill in the power vacuum. I'm not sure what that'll mean for the Neutral Rim."
+    ica "Probably, the current PACT occupied territories will end up being occupied by the Alliance instead. Either way, it doesn't look like your planet will be able to return to the way things were."
+    kay "I'm not going to let Cera become a colony. Alliance or PACT."
+
+    show icari uniform armscrossed neutral with dissolve
+
+    ica "Hopefully for you, the Solar Congress will be too busy debating to make much of a difference. Well, that's assuming the military doesn't take over anyways."
+    ica "Anyways, that's too far into the future to really predict. Right now, it's obvious that you're going to need the Alliance's help if you're going to take back Cera."
+
+    jump offerhelpnoway
+
+label offerhelpnoway:
+
+    ica "If the Alliance is going to offer their help in stopping PACT, we have to take it. There's no other way to stop PACT."
+    kay "I get what you're saying. I'll keep it under advisement."
+    ica "Thanks captain. Anyways, tell me what ends up happening."
+
+    $ ica_location = None
+    $ captaindeck = 2
+    jump dispatch
+
+label morekeepwork:
+
+    ica "See you."
+
+    $ ica_location = None
+    $ captaindeck = 2
+    jump dispatch
+
+label alliancedeclareswar:
+
+    hide screen ship_map
+    scene bg captainsoffice
+    show ava uniform neutral neutral
+    with dissolve
+
+    window show
+
+    ava "Captain, have you checked the holovision?"
+    kay "No."
+    ava "The Solar Alliance has just declared war on PACT. Admiral Grey is on the line for you."
+    kay "Seems like the invasion of Ryuvia finally woke the Alliance up. Put me through."
+
+    hide ava with dissolve
+    show grey with dissolve
+
+    play music "Music/New_Dawn.ogg" fadeout 1.5
+
+    gre "Captain. A pleasure to see you again."
+    kay "Admiral Grey."
+
+    menu:
+
+        "A pleasure to see you too admiral.":
+            jump pleasuretooadmiral
+        "You put us in quite a bind at Versta...":
+            jump usbindversta
+
+label pleasuretooadmiral:
+
+    jump worddaringspread
+
+label usbindversta:
+
+    gre "I have no idea what you may be referring to."
+
+    if Saveddiplomats == True:
+        jump hadwhichfulfilled
+    if Saveddiplomats == False:
+        jump deathtragicrallying
+
+label hadwhichfulfilled:
+
+    gre "You had a mission which you fulfilled. That is all which I recall."
+    jump worddaringspread
+
+label deathtragicrallying:
+
+    gre "The death of the diplomats was tragic, but not in vain. Their deaths were a rallying cry for those in Alliance who wanted leadership instead of cowardice."
+    jump worddaringspread
+
+label worddaringspread:
+
+    gre "Word of your daring rescue of the princess has spread even here. I must say captain, I am quite impressed you made it out of that alive."
+    kay "I have one hell of a team here, admiral."
+    gre "Yet, the rescue was merely the silver lining of a grim situation. With the fall of Ryuvia, PACT is in the perfect position to strike Far Port, the entryway into Alliance space."
+    gre "If Far Port falls, PACT will flood into at least five populated Alliance systems before we can even muster our forces. The Alliance has not seen a war fought within our own soil in a hundred years."
+    gre "A PACT occupation of an Alliance planet is not an option. We must hold Far Port if we are to win this war."
+    kay "We're already in position here at Far Port. We just need some repairs and supplies."
+
+    if Saveddiplomats == True:
+        gre "I have sent four of our closest fleets to Far Port to mount a defense."
+        gre "I will not mince words. The situation is not looking good here."
+        gre "Years of neglect and bureaucratic resistance have made our fleets inefficient. Only one of the fleets which I have dispatched will make it in time to meet the PACT assault."
+        gre "Our fleets are not prepared for this war. Some of our ships have not even been manned for decades. Worse, our supplies and ships are scattered across our territory with no unifying chain of command."
+        gre "But all is not lost, captain. We have very skilled pilots and an economic base which far out produces PACT. We will muster our strength and meet PACT head on. It will merely take time."
+        gre "You must hold out at Far Port with the Second Fleet until the remaining fleets arrive."
+
+    if Saveddiplomats == False:
+        gre "I have sent four of our closest fleets to Far Port to mount a defense."
+        gre "After the death of the diplomats on Versta, I tried my best to mobilize our fleets."
+        gre "It was not easy. Years of neglect has made our fleets inefficient. Everything is blocked behind red tape now."
+        gre "Our supply chains were broken. Virtually everything had to be remade from scratch."
+        gre "Of the fleets I've dispatched, only one will make it in time to meet the PACT fleet."
+        gre "Our fleets are vast and mighty. But it will still take time to muster our strength. You must hold out at Far Port until our full forces arrive."
+
+    kay "What is the size of the enemy fleet?"
+    gre "Our intelligence reports that five PACT fleets are converging on Far Port's position. The commander of the attack will be Veniczar Cullen."
+    gre "I believe you are already familiar with him."
+    gre "All together, I predict at least seven battleships, six carriers, eighty cruisers, and over four hundred support vessels. Further, we believe Arcadius himself will observe the battle from his flagship, the Legion."
+    kay "If we only have one fleet to defend the planet, we're outnumbered nearly one to five. Those aren’t good odds, admiral."
+    gre "Yes, which is why I am appointing you my special advisor."
+    gre "You're the only one whose fought those odds. Nobody in the Alliance fleet has even seen a PACT vessel up close. Yet you know how they operate. You're the only person we have who've fought them outside of simulators."
+    gre "Your mission is the defense of the Alliance gateway world, Far Port. You must hold out there until our reinforcements arrive."
+    kay "Understood, admiral."
+    gre "I know I'm asking much. To help you prepare for the battle, I'm sending you one of my personal advisors to your starship."
+    gre "I understand that you're currently looking for more pilots. I'm sure she'll be a valuable asset to your crew."
+
+    menu:
+        "We'll need all the help we can get. Thank you, admiral.":
+            jump needhelpyou
+        "Wait, an Alliance officer serving onboard my ship? I'm not sure if that's really necessary...":
+            jump needhelpyou
+
+label needhelpyou:
+
+    gre "She's a talented pilot and a loyal officer. I'm sure she'll fit right in with your crew."
+    gre "She's already been dispatched and will arrive with the Second Fleet by tomorrow. I expect she'll be given due care."
+    gre "That'll be all for now, captain. My lieutenant will give you the specifics of the coming battle when she arrives. Admiral Grey out."
+
+    hide grey with dissolve
+
+    kay "(An Alliance officer here? I'm not sure if the crew will like this...)"
+    kay "(That admiral sure is pushy...)"
+
+    window hide
+
+    stop music fadeout 1.5
+
+    show eyecatch_top with eyecatch_wipe
+    show eyecatch_bottom with eyecatch_wiperev
+    show eyecatch_logo with dissolve
+    scene bg black2 with dissolvelong
+    scene cg_asagashower1 with dissolvelong
+
+
+
+    window show
+
+    play music "Music/shower.ogg"
+
+    "... ... ..."
+    asa "... ... ..."
+    asa "(Pah... So good to be back.)"
+    asa "(I never thought I'd get out of that jam in one piece...)"
+    asa "... ... ..."
+
+    play sound "sound/heartbeat.ogg"
+
+    scene cg_weddingcrash1 with dissolve
+
+    pause 0.5
+
+    scene cg_asagashower2 with dissolve
+
+    asa "Urk..."
+    asa "W-what am I thinking..."
+    asa "(So much stuff's happened, but the only thing I can think about is the captain...)"
+    asa "C'mon Asaga! Pull yourself together!"
+    asa "You're the queen now!"
+    asa "... ... ..."
+    asa "(Except that just makes everything worse...)"
+    asa "Huu..."
+    asa "This sucks..."
+    asa "... ... ..."
+    asa "I'm so hot down there just thinking about it..."
+    asa "Uuu..."
+
+    play sound "sound/hit.ogg"
+    show layer master at shake1
+
+    pause 0.2
+
+    play sound "sound/hit.ogg"
+    show layer master at shake1
+
+    pause 0.2
+
+    play sound "sound/hit.ogg"
+    show layer master at shake1
+
+    ica "Hurry up in there! What's taking forever!?"
+    asa "Eek! H-hang on!"
+    cla "Oh Icari... Why don't we just all shower together if you're gonna be so impatient!"
+    ica "S-shut up!!! L-like I would ever want to see y-y-your... chest rockets!"
+    asa "Sniffle... Okay, okay, I'm done..."
+
+    play music "Music/Love.ogg" fadeout 1.5
+    scene black with horizontalwipe
+
+    scene bg messhallwindows with horizontalwipe
+
+    show asaga uniform armscrossed sadwideeyesblush with dissolve
+
+    asa "... ... ..."
+    asa "Uck... W-what am I thinking lately..."
+
+    show asaga uniform excited focusedpoutblush with dissolve
+
+    asa "No! No! This isn't the time for that!"
+    asa "You've got a fight to win, Asaga!"
+    asa "Come on... You're the hero of justice! For freedom and equality!"
+
+    show asaga uniform altneutral gloomblush with dissolve
+
+    asa "Uuuuu..... It's not working..."
+
+    show sola uniform backturn neutral:
+        xpos 0.8
+    with dissolve
+
+    sol "... ... ..."
+
+    show asaga uniform neutral surprise with dissolve
+
+    asa "U-uck!"
+
+    show sola uniform handonchest neutral with dissolve
+
+    sol "You are... the Queen."
+
+    show asaga uniform altneutral embarassedsurpriseblush with dissolve
+
+    asa "... ... ..."
+    asa "How long have you been there?"
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "The stars give me peace."
+
+    show asaga uniform altneutral neutral with dissolve
+
+    asa "... ... ..."
+    asa "Ya know... You don't have to call me that. I'm just Asaga."
+
+    show sola uniform altneutral neutral with dissolve
+
+    sol "... ... ..."
+
+    show sola uniform handonchest neutral with dissolve
+
+    sol "I am Sola."
+
+    show asaga uniform altneutral neutral:
+        zoom 1
+        ease 0.5 xpos 0.3
+    show sola uniform altneutral neutral:
+        zoom 1
+        ease 0.5 xpos 0.7
+
+    asa "What are you doing here?"
+
+    show sola uniform neutral neutral with dissolve
+
+    sol "Reflecting."
+    sol "Far Port was a mighty trade world during my time. Merchants from across the Empire gathered here to engage in commerce and exchange ideas."
+    sol "It was the gateway to the core worlds, where Ryuvian splendor met the exotic cultures of outsiders."
+    sol "And it was the place where I was born."
+
+    show sola uniform handsbehindback sad with dissolve
+
+    sol "Yet, now... It is merely an abandoned world, where civilization has been overtaken by the wilderness."
+    asa "... ... ..."
+
+    show asaga uniform handsonhips happy with dissolve
+
+    asa "One day, this place'll be a bustling port again."
+    asa "After we send PACT packing back to New Eden, Ryuvia will grow again."
+    sol "Our Empire has become weak. Our enemies have stolen our technology. Our culture has been forgotten."
+
+    show asaga uniform neutral smile with dissolve
+
+    asa "That's why we gotta change."
+    asa "It was our own arrogance which led to our fall. The Ryuvian lords became too selfish. Sons killed their fathers and brothers betrayed brothers, all for a piece of the Ryuvian dream."
+    asa "In the end, in our fight to own the Empire, we destroyed the very thing we wanted."
+    asa "We're gonna make a new Ryuvia, where the leaders act for the good of the people."
+    sol "... ... ..."
+
+    show sola uniform handsbehindback lookleft with dissolve
+
+    sol "The talbur was right to illuminate only for you."
+
+    show sola uniform backturn neutral with dissolve
+
+    sol "... ... ..."
+    sol "You desire the captain to lead by your side?"
+
+    play sound "sound/hit.ogg"
+    show asaga uniform neutral shockooblush:
+        zoom 1
+        ease 0.02 xpos 0.292
+        ease 0.04 xpos 0.307
+        ease 0.02 xpos 0.3
+        repeat 5
+    with dissolve
+
+    asa "G-guck!"
+
+    show asaga uniform neutral laughooblush with dissolve
+
+    asa "No, no, no! Whatever gave you that idea!? Uwah-hahahaha!"
+
+    show asaga uniform armscrossed happyblush with dissolve
+
+    asa "The captain's got his own mission! The total surrender of PACT and the liberation of his home world, Cera!"
+    sol "... ... ..."
+    sol "Your face."
+
+    show asaga uniform thinking forcedsmilekittyblush with dissolve
+
+    asa "Eh?"
+    sol "It is red."
+
+    show asaga uniform excited forcedlaughblush with dissolve
+
+    asa "Uhh... well, time to calibrate the Black Jack for the big battle! You better get your Seraphim ready too!"
+    asa "Uwah-hahahaha!"
+
+    show asaga uniform altneutral grinblush with dissolve
+    show asaga uniform altneutral grinblush:
+        zoom 1
+        ease 0.2 xpos 0.4
+        ease 0.5 xpos -0.3
+
+    pause 1.0
+
+    sol "... ... ..."
+    sol "(...She's still no queen.)"
+
+
+    play music "Music/Tokyo_Lights.ogg" fadeout 1.5
+
+    scene bg black with horizontalwipe
+    scene bg bridge with horizontalwipe
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Captain. The Second Fleet has arrived. And our guest is waiting for us in the hangar."
+    kay "Right. Well, let's go meet our new guest."
+    ava "Are you sure this is wise, captain? Letting foreign military personnel on board the ship, I mean."
+    kay "Uh, let's just say the admiral insisted."
+    kay "Let's see who she is before making any judgments though."
+
+    show ava uniform salute neutral with dissolve
+
+    ava "Understood captain."
+
+    scene bg hangar with dissolve
+    show kryska uniform salute mad:
+        xpos 0.3
+    with dissolve
+    show ava uniform altneutral neutral:
+        xpos 0.7
+    with dissolve
+
+    kry "Lieutenant Kryska Stares reporting for duty, sir!"
+    kay "At ease, lieutenant. I'm Captain Kayto Shields and this is First Officer Ava Crescentia. Welcome aboard the Sunrider."
+
+    show kryska uniform neutral frown with dissolve
+
+    kry "My pleasure, sir!"
+
+    show kryska uniform altneutral focustalk with dissolve
+
+    kry "I have been ordered by Admiral Grey himself to serve as the Alliance liaison officer on board the Sunrider. I look forward to working with you, captain."
+
+    menu:
+        "Tell me about yourself, lieutenant.":
+            jump meyourselflieutenant
+
+        "Did you come with your own Ryder?":
+            jump comeownryder
+
+        "You're a member of our crew now. Feel free to make yourself at home.":
+            jump membercrewyourself
+
+        "You're on board this ship, but don't forget, this isn't an Alliance vessel. We have our own rules here.":
+            jump forgetalliancerules
+
+label meyourselflieutenant:
+
+    show kryska uniform altneutral frown with dissolve
+
+    kry "Rank: Lieutenant, First Class. Twenty two years of age. Previous service: Commander of the Air Group onboard the Alliance carrier Montesquieu. Hometown: New Seattle, Luna."
+
+    show ava uniform altneutral neutral with dissolve
+
+    ava "You were an Alliance CAG? Then what are you doing here, on the Sunrider?"
+    kry "I go wherever my duties require me to, ma'am."
+    kay "A long way from home, at least."
+
+    hide ava with dissolve
+
+    menu:
+        "Did you come with your own Ryder?":
+            jump comeownryder
+
+        "You're a member of our crew now. Feel free to make yourself at home.":
+            jump membercrewyourself
+
+        "You're on board this ship, but don't forget, this isn't an Alliance vessel. We have our own rules here.":
+            jump forgetalliancerules
+
+label comeownryder:
+
+    show kryska uniform neutral frown with dissolve
+
+    kry "Yes captain. I've already arranged to have the Paladin transferred to the Sunrider. You will find it a fine complement to your current Ryder wing, I'm sure."
+    kay "Glad to hear."
+
+    menu:
+        "Tell me about yourself, lieutenant.":
+            jump meyourselflieutenant
+
+        "You're a member of our crew now. Feel free to make yourself at home.":
+            jump membercrewyourself
+
+        "You're on board this ship, but don't forget, this isn't an Alliance vessel. We have our own rules here.":
+            jump forgetalliancerules
+
+label membercrewyourself:
+
+    $ affection_tera += 1
+
+    show kryska uniform salute mad with dissolve
+
+    kry "Thank-you sir!"
+    kay "Ava will help you move into our crew quarters. You think you can squeeze one more person into the female quarters, Ava?"
+
+    show ava uniform armscrossed neutral with dissolve
+    ava "I've already taken the liberty of converting the male quarters to accommodate the growing size of our female crew."
+    kay "Wha-"
+    ava "Obviously, I will not allow any males join our team in light of the modifications I've made."
+    kay "(Even that Ava knows how to crack a joke, huh... Or is she actually serious!?)"
+
+    jump endofkryskaintro
+
+label forgetalliancerules:
+
+    show kryska uniform salute mad with dissolve
+
+    kry "Understood sir! I won't let you down!"
+    kay "You're dismissed, lieutenant. First Officer Crescentia will help you get moved in."
+
+    show ava uniform armscrossed neutral with dissolve
+
+    ava "Just come this way."
+
+label endofkryskaintro:
+
+
+    $ paladin_weapons = [PaladinMissile(),PaladinAssault(),PaladinKinetic()]
+    $ paladin = create_ship(Paladin(),(9,8),paladin_weapons)
+
+    $ captaindeck = 2
+    $ asa_location = "messhall"
+    $ asa_event = "asachi_maskofveniczar"
+    $ chi_location = "messhall"
+    $ chi_event = "asachi_maskofveniczar"
+
+    $ ava_location = "bridge"
+    $ ava_event = "fakeservicerecord"
+
+    $ kry_location = "hangar"
+    $ kry_event = "disputeicariphoenix"
+    $ ica_location = "hangar"
+    $ ica_event = "disputeicariphoenix"
+
+    $ sol_location = None
+    $ cla_location = None
+    $ pro_location = None
+
+    jump dispatch
+
+label fakeservicerecord:
+
+    hide screen ship_map
+    scene bg bridge
+    show ava uniform neutral neutral
+    with dissolve
+
+    window show
+
+    kay "Finished helping soldier girl move in?"
+    ava "All done. By the way, I think you should take a look at this."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "I took the liberty of looking a bit deeper into our lieutenant's service records on the Alliance."
+    kay "And?"
+    ava "Well, I found a slight discrepancy. Her records indicate that she served on the Montesquieu two days before it was officially commissioned."
+    ava "It could have been nothing, but after what happened with Claude, I got Chigara to take another look at it. She discovered that the lieutenant's record had been wiped clean and then rewritten with new data."
+
+    show ava uniform armscrossed neutral with dissolve
+
+    ava "As far as Chigara can tell, she doesn't even think the Montesquieu is a real ship."
+    kay "So what are you saying?"
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "An ace pilot with a fake profile, serving onboard a ship that doesn't exist? That sounds likes like something only Alliance Spec Ops would do."
+    kay "Heh, should have known. Our new pilot's probably the Admiral's spy, sent here to keep tabs on us just in case. Doesn't look like the Alliance quite trusts us yet, does it?"
+    ava "Want me to keep an eye out for her?"
+
+    menu:
+        "Keep our guest on a short leash. If she does anything suspicious, tell me immediately.":
+            jump guestleashsuspicious
+        "Don't worry about it. We don't have anything to hide from the Alliance. We're going to have to learn to trust each other eventually.":
+            jump worryhidetrust
+
+label guestleashsuspicious:
+
+    $ captain_prince += 1
+
+    show ava uniform salute neutral with dissolve
+
+    ava "Understood captain. If she as much as sneezes suspiciously, I'll make a log of it."
+
+    $ captaindeck = 1
+    $ ava_location = None
+    jump dispatch
+
+label worryhidetrust:
+
+    $ captain_moralist += 1
+
+    show ava uniform armscrossed looklefttalk with dissolve
+
+    ava "If you say so. I'll bug her bunk just in case though."
+    kay "Ava..."
+
+    show ava uniform armscrossed narroweyefrown with dissolve
+
+    ava "It'll just be a small one."
+
+    $ captaindeck = 1
+    $ ava_location = None
+    jump dispatch
+
+label asachi_maskofveniczar:
+
+    hide screen ship_map
+    scene bg messhall
+    with dissolve
+
+    show asaga uniform armscrossed grin:
+        xpos 0.3
+    with dissolve
+    show chigara uniform handonchest smile:
+        xpos 0.7
+    with dissolve
+
+    window show
+
+    asa "Oh! It's the capt'n!"
+    chi "Ah, good evening captain."
+    kay "Our next battle will be the biggest one yet. How are you two holding up?"
+
+    show asaga uniform armscrossed confidenthappy with dissolve
+
+    asa "Don't worry 'bout a thing! Chigara and I will do our best!"
+    kay "How about you, Chigara? Are you eating alright?"
+
+    show chigara uniform twiddlefingers sadsmileblush with dissolve
+
+    chi "Umm... It's a little hard digesting because I'm so nervous, but I think I'll be alright."
+
+    show asaga uniform excited determined with dissolve
+
+    asa "No, no, no, Chigara! You gotta eat before a fight or else you're gonna run outta energy!"
+
+    menu:
+
+        "Not everyone's as macho as you, Asaga.":
+            jump everyonemachoasaga
+        "Asaga's right, Chigara. Eat up.":
+            jump asagachigaraeat
+
+label everyonemachoasaga:
+
+    $ affection_chigara += 1
+    jump notsleepingleft
+
+label asagachigaraeat:
+
+    $ affection_asaga += 1
+    jump notsleepingleft
+
+label notsleepingleft:
+
+    show asaga uniform excited happy with dissolve
+
+    asa "Uwahaha! Nom nom nom..."
+
+    show chigara uniform handsonchest sad with dissolve
+
+    chi "I'm sorry captain. I haven't really been sleeping well lately, ever since we left Ryuvia."
+    chi "It was frightening to finally meet the Veniczar in person... I can still hear his voice ringing in my head when I sleep."
+
+    show asaga uniform handonhips happy with dissolve
+
+    asa "Bah, don't be scared, Chigara! We'll take him down together!"
+    chi "Veniczar S. Arcadius. Who do you think he is underneath that mask?"
+
+    show asaga uniform thinking thinking with dissolve
+
+    asa "He was the former slave who led the PACT Rebellion against the New Empire, right? I heard some rumors from my father's advisors that the man who claims to be Arcadius now might actually be a different person though."
+    asa "Mmmm, why do you suppose he always wears that mask, captain?"
+
+    menu:
+        "It might to make the Veniczar immortal. Even if Arcadius dies, someone else can just take up the mask and continue on as if nothing's changed.":
+            jump immortalancientpoured
+
+        "It's intimidating, isn't it? People fear the unknown.":
+            jump intimidatingfearunknown
+
+        "He hides behind a mask because he's scared. The mask lets him use body doubles and keeps his true identity a secret.":
+            jump hidesscaredmask
+
+label immortalancientpoured:
+
+    asa "Mmm... An immortal leader, huh? I remember, the ancient Ryuvians kings poured billions into researching immortality. Even though they couldn't succeed, the research lead to some crazy breakthroughs for anti-aging facial creams."
+    kay "Ava might be interested. You wouldn't happen to have some now, would you?"
+
+    show asaga uniform armscrossed grin with dissolve
+
+    asa "Ahahaha, I think the last stores of it were depleted decades ago."
+
+    jump underneathtearmask
+
+label intimidatingfearunknown:
+
+    show asaga uniform armscrossed grin with dissolve
+
+    asa "Ahahaha, you suppose he looks really ugly underneath?"
+    kay "The Veniczar's been around ever since the beginning of the PACT Rebellion. If it's still the same guy from back then, he's probably in his late 60's. I don't imagine he's that good looking."
+
+    show asaga uniform thinking thinking with dissolve
+
+    asa "Mmm... The Veniczar we met seemed younger than that though."
+    kay "He could just be acting. Or maybe the Veniczar now is a different one from back then."
+
+    jump underneathtearmask
+
+label hidesscaredmask:
+
+    asa "So you're sayin' essentially that the Veniczar's too much of a coward to reveal his identity in public?"
+    kay "Something like that."
+
+    show asaga uniform handsonhips closedeyesgrin with dissolve
+
+    asa "Bah, someone like that won't be hard to beat at all!"
+
+    jump underneathtearmask
+
+label underneathtearmask:
+
+    show asaga uniform excited happy with dissolve
+
+    asa "Still, I'd love to see just who's underneath that mask. Eh-heh, I want to be the one to finally tear that mask off!"
+    kay "One day, Asaga. One day."
+
+    $ asa_location = None
+    $ chi_location = "hangar"
+    $ chi_event = "chigarafirsttea"
+
+    $ captaindeck = 0
+
+    jump dispatch
+
+label disputeicariphoenix:
+
+    hide screen ship_map
+
+    scene bg hangar
+    show icari uniform point angry:
+        xpos 0.3
+    show kryska uniform armscrossed madtalk:
+        xpos 0.7
+    with dissolve
+
+    window show
+
+    ica "Oy, I'm not going to let you touch my Phoenix!"
+    kry "Ms. Isidolde. Your ryder is in violation of at least 14 different Alliance safety regulations. In its current condition, I cannot allow it to fly with the rest of the squad!"
+    kay "What's going on here?"
+
+    show kryska uniform altneutral focustalk with dissolve
+
+    kry "Captain Shields. I was informing Ms. Isidolde that her ryder is a potential safety hazard to both herself and the crew."
+    kay "What's wrong with it?"
+
+    show icari uniform armscrossed madtalk with dissolve
+
+    ica "The only thing wrong with it is that I cut through the damned red tape the Alliance puts around everything."
+    ica "Since the Solar Congress' in the Karium lobby's pockets, all Alliance ryders need to have exhaust ports made with Karium, even though pretty much the whole galaxy knows Heratium works just as well and is lighter!"
+
+    show kryska uniform altneutral madtalk with dissolve
+
+    kry "The mercenary fails to point out that Heratium shatters into a thousand razor sharp fragments when it explodes, while Karium splinters into harmless strings."
+    kry "Captain, you cannot allow such a danger to exist on your hangar bay. The safety of your pilots is at stake here, all for the ego of one mercenary."
+    ica "Ah, I've used Heratium all my life and I never had problems with it!"
+    ica "That's just all damned propaganda spread by the Karium lobby to make the galaxy buy an obsolete good that should have been kicked off the market ages ago."
+    ica "If the Solar Congress actually let people decide what to buy instead of gets bullied by cartel interests, then everyone would know Heratium is stronger, lighter, and more efficient!"
+
+    menu:
+        "Your concerns have been noted, Lieutenant. But this is my ship, and we don't follow Alliance protocols here.":
+            jump notedshipprotocols
+        "Sorry Icari, but you're not working solo any more. I can't let you risk lives by modifying your ryder.":
+            jump solodependrisk
+
+label notedshipprotocols:
+
+    $ affection_icari += 2
+
+    show kryska uniform salute mad with dissolve
+
+    kry "Understood, sir. But you will excuse me if I steer clear of the Phoenix while it is doing its burn tests on the hangar floor."
+
+    show icari uniform armscrossed smilesidesmile with dissolve
+
+    ica "Tsch. Don't come back to me begging for Heratium when the Phoenix leaves your Paladin in the dust during the battle."
+
+    show kryska uniform neutral frown with dissolve
+
+    kry "Well then, I do believe I have more work to do. May I be dismissed, captain?"
+    kay "You're dismissed, Lieutenant."
+    kry "Sir."
+
+    hide kryska with dissolve
+    show icari uniform bothhandsonhips grin with dissolve
+
+    ica "Hah, good riddance! Just who does she think she is, coming onboard this ship and bossing everyone around?"
+
+
+    $ kry_location = None
+    $ ica_location = None
+    $ captaindeck = 2
+
+    jump dispatch
+
+label solodependrisk:
+
+    $ affection_tera += 2
+
+    show icari uniform point angry with dissolve
+
+    ica "You're actually buying into their propaganda too, captain!?"
+    kay "I'll have Chigara take a look at your ryder, Icari. I'm sure we can figure out a way to make it safe while still keeping its specs."
+
+    show icari uniform armscrossed closedeyesshout with dissolve
+
+    ica "Ugh... It's fine the way it is, thank you."
+    kry "Is that how you respond to your superior officer, mercenary?"
+    ica "Damn you... sir."
+
+    $ kry_location = None
+    $ ica_location = None
+    $ captaindeck = 2
+
+    jump dispatch
+
+label chigarafirsttea:
+
+    hide screen ship_map
+    scene bg hangar
+    show chigara uniform palmsup surpriseblush
+    with dissolve
+
+    window show
+
+    chi "Oh! Captain!"
+    kay "Calibrating the Liberty for the big day?"
+
+    show chigara uniform handstogether smile with dissolve
+
+    chi "I was just finishing up."
+    kay "You haven't been looking so well lately. Still not sleeping well?"
+
+    show chigara uniform handonchest sad with dissolve
+
+    chi "I'm sorry. I hope I won't be a burden during the battle."
+    kay "You're still the best engineer we've got. Get some rest."
+    chi "The Veniczar's voice... I feel like it's ringing in my head. It calls out to me, like a siren's song."
+    kay "Hey relax. You've been under a lot of stress lately."
+
+    show chigara uniform palmsup surpriseblush with dissolve
+
+    chi "Ah, uhh... I'm sorry, captain. I-I must just sound crazy. Please forget what I just said."
+
+    show chigara plugsuit handstogether sadblush with dissolve
+
+    chi "... ... ..."
+    chi "I've been thinking of what happened on Diode lately."
+    kay "You mean the Diode catastrophe?"
+    chi "Yes..."
+    kay "Do you want to talk about it?"
+
+    show chigara uniform handonchest forcedsmileblush with dissolve
+
+    chi "Umm... If it's not too much trouble. I was just finishing up with the Liberty here."
+    kay "Come on. I have a tea set in my office."
+
+    play music "Music/Moonlit_Night.ogg" fadeout 1.5
+    scene bg captainsloft with dissolve
+    show chigara uniform handstogether embarassedsmile with dissolve
+
+    kay "Here, take your pick. All of these brews are from Cera."
+    chi "Thank-you, captain."
+    kay "Make yourself at home, Chigara. Heh, I never imagined Cera Command would give me such a nice office. I guess the Sunrider's pretty cutting edge in more ways than one."
+    chi "Eh-heh..."
+    kay "I heard from the reports that nobody made it out of the Diode catastrophe alive. I guess they forgot to count one survivor."
+
+    scene cg_chigarateatime_sad with dissolve
+
+    chi "Yes..."
+    chi "Diode was a strange world in a former binary star system where one of the suns had collapsed into a black hole. Obviously of no interest to anyone but scientists."
+    chi "My father was the lead scientist on the Paradox Project. I was actually born on the science station on Diode."
+    kay "The Paradox Project?"
+    chi "We were seeking the holy grail of scientific technology: The power to control time."
+    chi "Imagine a device which lets you return to the past and redo your life. Or which allowed you to restore yourself after you were killed. Or which even allowed you to remove your enemies before they were even born."
+    chi "Not even the ancient Ryuvians discovered that power, or else they'd still be alive today."
+
+    menu:
+        "Technology like that is dangerous.":
+            jump techthatdangerous
+        "Technology like that would sure help us now.":
+            jump techwouldhelp
+
+label techthatdangerous:
+
+    $ captain_moralist += 1
+
+    chi "But captain, technology is only as good as the person wielding it. In the right hands, technology like that could save billions of lives."
+    chi "It might even mark the next stage of human existence. With such technology, wars, famine, and even human conflict would be mooted."
+    chi "The power to control time would mark a new phase in our existence as a species, where we manipulate not three dimensions, but four."
+    jump sohappenedparadox
+
+label techwouldhelp:
+
+    $ affection_chigara += 1
+
+    chi "Eh-heh, technology always did make our lives easier..."
+    chi "Too bad it can't save us all the time..."
+    jump sohappenedparadox
+
+label sohappenedparadox:
+
+    kay "So what happened to the Paradox Project?"
+    chi "... ... ..."
+    chi "Something went wrong with the project. We accidentally opened a black hole in orbit around the planet, destroying our research station and most of Diode in the process. Luckily, I managed to get away on an escape pod... But the rest of the team weren't so lucky."
+    chi "Both my parents died in the accident. As far as I know, I was the only survivor."
+
+    menu:
+        "How did you open a black hole on your planet?":
+            jump howblackplanet
+        "Do you know what exactly went wrong?":
+            jump youexactlywrong
+        "I'm sorry to hear that. The accident must have been tragic.":
+            jump sorryaccidenttragic
+
+label howblackplanet:
+
+    chi "It's kind of complicated, but two super dense particles must have collided with each other during the experiment at such speeds as to create a singularity."
+    chi "The resulting particle would be so dense as to tear a hole in the space-time continuum, or open what is commonly called a black hole."
+    chi "There was only one possible outcome after something like that happened."
+    chi "Our research station was slowly devoured by the black hole. Luckily, I just happened to be right next to the escape pods. Everyone else wasn't so lucky..."
+    chi "I saw with my own eyes the entire planet crumbling under the massive gravitational forces as I escaped. While the planet was luckily uninhabited, it was still terrifying seeing the power of what we had accidentally unleashed that day."
+    chi "It was... life changing."
+
+    menu:
+        "Do you know what exactly went wrong?":
+            jump youexactlywrong
+        "I'm sorry to hear that. The accident must have been tragic.":
+            jump sorryaccidenttragic
+
+
+label youexactlywrong:
+
+    chi "... ... ..."
+    chi "There's no explanation why a black hole should have formed. We had so many safeguards... Something like that was simply theoretically impossible."
+    chi "I've rerun computerized tests of what we did thousands of times. Every time, everything worked exactly as it was supposed to. I... don't have a scientific explanation as to why something so horrible happened..."
+    kay "But?"
+    chi "There's only one possible explanation left. What happened on Diode was the work of sabotage. Someone on our team must have betrayed us."
+    kay "Betrayal? What would someone stand to gain by killing a team of scientists?"
+    chi "... ... ..."
+    chi "I don't know. I'm sorry captain. I'm... just rambling again."
+    chi "I've thought about what happened so many times... Our calculations... they were so perfect. There's no way we..."
+
+    menu:
+        "Keep searching, Chigara. Black holes don't just pop up and swallow planets for no reason. There's got to be a cause.":
+            jump chiteayes
+        "Accidents happen, Chigara. We just have to accept it.":
+            jump chiteayes
+
+label chiteayes:
+    chi "Yes captain..."
+
+    menu:
+        "How did you open a black hole on your planet?":
+            jump howblackplanet
+        "I'm sorry to hear that. The accident must have been tragic.":
+            jump sorryaccidenttragic
+
+label sorryaccidenttragic:
+
+    chi "Yes..."
+    chi "I never want to see the people around me die again. I'll do my best to protect this ship."
+    kay "Of course, Chigara. We'll do everything in our power to make sure nobody else has to die."
+    chi "Yes captain."
+    chi "I'm counting on you."
+
+    scene cg_chigarateatime_embarassed with dissolve
+
+    chi "... ... ..."
+    chi "Eh heh..."
+    chi "The tea was delicious."
+    kay "Really? My sister got them for me."
+    "... ... ..."
+    "... ..."
+    "... ... ..."
+    chi "Eh heh... I'm feeling better now."
+    chi "I'm glad to have you as our captain."
+    kay "I'll try not to let you down."
+    chi "Thank-you for having me over. You must have other matters to attend to."
+    kay "It was my pleasure, Chigara. You can knock on my door anytime you need me."
+    chi "Eh-heh, maybe I will. Good-bye."
+
+    play music "Music/Tokyo_Lights.ogg" fadeout 1.5
+
+    $ chi_location = "bridge"
+    $ asa_location = "bridge"
+    $ asa_event = "asagachigarasneakingbridge"
+    $ chi_event = "asagachigarasneakingbridge"
+    $ pro_location = "bridge"
+    $ pro_event = "planningbattlefarport"
+
+    $ captaindeck = 0
+    jump dispatch
+
+label asagachigarasneakingbridge:
+
+    play music "Music/The_Rest_of_the_Ents.ogg" fadeout 1.5
+
+    hide screen ship_map
+    scene bg bridge
+
+    show asaga uniform altneutral confidentaggressivesmile:
+        xpos 0.1
+    show chigara uniform handstogether embarassedsmile:
+        xpos 0.2
+    show kryska uniform altneutral neutral:
+        xpos 0.85 zoom 1 xzoom -1
+    with dissolve
+
+    window show
+
+    asa "Shhh Chigara..."
+    chi "Ummm... I'm not sure if we're allowed to be here, Asaga..."
+    asa "This is all for the sake of the ship, Chigara! All for the sake of the ship!"
+    kay "What are you two doing here?"
+
+    show chigara uniform palmsup surpriseblush with dissolve
+
+    chi "E-eah! C-captain!"
+
+    show asaga uniform armscrossed confidenthappy with dissolve
+
+    asa "Oh! Don't break our cover, capt'n! We're keepin' our eyes on the spy!"
+    kay "You mean the lieutenant?"
+    asa "Who else!?"
+    kay "Sigh... You wouldn't have been spreading rumors about her, have you Asaga?"
+
+    show asaga uniform armscrossed laugh with dissolve
+
+    asa "M-me? Oh-hohoho! No, no, no, no!"
+
+    show asaga uniform armscrossed confident with dissolve
+
+    asa "I might have warned some of the crew who were eating with me in the lounge about the Admiral's mole, but nothing more! I'm just doin' my duty to the ship, sir!"
+
+    show chigara uniform handstogether sadclosedeyes with dissolve
+
+    chi "Uuu... I'm sorry, captain... I accidentally let slip to Asaga about the lieutenant's forged service record..."
+    kay "You know, everyone can tell that you're here. See? Look at Ava glaring at you from across the bridge, Asaga."
+
+    hide kryska
+    show ava uniform armscrossed narroweyefrown:
+        xpos 0.85
+    with dissolve
+
+    ava "Hmph!"
+
+    hide ava with dissolve
+
+    kay "I think you have a lecture coming later."
+
+    show asaga uniform neutral surprise with dissolve
+
+    asa "Uck..."
+
+    show asaga uniform armscrossed grin with dissolve
+
+    asa "Eh-heh... Well then, I think the two of us will be going back to the hangar... Tune up our ryders... Practice a bit on the simulator... You know, pilot-y stuff..."
+    kay "Yeah. I think so too."
+
+    show asaga uniform armscrossed grin:
+        ease 0.2 xpos 0.25
+        ease 0.5 xpos -0.3
+
+    asa "See you!"
+
+    show chigara uniform handstogether sadclosedeyes with dissolve
+
+    chi "I'm sorry about this, captain..."
+
+    hide chigara with dissolve
+
+    $ chi_location = None
+    $ asa_location = None
+    $ captaindeck = 1
+    play music "Music/Tokyo_Lights.ogg" fadeout 1.5
+
+    jump dispatch
+
+
+label planningbattlefarport:
+
+    play music "Music/Mission_Briefing.ogg" fadeout 1.5
+    hide screen ship_map
+    scene bg bridge
+    show ava uniform neutral neutral:
+        xpos 0.3
+    show kryska uniform altneutral frown:
+        xpos 0.7
+    with dissolve
+
+    window show
+
+    kay "Well lieutenant, brief me on the situation."
+    kry "Sir. As you know, we have five PACT fleets approaching Far Port. Our mission objective is to hold this planet until our reinforcements arrive."
+    kay "What's the ETA on the Alliance fleets?"
+    kry "The First Fleet is approximately two days out. The Third, Fourth, and Sixth Fleets will not arrive for another three days."
+    kay "With PACT liable to strike any time, we'll be heavily outgunned in the coming battle."
+    kay "Based on our numbers, I don't think this is a battle we can win head on. What are our options?"
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Far Port may be a tactically pivotal world, but it is largely uninhabited. We could try scattering the Alliance fleet around the planet and picking off the PACT fleet with hit and run tactics."
+    ava "With no risk of civilian casualties on the planet, we could draw the battle out until the rest of our ships arrive."
+
+    show kryska uniform armscrossed frown with dissolve
+
+    kry "With all due respect commander, such a plan involves the risk of the PACT fleet bypassing us all together and warping deeper into populated Alliance space. Alliance Command has ordered us all to keep PACT contained at Far Port at all costs."
+
+    show ava uniform alt neutral mad with dissolve
+
+    ava "PACT won't be able to warp out an armada of that size easily. And facing a PACT fleet that large with our current forces would be suicide."
+    kay "... ... ..."
+    kay "Looks like we're in quite a bind..."
+
+    play music "Music/Love_Theme.ogg" fadeout 1.5 fadein 1.5
+    scene black with dissolve
+    scene bg captainsoffice with dissolve
+    show ava uniform neutral neutral with dissolve
+
+    kay "Well, here we are. The opening battle of the Alliance-PACT War."
+    kay "How're you feeling, Ava?"
+
+    show ava uniform armscrossed neutral with dissolve
+
+    ava "Hopelessly outnumbered and outgunned? Facing a far superior force with minimal back up and no hope of reinforcements arriving on time, all for a naïve schoolboy cause?"
+
+    show ava uniform handonhip forcednarrowsmile with dissolve
+
+    ava "Feels like one of our old summer vacations all over again."
+    kay "... ... ..."
+    kay "I thought you had forgotten everything about those days."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Not everything."
+    kay "Why didn't you ever respond to my messages after you left?"
+
+    show ava uniform armscrossed looklefttalk with dissolve
+
+    ava "I was busy."
+    kay "Heh."
+    kay "I figured as much."
+
+    show ava uniform neutral neutral with dissolve
+
+    ava "... ... ..."
+    ava "I moved on. I went to space and you stayed home. It's not like it could have lasted forever."
+    kay "... ... ..."
+    kay "Nothing's set in stone unless you let it stay that way."
+    "... ... ..."
+
+    show ava uniform altneutral neutral with dissolve
+
+    ava "Captain."
+    kay "Yes?"
+
+    show ava uniform armscrossed narroweyefrown with dissolve
+
+    ava "I'm still waiting for you to complete that stack of paperwork on your desk."
+    kay "Oh."
+
+    scene black with horizontalwipe
+    scene bg lab with horizontalwipe
+    show chigara uniform handstogether narroweyessmileblush with dissolve
+
+    chi "... ... ..."
+
+    show claude uniform fingeronlip kittycurious:
+        xpos 0.2
+    with dissolve
+
+    show claude uniform fingeronlip kittycurious:
+        zoom 1
+        ease 0.5 xpos 0.3
+
+    cla "Oooohhh..."
+
+    show chigara uniform handsup surprise with dissolve
+
+    chi "E-eh!?"
+
+    show claude uniform altneutral smile with dissolve
+
+    cla "Reviewing your camera footage again?"
+
+    show chigara uniform handonchest sadblush with dissolve
+
+    chi "U-uhn..."
+
+    show claude uniform excited happy with dissolve
+
+    cla "The capt'n shows up at about the 61 minute mark. O-oh, right there!"
+    cla "Eh-heh, there's our man!"
+
+    show chigara uniform handonchest smileblush with dissolve
+
+    chi "... ... ..."
+
+    show icari uniform armscrossed lookawayannoyed:
+        xpos 0.8
+    with dissolve
+
+    ica "Seriously... what are you two doing?"
+
+    show icari uniform handonhip snide with dissolve
+
+    ica "Heh. I don't know what you see in that loser, Chigara. He's just a little schoolboy."
+    chi "...The captain's always doing what is best for the crew."
+
+    show chigara uniform handonchest sadblush with dissolve
+
+    chi "But... there's something lonely about him."
+    chi "He must miss his home."
+
+    show claude uniform fingerup laugh with dissolve
+
+    cla "Ah... maiden love!"
+
+    show icari uniform bothhandsonhips grin with dissolve
+
+    ica "All right, we've gotta hook you up with a wild night at the Stardust to turn you into a real woman! Some pumping bass and hard drinks should blow that innocence from your head!"
+
+    show chigara uniform handstogether sadopenmouthblush with dissolve
+
+    chi "Stop it..."
+
+    show icari uniform armscrossed smilesidesmile with dissolve
+
+    ica "Heh... You're hopeless."
+
+    show claude uniform excited happy with dissolve
+
+    cla "You better make your move fast, Chigara. Or else I'm gonna snatch him away before you~"
+
+    show chigara uniform fingerstwiddle gloom with dissolve
+
+    chi "Uuu... Sniffle sniffle..."
+
+
+    stop music fadeout 1.5
+    show icari uniform handonhip neutral with dissolve
+
+    ica "Hmm... Changing the subject, what's that spy doing in the recording?"
+
+    show chigara uniform handonchest surprise with dissolve
+
+    chi "Eh? I don't remember ever seeing this part..."
+    ica "Wait a minute... Isn't that..."
+
+    scene bg captainsoffice with dissolve
+
+    kay "(Even in a situation like this, Ava's still making me do the paperwork, huh...)"
+    kay "(I thought I could get away with it until after the battle...)"
+    kay "(She's always just way too uncompromising! One day, I'm going to have to take her to shore leave and show her how to actually relax...)"
+
+    play music "Music/Proditionis.ogg"
+
+    "Icari over Radio" "Captain, we need you in the hangar!"
+    kay "Icari? What's the matter?"
+    ica "That Alliance mole's been tampering with our systems! You've gotta arrest her!"
+    kay "I'll be right down."
+
+    scene bg hangar
+    show icari uniform point angry:
+        xpos 0.12
+    show chigara uniform handonchest surprise:
+        xpos 0.37
+    show kryska uniform neutral frown:
+        xpos 0.62
+    show ava uniform handonhip mad:
+        xpos 0.87
+    with dissolve
+
+    ica "Tsch... I should have known better than to trust you."
+    kay "What's going on here!?"
+    ica "I caught the spy snooping on the Sunrider's warp core controls. No doubt trying to copy our core schematics into that little data drive she's hiding..."
+
+    show kryska uniform armscrossed frown with dissolve
+
+    kry "An unfortunate misunderstanding, captain. I was merely running a diagnostic on the ship's performance specs so I could formulate our tactical plan for the coming battle."
+    kay "Chigara, did you see anything?"
+
+    show chigara uniform twiddlefingers scaredsad with dissolve
+
+    chi "T-the Lieutenant attached some kind of a data copier to the console... I think she was trying to hack into our secure data..."
+
+    show icari uniform bothhandsonhips angry with dissolve
+
+    ica "See? She's a spy!"
+    kay "Are you sure, Chigara?"
+
+    show chigara uniform handonchest sad with dissolve
+
+    chi "Yes... I have it all on video... Since I did set up some cameras in engineering and all..."
+
+    menu:
+        "Look people, we're all on the same side here.":
+            jump peoplesamehere
+        "I should have known better than to trust the Alliance. Ava, escort the Lieutenant to the brig.":
+            jump bettertrustbrig
+
+label peoplesamehere:
+
+    $ affection_tera += 2
+
+    show icari uniform point angry
+
+    ica "But captain! She's Alliance Black Ops! For all we know, she might slit our throats while we're sleeping! Those people aren't accountable to anyone!"
+
+    show kryska uniform neutral angry with dissolve
+
+    kry "For the record, the Alliance does not have a Black Ops."
+    ica "Don't bullshit me! What kind of self respecting military does NOT have a Black Ops!?"
+    kay "Calm down Icari. Weren't you the one who was always saying we needed the Alliance on our side if we're going to win this war?"
+
+    show icari uniform armscrossed closedeyesshout with dissolve
+
+    ica "I-I... Arggh!!"
+
+    jump battlefarportstart
+
+label bettertrustbrig:
+
+    show ava uniform salute neutral with dissolve
+
+    ava "Yes captain."
+
+    show kryska uniform altneutral madtalk with dissolve
+
+    kry "The Alliance will hear of this, captain. You're making a mistake."
+    kay "I can't have you hacking into our ship's warp core, even if you're with the Alliance. Just whose side are you on, Lieutenant?"
+    kry "You need the Alliance's help. You can't fight PACT by yourself."
+    kay "Ava, the brig."
+
+    show ava uniform handonhip mad with dissolve
+
+    ava "About time. Come on Lieutenant, this way. We can have a nice chat while you're behind bars."
+
+    jump battlefarportstart
+
+label battlefarportstart:
+
+    play sound "sound/warning.ogg"
+    "(Klaxon)"
+    kay "What the-"
+
+    show ava uniform altneutral angry with dissolve
+
+    ava "Proximity warning! It's the PACT fleet!"
+    kay "Damn! They're here already?"
+    kay "We'll deal with this later! Man your stations, people! Move!"
+
+    show ava uniform salute angry with dissolve
+
+    ava "Sir!"
+
+    scene bg bridgered with dissolve
+    show ava uniform handonhip mad with dissolve
+
+    ava "The PACT invasion fleet's just warped in. Distance: 10 000 kilometers, and closing in fast."
+    kay "Size?"
+    ava "Bigger than anything we've seen so far. Roughly 20 battleships and carriers. Over 600 ships in total."
+    kay "They out number us nearly 1 to 6, huh..."
+    kay "Asaga, are our ryders ready?"
+
+    show asaga plugsuit handsonhips happy:
+        xpos 0.25
+    with wipeup
+
+    asa "All ready down here, captain! Just give the word!"
+
+    show icari plugsuit armscrossed annoyed:
+        xpos 0.75
+    with wipeup
+
+    ica "Tsch... I just hope our Lieutenant doesn't stab us in the back out there..."
+    kay "We're going to have to deal with that later. For now, I need all the ryders we have."
+
+    hide asaga with dissolve
+    show kryska plugsuit altneutral frown:
+        xpos 0.19
+    with wipeup
+
+    kay "Lieutenant Stares, regardless of what orders you have from your superiors, the Admiral has reassured me you will be under my command during combat operations. I expect you to obey my orders."
+
+    show kryska plugsuit salute angry with dissolve
+
+    kry "Yes sir. I understand."
+    ava "We're being hailed by the PACT flagship."
+    kay "Put it through."
+
+    hide kryska with dissolve
+    hide icari with dissolve
+    show cullen:
+        xpos 0.82
+    with wipeup
+
+    cul "BWAAHHH-HAHAHAHA! This is all you could muster to defend Far Port?"
+    cul "This will be far too easy!"
+    kay "Veniczar Porkchops. The Alliance has over a thousand more ships on route to Far Port. Now that you've sparked an Alliance intervention, it's all over for PACT."
+    cul "Fool! We will crush the Alliance just as we crushed the Neutral Rim! The future belongs to PACT!"
+    cul "En garde, captain! For my mighty fleet will be the last sight you see before you are slaughtered like animals!"
+
+    hide cullen with wipedown
+
+    kay "Ava, show me the situation on the screen."
+
+    show ava uniform handonhip mad:
+        zoom 1
+        ease 0.5 xpos 0.8
+
+    show cg_farport 1:
+        xpos 0.1 ypos 0.2
+    with dissolve
+
+    ava "Aye sir. We are currently holding position here."
+
+    show cg_farport 2 with dissolve
+
+    ava "Five PACT fleets approach our position."
+
+    show cg_farport 3 with dissolve
+
+    ava "Fleets one and two are composed of fast frigates and destroyers. They intend to circle ahead of the main enemy fleet and flank us from the sides."
+
+    show cg_farport 4 with dissolve
+
+    ava "Fleets three and four are composed of slower cruisers. They are approaching from the rear. While they present a considerable threat, they have warped out too far behind the battle lines. ETA until they are in range: 4 hours."
+
+    show cg_farport 5 with dissolve
+
+    ava "Finally, fleet five is the enemy's command group. Comprised of battleships and carriers, this will be the enemy's backbone."
+    kay "What about the Legion?"
+    ava "It is holding position 800 000 kilometers away. It appears to be merely observing the battle."
+    ava "Cullen has employed a fully offensive fleet position. The two light fleets will effectively flank us from the sides, while the command fleet delivers the killing blow. The two cruiser fleets will provide reinforcements and engage in mop up operations."
+
+    show ava uniform alt neutral mad with dissolve
+
+    ava "Shall I give the order to the Second Fleet to scatter and begin hit and run operations?"
+    kay "... ... ..."
+    kay "No."
+
+    show ava uniform armscrossed frowntalk with dissolve
+
+    ava "Captain?"
+    kay "Cullen's only fought weakly defended Neutral Rim worlds and the remnants of the New Empire during the PACT Revolution. He's overconfident and underestimates us."
+
+    show ava uniform handonhip mad with dissolve
+
+    ava "What are your orders?"
+    kay "We charge forward."
+    kay "Cullen's never dealt with an enemy who took the offensive. Cullen may know how to overwhelm defensive positions, but he doesn't know a thing about stopping an enemy attack."
+    kay "By keeping his force split into five groups and committing all five to the offensive, Cullen rendered his command fleet defenseless."
+
+    show cg_farport 6 with dissolve
+
+    kay "We'll charge toward the command fleet on full thrusters and make fleets 1 and 2 overshoot us. They'll need to circle around again before they can reach us."
+
+    show cg_farport 7 with dissolve
+
+    kay "While the flanking fleets are busy circling around, we'll commit all our ships to taking down fleet five before the cruisers in the rear get here. The Alliance's smaller vessels will engage the battleships and carriers at knife fight range and sink them before Cullen can react."
+
+    show ava uniform armscrossed frown with dissolve
+
+    ava "Even with the command fleet gone, the remaining PACT fleet will still be formidable."
+    kay "Our mission objective isn't the protection of Far Port, but the defense of the deeper inhabited Alliance worlds."
+    kay "With all of their command ships destroyed, the remaining PACT vessels will have no means to continue beyond us for a coordinated invasion of the Alliance worlds."
+    kay "Once their command vessels are sunk, the PACT fleet will be disorganized and will have no choice but to retreat."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "A daring plan, captain. But what about the Legion?"
+    kay "Let's just hope that it's only here to watch the party. They won't commit the Legion to the battle if Arcadius is on board. He's too important to risk taking into battle."
+    ava "Then let's hope that he's there watching."
+    
+    play music "Music/DayDream_Cut.ogg" fadeout 1.5
+    
+    kay "Put me through to all our ships."
+
+    show ava uniform alt neutral neutral with dissolve
+
+    ava "Done."
+
+    scene cg_farport_charge1:
+        xpos 0.0 subpixel True
+        ease 15.0 xpos -0.27
+    with dissolve
+    
     pause 5.0
+
+    kay "All ships, this is Captain Shields speaking."
+    kay "The enemy is at your gate. The Alliance now fights a war for its very survival."
+    
+    show chigara plugsuit excited blushdetermined:
+        xpos 0.2 alpha 0 
+        ease 0.5 alpha 1.0
+        pause 0.5
+        ease 0.5 alpha 0
+    
+    chi "(Captain... Do your best!)"
+    kay "The task before us is great. We stand guard of billions of innocent lives beyond Far Port."
+    kay "And yet the enemy outnumbers, outguns, and outpowers us one to six."
+    kay "I have seen with my own eyes what PACT does to civilians. For those who we left behind, steel yourself for the coming fire!"
+    
+    scene cg_farport_charge2:
+        xpos 0.0 subpixel True
+        ease 15.0 xpos -0.27
+    with dissolve
+    
+    show arcadius altneutral:
+        xpos 0.8
+        ease 1.5 alpha 1.0
+        pause 0.5
+        ease 1.5 alpha 0
+        
+    arc "For as long as recorded time, we have suffered at the hands of the Imperialists."
+    arc "After many years of bloody revolution, we have at last arrived at the enemy's gates..."
+    arc "Tell me, my comrades, shall we let these capitalists live?"
+    arc "Those that would let starve billions of children throughout the galaxy merely because there is no profit to be had?"
+    arc "Those who would oppress the common people, all to maintain their decaying grip upon their empires?"
+    arc "Let it be heard!"
+    arc "Death to the aging men in their gleaming ivory towers! Death to the kings in their decadent throne rooms!"
+    arc "All hail the revolution!"
+    
+    scene cg_farport_charge1:
+        xpos -0.27
+    with dissolve
+    
+    kay "In the face of such odds, we will not scatter, but instead charge forward to meet the enemy head on!"
+    
+    show asaga plugsuit handsonhips determined:
+        xpos 0.2 alpha 0
+        ease 0.5 alpha 1.0
+        pause 0.5
+        ease 0.5 alpha 0
+    
+    asa "(I'm... going to protect everyone...!)"
+    kay "The enemy may have strength in numbers, but their numbers are meaningless when we outnumber them one hundred to one in mettle!"
+    kay "For the defense of the inner worlds, we will march forward! Let the crimson fleet learn today the might of the free men of the Alliance!"
+    kay "All units... FORWARD!!"
+    
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+    
+    window hide
+    hide cg_farport_charge1
+    
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+
+    $ alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
+    $ alliancecruiser1 = create_ship(AllianceCruiser(),(5,5),alliancecruiser_weapons)
+    $ alliancecruiser2 = create_ship(AllianceCruiser(),(5,4),alliancecruiser_weapons)
+
+    $ BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
+
+    call mission12_inits
+    $ BM.mission = 12
+    jump battle_start
+    
+label mission12:
+    
+    $BM.battle_bg = "Background/space6.jpg"
+    
+    if check3 == False:
+        
+        $ BM.draggable = False
+        
+        "Tip 1: Use the Short Range Warp order to instantly relocate the Sunrider to another location."
+        "Tip 2: PACT Carriers will continually launch enemy ryders until destroyed."
+
+        $ check3 = True
+        $ BM.draggable = True
+
+    if check1 == False and BM.turn_count == 3:
+        
+        $BM.draggable = False
+
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ava "We're being flanked to the sides by the frigates!"
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+
+        python:
+            create_ship(MissileFrigate(),(6,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(7,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(8,2),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(9,2),[PactFrigateMissile()])
+
+            create_ship(MissileFrigate(),(6,16),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(7,16),[PactFrigateMissile()])
+            create_ship(MissileFrigate(),(8,16),[PactFrigateMissile()])
+
+        $ BM.draggable = True
+        $ check1 = True
+        
+    if check2 == False and BM.turn_count == 6:
+        
+        $BM.draggable = False
+
+        show ava uniform handonhip mad onlayer screens:
+            xpos 0.8
+        with dissolve
+
+        ava "The enemy cruisers are now in weapons range!"
+
+        hide ava uniform handonhip mad onlayer screens with dissolve
+
+        python:
+            create_ship(PactCruiser(),(17,9),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,10),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,11),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+            create_ship(PactCruiser(),(17,12),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+
+        $ BM.draggable = True
+        $ check2 = True
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission12 #loop back
+    else:
+        pass #continue down to the next label
+    
+label aftermission12:
+    
+    hide screen commands
+    hide screen battle_screen
+    
+    play music "Music/Riding_With_the_Wind.ogg" fadeout 1.5
+    
+    scene bg legionwindows with dissolve
+    show fontana:
+        xpos 0.3
+    with dissolve
+    show arcadius altneutral:
+        xpos 0.7
+    with dissolve
+    
+    window show
+    
+    fon "My leader. The enemy fleet has ambushed Cullen's command group."
+    arc "The fool. We long suspected his incompetence."
+    fon "Shall we assist?"
+    arc "Yes Fontana. Prepare to fire the Legion's main cannon."
+    fon "But sir... At this distance, there is a risk that we would hit our own ships as well."
+    arc "That is irrelevant. Destroy them all."
+    fon "Understood, my Veniczar."
+    
+    scene bg bridgered with dissolve
+    show ava uniform altneutral angry with dissolve
+    
+    ava "Warning! The cruiser fleets have reached weapons range! We're taking heavy fire!"
+    kay "What's the status of the enemy command fleet?"
+    ava "We've taken down most of the command ships, but Cullen's flagship still remains!"
+    
+    show ava uniform neutral surpriseangry with dissolve
+    
+    ava "W-wait... Energy spike detected! It's the Legion!"
+    kay "Order the fleet to take evasive maneuvers!"
+    
+    scene cg_legion_farport_fire1:
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5 zoom 0.8
+    with dissolve
+    pause 1.0
+    play sound "sound/legion_maincannon.ogg"
+    pause 0.5
+    scene cg_legion_farport_fire2:
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5 zoom 0.8
+    with dissolve
+    pause 1.4
+    scene cg_legion_farport_fire3:
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5 zoom 0.8
+    with horizontalwipereversefast
+    pause 2.0
+    
+    scene cg_alliancefleet_farport1 with dissolve
+    
+    play sound5 "sound/legion_maincannon_fire.ogg"
+
+    pause 0.5
+    scene cg_alliancefleet_farport2 with horizontalwipereversefast
+    play sound "sound/explosion4.ogg"
+    
+    scene cg_alliancefleet_farport3 at shake1(repeats=8) with dissolvemedium
+
+    play sound1 "sound/explosion2.ogg"
+    
+    scene cg_alliancefleet_farport4 at shake1(repeats=8) with dissolvemedium
+    
+    play sound2 "sound/explosion1.ogg"
+    
+    scene cg_alliancefleet_farport5 at shake1(repeats=8) with dissolvemedium
+    
+    play sound3 "sound/explosion1.ogg"
+    
+    scene cg_alliancefleet_farport6 at shake1(repeats=8) with dissolvemedium
+    
+    play sound4 "sound/explosion2.ogg"
+    
+    scene cg_alliancefleet_farport7 at shake1(repeats=8) with dissolvemedium
+    
+    pause 2.0
+
+    scene bg bridgered with dissolve
+    show ava uniform altneutral surpriseshout with dissolve
+    
+    ava "The Hiakili squad has been annihilated! Taylor Squad is down to three cruisers!"
+    ava "Two of PACT's own vessels were caught in the blast and vaporized as well!"
+    kay "Arcadius... you insane son of a bitch..."
+    kay "Merge squad Taylor with squad Arturia! Move our ships closer to the PACT vessels!"
+    
+    show ava uniform salute angry with dissolve
+    
+    ava "Sir!"
+    kay "Don't let the Legion take any more of our ships without taking twice as many of its own down with it!"
+
+    scene cg_porkdeath1 with dissolve
+    
+    cul "Hah! This battle is still far from over, captain!"
+    cul "Prepare to fire the quantum torpedo! Target the Sunrider!"
+    
+    scene cg_blackjack_farport1
+    show cg_blackjack_farport2:
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+    with dissolve
+    
+    asa "As if I'll let you!"
+        
+    play sound "sound/mech1.ogg"
+    show cg_blackjack_farport2:
+        ease 0.5 xpos 0.42 ypos 0.54  zoom 0.5
+        
+    pause 0.5
+    
+    scene cg_blackjack_farport3 with dissolve
+        
+    cul "Heh! What do you expect to do with those tiny lasers, girl?"
+    
+    play sound "sound/chargeup.ogg"
+    scene cg_blackjack_farport4 with dissolve
+    
+    asa "EAAHHH!!!"
+    
+    scene cg_blackjack_farport5 with dissolve
+
+    chi "The Black Jack has undone its safety limiters! Asaga---!"
+    
+    scene cg_blackjack_farport6 with dissolve
+    show asaga plugsuit neutral angry:
+        xpos 0.5 zoom 1.7 ypos 1.5
+    with dissolve
+    
+    asa "Don't..."
+    
+    asa "Mess..."
+    
+    play sound1 "sound/heartbeat.ogg"
+    show asagaplugsuitneutralangry:
+        xpos 0.5 zoom 1.7 ypos 1.5
+        ease 0.3 xpos 0.5 zoom 4.0 ypos 3.0 alpha 0
+    show asaga plugsuit neutral awakenangry:
+        ease 0.1 xpos 0.5 zoom 2.0 ypos 1.7
+    with dissolve
+    asa "WITH ME!!!!"
+    
+    scene cg_porkdeath1 with dissolve
+    
+    cul "W-what!?"
+    
+    play sound "sound/vanguard cannon laser.ogg"
+    show cg_blackjack_farportlaser:
+        xanchor 0.0 yanchor 0.5 xpos -0.4 ypos -0.3 xzoom 1.5 yzoom 0.5
+        rotate -40
+    with dissolve
+    
+    asa "EAAAAHHHHH!!!!!"
+        
+    cul "I-Impossible.......!!!!"
+    
+    show cg_blackjack_farportlaser:
+        ease 0.5 rotate -30 ypos 0.0
+    
+    asa "This... is for Ryuvia!"
+    
+    show cg_blackjack_farportlaser:
+        ease 0.5 rotate -20 ypos 0.3
+        
+    show cullen:
+        xpos 0.8
+        block:
+            ease 0.1 xpos 0.82
+            ease 0.1 xpos 0.78
+            repeat 8
+    with dissolve
+    cul "No...! No!!! I--"
+    
+    show cg_blackjack_farportlaser:
+        ease 0.5 rotate -10 ypos 0.6
+        
+    pause 0.5
+    play sound "sound/explosion5.ogg"
+    scene white with dissolve
+    
+    cul "BWWWAAAAAAAHHHHHHHHHHHHHHHHHH!!!!!!!!!!!!!!"
+
+    scene cg_porkdeath2 with dissolve
+    scene cg_porkdeath3 with dissolvelong
+    pause 1.0
+
+    scene bg bridgered with dissolve
+    show ava uniform fistup yes with dissolve
+    
+    ava "Confirmed hit! The enemy fleet's flagship has been sunk!"
+    kay "Yes!"
+    
+    play sound "sound/explosion1.ogg"
+    show layer master at shake1(repeats=8)
+    show ava uniform altneutral angry with dissolve
+    
+    ava "U-ugh!"
+    ava "The enemy attack is still continuing! Our fleet is down to 33 percent!"
+    ava "We won't be able to survive much more of this!"
+    kay "Order the fleet to scatter! Our objectives are complete!"
+
+    show ava uniform salute angry with dissolve
+
+    ava "Aye captain!"
+    
+    play music "Music/Bladed_Druid_Cut.ogg" fadeout 1.5
+    scene cg_phoenixpaladin with dissolve
+    
+    kry "I'll down you all!"
+    ica "Tsch..."
+    ica "Didn't think that I'd ever end up like this..."
+    ica "Fightin' some stupid war alongside the likes of you!"
+    kry "Wait...! Look!"
+    
+    scene cg_emeraldfleet_warpinback with dissolve
+    show cg_emeraldfleet_warpin1:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+    pause 0.5
+    play sound1 "sound/large_warpout.ogg"
+    
+    ava "Captain!!!"
+    ava "It's the Alliance fleet!"    
+    gre "I commend you for holding out this long, captain."
+    gre "Now, behold the power of the Emerald Fleet!"
+    
+    play sound1 "sound/large_warpout.ogg"
+    show cg_emeraldfleet_warpin2 behind cg_emeraldfleet_warpin1:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+        
+    pause 0.25
+    
+    play sound2 "sound/large_warpout.ogg"
+    show cg_emeraldfleet_warpin3 behind cg_emeraldfleet_warpin2:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+        
+    pause 0.1
+    
+    play sound3 "sound/large_warpout.ogg"
+    show cg_emeraldfleet_warpin4 behind cg_emeraldfleet_warpin3:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+        
+    pause 0.1
+    
+    play sound4 "sound/large_warpout.ogg"
+    show cg_emeraldfleet_warpin5 behind cg_emeraldfleet_warpin4:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+        
+    pause 0.1
+    
+    play sound5 "sound/large_warpout.ogg"
+    show cg_emeraldfleet_warpin6 behind cg_emeraldfleet_warpin5:
+        zoom 0.1
+        ease 0.5 zoom 1.0
+    
+    gre "All ships! Open fire!"
+    gre "Show these reds what happens when you cross the Alliance!"
+    
+    scene bg legionwindows with dissolve
+    show fontana:
+        xpos 0.3
+    with dissolve
+    show arcadius altneutral:
+        xpos 0.7
+    with dissolve
+    
+    fon "My Veniczar. Cullen has been dispatched. Our ships are in disarray."
+    fon "The First Fleet has arrived with 200 fresh ships. Our spies indicate that more Alliance reinforcements are on route."
+    fon "Shall I commit the Legion to the battle?"
+    arc "... ... ..."
+    
+    show arcadius neutral with dissolve
+    
+    arc "No."
+    arc "The battle no longer favors us. Order our forces to fall back."
+    fon "Understood my leader."
+    
+    hide fontana with dissolve
+    show arcadius altneutral with dissolve
+    show arcadius:
+        ease 0.5 xpos 0.5
+    
+    arc "... ... ..."
+    arc "This loss is irrelevant."
+    
+    show arcadius fist with dissolve
+    
+    arc "Soon... the galaxy will witness the true power of what we accomplished at Diode... And tremble!"
+
+    show arcadius laugh with dissolve
+
+    arc "Hahahahahaha!!!"
+    
+    scene black with dissolve
+    play music "Music/Firn.ogg" fadeout 3.0
+    scene bg hangar with dissolvelong
+    
+    show asaga plugsuit vpose with dissolve
+
+    asa "Hahaaa!!! We did it capt'n!"
+    
+    show chigara plugsuit handonchest smile:
+        xpos 0.38
+    with dissolve
+    
+    chi "Captain, I'm back!"
+    
+    show sola plugsuit altneutral neutral:
+        xpos 0.91
+    with dissolve
+    
+    sol "Mission successful."
+    
+    show ava uniform facepalm:
+        xpos 0.65
+    with dissolve
+    
+    ava "Seriously..."
+    
+    show ava uniform armscrossed smile with dissolve
+    
+    ava "This was only the first battle of the war. It's too soon to celebrate yet."
+    kay "Kind of hard to take that seriously when you're grinning ear to ear, eh, Ava?"
+    
+    show ava uniform neutral surprise with dissolve
+    
+    ava "W-wha...?"
+    ava "I'm not--!"
+    
+    hide asaga with dissolve
+    hide chigara with dissolve
+    hide ava with dissolve
+
+    show icari plugsuit handonhip annoyedtalk:
+        xpos 0.35
+    with dissolve
+    
+    ica "Hmph..."
+    
+    show kryska plugsuit altneutral happy:
+        xpos 0.65
+    with dissolve
+    
+    kry "It was my pleasure to fight alongside you, Ms. Isidolde. We make quite a team."
+    
+    show icari plugsuit armscrossed tsun with dissolve
+    
+    ica "Well, I guess you're not that bad of a shot! Just call me Icari from now, alright? I don't like ranks or titles in front of my name."
+    kry "Of course."
+    kay "Well, it looks like you two are getting along for a change."
+    
+    show kryska plugsuit salute angry with dissolve
+    
+    kry "Captain."
+    
+    show kryska plugsuit altneutral frown with dissolve
+    
+    kry "I apologize for my actions, sir. I expect to be escorted by Commander Crescentia to the brig now that the crisis has passed."
+    kay "About that..."
+    kay "Here's the data you were trying to access."
+    kay "We're going to be a team from now on, so we're going to have to learn to trust each other. The next time you need information, why don't you just ask?"
+    
+    show kryska plugsuit neutral question with dissolve
+    
+    kry "Sir?"
+    kay "If we're going to get anything done, it's going to be done together."
+    
+    show kryska plugsuit salute smile with dissolve
+    
+    kry "Understood sir. I will inform you personally if my superiors wish information in the future."
+    
+    show icari plugsuit handonhip tsuntalkblush with dissolve
+    
+    ica "Hmph. Well, this doesn't mean that we'll be friends or anything! But I guess we can work together. Just for now!"
+    
+    show claude plugsuit fingeronlip kittysmile:
+        xpos 0.79
+    with dissolve
+    
+    cla "Ufufu... It looks like a certain someone's blushing..."
+    
+    show icari plugsuit armscrossed blushtsun with dissolve
+    
+    ica "S-shut up! This is only so we can beat PACT!"
+    
+    show claude plugsuit fingerup laugh with dissolve
+    
+    cla "My, my! Isn't this ship turning into a little love nest! Ufufufu..."
+    
+    show icari plugsuit armscrossed shoutblush with dissolve
+    
+    ica "SHUT UP!!! EAAHH!!!"
+    
+    show asaga plugsuit excited happy:
+        xpos 0.09
+    with dissolve
+    show chigara plugsuit handonchest smile:
+        xpos 0.25
+    with dissolve
+    
+    kay "... ... ..."
+    
+    show ava uniform neutral neutral:
+        xpos 0.5
+    with dissolve
+    
+    ava "Captain?"
+    kay "Hard to believe this was just an empty hangar when we first left Cera."
+    ava "You said you'd gather allies from across the galaxy."
+    kay "Yeah. I did."
+    
+    show  ava uniform handonhip forcednarrowsmile with dissolve
+    
+    ava "Well done, captain. Well done."
+    ava "... ... ..."
+    
+    scene black with dissolve
+    
+    ava "...But I still await the completion of your paperwork."
 
     window hide
 
@@ -8655,7 +12875,6 @@ label credits:
      ###############################################################PLACE HOLDER
 
     scene bg black2 with dissolvelong
-    play music "Music/Firn_ED.ogg" fadeout 1.5
 
     show credits1:
         xalign 0.5
@@ -8669,139 +12888,264 @@ label credits:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits3:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits4:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits5:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits6:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits7:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits8:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits9:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits10:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits11:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits12:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits13:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits14:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits15:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits16:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits16b:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits16c:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits16d:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
+    show credits16e:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25
+    pause 3.0
+    show credits16f:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25
+    pause 3.0
     show credits17:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits18:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits19:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits20:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits21:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits22:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits23:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits24:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    $ renpy.pause(3.0)
+    pause 3.0
     show credits25:
         xalign 0.5
         ypos 1.1
         linear 6.666666666666667 ypos 0.5
-    $ renpy.pause(15.0)
+    pause 15.0    
+    hide credits25 with dissolve
+    
+    scene bg black2
+    
+    $ renpy.pause(0.1)
+    
+    show credits26:
+        xalign 0.5 ypos 0.2
+        
+    pause 4.0
+    hide credits26 with dissolve
+    
+    window hide
 
-    jump aftercreditsep3
+    cre "SYMBOL TO A:{p}Kyubey, ~ren, Kirino is love, AAAYogibearAAA, Aaron, Aaron Holding, Aaron Kaluszka, Aaron Kettle, Aaron Matthews, Aaron Taylor, Abe, AbeFM, Accelsharp, accRei, AceMcKillYoFace, Adam Little, Adam Pitt, Adam Raines, Adrian A. Gallegos, Adrian Bergström, Adrian Ferrer (Sixten), Adriano Gagliardi, Agent Francis York Morgan, but please, just call me York, Agus Hartono, Ágúst Sigurjónsson, AJ Nordstrom, akaPassion, Akures, Albert \"Warrax\" Aloma, Alberto Garcia, Alec Tomlins, Alemina Bismarck, Alex \"Xelada\" Hargreaves, Alex Aranovsky, Alex Churchill, Alex Donks, Alex Edwards, Alex Worthington, Alexa Vitovsky, Alexander  Gene Schulz & Ken Kim Schulz &  Melissa Lynn Schulz, Alexander Frey, Alexander John Aristotle Kimball, Alexander Kent, Alexander Liebau, Alexander Petrovic, Alexander W. Knowlton, Alexandre \"nah\" Bailly, Alexei \"Roflcopter\" Short, Alexis Perron, Allen J Medlen, Allen Kwan, AlliedG, Almost Human, Alto, Amber Hein, Ampereox Irfan, Anaël Verrier, Anderan, Anders Kronquist, Anders Schack Østergaard, Andre Bellarin, Andrea Martinelli, Andreas Gyllblad, Andrew Bethesda, Andrew Biernacki, Andrew Hovanec, Andrew Juljenjai, Andrew Nelson aka SomePoorSap, Andrew P. Bullen, Andrew Paul Maggio III, Andrew Simpson, Andrew Wilson, Angelo \"Brooklyn Finest\" Lima Representing Brazil In Da House, Angelus Luminous, Anna Lee, Anne Nonymous, anonymous, Anonymous, Anonymous, anonymous, Ansel Wong, Anthony Ambrassi, Anthony DeBartolo, Anthony Kinnear, Anthony Luu, Anthony R. Evans, Anton Gorbunov, Anton Guryanov, Arcbleast, ArcherRush, ArchSenex, Arild Iversen aka. Foamed, Arjuna Chatrathi, Arkent Golt, Arkheos Angelos, Armando A. Rosado, Arnel De Leon, ARoastedPenguin, ARPerson, Arthur Lee, Ashadow700, Atomsk, Augusto Andrade, Austin \"Yamato\" F., Avery Heart, Axel Miszczak, Axel Terizaki, Aymeric Hedin"
+    cre "B:{p}Baldarhion, Bastiaan Rours, Beardsly, Ben, Ben \"OathAlliance\" Corum, Ben Bonds, Ben Hockley, Ben M, Ben Parsons, Ben Tiberius, Ben Waxman PA-C, BenEng91, Benjamin \"violink4swords\" Randall, Benjamin John Whittingham, Benji Bent, Bewoulve, bhakabane, Biiku Ryugaku, Billpete002, Bingo, Bjorn Vrancken, Bkarsi, Blaine Kawakami, Blake Cross, Blake Domeyer, B-Lo.Co, Bob Sintas, Bobby Skeens, Born2Love, Brad Dunlap, Brandon \"Gnome\" Davis, Brandon \"Zonz\" Chambers, Brandon Coleman, Brandon Nguyen, Bren Rowe, Brett \"DJ Archangel\" Strassner, Brett Martinez, Brett Pearson (J.C. Quiinn), Brian Henderson, Brian L, Brian L., Brian Santos, Brian Simms, Brian Townsend, Brittni Ballard, Brody Miron, Brozita #420BLAZEIT ( ͡° ͜ʖ ͡°), Bruce Novakowski, Bruno \"The Draconic Lord\" Santos, Bruno Marques, Bryan Elliott, Bryan Lyon, Bryan Massengale, Bryan Middlebrook, Bryan Russowsky, BtBurns, Budi Winarto, bugrom.san, Bulens Simon, Burstroc, Buwaro Elexion"
+    cre "C:{p}C Weber, Caidran, Cail Synnacht, Caitlin Eckert, Cally, Calvin C., Cameron Sekulin, Canberk Koparal, Captain John M. Smith, Captain Max Zero, Carey Stanley, Carlos Bruno Alves, Carlton Solle, Casey C. Knowlton-Key, Cassie Halladay, Ceci Kiyomizu, Chaadon Peterson, Chankit Pongdhana AKA xredsoulz, Chaos, Charlie Tomlinson, Chase Earhart, Chase L., Chau Hoang, Chayadol, Choum, Chris Bates, Chris Fox, Chris G., Chris Headley, Chris McCleese, Chris Mear, Chris Renard, Chris Stewart, Chris Taran, Chris W, Chris Willard, Christian Dobson, Christian Skomorowski, Christian Waterhouse, Christian Witte, Christop, Christoph Kamper, Christopher \"Rigrot\" Wood, Christopher C. Cockrell, Christopher C. Hoitash, Christopher Gebhart, Christopher J. Epure, Christopher Liang, Christopher Roberts, Christopher Rubio, Christopher S Martin, Christopher Soon, Christopher Toy, Christopher Zhong, Chua Chong Yi, Cirvaazny, CLAUDE IS BEST GIRL, Clay Smith, Cody Hedgecock, Cody Spence, Colin Kennat, Connor Greeley (Shadowwolf9711), Coresplinter, Count Buggula, Craig Butler, Craig James Kelly (dynamo), Craig S. Weinstein, Craken, Cristobal Mera Collantes, Crucian, cupcakemann95, Cybolt, Cyen, cymricchen, Cyprien Randon (MisterTokijin)"
+    cre "D:{p}Damien Pearson, Damien Terrasson, Damon Eric English, Dan \"J0nd03\" Beasley, Dan Svoboda, Dan Vince, Dan Whitmore, Daniel B, Daniel Drimus, Daniel Emmons, Daniel Guyton, Daniel Hull, Daniel Lin, Daniel Root \"Red Alchemy\", Daniel Widegren, Daniele Canciani (aka croma25td), Danny Lwin, Dargon, Dark09, Darkeva, Darkron008, Darksor, Darn, Darth Crater, dave55man, David, David \"Socratics101\" Chang, David Beauchamp, David C Werling, David Carreiro-Ricard, David Dalton, David Emanuel, David Francis, David H. Lee, David Ing, David John Pack, David Long (Neko), David McFadden, David Michael Finzi, David 'Milky' Barry, David Pieper, David Shireman, David Telles, David Tran, Dawfydd Kelly, Dawn_, deadering, Dean Kelly, Dean Reeder, Delbert Thompson, Denali Leland, Derek \"Pineapple Steak\" Swoyer, Derek \"Sokolov\" Chin, Derrick Lam, Derrick Pilgrim Jr, Desmond Sutcliffe, \"Devon \"Tag\" Courtney, DickJutsu.com, Dimitri Pivnicki, Dinko Serifovic, diragjie, Disoriented Effigy, DKDevil, D-Man, Dmitry Tretyakov, Do not include, Doctor Duckie - KY, DOKIE & KATHIE, Dominic \"RocK_M\" Ferrer, Dominic Christen, Don Hanson II, Don, Beth, & Meghan Ferris, dorlingo, Doug Grimes, Douglas Sloan, Drake Navarone, Drew Schultz, D-Rock, Duatha, Duncan, Duncan Jones, Dustin Roop, Dylan"
+    cre "E:{p}Ebertb, eclipsednight, Ed130 The Vanguard, Eddie Akers, Eden Code, Edgar Martinez, Edward Benavides, Edward Gibbens, Edward Truong, Einjeru (Steven Rodriguez), Ektorus, Elari Tammenurm, Eli Mack, Eltrum, Elvis Henry Strunk, Endang Srie Redjeki, Enerccio, Ensign Enkrow, Erendil, Eric, Eric Lenoir, Eric Moeller, Eric T. Boyce, Eric Wei, Eric Zylstra, Erich Lah, Erik Proskin, Ernest Ivnik, Ernesto Ayala Jr, ErrBerry, Erwan Hellouin, Escelar, Ethan \"SteelAngel\" Deneault, Ethan Leyva, EuphoricField~Vesalious"
+    cre "F:{p}Fabián M. Rebolledo, faeriehunter, Fakhrul Anwar, Falkmir, Falwin, Fang-Kai Hsieh, Fearfireg, Feenie, Felipe Augusto Batista, Felix Grothkopp, Felix Stelzer, fenixDG, Ferdinand Schober, Fimb ul Kron, finmarchicus, FiShiYun, fk000007, Flintspatula, Florian Sebesta, FoMothaRussia, Fractured, Francisco Garcia, Franklin Hamilton, Freddy \"KaKuna\" Hansson, Frédéric Magnin, Frederik Vezina, Frozen Friend (CD), Fury of the Tempest"
+    cre "G:{p}Gabriel \"Gabe Khronos\" Godoy, Gabriel Silvas, Gareth Saxby, Garrett Muggy, Gary Gould (Lazzarus), Gary Howard, gekiganwing, Gentro, George Henry Shaft, Giacomo Russo, Giantenemycrab, Gideon K, Gilorm, Gilshim, Giovanni \"Allen92\" Cambi, Gnostic, Godewijn W. Perizonius, GoldenCrater, Goldenkitten, Gordon Wearing-Smith, Gotchabagoose, Grant Edwards, Grant Fraser, Greem, Gregory Doge Straight, Gregory Jehan Michel Claude Jacob Gallet, Gregory McCausland, Gregory Polander, Gregory W. Marlin, Groshonee, Grzegorz 'ggamer2' Kucharski, Gunnar Högberg, Gurney"
+    cre "H:{p}H1r1n, Halasimov, Haldrin Loregrant, Hanh Van Tang, Harminder Gill, hellgod, Henrik Augustsson, Henry Tran, Hermann B, Hermit, Hessi, Hickname, Hidsnake, Hisakatana, hiyoko556, Honfei \"zisback\" Li, Hugo Crampon, Humberto Meireles (StarChuck), Hung Fuen Mak, Hunter- Captain Obvious the Fantastic, Hunter Goins, Hunterwolf1001"
+    cre "I:{p}Ian, Ian \"ThaWulf\" Wolfe, Ian Cox, Ian Whitehead, Imban, Interitus, Isylia Vinland, Ivan \"DesuEagle\" Orlov, Ivan C, Ivan Garcia, Ivannorr, Ivron, Iwan C. A. Smith, Izkda"
+    cre "J:{p}J. Andrew Hartman, J. Calkins, J. Hayden Pretzman, J. Quincy Sperber, J.J. Lee, Jack Gibbs, Jacob Hull, Jacob Searcy, Jacques Alexander Katzoff, Jaime Navarro Weber, Jamal L. McWillis, James \"Troll\" LeRoy, James Alexander Henley, James Connors, James H., James Kahalewai, James Lange, James Lofshult (Solav), James O'Bannon Tiffany, James Pineda, James Ross, James Sellman, James Talerico, James Taylor, James Virts, Jamie Manley, Jan Paulsson, Jan-Ole Hübner, Jan-Pierre Jaspers, JapaneseSandman, Jared Goodwater, Jared Rex, Jarosław Knaś, Jarred Nation, Jason, Jason Chou, Jason King, Jason M, Jason Paas, Jason Silva, jason wysocki, Jay Myers III, Jaydon Cannella, Jay-Yun Wang, JD, Jean-Louis Lanteigne, Jeff Coelho, Jeff Hunt, Jeff Netzke, Jeff S., Jeff Schmidt, Jeffery Lawler, Jeremy Duboscq, Jeremy James, Jesse Korhonen, Jesse O., Jezariael Demos, J-F \"Jim le Mime\" C., jghibiki, Jim Chen, Jim Rutkowski, Jim W., Jinx, joachim_kamikaze, João Carrera, Joe, Joe \"Joey\" Saint, Joe Egan, Joe Gilligan(Kingz), Joel Engel (Lightmare), Joey Colli, Johan De Witte, John \"Magnificent Beard\" Schmidt, John \"starfuryzeta\" Mathews, John Anderson, John BlueFreakQ McHugh, John Bremseth, John Christian \"Chriss\" Mæland, John Doyle, John Enright, John GT, John P. Doran, John R. \"Wattsman\" Watson, John Speigel III, John Woodgate, John, Mark, and Ron Aspuria, Johnathan \"MechaVsKaiju.com\" Wright, Jon (WEKM) Krupp, Jonas Bronée, Jonas Westerberg (Nody), Jonathan \"PrimeBacon\", Jonathan Chiu, Jonathan Grimm, Jonathan Shaham, Jonathan Souza, Jonathon \"Pamphy\" Pamphilon, Joonas Parviainen, Jordan Cunningham, Jordan Jeske, Jordan Radomi, Jordane \"Tamajyga\" Lemasson, Jose Angel \"Space Warrior\" Lara, Jose Ramón Vega, Jose Tenorio, Joseph \"Quorum\" Magnotti, Joseph Fong, Joseph Ng, Joseph Perez, Josh Griffiths, Josh Medin, Joshi120, Joshua Cubstead, Joshua Gammon, Joshua James Kern, Joshua Matthew Ruiz, Joshua Peng, Joshua Scott, Jozern, Juan Diego \"Goose\" Ramirez, Juan Peredo, Juancarlos Reyes, Juanjo Barrio, Judy McConnell, Juha \"Baric\" Laaksonen, Juho Juopperi, Julien LAMANT, Justin Horn, Justin Moor, Justin Porcelo, JY, jyuichi, JZL"
+    cre "K:{p}K. Mason, k8207dz, Kaelyn Takata, kahadin, Kai Hellmeier, Kaisar69, Karan N. Patel, Karbunos, Karl K, Karl Lassen, Kasper Bergh, Kasper Gammelgaard Hansen, Katherine Williams, Kedo Ciepse, Keeper O Books, Keith Minton, Kelley J., Kelvin, Kenichi Morita, Kenneth Riebe, Keresian, Kestrel150, Kevin, Kevin \"Alythe\" Chow, Kevin Moreno, Kevin Mueller, Kevin S Robertson, Kevin Webb, Kierian O'Hare \^-^/, Kim Tae Woo, Kinoru07, Kirk R. Jensen, Kjetil \"Fyko\" Engvold, KlaisStardust, Kody Tschorn AKA Mr5cap, KogX, Konstantin Koptev, Konsulus, Kory Holtz, Kožec, Kray, Krinku, Kris Hjortshøj Nielsen, Kristiana Moretti, Kronophage, Krunjey, Kurik Lein, Kuritár Tamás György, Kuro \"Drill Battleship\" Gane, Kurt J Klemm, Kurt Montgomery, Kurt Staiger, Kyle Greene, Kyler Markowski"
+    cre "L:{p}Laestril, Lamhirh, Lancelot H., Larissa Reynolds Loves Her Husband Levi, Lars Mattsson, Lars Nygaard Witter, Lassi Heliö, Laure Jansen, Laurence Stratton, Laurent \"Lapov\" Patillon, Laurent Trentaz Vite, Le Di Chang, Ledabot, Lee Barnes, Lee Zary, Leno Nunes, Lenworb, Leon Byford, Leon Yong L.O, Leônidas \"+300\" Soares Pereira, Levi McConnell, Lex, Liam Do, Lib, LibraSweets, Lightning Strike, Lim Ye Ping, Linda Barming, LMekko, Loc Le, Logan Lybbert, Long Nghiem, Long Ngoc Nguyen, Lord Eric of Belleau Wood, Lubrioz, Lucas Aquino de Assis-Trysson12, Lucas McMillan, Lucas Watson, Lukasz Gibel, Luke Michel, Luther McBlain"
+    cre "M:{p}M Allan, M D Snider, M J V Kwan, M. Lara, Maciej Bojarski, Mackenzie Buckle, Mady vand, Maecolis, Magnvs, Malte M. Breckwoldt, Manje Jung, Manuel Acosta, Marc \"Markie\" Bondoc, Marc Agne, \"Marc David Karsai (BITE ME UNIVERSE) NEKO NEKO NYAN!, Marc Reid, Marcel Matz, Marco \"Dralel\", Marco \"xizro345\" Beltrame, Marcus A. Nichols, Marcus Soll, Marijn Hubert, Marius Kaufmann, Mark \"NeoWolf\" Howe, Mark \"Sparkles\" Vaz, Mark Gandy, Mark Gould, Mark Knewstubb, Mark L, Mark Shaw, Mark W. McCarthy, Markus Hessler, Marquess Joel Goldschmidt \"AngelicxSoul\", Martin \"Malangs\" Langhammer, Martin Do, Martin Estrada, Martin Hanze, Marty H, Master Yi & Wukong, Mathew Fang, Mathieu Krog, Matsubara Yuu (Lordmatsu), Matt, Matt C. Wepee, Matt Clark, Matt Halverson, Matt Kanon, Matthew A. Warren, Matthew Andrychuk, Matthew Bates, Matthew Ley, Matthew Robinson, Matthew Sanders, Matthew Schupack, Matthew Williams, Mattias Axblom, Max, Max \"NEXUS\" Sjøstrand, Max \"SpaceWizard\" Mohler, Max Battcher, Max McIntyre, MaxMahem, Mazikeen Wagner, Mega4709, meganothing, Mehlo, Mereck, Micah Steele, Michael, Michael \"beefsack\" Alexander, Michael \"BookwormOtaku\" Connell, Michael \"Chaostraveler\" Cencarik, Michael Armey, Michael Beemer, Michael Brand, Michael Edward Miller, Michael Fedrowitz, Michael Grose, Michael Holcombe, Michael Kaplan, Michael Kwiatkowski, Michael Lingg, Michael McCollum, Michael Muske, Michael Ragdamar Tremblay, Michael Salyer, Michael Sand Petersen, Michael Stenqvist Haglund, Michael T. Ilano, Michael Troester, Michael W. Sim, Michael Wilkerson, Michel Lauzon, Miguel \"Mr.GreenToS\" Martinez, Miguel De Serpa, Miguel Lollett, Mikael Ronzier, Mike \"Ski\" Thomas, mike a pennington, Mike Ong, Mike Ostrow, Mike Taggart, Miki Hoshii, Miles Matton, Miss Roady Pie Esquire, Mithagar, MK, moe.kyun.Vokurek, Mohaan, Mondy, Morgan Hamilton, Mostly_Magic, Mr.Quija, Murat Boduroglu, Myron Monteiro"
+    cre "N:{p}N. Andrelli, N. Yoshimori, N/A, N/A, NAKAMZ, Natani Lucchini, Nathan Bunn, Nathan Taggart, Nathaniel Early, Nathaniel Pahl, Nahaniel Scott Rivers, Neil 'Elcs' Elcome, Nemo157, neothoron, Nersius, Neverstorm, Nicholas Bianchi, Nicholas Brady, Nicholas Lor, Nick Johnston, Nick Noe, Nico A Valdez, Nico B., Nicolas Barbezat, Nicolas Miranda, Nicolas Van Sintejan, Nigel Wright, Nijuu \"I Love GOG & DRM free\" Lau, Nikolay Donets, Nilesh 'Onomato', Nima Safaie, Nipun Wittayasooporn, Nobody679, Nolan \"AnalFries\" Raven, NoNamedFuzzyPanda2, None, Nonomo4"
+    cre "O:{p}Oliver Perks, Olivier Lebeau-Paradis, Omar Rodriguez, Omikron, Onearmdude, Onery Popopango, Oniii-chan, OniPierreot, Opacity, Origin Angel, Owen Sa"
+    cre "P-Q:{p}P. Rischka, Pablo Soler, Pat Jones, Patrick \"AThyper\" Daigle, Patrick \"Celowin\" Jones, Patrick \"Chaos\" Burke, Patrick Eitz, Patrick Ellis, Patrick LaCasse, Patrick Tan, Patrik Raijū Willner, Paul Coombes, Paul H, Paul Houston Clifford Martin Von Barron, Paul Mikelonis, Paul Rock, Paulo Rafael Guariglia Escanhoela, Paulus1000, Pavel Pohilko, Pawel Blizniak, Paweł Kolek, Peo01, Per Hedbor, Per Kristian Brastad, Per Sjödén, Perry, Peter B., Peter Lansdaal, Peter Schnare, Pharaohowen, Phil 'Kyubey' Lam, Phil Salon, Phil White, Philip Hagan, Pierre Nosek, pinvendor, Legendary Merchant of Pins, PJ Grant, pktlonewolf, Professor Ficus, prototype00, Puiheng Tse, Punner, Quan Doan"
+    cre "R:{p}Radiovid, Ragnos13, Ramon Muradin, Randy Eckenrode, Randy Meister, Rasmus Vilsgaard, Raymond Au, Raymond Luis Armstrong, Raymond Y (Fatman139), Raz'Nagul, redeyesblackpanda, Redsnabba, Rehan Ansari, REMCAP, Rene Cabanza Jr., Revek, rgreat, Rias Klein, Ricardo \"kod\" Rodriguez, Richard \"Dablue\" Blaauw, Richard Daigle, Richard Ford, Richard Leiva, Richard Lin, Richard Loh, Rick Reischman, River Thames, Robbie Boerner, Robert Billings, Robert D., Robert Disbrow, Robert Kitzmueller, Robert Labier, Robert McNaughton, Robert Musser, Roberto Carioli, Roberto Casas - rcasas83, Roberto Quintans, robotsheepboy, ROK - Yong Seok Park, Rommy Kwan, Ron Vondrasek, Ronan 2L, Ronin Storm, Roomkaasje, Ross, Ross Boskovski JR, Ross Brierley, Rudy M. Soto, Rufus, Russell Street, Ryan Dunnison, Ryan J. Jackson, Ryan K. (cat_pack), Ryan Tabb, Ryan Templeton, Ryan Ward, Ryan Woodland, Rykki, Ryzuku"
+    cre "S:{p}Sam \"Tarvos\" Gibbins, Sam 'Bobular' Whittingham, Sam Garamy, Sam Mui (Seraph), Sam Thomas, Samarix2, Samuel Foster, Samuel Hartp}Samuel Malo, Sarah J Brown, Sascha Kunze, Saúl Mostacero, SayEric, Schaffer, Schuyler Kreitz, Scott Newitt, SeaGnome, Sean Bailey, Sean Kemp, Sean Shuai, Sean Steder, Sean Thurston, Sebastian Gerhold, SEPIA, Seth Crofton, Seto Konowa, Seyren Windsor, SH VL, Shadow, Shane Agnew, Shane Kilpatrick, Sharif Elgamal, Shaun \"IrishWonda\" Danis, Shaun Skelton, Shenmage, shiinx, Shimble, shinobi, Shuai \"Seingan\" Lin, siegeofjones, Sightless, Sihan Wang, Silentwatcher, SilverWasp, Simo Nyyssönen, Simon Bumgardner, Simon 'garkham' Landureau, Simon Holk, Sinou Rémi, Snowboundkarma, Solgrid, Solomon Lee, Somebodycooler, SonicGTR, Sonny Larsson, Stanislav, Stefan \"ramsesoriginal\" Insam, Stefan Markovic, Stefan Winkler, Stephan Szabo, Stephen Dougherty, Stephen Hazlewood, Stephen Lemelin, Steve \"Bofferbrauer\" Weidig, Steve Green, Steve Jasper, Steve Lord, Steven \"mchief75\" Simon, Steven \"Walshee-poo\" Walsh, Steven Duncan, Steven Farrar, Steven Hoffmann, Steven Holt, Steven Kang, Steven Kirby, Steven Rexroth, Steven Tincknell, Steven Vuong, Stormfox, Stuart Logan, Sugartit, Super Jared, SusanTheCat, Szymon \"Amerth\" Przybylak"
+    cre "T:{p}T. K. Motoyama, Tai Tran, Tanner Garrett, Tapper, Taylor \"Berserk\" Staley, Taylor Collins, Te Hung Tseng, Team Kazam, Tengku Aiman Zulfika, Terence Ow, Terris H20, The Blind Gardener, The Dude, The Grand Harmony of Cetacea, The Patrick Tran, The Wanderer, thezeldagamer, Thissa, Thomas Aasebø, Thomas Aigner, Thomas Custer, Thomas Haymes, Thomas Kaghan, Thomas Schwarz, Thomas Siemens, Thomas Z. Palka, Thomas Zilling, Thorgard, Tim Crothers, Tim Danysh, Tim Ferguson, Tim L, Tim Newman, Tim Reilly, Tim Reynolds, Tim Thacher, Time Lord Ponce, Timmothy \"Akeashar\" Clarke, Timothy Acuff, Timothy Chappell, Timothy Lim, Timothy Martin, Timothy McGowan, Timothy Miller, Timothy Updike, Ting \"Herobear\" Wong, toan tran, Tobias Bollinger, Tobias Schewe, Tom \"PyTom\" Rothamel, Tomare Utsu Zo, Tomas (Xarien) Refsland, Tommy Torenius, Tong Yu, Tony Roberts, Travis Spano, Travis Williams, Trevor Becker, Trevor DeVore, Trevor Sexton, Tristan Carranante, Tristan Kennison, Tsuki, Tuckles, twig, Tyler E. Trosper, Tyler Leger, Tyler Winfield"
+    cre "U:{p}Unddphenix, unholyghost07, Uros Bartolj, Ursine Pedal Digit a/k/a \"Thug Life Otter\", USRPG"
+    cre "V:{p}VAhrens, Valsang, Vasily Chinarev, Venron, Videogamer25, Vintson Knight, Vlad, Vladimir Putin, Vladimir Shvetsov, Voldar"
+    cre "W-Y:{p}WalkingAtlas, Warboss Curb, Wes Owens, Will Chang, Will Kenni, Will Lawrence, William Bradley, William Bryant, William Fleming, William Joseph Owens, William Laminack, William Perry, William Roberts, William Taylor, Willid, Wilson Bilkovich, Wizbang The Mighty, www.boredgamer.co.uk, Wyrtt"
+    cre "X-Z:{p}Xavier Dolci, Xiao, xxzindxx, Yaka, Yohan Withington, Yuri Van Dierendonck, Yurii Furtat, Zac Binion, Zach Milosic, Zach Whitesell, Zachary Kosarik, zack wood, Zak Kalles, Zalminen, zanza, Zenelix, Zenigame, Zero Null, Zetsuna, Zikri Muzammil, Zu Long, Zythiku, アルバート　ウェークス（AJ)"
+
+    jump aftercredits4
+
+label aftercredits4:
+    
+    scene black with dissolve
+    
+    window show
+    play music "Music/March_of_Immortals.ogg"
+
+    "NEXT TIME ON SUNRIDER..."
+    "The Sunrider crew has won their first major victory with the help of the Alliance..."
+    "But can Admiral Grey be trusted?"
+    "Deception and intrigue in the Alliance's presidential election!"
+    "The Sunrider crew finds itself ensnared in a galaxy wide conspiracy!"
+    "Arcadius' secret doomsday weapon finishes construction!"
+    "Three fleets converge deep inside a nebula to determine the fate of the galaxy!"
+    "Icari faces the killer of her past!"
+    "The Sunrider vs. the Legion! The battle cannot be won without the ultimate sacrifice!"
+    "The Captain's past, revealed!"
+    "Chigara confronts the curse of Diode!"
+    "Join us next time in SUNRIDER: THE MASK OF ARCADIUS!"
+    "And don't forget... There'll be lots of space whales next time too!"
+    
+    show dontmissit:
+        zoom 10
+        ease 0.5 zoom 1
+        
+    play sound "sound/drum.ogg"
+
+    $ renpy.pause(1.0)
+
+    stop music fadeout 1.5
+    scene white with dissolvelong
+
+    play sound "sound/drumroll.ogg"
+
+    "And now... The results of our second character popularity contest!"
+    "And the winner is..."
+
+    show pollthree:
+        xalign 0.5 yalign 0.5
+    with dissolve
+    
+    "SHOCK! A three-way tie!"
+    
+    show sola uniform backturn neutral:
+        xpos 0.75
+    with dissolve
+    
+    sol "... ... ..."
+    sol "... ..."
+    sol "..."
+    sol "(Absolutely no reaction at all)"
+    
+    show ava uniform facepalm:
+        xpos 0.5
+    with dissolve
+    
+    ava "I can't believe he actually put my name down on the ballot..."
+    ava "And I hear they also made a daki of me!"
+    ava "Absolutely unbelievable..."
+    
+    show chigara uniform handonchest ooscienceblush:
+        xpos 0.25
+    with dissolve
+    
+    chi "A-ah! I... I won again?!"
+    chi "(Didn't expect that to happen.)"
+    chi "O-oh my..."
+    chi "T-thank you everyone for voting for me! Eh-heh..."
+    chi "M-maybe this means I can finally be the main girl now..."
+    
+    show asaga uniform altneutral zomg:
+        xzoom -1 zoom 1 xpos 0.1
+    with dissolve
+    
+    asa "N-no way....!"
+    
+    return
 
 label aftercreditsep3:
 

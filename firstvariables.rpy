@@ -42,7 +42,7 @@ label firstvariables:
     $ sol_location = None
     $ cla_location = None
     $ cos_location = None
-    $ kri_location = None
+    $ kry_location = None
 
     $ warpto_tydaria = False
     $ warpto_occupiedcera = False
@@ -54,6 +54,7 @@ label firstvariables:
     $ ep2_cancelwarp = False
 
     $ supportedasagacards = False
+    $ paladin = None
 
     #$ sunrider = 0
     #$ blackjack = 0
@@ -114,7 +115,7 @@ init python:
             self.sol_location = None
             self.cla_location = None
             self.cos_location = None
-            self.kri_location = None
+            self.kry_location = None
 
             self.warpto_tydaria = False
             self.warpto_occupiedcera = False
@@ -127,7 +128,25 @@ init python:
 
             self.supportedasagacards = False
 
-            #self.phoenix = create_ship(Phoenix(),(5,5),[PhoenixAssault(),PhoenixMelee(),Stealth()])
+            self.sunrider = None
+            self.blackjack = None
+            self.liberty = None
+            self.phoenix = None
+            self.bianca = None
+            self.seraphim = None
+            self.paradigm = None
+            self.havoc = None
+            self.paladin = None
+
+            self.check1 = False
+            self.check2 = False
+            self.check3 = False
+            self.check4 = False
+            self.check5 = False
+            self.check6 = False
+            self.check7 = False
+            self.check8 = False
+            self.check9 = False
 
             ##new constants##
 
