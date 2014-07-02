@@ -66,6 +66,7 @@ init -6 python:
                     level += 1
                     cost = int(cost * multiplier)
                     ship.upgrades[result] = [name,level,increase,cost,multiplier]
+                    BM.active_upgrade = [name,level,increase,cost,multiplier]
 
     def battlemode(bm):
         bm.battlemode = True
@@ -85,6 +86,7 @@ init -6 python:
     def clean_grid():
         BM.grid = []
         BM.ships = []
+        store.enemy_ships = []
         for a in range(GRID_SIZE[0]):
                 BM.grid.append([False]*GRID_SIZE[1])
         for ship in player_ships:
@@ -123,6 +125,22 @@ init -6 python:
         if accuracy > 100: return 100
         if accuracy < 0.0: return 0
         return int(accuracy)
+
+    def get_cell_available(location):
+        '''Returns True is a space is free - False if it is not'''
+        if location != None:
+            a,b = location
+            X,Y = GRID_SIZE
+            if a > 0 and a <= X and b > 0 and b <= Y:
+                if BM.grid[a-1][b-1]:
+                    return False
+                else:
+                    return True
+            else:
+                False #out of bounds is not available
+        else:
+            return False #None location is not free. failsafes.
+
 
     def show_message(message,xpos=0.5,ypos=0.7):
         renpy.hide_screen('message')
@@ -252,6 +270,14 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
+
+    def set_planets():
+        Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
+        Planet("TYDARIA", "warpto_Tydaria", 1390, 540, "warpto_tydaria")
+        Planet("ASTRAL EXPANSE", "warpto_astralexpanse", 1250, 540, "warpto_astralexpanse")
+        Planet("PACT Outpost", "warpto_pactstation", 1420, 480, "warpto_pactstation1")
+        Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
+        Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
 
 
     def reset_classes():
@@ -481,11 +507,27 @@ init -6 python:
                     for pship in player_ships:
                         ship.AI_estimate_damage(pship)
 
-
-
     def game_over():
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

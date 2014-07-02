@@ -1,9 +1,26 @@
 #Sunrider
 ========
 
+Beta 4
+=======
+* 2 new battles, 2 new ships types and lots of excitement. also a shower scene.
+* changed the in-game store lay-out. you can now buy an upgrade to rocket damage too
+* added AI/code for carriers that spawn ryders during battle
+* added new unit icons to the R&D screen
+* new buff unique to Sola/Nephalim: Awaken. boosts damage and accuracy for 3 turns at the cost of 100EN and 75HP
+* spoiler: new order avaiable later in the game: short range warp. 
+* orders have become more expensive
+* new sprite for rockets moving across the game map
+* minor AI tweaks
+* debuf voices implemented
+
+
+patch 3.1a~c
+========
+minor bugfixes
+
 patch 3.1
 ========
-* fixed bonus menu. again.  (sorry ES)
 * fixed not being able to load after a game over.
 * fixed the game crashing after loading an old save file where the phoenix hadn't been created.
 * fixed old missiles showing up when you fire your own.
@@ -18,6 +35,7 @@ patch 3.1
 * improved various scene transitions
 * improved unit movement animation
 * rockets are now less likely to get shot down by flak compared to regular missiles. warning: this means enemy rockets are more dangerous too!
+* blackjacks missiles are nerfed. from 10 misiles per salvo to 6 missiles. this cuts her max damage by 40%. the Sunrider should logically be able to fire a lot more missiles than a Ryder could.
 * missile accuracy upgrade has been replaced by flak resistance upgrade. every point in this new stat reduces enemy flak% by 1. this change is visually reflected in the targeting window when hovering over a missile or rocket weapon.
 * added a button on the R&D screen that will remove all upgrades and refunds (most) of the money you spent on them. this will also update new balance changes. this feature is not guaranteed to be in the final game and mostly is there for debug/testing purposes.
 * added a button that will undo your previous movement. this button is only available right after making a momevement and only when you did not trigger a counter attack. known issue: hovering over a weapon button wil also make the button disappear.

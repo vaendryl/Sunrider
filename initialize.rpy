@@ -14,10 +14,10 @@ init -10 python:
     MISSILE_SPEED = 0.3
     SHIP_SPEED = 0.3
     ZOOM_SPEED = 0.1
-    GRID_SIZE = (18,16)
+    GRID_SIZE = (18,16) #(X,Y) aka (width,height)
     BM = renpy.store.object()
     BM.phase = None
-    
+
     planets = []
 
 init -1 python:   #create sound channels for simultanious sfx playback
@@ -48,11 +48,11 @@ init -1 python:   #create sound channels for simultanious sfx playback
     Difficulty = 2
 
 init python:
-    
+
     Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
-    Planet("TYDARIA", "warpto_Tydaria", 1371, 519, "warpto_tydaria")
+    Planet("TYDARIA", "warpto_Tydaria", 1390, 540, "warpto_tydaria")
     Planet("ASTRAL EXPANSE", "warpto_astralexpanse", 1250, 540, "warpto_astralexpanse")
-    Planet("PACT Outpost", "warpto_pactstation", 1390, 540, "warpto_pactstation1")
+    Planet("PACT Outpost", "warpto_pactstation", 1420, 480, "warpto_pactstation1")
     Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
     Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
 
@@ -80,15 +80,29 @@ label initialize:
     python:
         BM = Battle() #create an instance of the battle manager which keeps track of lots of things
         player_ships = []
+        enemy_ships = []
         sunrider = None
         blackjack = None
         liberty = None
         phoenix = None
         bianca = None
-        
+        seraphim = None
+        paladin = None
+        havoc = None
+        paradigm = None
+
+        check1 = False
+        check2 = False
+        check3 = False
+        check4 = False
+        check5 = False
+        check6 = False
+        check7 = False
+        check8 = False
+        check9 = False
     return
-    
-    
+
+
 
 label mission1_inits:
 
@@ -471,19 +485,16 @@ label mission11_inits:
         create_ship(PactBattleship(),(15,5),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         create_ship(PactBattleship(),(15,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         create_ship(PactCruiser(),(13,5),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
-        create_ship(PactCruiser(),(13,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
         create_ship(MissileFrigate(),(14,4),[PactFrigateMissile()])
         create_ship(MissileFrigate(),(14,8),[PactFrigateMissile()])
-        
+
         create_ship(PactMook(),(12,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(13,3),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(14,2),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        create_ship(PactMook(),(11,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
         create_ship(PactMook(),(12,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(13,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(14,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        create_ship(PactMook(),(11,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
         create_ship(PactBomber(),(15,4),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(15,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
@@ -492,10 +503,55 @@ label mission11_inits:
         BM.xadj.value = 872
         BM.yadj.value = 370
 
-    $ PlayerTurnMusic = "music/Titan.ogg"
-    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+    $ PlayerTurnMusic = "music/La_Busqueda_de_Lanna.ogg"
+    $ EnemyTurnMusic = "music/The_Flight_of_the_Crow.ogg"
 
     return
+
+label mission12_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,8)
+        blackjack.set_location(6,6)
+        bianca.set_location(6,7)
+        phoenix.set_location(6,8)
+        liberty.set_location(6,9)
+        seraphim.set_location(6,10)
+        paladin.set_location(6,11)
+        alliancecruiser1.set_location(5,7)
+        alliancecruiser2.set_location(5,9)
+
+        create_ship(PactBattleship(),(13,6),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(12,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(12,8),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(13,9),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+
+        create_ship(PactCarrier(),(16,6),[PACTCarrierAssault,])
+        create_ship(PactCarrier(),(16,9),[PACTCarrierAssault,])
+
+        create_ship(PactMook(),(10,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactMook(),(10,10),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,11),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactBomber(),(11,7),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(12,6),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(11,9),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Riding_With_the_Wind.ogg"
+    $ EnemyTurnMusic = "music/Posthumus_Regium.ogg"
+
+    return
+
 
 label preview_mission:
 

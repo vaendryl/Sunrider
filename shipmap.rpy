@@ -5,7 +5,7 @@ label dispatch:
 
     #dissolve to black so that previous scene doesn't briefly appear when going to new scene
     window hide
-    scene Solid((0, 0, 0, 255))
+#    scene Solid((0, 0, 0, 255))
     with dissolve
 
     hide screen store_missile

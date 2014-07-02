@@ -396,7 +396,24 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
-
+    image icari plugsuit armscrossed shoutblush:
+        "Character/Icari/icari_plugsuit_armscrossed_shoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit handonhip tsuntalkblush:
+        "Character/Icari/icari_plugsuit_handonhip_tsuntalkblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari plugsuit armscrossed blushtsun:
+        "Character/Icari/icari_plugsuit_armscrossed_blushtsun.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 

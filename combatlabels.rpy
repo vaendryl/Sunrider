@@ -1,4 +1,6 @@
 #these labels are called by combat code
+
+
 image work_in_progress 'gameplay/work-in-progress-hi.png':
     xcenter ycenter
 image black = Solid((0, 0, 0, 255))
@@ -39,12 +41,12 @@ label test_battle:
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
-        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+#        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+#        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+#        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
 
-        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+#        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+#        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -271,7 +273,7 @@ label sunrider_destroyed:
     hide screen battle_screen
     scene badend
 
-    #$ BM.phase = 'Player' #this makes it so you can save and load again, as it's normally blocked during the enemy's turn
+    $ BM.phase = 'Player' #this makes it so you can save and load again, as it's normally blocked during the enemy's turn
 
     menu:
         "Try Again":
@@ -326,9 +328,6 @@ label after_load:
              #it should now be defined. if it's None create the ship at location None
             if bianca == None:
                 pass
-#                bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
-#                bianca = create_ship(Bianca(),None,bianca_weapons)
-             #if it does exist as a ship, update it's weapon load-out
             else:
                 bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
 
@@ -336,8 +335,6 @@ label after_load:
                 liberty = None
             if bianca == None:
                 pass
-#                liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
-#                liberty = create_ship(Liberty(),None,liberty_weapons)
             else:
                 liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
 
@@ -345,17 +342,17 @@ label after_load:
                 phoenix = None
             if phoenix == None:
                 pass
-#                phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
-#                phoenix = create_ship(Phoenix(),None,phoenix_weapons)
             else:
                 phoenix.weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
 
         #cleanup
-        BM.ships = []
-        for ship in player_ships:
-            BM.ships.append(ship)
-        for ship in enemy_ships:
-            BM.ships.append(ship)
+        if hasattr(BM,'ships') and hasattr(store,'player_ships') and hasattr(store,'enemy_ships'):
+            if BM.ships != []:
+                BM.ships = []
+                for ship in player_ships:
+                    BM.ships.append(ship)
+                for ship in enemy_ships:
+                    BM.ships.append(ship)
     return
 
 

@@ -40,6 +40,10 @@ init -2:  ##0) transforms
         crop (0,0,0,int(200 / zoomlevel))
         easeout 1 crop (0,0,1344 / zoomlevel,200 / zoomlevel)
 
+    transform warpout:
+        alpha 0
+        easein 1 alpha 1
+
     transform buffup(xx):
         ypos xx
         alpha 1
@@ -106,6 +110,9 @@ screen battle_screen:
     key "]" action Return("next ship")
     key "[" action Return("previous ship")
 
+    ##messing with the player for fun and profit
+    timer 900 repeat False action Show('game_over_gimmick')
+
     if config.developer: #a release version should have set this to False
         key "Q" action Jump('quit')  ##DEBUG FAST QUIT##
         key "A" action Return('anime')
@@ -146,6 +153,17 @@ screen battle_screen:
                 ypos yposition
                 size (4,ymax)
                 alpha 0.4
+
+        ##legion warning indicator
+        ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
+#        if hasattr(store,'legion'):
+#            if legion.active:
+#                if legion.row != 0:
+#                    text '  - - - - warning - - - - - warning - - - - - warning- - - - - warning - - - -  ':
+#                        color 'f00' ypos int(120*(legion.row-0.25) *zoomlevel)
+#                        size int(120*zoomlevel)
+##                        layout nowrap
+
 
 
           ##display shield and flak ranges
@@ -468,7 +486,7 @@ screen battle_screen:
 
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
           ##loop again to show the targeting window. this way other ships don't overlap with it.
-        if not BM.weaponhover == None or BM.targetingmode and BM.selected != None:
+        if BM.weaponhover != None or BM.targetingmode and BM.selected != None:
             $ selected = BM.selected
 
               #the looping is NEEDED to counter overlap problems. it sucks, I know. I wish I could set zorder to individual images
@@ -478,7 +496,7 @@ screen battle_screen:
 
                         if BM.weaponhover == None:
                             $BM.weaponhover = BM.active_weapon
-                        if BM.weaponhover.wtype == 'Support' and ship.faction != 'Player':
+                        if BM.weaponhover.wtype == 'Support' and (ship.faction != 'Player' or BM.weaponhover.self_buff == True):
                             $continue
                         if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
                             $continue
@@ -512,7 +530,8 @@ screen battle_screen:
                                 $ effective_flak = 0
                             else:
                                 if BM.weaponhover.wtype == 'Rocket':
-                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - weaponhover.eccm
+                                    #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
+                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm
                                 else:
                                     $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm
 
@@ -623,6 +642,20 @@ screen battle_screen:
                 at vanguard_cannon
                 alpha 1.0
 
+          #the Sunrider warps from one cell to another
+        if BM.warping:
+            for location in store.flash_locations:
+                $xposition = int((location[0]) * 192 * zoomlevel) - int(100 * zoomlevel)
+                $yposition = int((location[1]-0.5) * 120 * zoomlevel) - int(100 * zoomlevel)
+                add 'Battle UI/label_warpflash.png':
+#                    anchor 0.5  #I get a float object not iterable crash. very annoying
+                    xpos xposition
+                    ypos yposition
+                    at warpout
+                    zoom 0.25
+
+
+
             ##MOVE SHIP FROM GRID TO GRID##
         if BM.moving:
             $xposition = int((BM.selected.current_location[0]+0.5) * 192 * zoomlevel)
@@ -725,13 +758,30 @@ screen orders:
                         min_width 300
                         size 22
                         outlines [(1,'222',0,0)]
+
                     text str(BM.orders[order][0]):
                         ypos 5
                         xpos 50
                         min_width 50
                         text_align 1.0
+#                            first_indent 150
                         size 18
                         outlines [(1,'222',0,0)]
+
+                    hbox:
+                        if order == 'REPAIR DRONES':
+                            if sunrider.repair_drones != None:
+                                if sunrider.repair_drones == 0:
+                                    $colour = '900'
+                                else:
+                                    $colour = '050'
+                                text '[[' + str(sunrider.repair_drones) + ']':
+                                    ypos 5
+                                    first_indent -170
+                                    size 22
+                                    color colour
+                                    outlines [(1,colour,0,0)]
+
 
     imagebutton:
             at move_down(0,590)
@@ -760,7 +810,8 @@ screen commands: ##show the weapon buttons etc##
         else:
             $ index = ''
             if config.developer and BM.selected.faction != 'Player':
-                $ index = ' ' + str(enemy_ships.index(BM.selected))
+                if BM.selected in enemy_ships:
+                    $ index = ' ' + str(enemy_ships.index(BM.selected))
                 # text str(index) xanchor 1.0 xpos 1880 ypos 800 size 20 outlines [(1,'000',0,0)]
             text (BM.selected.name + index) xanchor 1.0 xpos 1880 ypos 726 outlines [(1,'000',0,0)]
 
@@ -874,6 +925,18 @@ screen commands: ##show the weapon buttons etc##
                     size 20
                     font "Font/sui generis rg.ttf"
                     outlines [(1,'000',0,0)]
+                python:
+                    if not hasattr(weapon,'hp_cost'): weapon.hp_cost = 0
+                if weapon.hp_cost > 0:
+                    text str(-weapon.hp_cost) + 'HP':
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos (x_offset+80+120*count)
+                        ypos (y_offset+115+69*count)
+                        size 20
+                        font "Font/sui generis rg.ttf"
+                        outlines [(1,'000',0,0)]
+
                   ##show ammo available and max_ammo
                 if weapon.uses_missiles:
                     text '[[{!s}/{!s}]'.format(BM.selected.missiles,BM.selected.max_missiles):
@@ -1155,6 +1218,18 @@ screen message:
 
     timer 3.25 action Hide('message')
 
+screen mousefollow:
+    zorder 10
+    if BM.selected == None:
+        $ follow_image = sunrider.lbl
+    else:
+        $ follow_image = BM.selected.lbl
+
+    $ follow_image = im.Rotozoom(follow_image,0,0.25)
+#    $ follow_image = im.matrix(follow_image).opacity(0.4)
+    add MouseFollow(follow_image):
+        alpha 0.7
+
 
 transform gameovergimmick(x,y,t):
     # These control the position.
@@ -1168,10 +1243,11 @@ transform gameovergimmick(x,y,t):
 screen game_over_gimmick:
     zorder 50
 
-    for a in range(60):
-        $randint = random.randint(12,40)
-        $randx = random.random()
-        $randy = random.random()
-        $randt = random.randint(100,600) / 100.0
-        text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
+    for a in range(80):
+        $randint = renpy.random.randint(50,150)
+        $randx = renpy.random.random()
+        $randy = renpy.random.random()
+        $randt = renpy.random.randint(100,600) / 100.0
+#        text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
+        add 'Battle UI/label_pactbattleship.png' xpos randx ypos randy zoom (randint / 300.0) at gameovergimmick(randx,randy, randt)
 

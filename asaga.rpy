@@ -326,7 +326,24 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True  
-
+    image asaga plugsuit neutral awakenangry:
+        "Character/Asaga/asaga_plugsuit_neutral_awakenangry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga plugsuit neutral angry:
+        "Character/Asaga/asaga_plugsuit_neutral_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asagaplugsuitneutralangry:
+        "Character/Asaga/asaga_plugsuit_neutral_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
 
 
 
@@ -658,6 +675,13 @@
         subpixel True   
     image asaga uniform armscrossed laugh:
         "Character/Asaga/asaga_uniform_armscrossed_laugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+
+    image asaga uniform altneutral zomg:
+        "Character/Asaga/asaga_uniform_altneutral_zomg.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255

@@ -21,6 +21,7 @@ init 2 python:
             self.en = self.max_en
             self.max_missiles = 1
             self.max_rockets = 2
+            self.repair_drones = None
             self.missiles = self.max_missiles
             self.rockets = 0
             self.evasion = -25  # cruisers are easy to hit
@@ -129,6 +130,8 @@ init 2 python:
             self.movebackward_voice = ['Chigara/Move Backward Line 1.ogg','Chigara/Move Backward Line 2.ogg','Chigara/Move Backward Line 3.ogg']
             self.buffed_voice = ['Chigara/Buffed Line 1.ogg','Chigara/Buffed Line 2.ogg']
             self.cursed_voice = ['Chigara/Cursed Line 1.ogg','Chigara/Cursed Line 2.ogg','Chigara/Cursed Line 3.ogg']
+            self.cursing_voice = ['Chigara/Curse Line 1.ogg','Chigara/Curse Line 2.ogg','Chigara/Curse Line 3.ogg','Chigara/Curse Line 4.ogg','Chigara/Curse Line 5.ogg','Chigara/Curse Line 6.ogg','Chigara/Curse Line 7.ogg','Chigara/Curse Line 8.ogg','Chigara/Curse Line 9.ogg','Chigara/Curse Line 10.ogg']
+
 
     class Phoenix(Battleship):
         def __init__(self):
@@ -156,6 +159,7 @@ init 2 python:
                 'character':"Character/Icari/icari_plugsuit_point_angry.png"
                 }
             self.flak = 20
+            self.upgrades['max_hp'] = ['Hull Plating',1,100,100,2.0]
 
             ####################VOICES
             self.voice_channel = "icavoice"
@@ -199,6 +203,7 @@ init 2 python:
             self.movebackward_voice = ['Claude/Backward 1.ogg','Claude/Backward 2.ogg','Claude/Backward 3.ogg']
             self.buffed_voice = ['Claude/Buffed 1.ogg','Claude/Buffed 2.ogg']
             self.cursed_voice = ['Claude/Cursed 1.ogg','Claude/Cursed 2.ogg','Claude/Cursed 3.ogg','Claude/Cursed 4.ogg','Claude/Cursed 5.ogg']
+            self.cursing_voice = ['Claude/Curse 1.ogg','Claude/Curse 2.ogg','Claude/Curse 3.ogg','Claude/Curse 4.ogg','Claude/Curse 5.ogg','Claude/Curse 6.ogg','Claude/Curse 7.ogg','Claude/Curse 8.ogg','Claude/Curse 9.ogg','Claude/Curse 10.ogg']
 
     class Seraphim(Battleship):
         def __init__(self):
@@ -233,6 +238,75 @@ init 2 python:
             self.movebackward_voice = ['Sola/Backward 1.ogg','Sola/Backward 2.ogg','Sola/Backward 3.ogg','Sola/Backward 4.ogg']
             self.buffed_voice = ['Sola/Buffed 1.ogg','Sola/Buffed 2.ogg']
             self.cursed_voice = ['Sola/Curse 1.ogg','Sola/Curse 2.ogg','Sola/Curse 3.ogg','Sola/Curse 4.ogg']
+
+    class Paladin(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder'
+            self.name = 'Paladin'
+            self.animation_name = 'paladin'
+            self.faction = 'Player'
+            self.max_hp = 900
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.base_armor = 15
+            self.armor = self.base_armor
+            self.en = self.max_en
+            self.max_missiles = 2
+            self.missiles = self.max_missiles
+            self.move_cost = 40
+            self.hate = 100
+            self.evasion = 10
+            self.lbl = 'Battle UI/label_paladin.png'  #this is the battle avatar
+            self.portrait = 'Battle UI/kryska_portrait.png'
+            self.sprites = {
+                'standard':'gameplay/Animations/Paladin/side.png',
+                'character':"Character/Kryska/kryska_plugsuit_handonhip_focussmile.png"
+                }
+            self.flak = 18
+
+            ####################VOICES
+            self.voice_channel = "kryvoice"
+            self.no_damage_voice = ["Kryska/No Damage 1.ogg","Kryska/No Damage 2.ogg","Kryska/No Damage 3.ogg","Kryska/No Damage 4.ogg","Kryska/No Damage 5.ogg","Kryska/No Damage 6.ogg"]
+            self.selection_voice = ['Kryska/Selection 1.ogg','Kryska/Selection 2.ogg','Kryska/Selection 3.ogg','Kryska/Selection 4.ogg','Kryska/Selection 5.ogg','Kryska/Selection 6.ogg','Kryska/Selection 7.ogg']
+            self.moveforward_voice = ['Kryska/Forward 1.ogg','Kryska/Forward 2.ogg','Kryska/Forward 3.ogg']
+            self.movebackward_voice = ['Kryska/Backwards 1.ogg','Kryska/Backwards 2.ogg','Kryska/Backwards 3.ogg']
+            self.buffed_voice = ['Kryska/Buffed 1.ogg','Kryska/Buffed 2.ogg']
+            self.cursed_voice = ['Kryska/Cursed 1.ogg','Kryska/Cursed 2.ogg','Kryska/Cursed 3.ogg','Kryska/Cursed 4.ogg','Kryska/Cursed 5.ogg']
+
+    class AllianceCruiser(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Cruiser'
+            self.name = 'Alliance Cruiser'
+            self.animation_name = 'alliancecruiser'
+            self.faction = 'Player'
+            self.max_hp = 1200
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.base_armor = 12
+            self.armor = self.base_armor
+            self.en = self.max_en
+            self.max_missiles = 1
+            self.missiles = self.max_missiles
+            self.move_cost = 30
+            self.hate = 100
+            self.evasion = 0
+            self.lbl = 'Battle UI/label_alliancecruiser.png'  #this is the battle avatar
+            self.portrait = None
+            self.flak = 30
+            self.flak_range = 2
+            self.shield = 25
+            self.shield_range = 1
+
+            ####################VOICES
+            self.voice_channel = "othvoice"
+            self.no_damage_voice = ["sound/Voice/Asaga/We're Taking Fire.ogg"]
+            self.selection_voice = ['AllianceCruiser/Alliance Cruiser Here.ogg','AllianceCruiser/Reporting For Duty.ogg']
+            self.moveforward_voice = ['AllianceCruiser/Yes Sir.ogg']
+            self.movebackward_voice = ['AllianceCruiser/Yes Sir.ogg']
+            self.buffed_voice = ['AllianceCruiser/Reporting For Duty.ogg']
+            self.cursed_voice = ['AllianceCruiser/Were Taking Fire.ogg']
 
     class Agamemnon(Battleship):
         def __init__(self):
@@ -563,7 +637,7 @@ init 2 python:
             self.armor = self.base_armor
             self.move_cost = 1000
 
-class PactBattleship(Battleship):
+    class PactBattleship(Battleship):
         def __init__(self):
             Battleship.__init__(self)
             self.stype = 'Battleship'
@@ -590,7 +664,72 @@ class PactBattleship(Battleship):
             self.base_armor = 40
             self.move_cost = 50
             self.armor = self.base_armor
-            store.BM.ships.append(self)  #register itself upon creation
+
+    class PactCarrier(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Carrier'
+            self.name = 'PACT Carrier'
+            #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
+            self.spawns = [
+                ( PactMook,50,[ PACTMookLaser(),PACTMookMissile(),PACTMookAssault() ] ),
+                ( PactBomber,100,[ PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket() ] )
+                ]
+            self.faction = 'PACT'
+            self.animation_name = 'pactcarrier'
+            self.max_hp = 1900
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.money_reward = 500
+            self.max_missiles = 0
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.evasion = -50
+            self.blbl = 'Battle UI/label_pactcarrier.png'  #this is the battle avatar
+            self.lbl = self.blbl
+            self.flak = 60
+            self.flak_range = 2
+            self.shield_generation = 50
+            self.shields = self.shield_generation
+            self.shield_range = 2
+            self.base_armor = 40
+            self.move_cost = 50
+            self.armor = self.base_armor
+
+#    class PactCarrier(Battleship):
+#        def __init__(self):
+#            Battleship.__init__(self)
+#            self.stype = 'Carrier'
+#            self.name = 'PACT Carrier'
+#            #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
+#            self.spawns = [
+#                ( PactMook,50,[ PACTMookLaser(),PACTMookMissile(),PACTMookAssault() ] ),
+#                ( PactBomber,100,[ PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket() ] )
+#                ]
+#            self.faction = 'PACT'
+#            self.animation_name = 'pactcarrier'
+#            self.max_hp = 1600
+#            self.hp = self.max_hp
+#            self.max_en = 100
+#            self.en = self.max_en
+#            self.money_reward = 500
+#            self.max_missiles = 2
+#            self.max_rockets = 1
+#            self.missiles = self.max_missiles
+#            self.rockets = self.max_rockets
+#            self.evasion = -40
+#            self.blbl = 'Battle UI/label_pactbattleship.png'  #this is the battle avatar
+#            self.lbl = self.blbl
+#            self.flak = 40
+#            self.flak_range = 2
+#            self.shield_generation = 40
+#            self.shields = self.shield_generation
+#            self.shield_range = 2
+#            self.base_armor = 40
+#            self.move_cost = 50
+#            self.armor = self.base_armor
 
 
 ### pirate ships ###
@@ -807,12 +946,59 @@ class PactBattleship(Battleship):
             self.name = 'Thermonuclear warhead'
             self.lbl = 'Battle UI/button_rocket.png'
 
+##############ALLIANCE CRUISER WEAPONS
+    class AllianceCruiserLaser(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 200
+            self.energy_use = 70
+            self.shot_count = 1
+            self.accuracy = 120
+            self.wtype = 'Laser'
+            self.name = 'AllianceCruiser_Laser'
+            self.lbl = 'Battle UI/button_laser.png'
+
+    class AllianceCruiserMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 70
+            self.energy_use = 30
+            self.shot_count = 5
+            self.accuracy = 100
+            self.uses_rockets = False
+            self.uses_missiles = True
+            self.wtype = 'Missile'
+            self.name = 'AllianceCruiser_Missile'
+            self.lbl = 'Battle UI/button_missile.png'
+
+    class AllianceCruiserKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 400
+            self.energy_use = 60
+            self.shot_count = 1
+            self.accuracy = 75
+            self.wtype = 'Kinetic'
+            self.name = 'AllianceCruiser_Kinetic'
+            self.lbl = 'Battle UI/button_kinetic.png'
+
+    class AllianceCruiserAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 12
+            self.energy_use = 30
+            self.shot_count = 15
+            self.accuracy = 70
+            self.wtype = 'Assault'
+            self.name = 'AllianceCruiser_Assault'
+            self.lbl = 'Battle UI/button_assault.png'
+
 ###################BLACK JACK WEAPONS
 
     class BlackjackLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 150
+            self.damage = 200
             self.energy_use = 70
             self.shot_count = 1
             self.accuracy = 110
@@ -882,6 +1068,44 @@ class PactBattleship(Battleship):
             self.name = 'Liberty_Laser'
             self.lbl = 'Battle UI/button_laser.png'
 
+
+###################PALADIN WEAPONS
+
+    class PaladinMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 40
+            self.energy_use = 20
+            self.shot_count = 10
+            self.accuracy = 70
+            self.uses_rockets = False
+            self.uses_missiles = True
+            self.wtype = 'Missile'
+            self.name = 'Paladin_Missile'
+            self.lbl = 'Battle UI/button_missile.png'
+
+    class PaladinAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 14
+            self.energy_use = 20
+            self.shot_count = 10
+            self.accuracy = 70
+            self.wtype = 'Assault'
+            self.name = 'Paladin_Assault'
+            self.lbl = 'Battle UI/button_assault.png'
+
+    class PaladinKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 400
+            self.energy_use = 60
+            self.shot_count = 1
+            self.accuracy = 70
+            self.wtype = 'Kinetic'
+            self.name = 'Paladin_Kinetic'
+            self.lbl = 'Battle UI/button_kinetic.png'
+
 ############################################# PACT MISSILE FRIGATE
 
     class PactFrigateMissile(Missile):
@@ -912,9 +1136,9 @@ class PactBattleship(Battleship):
     class PirateGruntAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 10
+            self.damage = 15
             self.energy_use = 40
-            self.shot_count = 15
+            self.shot_count = 10
             self.accuracy = 60
             self.wtype = 'Assault'
 
@@ -1102,7 +1326,7 @@ class PactBattleship(Battleship):
             Kinetic.__init__(self)
             self.damage = 500
             self.energy_use = 60
-            self.shot_count = 2
+            self.shot_count = 1
             self.accuracy = 55
 
     class PACTBattleshipAssault(Kinetic):
@@ -1113,7 +1337,7 @@ class PactBattleship(Battleship):
             self.shot_count = 15
             self.accuracy = 50
             self.wtype = 'Assault'
-            
+
     class PACTBattleshipMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
@@ -1126,7 +1350,7 @@ class PactBattleship(Battleship):
     class PACTBattleshipRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 800
+            self.damage = 700
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
@@ -1134,6 +1358,17 @@ class PactBattleship(Battleship):
             self.wtype = 'Rocket'
             self.accuracy = 80
             self.shot_count = 1
+
+###################################################################PACT CARRIER
+
+    class PACTCarrierAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 25
+            self.energy_use = 30
+            self.shot_count = 20
+            self.accuracy = 50
+            self.wtype = 'Assault'
 
 
 #################################################PACT MOOK
@@ -1157,9 +1392,9 @@ class PactBattleship(Battleship):
     class PACTMookAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 11
+            self.damage = 20
             self.energy_use = 40
-            self.shot_count = 15
+            self.shot_count = 10
             self.accuracy = 60
             self.wtype = 'Assault'
 
@@ -1248,6 +1483,20 @@ class PactBattleship(Battleship):
             self.buff_duration = 1
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
+
+    class Awaken(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.self_buff = True
+            self.energy_use = 100
+            self.accuracy = 100
+            self.hp_cost = 75
+            self.acc_degradation = 100
+            self.modifies = ['damage','accuracy']
+            self.buff_strength = 100
+            self.buff_duration = 3
+            self.name = 'Awaken'
+            self.lbl = 'Battle UI/button_awaken.png'
 
 #### curse skills ####
 

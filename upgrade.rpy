@@ -1,4 +1,6 @@
 screen upgrade:
+    modal True
+
     add "Menu/upgrade_back.jpg"
 
     text '{!s}$'.format(BM.money):
@@ -9,7 +11,7 @@ screen upgrade:
         outlines [(1,'000',0,0)]
 
     imagebutton:
-        xpos 1650 ypos 975
+        xpos 0.05 ypos 975
         action Return("quit")
         idle "Menu/return.jpg"
         hover "Menu/return_hover.jpg"
@@ -88,6 +90,10 @@ screen upgrade:
         add "Menu/upgrade_phoenix.png"
     if ship == bianca:
         add "Menu/upgrade_bianca.png"
+    if ship == seraphim:
+        add "Menu/upgrade_seraphim.png"
+    if ship == paladin:
+        add "Menu/upgrade_paladin.png"
 
     textbutton 'DEBUG: reset upgrades (refunds money)':
         xalign 1.0
@@ -97,13 +103,59 @@ screen upgrade:
         text_outlines [(1,'000',0,0)]
         action Return('reset')
 
-    textbutton 'next ship':
-        xpos 0.8
-        ypos 0.1
-        text_size 50
-        text_color 'fff'
-        text_outlines [(1,'000',0,0)]
-        action Return('next')
+##defunct
+#    textbutton 'next ship':
+#        xpos 0.8
+#        ypos 0.1
+#        text_size 50
+#        text_color 'fff'
+#        text_outlines [(1,'000',0,0)]
+#        action Return('next')
+
+    ## show icons of all the player ships in player_ships
+    $ count = 0
+    for iconship in player_ships:
+        $ icon = None
+        $ hovericon = None
+        $ xposition = 1640
+        if count % 2 != 0:
+            $ xposition = 1758
+        $ yposition = 441 + count * 70
+
+        if iconship.name == 'Sunrider':
+            $ icon = 'Menu/upgrade_sunrider_button.png'
+            $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
+        elif iconship.name == 'Liberty':
+            $ icon = 'Menu/upgrade_liberty_button.png'
+            $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
+        elif iconship.name == 'Black Jack':
+            $ icon = 'Menu/upgrade_blackjack_button.png'
+            $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
+        elif iconship.name == 'Havoc':
+            $ icon = 'Menu/upgrade_havoc_button.png'
+            $ hovericon = 'Menu/upgrade_havoc_hover.png'
+        elif iconship.name == 'Phoenix':
+            $ icon = 'Menu/upgrade_phoenix_button.png'
+            $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
+        elif iconship.name == 'Seraphim':
+            $ icon = 'Menu/upgrade_seraphim_button.png'
+            $ hovericon = 'Menu/upgrade_seraphim_hover.png'
+        elif iconship.name == 'Bianca':
+            $ icon = 'Menu/upgrade_bianca_button.png'
+            $ hovericon = 'Menu/upgrade_bianca_hover.png'
+        elif iconship.name == 'Paladin':
+            $ icon = 'Menu/upgrade_paladin_button.png'
+            $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
+
+        imagebutton:
+            xpos xposition
+            ypos yposition
+            action SetField(BM,'selected',iconship)
+            idle icon
+            hover hovericon
+            focus_mask True
+
+        $ count += 1
 
     vbox:
         area (40, 270, 1050, 440)
@@ -222,9 +274,3 @@ screen upgrade:
                             color '000'
 
                     $ count += 1
-
-screen store_missile:
-    add "Menu/unionstore_missiles.png" xpos 1170 ypos 200
-
-screen store_rocket:
-    add "Menu/unionstore_rocket.png" xpos 1170 ypos 200
