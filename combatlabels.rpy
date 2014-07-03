@@ -256,6 +256,7 @@ label battle_start:
     play music PlayerTurnMusic
     python:
         BM.stopAI = False
+        BM.order_used = False
         renpy.take_screenshot()
         renpy.save('battlestart')
         BM.xadj.value = 872

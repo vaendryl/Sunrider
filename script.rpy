@@ -5290,7 +5290,6 @@ label mission8:
             create_ship(PactBomber(),(14,3),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
 
             create_ship(PactMook(),(13,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-            create_ship(PactMook(),(13,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
             create_ship(PactBomber(),(14,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
 
         $ check2 = True
@@ -5299,7 +5298,6 @@ label mission8:
 
         play sound "sound/Voice/Ava/Ava Others 5.ogg"
         python:
-            create_ship(MissileFrigate(),(15,5),[PactFrigateMissile()])
             create_ship(MissileFrigate(),(15,8),[PactFrigateMissile()])
             create_ship(PactCruiser(),(14,6),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
             create_ship(PactCruiser(),(14,7),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
@@ -5361,7 +5359,7 @@ label mission8:
         $ check4 = True
 
 
-    if check5 == False and BM.turn_count == 8:
+    if check5 == False and BM.turn_count == 9:
 
         play sound "sound/Voice/Ava/Ava Others 6.ogg"
         python:
@@ -5374,8 +5372,10 @@ label mission8:
 
         $ check5 = True
 
-    if check6 == False and BM.turn_count == 10:
-
+    if check6 == False and BM.turn_count == 11:
+        
+        $BM.draggable = False
+        
         show ava uniform facepalm onlayer screens with dissolve
 
         ava "That's enough heroics, captain! We have to get out of here now!!"
@@ -5398,6 +5398,7 @@ label mission8:
             create_ship(PactCruiser(),(18,16),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
 
         $ check6 = True
+        $BM.draggable = True
 
     $BM.battle()  #continue the battle
 
@@ -8771,7 +8772,7 @@ label porkfleetopenfire:
     with dissolve
 
     window show
-    
+
     $ sunrider.repair_drones = 0
 
     ava "...repairs on the ship are nearly complete, captain. We've been working around the clock to patch her back together after that last assault."
@@ -10307,7 +10308,7 @@ label mission11:
 
         $BM.draggable = True
         $ check4 = True
-        
+
     if check6 == False and BM.turn_count == 10:
 
         $BM.draggable = False
@@ -10340,37 +10341,38 @@ label mission11:
 
         $BM.draggable = True
         $ check4 = True
-        
+
     python:
-        
+
         battleships_remaining = 0
         for ship in enemy_ships:
             if ship.stype == 'Battleship':
                 battleships_remaining += 1
-                
+
     if battleships_remaining == 0 and check5 == False:
-        
+
         $BM.draggable = False
-        
+
         show ava uniform handonhip mad onlayer screens:
             xpos 0.8
         with dissolve
 
         ava "All battleships destroyed, captain!"
         ava "Now let's get out of here before more enemies show up!"
-        
+
         play sound "Sound/objectives.ogg"
         "Objective: Get the Sunrider to the far right edge of the map."
-        
+
         $BM.draggable = True
         $ check5 = True
 
         hide ava uniform handonhip mad onlayer screens with dissolve
-        
+
     $BM.battle()  #continue the battle
-    
-    if sunrider.location[0] == 18 and check5 == True:
-        $ BM.battle_end()
+
+    if sunrider.location != None:
+        if sunrider.location[0] == 18 and check5 == True:
+            $ BM.battle_end()
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
         jump mission11 #loop back
@@ -12285,9 +12287,9 @@ label battlefarportstart:
     ava "A daring plan, captain. But what about the Legion?"
     kay "Let's just hope that it's only here to watch the party. They won't commit the Legion to the battle if Arcadius is on board. He's too important to risk taking into battle."
     ava "Then let's hope that he's there watching."
-    
+
     play music "Music/DayDream_Cut.ogg" fadeout 1.5
-    
+
     kay "Put me through to all our ships."
 
     show ava uniform alt neutral neutral with dissolve
@@ -12298,34 +12300,34 @@ label battlefarportstart:
         xpos 0.0 subpixel True
         ease 15.0 xpos -0.27
     with dissolve
-    
+
     pause 5.0
 
     kay "All ships, this is Captain Shields speaking."
     kay "The enemy is at your gate. The Alliance now fights a war for its very survival."
-    
+
     show chigara plugsuit excited blushdetermined:
-        xpos 0.2 alpha 0 
+        xpos 0.2 alpha 0
         ease 0.5 alpha 1.0
         pause 0.5
         ease 0.5 alpha 0
-    
+
     chi "(Captain... Do your best!)"
     kay "The task before us is great. We stand guard of billions of innocent lives beyond Far Port."
     kay "And yet the enemy outnumbers, outguns, and outpowers us one to six."
     kay "I have seen with my own eyes what PACT does to civilians. For those who we left behind, steel yourself for the coming fire!"
-    
+
     scene cg_farport_charge2:
         xpos 0.0 subpixel True
         ease 15.0 xpos -0.27
     with dissolve
-    
+
     show arcadius altneutral:
         xpos 0.8
         ease 1.5 alpha 1.0
         pause 0.5
         ease 1.5 alpha 0
-        
+
     arc "For as long as recorded time, we have suffered at the hands of the Imperialists."
     arc "After many years of bloody revolution, we have at last arrived at the enemy's gates..."
     arc "Tell me, my comrades, shall we let these capitalists live?"
@@ -12334,24 +12336,24 @@ label battlefarportstart:
     arc "Let it be heard!"
     arc "Death to the aging men in their gleaming ivory towers! Death to the kings in their decadent throne rooms!"
     arc "All hail the revolution!"
-    
+
     scene cg_farport_charge1:
         xpos -0.27
     with dissolve
-    
+
     kay "In the face of such odds, we will not scatter, but instead charge forward to meet the enemy head on!"
-    
+
     show asaga plugsuit handsonhips determined:
         xpos 0.2 alpha 0
         ease 0.5 alpha 1.0
         pause 0.5
         ease 0.5 alpha 0
-    
+
     asa "(I'm... going to protect everyone...!)"
     kay "The enemy may have strength in numbers, but their numbers are meaningless when we outnumber them one hundred to one in mettle!"
     kay "For the defense of the inner worlds, we will march forward! Let the crimson fleet learn today the might of the free men of the Alliance!"
     kay "All units... FORWARD!!"
-    
+
     play sound "Sound/battle.wav"
     show battlewarning:
         xpos 0.5 ypos 0.5 zoom 20
@@ -12359,10 +12361,10 @@ label battlefarportstart:
     pause 0.5
     play sound "Sound/drum.ogg"
     $ renpy.pause(2)
-    
+
     window hide
     hide cg_farport_charge1
-    
+
     $ check1 = False
     $ check2 = False
     $ check3 = False
@@ -12376,15 +12378,15 @@ label battlefarportstart:
     call mission12_inits
     $ BM.mission = 12
     jump battle_start
-    
+
 label mission12:
-    
+
     $BM.battle_bg = "Background/space6.jpg"
-    
+
     if check3 == False:
-        
+
         $ BM.draggable = False
-        
+
         "Tip 1: Use the Short Range Warp order to instantly relocate the Sunrider to another location."
         "Tip 2: PACT Carriers will continually launch enemy ryders until destroyed."
 
@@ -12392,7 +12394,7 @@ label mission12:
         $ BM.draggable = True
 
     if check1 == False and BM.turn_count == 3:
-        
+
         $BM.draggable = False
 
         show ava uniform handonhip mad onlayer screens:
@@ -12415,9 +12417,9 @@ label mission12:
 
         $ BM.draggable = True
         $ check1 = True
-        
+
     if check2 == False and BM.turn_count == 6:
-        
+
         $BM.draggable = False
 
         show ava uniform handonhip mad onlayer screens:
@@ -12443,14 +12445,14 @@ label mission12:
         jump mission12 #loop back
     else:
         pass #continue down to the next label
-    
+
 label aftermission12:
-    
+
     hide screen commands
     hide screen battle_screen
-    
+
     play music "Music/Riding_With_the_Wind.ogg" fadeout 1.5
-    
+
     scene bg legionwindows with dissolve
     show fontana:
         xpos 0.3
@@ -12458,9 +12460,9 @@ label aftermission12:
     show arcadius altneutral:
         xpos 0.7
     with dissolve
-    
+
     window show
-    
+
     fon "My leader. The enemy fleet has ambushed Cullen's command group."
     arc "The fool. We long suspected his incompetence."
     fon "Shall we assist?"
@@ -12468,19 +12470,19 @@ label aftermission12:
     fon "But sir... At this distance, there is a risk that we would hit our own ships as well."
     arc "That is irrelevant. Destroy them all."
     fon "Understood, my Veniczar."
-    
+
     scene bg bridgered with dissolve
     show ava uniform altneutral angry with dissolve
-    
+
     ava "Warning! The cruiser fleets have reached weapons range! We're taking heavy fire!"
     kay "What's the status of the enemy command fleet?"
     ava "We've taken down most of the command ships, but Cullen's flagship still remains!"
-    
+
     show ava uniform neutral surpriseangry with dissolve
-    
+
     ava "W-wait... Energy spike detected! It's the Legion!"
     kay "Order the fleet to take evasive maneuvers!"
-    
+
     scene cg_legion_farport_fire1:
         xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5 zoom 0.8
     with dissolve
@@ -12495,88 +12497,88 @@ label aftermission12:
         xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5 zoom 0.8
     with horizontalwipereversefast
     pause 2.0
-    
+
     scene cg_alliancefleet_farport1 with dissolve
-    
+
     play sound5 "sound/legion_maincannon_fire.ogg"
 
     pause 0.5
     scene cg_alliancefleet_farport2 with horizontalwipereversefast
     play sound "sound/explosion4.ogg"
-    
+
     scene cg_alliancefleet_farport3 at shake1(repeats=8) with dissolvemedium
 
     play sound1 "sound/explosion2.ogg"
-    
+
     scene cg_alliancefleet_farport4 at shake1(repeats=8) with dissolvemedium
-    
+
     play sound2 "sound/explosion1.ogg"
-    
+
     scene cg_alliancefleet_farport5 at shake1(repeats=8) with dissolvemedium
-    
+
     play sound3 "sound/explosion1.ogg"
-    
+
     scene cg_alliancefleet_farport6 at shake1(repeats=8) with dissolvemedium
-    
+
     play sound4 "sound/explosion2.ogg"
-    
+
     scene cg_alliancefleet_farport7 at shake1(repeats=8) with dissolvemedium
-    
+
     pause 2.0
 
     scene bg bridgered with dissolve
     show ava uniform altneutral surpriseshout with dissolve
-    
+
     ava "The Hiakili squad has been annihilated! Taylor Squad is down to three cruisers!"
     ava "Two of PACT's own vessels were caught in the blast and vaporized as well!"
     kay "Arcadius... you insane son of a bitch..."
     kay "Merge squad Taylor with squad Arturia! Move our ships closer to the PACT vessels!"
-    
+
     show ava uniform salute angry with dissolve
-    
+
     ava "Sir!"
     kay "Don't let the Legion take any more of our ships without taking twice as many of its own down with it!"
 
     scene cg_porkdeath1 with dissolve
-    
+
     cul "Hah! This battle is still far from over, captain!"
     cul "Prepare to fire the quantum torpedo! Target the Sunrider!"
-    
+
     scene cg_blackjack_farport1
     show cg_blackjack_farport2:
         xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
     with dissolve
-    
+
     asa "As if I'll let you!"
-        
+
     play sound "sound/mech1.ogg"
     show cg_blackjack_farport2:
         ease 0.5 xpos 0.42 ypos 0.54  zoom 0.5
-        
+
     pause 0.5
-    
+
     scene cg_blackjack_farport3 with dissolve
-        
+
     cul "Heh! What do you expect to do with those tiny lasers, girl?"
-    
+
     play sound "sound/chargeup.ogg"
     scene cg_blackjack_farport4 with dissolve
-    
+
     asa "EAAHHH!!!"
-    
+
     scene cg_blackjack_farport5 with dissolve
 
     chi "The Black Jack has undone its safety limiters! Asaga---!"
-    
+
     scene cg_blackjack_farport6 with dissolve
     show asaga plugsuit neutral angry:
         xpos 0.5 zoom 1.7 ypos 1.5
     with dissolve
-    
+
     asa "Don't..."
-    
+
     asa "Mess..."
-    
+
     play sound1 "sound/heartbeat.ogg"
     show asagaplugsuitneutralangry:
         xpos 0.5 zoom 1.7 ypos 1.5
@@ -12585,29 +12587,29 @@ label aftermission12:
         ease 0.1 xpos 0.5 zoom 2.0 ypos 1.7
     with dissolve
     asa "WITH ME!!!!"
-    
+
     scene cg_porkdeath1 with dissolve
-    
+
     cul "W-what!?"
-    
+
     play sound "sound/vanguard cannon laser.ogg"
     show cg_blackjack_farportlaser:
         xanchor 0.0 yanchor 0.5 xpos -0.4 ypos -0.3 xzoom 1.5 yzoom 0.5
         rotate -40
     with dissolve
-    
+
     asa "EAAAAHHHHH!!!!!"
-        
+
     cul "I-Impossible.......!!!!"
-    
+
     show cg_blackjack_farportlaser:
         ease 0.5 rotate -30 ypos 0.0
-    
+
     asa "This... is for Ryuvia!"
-    
+
     show cg_blackjack_farportlaser:
         ease 0.5 rotate -20 ypos 0.3
-        
+
     show cullen:
         xpos 0.8
         block:
@@ -12616,14 +12618,14 @@ label aftermission12:
             repeat 8
     with dissolve
     cul "No...! No!!! I--"
-    
+
     show cg_blackjack_farportlaser:
         ease 0.5 rotate -10 ypos 0.6
-        
+
     pause 0.5
     play sound "sound/explosion5.ogg"
     scene white with dissolve
-    
+
     cul "BWWWAAAAAAAHHHHHHHHHHHHHHHHHH!!!!!!!!!!!!!!"
 
     scene cg_porkdeath2 with dissolve
@@ -12632,14 +12634,14 @@ label aftermission12:
 
     scene bg bridgered with dissolve
     show ava uniform fistup yes with dissolve
-    
+
     ava "Confirmed hit! The enemy fleet's flagship has been sunk!"
     kay "Yes!"
-    
+
     play sound "sound/explosion1.ogg"
     show layer master at shake1(repeats=8)
     show ava uniform altneutral angry with dissolve
-    
+
     ava "U-ugh!"
     ava "The enemy attack is still continuing! Our fleet is down to 33 percent!"
     ava "We won't be able to survive much more of this!"
@@ -12648,64 +12650,64 @@ label aftermission12:
     show ava uniform salute angry with dissolve
 
     ava "Aye captain!"
-    
+
     play music "Music/Bladed_Druid_Cut.ogg" fadeout 1.5
     scene cg_phoenixpaladin with dissolve
-    
+
     kry "I'll down you all!"
     ica "Tsch..."
     ica "Didn't think that I'd ever end up like this..."
     ica "Fightin' some stupid war alongside the likes of you!"
     kry "Wait...! Look!"
-    
+
     scene cg_emeraldfleet_warpinback with dissolve
     show cg_emeraldfleet_warpin1:
         zoom 0.1
         ease 0.5 zoom 1.0
     pause 0.5
     play sound1 "sound/large_warpout.ogg"
-    
+
     ava "Captain!!!"
-    ava "It's the Alliance fleet!"    
+    ava "It's the Alliance fleet!"
     gre "I commend you for holding out this long, captain."
     gre "Now, behold the power of the Emerald Fleet!"
-    
+
     play sound1 "sound/large_warpout.ogg"
     show cg_emeraldfleet_warpin2 behind cg_emeraldfleet_warpin1:
         zoom 0.1
         ease 0.5 zoom 1.0
-        
+
     pause 0.25
-    
+
     play sound2 "sound/large_warpout.ogg"
     show cg_emeraldfleet_warpin3 behind cg_emeraldfleet_warpin2:
         zoom 0.1
         ease 0.5 zoom 1.0
-        
+
     pause 0.1
-    
+
     play sound3 "sound/large_warpout.ogg"
     show cg_emeraldfleet_warpin4 behind cg_emeraldfleet_warpin3:
         zoom 0.1
         ease 0.5 zoom 1.0
-        
+
     pause 0.1
-    
+
     play sound4 "sound/large_warpout.ogg"
     show cg_emeraldfleet_warpin5 behind cg_emeraldfleet_warpin4:
         zoom 0.1
         ease 0.5 zoom 1.0
-        
+
     pause 0.1
-    
+
     play sound5 "sound/large_warpout.ogg"
     show cg_emeraldfleet_warpin6 behind cg_emeraldfleet_warpin5:
         zoom 0.1
         ease 0.5 zoom 1.0
-    
+
     gre "All ships! Open fire!"
     gre "Show these reds what happens when you cross the Alliance!"
-    
+
     scene bg legionwindows with dissolve
     show fontana:
         xpos 0.3
@@ -12713,70 +12715,70 @@ label aftermission12:
     show arcadius altneutral:
         xpos 0.7
     with dissolve
-    
+
     fon "My Veniczar. Cullen has been dispatched. Our ships are in disarray."
     fon "The First Fleet has arrived with 200 fresh ships. Our spies indicate that more Alliance reinforcements are on route."
     fon "Shall I commit the Legion to the battle?"
     arc "... ... ..."
-    
+
     show arcadius neutral with dissolve
-    
+
     arc "No."
     arc "The battle no longer favors us. Order our forces to fall back."
     fon "Understood my leader."
-    
+
     hide fontana with dissolve
     show arcadius altneutral with dissolve
     show arcadius:
         ease 0.5 xpos 0.5
-    
+
     arc "... ... ..."
     arc "This loss is irrelevant."
-    
+
     show arcadius fist with dissolve
-    
+
     arc "Soon... the galaxy will witness the true power of what we accomplished at Diode... And tremble!"
 
     show arcadius laugh with dissolve
 
     arc "Hahahahahaha!!!"
-    
+
     scene black with dissolve
     play music "Music/Firn.ogg" fadeout 3.0
     scene bg hangar with dissolvelong
-    
+
     show asaga plugsuit vpose with dissolve
 
     asa "Hahaaa!!! We did it capt'n!"
-    
+
     show chigara plugsuit handonchest smile:
         xpos 0.38
     with dissolve
-    
+
     chi "Captain, I'm back!"
-    
+
     show sola plugsuit altneutral neutral:
         xpos 0.91
     with dissolve
-    
+
     sol "Mission successful."
-    
+
     show ava uniform facepalm:
         xpos 0.65
     with dissolve
-    
+
     ava "Seriously..."
-    
+
     show ava uniform armscrossed smile with dissolve
-    
+
     ava "This was only the first battle of the war. It's too soon to celebrate yet."
     kay "Kind of hard to take that seriously when you're grinning ear to ear, eh, Ava?"
-    
+
     show ava uniform neutral surprise with dissolve
-    
+
     ava "W-wha...?"
     ava "I'm not--!"
-    
+
     hide asaga with dissolve
     hide chigara with dissolve
     hide ava with dissolve
@@ -12784,88 +12786,88 @@ label aftermission12:
     show icari plugsuit handonhip annoyedtalk:
         xpos 0.35
     with dissolve
-    
+
     ica "Hmph..."
-    
+
     show kryska plugsuit altneutral happy:
         xpos 0.65
     with dissolve
-    
+
     kry "It was my pleasure to fight alongside you, Ms. Isidolde. We make quite a team."
-    
+
     show icari plugsuit armscrossed tsun with dissolve
-    
+
     ica "Well, I guess you're not that bad of a shot! Just call me Icari from now, alright? I don't like ranks or titles in front of my name."
     kry "Of course."
     kay "Well, it looks like you two are getting along for a change."
-    
+
     show kryska plugsuit salute angry with dissolve
-    
+
     kry "Captain."
-    
+
     show kryska plugsuit altneutral frown with dissolve
-    
+
     kry "I apologize for my actions, sir. I expect to be escorted by Commander Crescentia to the brig now that the crisis has passed."
     kay "About that..."
     kay "Here's the data you were trying to access."
     kay "We're going to be a team from now on, so we're going to have to learn to trust each other. The next time you need information, why don't you just ask?"
-    
+
     show kryska plugsuit neutral question with dissolve
-    
+
     kry "Sir?"
     kay "If we're going to get anything done, it's going to be done together."
-    
+
     show kryska plugsuit salute smile with dissolve
-    
+
     kry "Understood sir. I will inform you personally if my superiors wish information in the future."
-    
+
     show icari plugsuit handonhip tsuntalkblush with dissolve
-    
+
     ica "Hmph. Well, this doesn't mean that we'll be friends or anything! But I guess we can work together. Just for now!"
-    
+
     show claude plugsuit fingeronlip kittysmile:
         xpos 0.79
     with dissolve
-    
+
     cla "Ufufu... It looks like a certain someone's blushing..."
-    
+
     show icari plugsuit armscrossed blushtsun with dissolve
-    
+
     ica "S-shut up! This is only so we can beat PACT!"
-    
+
     show claude plugsuit fingerup laugh with dissolve
-    
+
     cla "My, my! Isn't this ship turning into a little love nest! Ufufufu..."
-    
+
     show icari plugsuit armscrossed shoutblush with dissolve
-    
+
     ica "SHUT UP!!! EAAHH!!!"
-    
+
     show asaga plugsuit excited happy:
         xpos 0.09
     with dissolve
     show chigara plugsuit handonchest smile:
         xpos 0.25
     with dissolve
-    
+
     kay "... ... ..."
-    
+
     show ava uniform neutral neutral:
         xpos 0.5
     with dissolve
-    
+
     ava "Captain?"
     kay "Hard to believe this was just an empty hangar when we first left Cera."
     ava "You said you'd gather allies from across the galaxy."
     kay "Yeah. I did."
-    
+
     show  ava uniform handonhip forcednarrowsmile with dissolve
-    
+
     ava "Well done, captain. Well done."
     ava "... ... ..."
-    
+
     scene black with dissolve
-    
+
     ava "...But I still await the completion of your paperwork."
 
     window hide
@@ -13028,19 +13030,19 @@ label credits:
         xalign 0.5
         ypos 1.1
         linear 6.666666666666667 ypos 0.5
-    pause 15.0    
+    pause 15.0
     hide credits25 with dissolve
-    
+
     scene bg black2
-    
+
     $ renpy.pause(0.1)
-    
+
     show credits26:
         xalign 0.5 ypos 0.2
-        
+
     pause 4.0
     hide credits26 with dissolve
-    
+
     window hide
 
     cre "SYMBOL TO A:{p}Kyubey, ~ren, Kirino is love, AAAYogibearAAA, Aaron, Aaron Holding, Aaron Kaluszka, Aaron Kettle, Aaron Matthews, Aaron Taylor, Abe, AbeFM, Accelsharp, accRei, AceMcKillYoFace, Adam Little, Adam Pitt, Adam Raines, Adrian A. Gallegos, Adrian Bergström, Adrian Ferrer (Sixten), Adriano Gagliardi, Agent Francis York Morgan, but please, just call me York, Agus Hartono, Ágúst Sigurjónsson, AJ Nordstrom, akaPassion, Akures, Albert \"Warrax\" Aloma, Alberto Garcia, Alec Tomlins, Alemina Bismarck, Alex \"Xelada\" Hargreaves, Alex Aranovsky, Alex Churchill, Alex Donks, Alex Edwards, Alex Worthington, Alexa Vitovsky, Alexander  Gene Schulz & Ken Kim Schulz &  Melissa Lynn Schulz, Alexander Frey, Alexander John Aristotle Kimball, Alexander Kent, Alexander Liebau, Alexander Petrovic, Alexander W. Knowlton, Alexandre \"nah\" Bailly, Alexei \"Roflcopter\" Short, Alexis Perron, Allen J Medlen, Allen Kwan, AlliedG, Almost Human, Alto, Amber Hein, Ampereox Irfan, Anaël Verrier, Anderan, Anders Kronquist, Anders Schack Østergaard, Andre Bellarin, Andrea Martinelli, Andreas Gyllblad, Andrew Bethesda, Andrew Biernacki, Andrew Hovanec, Andrew Juljenjai, Andrew Nelson aka SomePoorSap, Andrew P. Bullen, Andrew Paul Maggio III, Andrew Simpson, Andrew Wilson, Angelo \"Brooklyn Finest\" Lima Representing Brazil In Da House, Angelus Luminous, Anna Lee, Anne Nonymous, anonymous, Anonymous, Anonymous, anonymous, Ansel Wong, Anthony Ambrassi, Anthony DeBartolo, Anthony Kinnear, Anthony Luu, Anthony R. Evans, Anton Gorbunov, Anton Guryanov, Arcbleast, ArcherRush, ArchSenex, Arild Iversen aka. Foamed, Arjuna Chatrathi, Arkent Golt, Arkheos Angelos, Armando A. Rosado, Arnel De Leon, ARoastedPenguin, ARPerson, Arthur Lee, Ashadow700, Atomsk, Augusto Andrade, Austin \"Yamato\" F., Avery Heart, Axel Miszczak, Axel Terizaki, Aymeric Hedin"
@@ -13070,9 +13072,9 @@ label credits:
     jump aftercredits4
 
 label aftercredits4:
-    
+
     scene black with dissolve
-    
+
     window show
     play music "Music/March_of_Immortals.ogg"
 
@@ -13089,11 +13091,11 @@ label aftercredits4:
     "Chigara confronts the curse of Diode!"
     "Join us next time in SUNRIDER: THE MASK OF ARCADIUS!"
     "And don't forget... There'll be lots of space whales next time too!"
-    
+
     show dontmissit:
         zoom 10
         ease 0.5 zoom 1
-        
+
     play sound "sound/drum.ogg"
 
     $ renpy.pause(1.0)
@@ -13109,42 +13111,42 @@ label aftercredits4:
     show pollthree:
         xalign 0.5 yalign 0.5
     with dissolve
-    
+
     "SHOCK! A three-way tie!"
-    
+
     show sola uniform backturn neutral:
         xpos 0.75
     with dissolve
-    
+
     sol "... ... ..."
     sol "... ..."
     sol "..."
     sol "(Absolutely no reaction at all)"
-    
+
     show ava uniform facepalm:
         xpos 0.5
     with dissolve
-    
+
     ava "I can't believe he actually put my name down on the ballot..."
     ava "And I hear they also made a daki of me!"
     ava "Absolutely unbelievable..."
-    
+
     show chigara uniform handonchest ooscienceblush:
         xpos 0.25
     with dissolve
-    
+
     chi "A-ah! I... I won again?!"
     chi "(Didn't expect that to happen.)"
     chi "O-oh my..."
     chi "T-thank you everyone for voting for me! Eh-heh..."
     chi "M-maybe this means I can finally be the main girl now..."
-    
+
     show asaga uniform altneutral zomg:
         xzoom -1 zoom 1 xpos 0.1
     with dissolve
-    
+
     asa "N-no way....!"
-    
+
     return
 
 label aftercreditsep3:
