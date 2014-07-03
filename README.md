@@ -2,11 +2,13 @@
 ========
 
 patch 4.1
+======
 
-*fixed a few crashes due to undefined variables
-*fixed not being able to use orders first turn of a new battle if you used an order during the last turn of the previous one
-*fixed a crash will happen if you destroy every unit in mission 11.
-*fixed graphical issue with movement markers when selecting 'short range warp' while having a ship selected.
+* fixed a few crashes due to undefined variables
+* fixed not being able to use orders first turn of a new battle if you used an order during the last turn of the previous one
+* fixed a crash will happen if you destroy every unit in mission 11.
+* fixed graphical issue with movement markers when selecting 'short range warp' while having a ship selected.
+* fixed repair drone order costing CP when you don't have enough drones
 
 Beta 4
 =======
