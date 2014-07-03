@@ -5373,9 +5373,9 @@ label mission8:
         $ check5 = True
 
     if check6 == False and BM.turn_count == 11:
-        
+
         $BM.draggable = False
-        
+
         show ava uniform facepalm onlayer screens with dissolve
 
         ava "That's enough heroics, captain! We have to get out of here now!!"
@@ -5402,8 +5402,9 @@ label mission8:
 
     $BM.battle()  #continue the battle
 
-    if agamemnon.location[0] == 18:
-        $ BM.battle_end()
+    if agamemnon.location != None:
+        if agamemnon.location[0] == 18:
+            $ BM.battle_end()
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
         jump mission8 #loop back

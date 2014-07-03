@@ -319,7 +319,6 @@ init -2 python:
 
             if result == 'REPAIR DRONES':
                 if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
                     if sunrider.repair_drones != None:
                         if sunrider.repair_drones <= 0:
                             show_message('No available repair droids in storage!')
@@ -327,7 +326,7 @@ init -2 python:
                             return
                         else:
                             sunrider.repair_drones -= 1
-
+                    self.cmd -= self.orders[result][0]
                     show_message('The Sunrider restored 50% of her hull integrity!')
                     sunrider.hp += int(sunrider.max_hp * 0.5)
                     if sunrider.hp > sunrider.max_hp: sunrider.hp = sunrider.max_hp
@@ -2019,7 +2018,7 @@ init -2 python:
         # and it will be evaluated. This makes it perfect in the event that you
         # have multiple conditions that need to be true
             return eval(self.showOnMapCondition)
-        
+
         def __eq__(self, other):
             if isinstance(self, other.__class__):
                 if self.name == other.name and self.jumpLocation == other.jumpLocation and self.xPos == other.xPos and self.yPos == other.yPos and self.showOnMapCondition == other.showOnMapCondition:
