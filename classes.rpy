@@ -348,6 +348,8 @@ init -2 python:
             if result == 'SHORT RANGE WARP':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
+                    if BM.selected != None:
+                        BM.unselect_ship(BM.selected)
                     store.zoomlevel = 0.5 #zoom out
                     BM.selected = sunrider #show the sunrider's label
                     BM.phase = None #disables the end turn button
@@ -2017,3 +2019,9 @@ init -2 python:
         # and it will be evaluated. This makes it perfect in the event that you
         # have multiple conditions that need to be true
             return eval(self.showOnMapCondition)
+        
+        def __eq__(self, other):
+            if isinstance(self, other.__class__):
+                if self.name == other.name and self.jumpLocation == other.jumpLocation and self.xPos == other.xPos and self.yPos == other.yPos and self.showOnMapCondition == other.showOnMapCondition:
+                    return True
+            return False
