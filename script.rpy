@@ -5406,6 +5406,9 @@ label mission8:
         if agamemnon.location[0] == 18:
             $ BM.battle_end()
 
+    if agamemnon.hp <= 0:
+        $ renpy.jump('sunrider_destroyed')
+
     if BM.battlemode == True:   #whenever this is set to False battle ends.
         jump mission8 #loop back
     else:
