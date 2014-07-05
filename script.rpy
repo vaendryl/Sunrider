@@ -5954,6 +5954,8 @@ label thankschatback:
     $ captaindeck = 0
     $ asa_location = "messhall"
     $ asa_event = "ep3_asatalk"
+    
+    $ ava_location = None
 
     $ chi_location = "engineering"
     $ chi_event = "ep3_chitalk"
