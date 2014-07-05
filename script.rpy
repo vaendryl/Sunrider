@@ -8947,16 +8947,26 @@ label howfindasagaprincess:
     show chigara uniform twiddlefingers forcedsmile with dissolve
 
     chi "Luckily, I had my handy hair ribbon on, so I used it to temporarily stun the men and ran away with Asaga."
+    
+    if ChigaraRefugee:
 
+        menu:
+            "Uhh... The story was really different when I heard it from Asaga...":
+                jump storydifferentasaga
+
+            "That Asaga causes nothing but trouble...":
+                jump asaganothingbuttrouble
+
+            "Your hair ribbon can do that!?":
+                jump hairribboncando
     menu:
-        "Uhh... The story was really different when I heard it from Asaga...":
-            jump storydifferentasaga
-
         "That Asaga causes nothing but trouble...":
             jump asaganothingbuttrouble
-
+            
         "Your hair ribbon can do that!?":
             jump hairribboncando
+        
+    
 
 label asaganothingbuttrouble:
 
