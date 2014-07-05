@@ -6268,21 +6268,21 @@ label whatchimercenary:
 
         chi "I hope we can work together to stop PACT..."
 
-    menu:
-        "How are you adjusting to the Sunrider?":
-            jump howchiajustsunrider
-        "Keep up the good work, Chigara. I'll talk to you later.":
-            jump keepgoodchilater
+        menu:
+            "How are you adjusting to the Sunrider?":
+                jump howchiajustsunrider
+            "Keep up the good work, Chigara. I'll talk to you later.":
+                jump keepgoodchilater
 
     if Saveddiplomats == False:
 
-        show chigara uniform handsonchest sad with dissolve
+        show chigara uniform handonchest sad with dissolve
 
         chi "It was terrible seeing all those kids die..."
         chi "I..."
         chi "It's not the first time I've seen something like that happen. But you never get used to it."
         chi "I guess it's unavoidable that innocents die in war."
-        ica "That's why I like machines. You can fix them back up even after they break."
+        chi "That's why I like machines. You can fix them back up even after they break."
 
     menu:
         "How are you adjusting to the Sunrider?":
@@ -7426,7 +7426,7 @@ label medical_examination:
     ava "For impersonating as a medical professional!"
     kay "(And molesting a starship captain!)"
 
-    show chigara uniform handsonchest sad:
+    show chigara uniform handonchest sad:
         xpos 0.8
     with dissolve
 
@@ -8908,7 +8908,7 @@ label protectasagaapology:
 
 label secretsdangerlie:
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "Yes captain. I promise I won't ever do it again."
     jump shockfirstfoundryuvia
@@ -9018,7 +9018,7 @@ label shortlyaftertruereally:
 
 label pacttyrannicalmadman:
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "I don't understand much of politics, but I know that the Veniczar is evil."
 
@@ -10741,7 +10741,7 @@ label chigarathankrescue:
     chi "Ah, I installed some cameras around engineering which now warn me whenever you approach."
     kay "O-oh. I, uh... didn't know you did that."
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "Is it not allowed?"
     kay "Well, I'm sure it's fine. Just, uh... don't let Ava find out about it."
@@ -11464,7 +11464,7 @@ label notsleepingleft:
 
     asa "Uwahaha! Nom nom nom..."
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "I'm sorry captain. I haven't really been sleeping well lately, ever since we left Ryuvia."
     chi "It was frightening to finally meet the Veniczar in person... I can still hear his voice ringing in my head when I sleep."
