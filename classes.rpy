@@ -1309,11 +1309,10 @@ init -2 python:
                             if weapon.wtype == 'Assault':
                                 counter = weapon
                         if counter != None:
-                            if enemy.en >= counter.energy_use:
-                                show_message('COUNTER ATTACK!')
-                                enemy.AI_attack_target(self,counter)
-                                enemy.en = enemy.max_en
-                                BM.just_moved = False
+                            enemy.en = enemy.max_en
+                            show_message('COUNTER ATTACK!')
+                            enemy.AI_attack_target(self,counter)
+                            BM.just_moved = False
             else:
                 if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
                     for ship in player_ships:
