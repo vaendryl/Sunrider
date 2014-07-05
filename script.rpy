@@ -7404,7 +7404,7 @@ label medical_examination:
 
     ava "That little skeever isn't a doctor at all! Look here on this form!"
     ava "Medical license suspended due to malpractice!"
-    ava "WARNING: This individual is known to mascaraed as a medical practitioner. Her skills fall beyond all reasonable standards of modern medical care. Patients are advised to seek the advice of a professional medical practitioner instead of this individual."
+    ava "WARNING: This individual is known to masquerade as a medical practitioner. Her skills fall below all reasonable standards of modern medical care. Patients are advised to seek the advice of a professional medical practitioner instead of this individual."
     kay "I-I knew it!"
 
     show ava uniform salute angry with dissolve
