@@ -843,6 +843,9 @@ screen commands: ##show the weapon buttons etc##
             text (str(real_damage(weapon,ship))) xanchor 1.0 xpos 1380 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
             text (str(real_damage(weapon,ship)*weapon.shot_count)) xanchor 1.0 xpos 1380 ypos 870 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
             text (str(weapon.shot_count)) xanchor 1.0 xpos 1515 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+            if weapon.tooltip != None:
+                text (str(weapon.tooltip)) xpos 700 ypos 25 size 22 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
+            
 
         ##show buffs
         $count = 0

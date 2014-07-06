@@ -1352,7 +1352,7 @@ init -2 python:
             self.wtype = ''
             self.shot_count = 1
             self.accuracy = 100
-
+            self.tooltip = None 
 
 
 
@@ -1821,6 +1821,11 @@ init -2 python:
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
+            self.tooltip = """
+            Allows Claude to move an enemy Ryder a single square.
+            This movement will provoke Blindside attacks, if you move an enemy Ryder
+            into the range of a friendly unit with an Assault type weapon.
+            Has a limited range."""
 
             #effective range is 3 cells away and always hits
             self.accuracy = 640

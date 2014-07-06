@@ -885,6 +885,11 @@ init 2 python:
             self.wtype = 'Laser'
             self.name = 'Trinities'
             self.lbl = 'Battle UI/button_laser.png'
+            self.tooltip = """
+            The Sunrider\'s trinity lasers provide pinpoint, accurate firepower
+            but at the expense of damage and being vulnerable to shielded units.
+            Use them against distant, unshielded targets, or those that are
+            harder to hit, such as Ryders."""
 
     class SunriderMissile(Missile):
         def __init__(self):
@@ -898,6 +903,12 @@ init 2 python:
             self.wtype = 'Missile'
             self.name = 'Sunrider_Missile'
             self.lbl = 'Battle UI/button_missile.png'
+            self.tooltip = """
+            The Sunrider\'s missile batteries are powerful, but have limited ammunition. 
+            Their large number of shots make them more effective against light armour.
+            They can also be used to provide a window for rockets.
+            All missile based weaponry receives halved ranged penalties.
+            A units flak chance is reduced for every individual missile sent at it."""
 
     class SunriderKinetic(Kinetic):
         def __init__(self):
@@ -909,6 +920,12 @@ init 2 python:
             self.wtype = 'Kinetic'
             self.name = 'Sunrider\'s main guns'
             self.lbl = 'Battle UI/button_kinetic.png'
+            self.tooltip = """
+            The Sunrider\'s main guns. Exceptionally powerful even against armoured targets
+            they are nonetheless inaccurate. Good against heavily armoured, shielded targets.
+            As a kinetic weapon, armour is doubled - but the sheer damage will bypass this.
+            Against lighter, harder to hit foes such as Ryders, instead consider the use of
+            laser, pulse or assault weaponry."""
 
     class SunriderPulse(Laser):
         def __init__(self):
@@ -920,6 +937,11 @@ init 2 python:
             self.wtype = 'Pulse'
             self.name = 'Sunrider_Pulse'
             self.lbl = 'Battle UI/button_pulse.png'
+            self.tooltip = """
+            Pulse lasers are better against lightly armoured targets than Assault Weaponry.
+            They're still ineffective against targets with very high armour. They\'re also
+            slightly more accurate than Kinetic class weaponry - but the higher base damage,
+            and not doubling armour, is where their true power lies."""
 
     class SunriderAssault(Kinetic):
         def __init__(self):
@@ -931,6 +953,13 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Sunrider\'s Flak'
             self.lbl = 'Battle UI/button_assault.png'
+            self.tooltip = """
+            Far less powerful than the main guns, the Sunrider\'s flak cannons are nonetheless
+            vital in protecting it from rockets and missiles. They\'re also useful in fending
+            off ships that would close into close proximity, or for finishing off wounded foes
+            when reliability is needed more than the sheer power of the main guns. Armour is
+            doubled against kinetic weapons, so rapid fire kinetic weapons are ineffective
+            against even targets with even the lightest armour - unless they're damaged."""
 
     class SunriderRocket(Missile):
         def __init__(self):
@@ -945,6 +974,11 @@ init 2 python:
             self.wtype = 'Rocket'
             self.name = 'Thermonuclear warhead'
             self.lbl = 'Battle UI/button_rocket.png'
+            self.tooltip = """
+            For when you want someone dead, a thermonuclear warhead.
+            Utterly devestating, regardless of enemy armour or shielding, but vulnerable to flak.
+            Using Missiles first can reduce flak, and certain Curse powers can disable flak defense.
+            Costly, however - each Rocket costs a set amount from the shop. Make it count, Captain!"""
 
 ##############ALLIANCE CRUISER WEAPONS
     class AllianceCruiserLaser(Laser):
@@ -1005,6 +1039,12 @@ init 2 python:
             self.wtype = 'Laser'
             self.name = 'Blackjack_Laser'
             self.lbl = 'Battle UI/button_laser.png'
+            self.tooltip = """
+            Less powerful than the Sunrider\'s trinity lasers and less accurate,
+            the Black Jack\'s laser is nonetheless effective against evasive or
+            distant targets, allowing it to pack a formidable punch against heavily
+            armoured ships that lack heavy shield coverage.
+            Good at nearly anything, as expected of the Black Jack."""
 
     class BlackjackMissile(Missile):
         def __init__(self):
@@ -1016,8 +1056,13 @@ init 2 python:
             self.uses_rockets = False
             self.uses_missiles = True
             self.wtype = 'Missile'
-            self.name = 'Sunrider_Missile'
+            self.name = 'Blackjack_Missile'
             self.lbl = 'Battle UI/button_missile.png'
+            self.tooltip = """
+            Boom! The Black Jack\'s missiles are good against lightly armoured targets
+            that lack flak coverage, allowing it to bring a surprising amount of 
+            firepower for merely one Ryder - but only so many times per combat.
+            Evildoers everywhere, beware!"""
 
     class BlackjackPulse(Laser):
         def __init__(self):
@@ -1027,8 +1072,14 @@ init 2 python:
             self.shot_count = 8
             self.accuracy = 80
             self.wtype = 'Pulse'
-            self.name = 'Sunrider_Pulse'
+            self.name = 'Blackjack_Pulse'
             self.lbl = 'Battle UI/button_pulse.png'
+            self.tooltip = """
+            Pew, pew, pew! For when a target is close enough that you don't need the
+            extra precision from regular laser, but with too much armour for the
+            assault weapon to be of use. Keep in mind that the most heavily armoured or
+            shielded targets will shrug off the pulse laser like it\'s nothing.
+            Justice comes in the form of rapid fire plasma!"""
 
     class BlackjackAssault(Kinetic):
         def __init__(self):
@@ -1038,8 +1089,12 @@ init 2 python:
             self.shot_count = 20
             self.accuracy = 65
             self.wtype = 'Assault'
-            self.name = 'Sunrider_Assault'
+            self.name = 'Blackjack_Assault'
             self.lbl = 'Battle UI/button_assault.png'
+            self.tooltip = """
+            Rips up heavily weakened or lightly armoured targets. Just don\'t use it against
+            a battleship at full health or anything - the armour value of the target is doubled
+            and applied to each shot."""
 
     class BlackjackMelee(Melee):
         def __init__(self):
@@ -1054,6 +1109,10 @@ init 2 python:
             self.type = 'Melee'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_melee.png'
+            self.tooltip = """
+            A devestating weapon with only two drawbacks: it only works on Ryders, and you'll
+            need to get close and personal, potentially risking a blindside attack in the process.""" # I honestly feel after writing these that I could have just done it into superclass melee/laser/missile/kinetic for non support weapons, really. Ah, well.
+            
 
 #############################################LIBERTY WEAPONS
 
@@ -1067,6 +1126,9 @@ init 2 python:
             self.wtype = 'Laser'
             self.name = 'Liberty_Laser'
             self.lbl = 'Battle UI/button_laser.png'
+            self.tooltip = """
+            Requires less energy than most other laser weaponry, but deals less damage.
+            Can be useful in a pinch, but it's not something you'll want to rely on."""
 
 
 ###################PALADIN WEAPONS
@@ -1083,6 +1145,9 @@ init 2 python:
             self.wtype = 'Missile'
             self.name = 'Paladin_Missile'
             self.lbl = 'Battle UI/button_missile.png'
+            self.tooltip = """
+            Provides encouragement to consider diplomatic resolutions to target.
+            Otherwise identical to the Black Jack's missiles."""
 
     class PaladinAssault(Kinetic):
         def __init__(self):
@@ -1094,6 +1159,9 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Paladin_Assault'
             self.lbl = 'Battle UI/button_assault.png'
+            self.tooltip = """
+            Has less shots than most other Assault class weapons, but requires less energy."""
+            
 
     class PaladinKinetic(Kinetic):
         def __init__(self):
@@ -1105,6 +1173,11 @@ init 2 python:
             self.wtype = 'Kinetic'
             self.name = 'Paladin_Kinetic'
             self.lbl = 'Battle UI/button_kinetic.png'
+            self.tooltip = """
+            The weapon around which the Paladin is built, it's quad cannons
+            are more than capable of reducing battleships to scrap, given enough time.
+            Pack the same punch as the Sunrider\'s main guns, but with a lower energy cost.
+            Terrifying."""
 
 ############################################# PACT MISSILE FRIGATE
 
@@ -1443,6 +1516,9 @@ init 2 python:
             self.name = 'Repair I'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_repair.png'
+            self.tooltip = """
+            Chigara heals the target for approximately 300 hitpoints.
+            Has a range of 3 squares."""
 
     class AccUp(Support):
         def __init__(self):
@@ -1452,6 +1528,11 @@ init 2 python:
             self.buff_duration = 3
             self.name = 'Aim Up'
             self.lbl = 'Battle UI/button_aimup.png'
+            self.tooltip = """
+            Chigara buffs the target, increasing its accuracy by 15 for 3 turns.
+            Note that this is a flat increase.
+            Does not stack with other accuracy buffs.
+            Has a range of 3 squares."""
 
     class DamageUp(Support):
         def __init__(self):
@@ -1461,6 +1542,10 @@ init 2 python:
             self.buff_duration = 3
             self.name = 'Damage Up'
             self.lbl = 'Battle UI/button_atkup.png'
+            self.tooltip = """
+            Claude buffs the target, increasing its damage by 20% for 3 turns.
+            Does not stack with other damage buffs.
+            Has a range of 3 squares."""
 
     class Restore(Support):
         def __init__(self):
@@ -1470,6 +1555,11 @@ init 2 python:
             self.buff_duration = 1
             self.name = 'Restore'
             self.lbl = 'Battle UI/button_restore.png'
+            self.tooltip = """
+            This ability removes curses. But there aren\'t any at the moment, 
+            so just have Claude sit in the corner and use aim down a few times for now.
+            Isn\'t it sad, Claude?
+            Has a range of 3 squares, slightly more than Claude's shotgun."""
 
     class Stealth(Support):
         def __init__(self):
@@ -1483,6 +1573,9 @@ init 2 python:
             self.buff_duration = 1
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
+            self.tooltip = """
+            Renders the Phoenix immune to blindside attacks for a single turn.
+            Does not actually provide any kind of invisibility."""
 
     class Awaken(Support):
         def __init__(self):
@@ -1497,6 +1590,10 @@ init 2 python:
             self.buff_duration = 3
             self.name = 'Awaken'
             self.lbl = 'Battle UI/button_awaken.png'
+            self.tooltip = """
+            Doubles the Seraphim\'s damage and provides a +100 Accuracy increase for 3 turns.
+            Buffs to the same attribute don't stack - the newest application will override.
+            The accuracy increase is a flat increase."""
 
 #### curse skills ####
 
@@ -1510,6 +1607,9 @@ init 2 python:
             self.buff_duration = 3
             self.name = 'Aim Down'
             self.lbl = 'Battle UI/button_aimdown.png'
+            self.tooltip = """
+            Claude reduces the targets accuracy by 25 for 2 turns.
+            Note that this is a flat decrease."""
 
     class Disable(Curse): #takes away all EN
         def __init__(self):
@@ -1521,6 +1621,9 @@ init 2 python:
             self.buff_duration = 2 #has to be 2 or else the debuff won't last beyond the start of their next turn
             self.name = 'Disable'
             self.lbl = 'Battle UI/button_disable.png'
+            self.tooltip = """
+            Chigara can disable the target, preventing it from taking
+            any actions at all during it's next turn."""
 
     class FlakOff(Curse):
         def __init__(self):
@@ -1532,6 +1635,11 @@ init 2 python:
             self.buff_duration = 3
             self.name = 'Flak Off'
             self.lbl = 'Battle UI/button_flak.png'
+            self.tooltip = """
+            Chigara can remove the target\'s flak protection for 3 turns.
+            Makes the target more vulnerable to missiles and rockets.
+            Does not prevent blindside attacks.
+            Other nearby units can still provide flak cover."""
 
     class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
@@ -1543,6 +1651,11 @@ init 2 python:
             self.buff_duration = 1
             self.name = 'Shield Down'
             self.lbl = 'Battle UI/button_shutoff.png'
+            self.tooltip = """
+            Disables the target\'s shield generator until the end of the turn.
+            Prevents nearby units from receiving shield cover from the target, too,
+            but it still benefits from the shields of nearby units.
+            Makes the unit more vulnerable to lasers and pulse lasers."""
 
 
 
@@ -1647,6 +1760,10 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Phoenix_Assault'
             self.lbl = 'Battle UI/button_assault.png'
+            self.tooltip = """
+            A weaker version of the Black Jack\'s assault weapon.
+            Good against low health and low armour enemies at close range,
+            but otherwise primarily a sidearm."""
 
     class PhoenixMelee(Melee):
         def __init__(self):
@@ -1661,6 +1778,12 @@ init 2 python:
             self.type = 'Melee'
             self.shot_count = 2
             self.lbl = 'Battle UI/button_melee.png'
+            self.tooltip = """
+            Folded a thousand times, these blades tear through Ryders like
+            a Ryuvian Plasma Harpoon ripping through a helpless space whale.
+            Useless against ships. Only work when adjacent to target.
+            Be sure to use the Phoenix\'s Stealth capabilities to avoid blindside
+            attacks for closing into melee range."""
 
 
  ###########################################PHOENIX ENEMY
@@ -1693,6 +1816,11 @@ init 2 python:
             self.energy_use = 100
             self.shot_count = 1
             self.accuracy = 150
+            self.tooltip = """
+            Sola\'s rifle is an elegant weapon from a more civilized age.
+            Incredibly powerful and accurate weapon with only one flaw.
+            Takes considerable time to be aimed and fired.
+            Good against absolutely everything."""
 
 ################################################### BIANCA
 
@@ -1706,6 +1834,10 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'Bianca Shotgun'
             self.lbl = 'Battle UI/button_kinetic.png'
+            self.tooltip = """
+            Bianca\'s shotgun is powerful enough to threaten even battleships.
+            This is good, because she's not going to hit anything smaller with it.
+            Counts as an Assault class weapon for the purposes of blindside attacks."""
 
 
 
