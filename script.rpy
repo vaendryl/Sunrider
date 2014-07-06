@@ -5402,7 +5402,8 @@ label mission8:
 
     $BM.battle()  #continue the battle
 
-    if agamemnon.location != None:
+    # prevents a crash when all ships are destroyed
+    if BM.battlemode == True and agamemnon.location != None:
         if agamemnon.location[0] == 18:
             $ BM.battle_end()
 
