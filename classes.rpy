@@ -604,7 +604,7 @@ init -2 python:
 
                 net_gain = int(total_money - repair_cost)
                 self.money += int(net_gain)
-                self.cmd += int((net_gain*10)/BM.turn_count) #this is independent of the victory screen display!
+                self.cmd += int((net_gain*10)/(BM.turn_count+2)) #this is independent of the victory screen display!
 
                 renpy.show_screen('victory2')
                 renpy.pause(1)

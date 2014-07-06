@@ -1194,7 +1194,7 @@ screen victory2:
         at delay_text(wait)
 
     $wait += 0.1
-    text 'command points received: {}'.format(int((store.net_gain*10)/BM.turn_count)):
+    text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+2) ) ):
         xanchor 1.0
         xpos 0.8
         ypos 0.70
