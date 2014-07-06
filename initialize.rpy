@@ -530,8 +530,8 @@ label mission12_inits:
         create_ship(PactBattleship(),(12,8),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         create_ship(PactBattleship(),(13,9),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
 
-        create_ship(PactCarrier(),(16,6),[PACTCarrierAssault,])
-        create_ship(PactCarrier(),(16,9),[PACTCarrierAssault,])
+        create_ship(PactCarrier(),(16,6),[PACTCarrierAssault()])
+        create_ship(PactCarrier(),(16,9),[PACTCarrierAssault()])
 
         create_ship(PactMook(),(10,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(11,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])

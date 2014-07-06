@@ -5373,9 +5373,9 @@ label mission8:
         $ check5 = True
 
     if check6 == False and BM.turn_count == 11:
-        
+
         $BM.draggable = False
-        
+
         show ava uniform facepalm onlayer screens with dissolve
 
         ava "That's enough heroics, captain! We have to get out of here now!!"
@@ -5402,8 +5402,12 @@ label mission8:
 
     $BM.battle()  #continue the battle
 
-    if agamemnon.location[0] == 18:
-        $ BM.battle_end()
+    if agamemnon.location != None:
+        if agamemnon.location[0] == 18:
+            $ BM.battle_end()
+
+    if agamemnon.hp <= 0:
+        $ renpy.jump('sunrider_destroyed')
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
         jump mission8 #loop back
@@ -6264,21 +6268,21 @@ label whatchimercenary:
 
         chi "I hope we can work together to stop PACT..."
 
-    menu:
-        "How are you adjusting to the Sunrider?":
-            jump howchiajustsunrider
-        "Keep up the good work, Chigara. I'll talk to you later.":
-            jump keepgoodchilater
+        menu:
+            "How are you adjusting to the Sunrider?":
+                jump howchiajustsunrider
+            "Keep up the good work, Chigara. I'll talk to you later.":
+                jump keepgoodchilater
 
     if Saveddiplomats == False:
 
-        show chigara uniform handsonchest sad with dissolve
+        show chigara uniform handonchest sad with dissolve
 
         chi "It was terrible seeing all those kids die..."
         chi "I..."
         chi "It's not the first time I've seen something like that happen. But you never get used to it."
         chi "I guess it's unavoidable that innocents die in war."
-        ica "That's why I like machines. You can fix them back up even after they break."
+        chi "That's why I like machines. You can fix them back up even after they break."
 
     menu:
         "How are you adjusting to the Sunrider?":
@@ -7400,7 +7404,7 @@ label medical_examination:
 
     ava "That little skeever isn't a doctor at all! Look here on this form!"
     ava "Medical license suspended due to malpractice!"
-    ava "WARNING: This individual is known to mascaraed as a medical practitioner. Her skills fall beyond all reasonable standards of modern medical care. Patients are advised to seek the advice of a professional medical practitioner instead of this individual."
+    ava "WARNING: This individual is known to masquerade as a medical practitioner. Her skills fall below all reasonable standards of modern medical care. Patients are advised to seek the advice of a professional medical practitioner instead of this individual."
     kay "I-I knew it!"
 
     show ava uniform salute angry with dissolve
@@ -7422,7 +7426,7 @@ label medical_examination:
     ava "For impersonating as a medical professional!"
     kay "(And molesting a starship captain!)"
 
-    show chigara uniform handsonchest sad:
+    show chigara uniform handonchest sad:
         xpos 0.8
     with dissolve
 
@@ -8904,7 +8908,7 @@ label protectasagaapology:
 
 label secretsdangerlie:
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "Yes captain. I promise I won't ever do it again."
     jump shockfirstfoundryuvia
@@ -9014,7 +9018,7 @@ label shortlyaftertruereally:
 
 label pacttyrannicalmadman:
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "I don't understand much of politics, but I know that the Veniczar is evil."
 
@@ -10737,7 +10741,7 @@ label chigarathankrescue:
     chi "Ah, I installed some cameras around engineering which now warn me whenever you approach."
     kay "O-oh. I, uh... didn't know you did that."
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "Is it not allowed?"
     kay "Well, I'm sure it's fine. Just, uh... don't let Ava find out about it."
@@ -11460,7 +11464,7 @@ label notsleepingleft:
 
     asa "Uwahaha! Nom nom nom..."
 
-    show chigara uniform handsonchest sad with dissolve
+    show chigara uniform handonchest sad with dissolve
 
     chi "I'm sorry captain. I haven't really been sleeping well lately, ever since we left Ryuvia."
     chi "It was frightening to finally meet the Veniczar in person... I can still hear his voice ringing in my head when I sleep."
