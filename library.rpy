@@ -698,40 +698,6 @@ init 2 python:
             self.move_cost = 50
             self.armor = self.base_armor
 
-#    class PactCarrier(Battleship):
-#        def __init__(self):
-#            Battleship.__init__(self)
-#            self.stype = 'Carrier'
-#            self.name = 'PACT Carrier'
-#            #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
-#            self.spawns = [
-#                ( PactMook,50,[ PACTMookLaser(),PACTMookMissile(),PACTMookAssault() ] ),
-#                ( PactBomber,100,[ PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket() ] )
-#                ]
-#            self.faction = 'PACT'
-#            self.animation_name = 'pactcarrier'
-#            self.max_hp = 1600
-#            self.hp = self.max_hp
-#            self.max_en = 100
-#            self.en = self.max_en
-#            self.money_reward = 500
-#            self.max_missiles = 2
-#            self.max_rockets = 1
-#            self.missiles = self.max_missiles
-#            self.rockets = self.max_rockets
-#            self.evasion = -40
-#            self.blbl = 'Battle UI/label_pactbattleship.png'  #this is the battle avatar
-#            self.lbl = self.blbl
-#            self.flak = 40
-#            self.flak_range = 2
-#            self.shield_generation = 40
-#            self.shields = self.shield_generation
-#            self.shield_range = 2
-#            self.base_armor = 40
-#            self.move_cost = 50
-#            self.armor = self.base_armor
-
-
 ### pirate ships ###
 
     class PirateBomber(Battleship):
@@ -904,7 +870,7 @@ init 2 python:
             self.name = 'Sunrider_Missile'
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
-            The Sunrider\'s missile batteries are powerful, but have limited ammunition. 
+            The Sunrider\'s missile batteries are powerful, but have limited ammunition.
             Their large number of shots make them more effective against light armour.
             They can also be used to provide a window for rockets.
             All missile based weaponry receives halved ranged penalties.
@@ -1060,7 +1026,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Boom! The Black Jack\'s missiles are good against lightly armoured targets
-            that lack flak coverage, allowing it to bring a surprising amount of 
+            that lack flak coverage, allowing it to bring a surprising amount of
             firepower for merely one Ryder - but only so many times per combat.
             Evildoers everywhere, beware!"""
 
@@ -1111,8 +1077,9 @@ init 2 python:
             self.lbl = 'Battle UI/button_melee.png'
             self.tooltip = """
             A devestating weapon with only two drawbacks: it only works on Ryders, and you'll
-            need to get close and personal, potentially risking a blindside attack in the process.""" # I honestly feel after writing these that I could have just done it into superclass melee/laser/missile/kinetic for non support weapons, really. Ah, well.
-            
+            need to get close and personal, potentially risking a blindside attack in the process."""
+            # I honestly feel after writing these that I could have just done it into superclass melee/laser/missile/kinetic for non support weapons, really. Ah, well.
+
 
 #############################################LIBERTY WEAPONS
 
@@ -1161,7 +1128,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
             Has less shots than most other Assault class weapons, but requires less energy."""
-            
+
 
     class PaladinKinetic(Kinetic):
         def __init__(self):
@@ -1556,7 +1523,7 @@ init 2 python:
             self.name = 'Restore'
             self.lbl = 'Battle UI/button_restore.png'
             self.tooltip = """
-            This ability removes curses. But there aren\'t any at the moment, 
+            This ability removes curses. But there aren\'t any at the moment,
             so just have Claude sit in the corner and use aim down a few times for now.
             Isn\'t it sad, Claude?
             Has a range of 3 squares, slightly more than Claude's shotgun."""

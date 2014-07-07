@@ -5402,7 +5402,8 @@ label mission8:
 
     $BM.battle()  #continue the battle
 
-    if agamemnon.location != None:
+    # prevents a crash when all ships are destroyed
+    if BM.battlemode == True and agamemnon.location != None:
         if agamemnon.location[0] == 18:
             $ BM.battle_end()
 
@@ -11480,7 +11481,7 @@ label notsleepingleft:
     asa "Mmmm, why do you suppose he always wears that mask, captain?"
 
     menu:
-        "It might to make the Veniczar immortal. Even if Arcadius dies, someone else can just take up the mask and continue on as if nothing's changed.":
+        "It might be to make the Veniczar appear immortal. Even if Arcadius dies, someone else can just take up the mask and continue on as if nothing's changed.":
             jump immortalancientpoured
 
         "It's intimidating, isn't it? People fear the unknown.":

@@ -121,6 +121,7 @@ screen battle_screen:
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
     $childy = round(2160*zoomlevel)
 
+#    use tooltips    #wtf doesn't this work
 
     add BM.battle_bg xalign 0.5 yalign 0.5 #zoom 0.5 ##background for the battlefield##
 
@@ -672,19 +673,22 @@ screen battle_screen:
 
     if config.developer:
         vbox:
-            ypos 50
+            ypos 80
             xalign 1.0
             textbutton "Debug Cheats" action Return('cheat')
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
 
-    if BM.edgescroll == (0,0):
-        vbox:
-            xalign 1.0
+
+    vbox:
+        xalign 1.0
+        if BM.edgescroll == (0,0):
             textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
-    else:
-        vbox:
-            xalign 1.0
+        else:
             textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
+        if BM.show_tooltips:
+            textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
+        else:
+            textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
 
     if BM.just_moved:
         textbutton 'cancel movement':
@@ -843,9 +847,8 @@ screen commands: ##show the weapon buttons etc##
             text (str(real_damage(weapon,ship))) xanchor 1.0 xpos 1380 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
             text (str(real_damage(weapon,ship)*weapon.shot_count)) xanchor 1.0 xpos 1380 ypos 870 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
             text (str(weapon.shot_count)) xanchor 1.0 xpos 1515 ypos 840 size 24 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
-            if weapon.tooltip != None:
-                text (str(weapon.tooltip)) xpos 700 ypos 25 size 22 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
-            
+
+
 
         ##show buffs
         $count = 0
@@ -961,6 +964,30 @@ screen commands: ##show the weapon buttons etc##
                         outlines [(1,'000',0,0)]
 
                 $count += 1
+screen tooltips:
+    zorder 9
+
+    #I fear I'll be needing a custom displayable for this eventually
+
+    #grab mouse location
+    $ mouse_x,mouse_y = renpy.get_mouse_pos()
+
+    #check if you're hovering over a weapon, tooltips are enabled and you're not currently selecting a target
+    if BM.weaponhover != None and BM.show_tooltips and BM.active_weapon == None:
+        $ weapon = BM.weaponhover
+
+        if weapon.tooltip != None:
+            frame:
+                background Solid((0,0,0,200))
+                xpos mouse_x + 100
+                ycenter mouse_y
+
+                text str(weapon.tooltip):
+                    xpos -70 #NO IDEA why I can only get things to align right this way.
+                    ypos -10
+                    size 18
+                    font "Font/sui generis rg.ttf"
+                    outlines [(1,'000',0,0)]
 
 
 transform hp_falls(hp_size1,hp_size2):
@@ -1194,7 +1221,7 @@ screen victory2:
         at delay_text(wait)
 
     $wait += 0.1
-    text 'command points received: {}'.format(int((store.net_gain*10)/BM.turn_count)):
+    text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+2) ) ):
         xanchor 1.0
         xpos 0.8
         ypos 0.70
