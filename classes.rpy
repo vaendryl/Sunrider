@@ -36,6 +36,7 @@ init -2 python:
             self.money = 0
             self.warping = False
             self.showing_orders = False
+            self.show_tooltips = True
 
             #BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
             self.orders = {
@@ -579,6 +580,7 @@ init -2 python:
             self.targetingmode = False
             self.weaponhover = None
             self.hovered = None
+            renpy.hide_screen('tooltips')
             BM.phase = 'Player'
 
             if not lost:
@@ -604,7 +606,7 @@ init -2 python:
 
                 net_gain = int(total_money - repair_cost)
                 self.money += int(net_gain)
-                self.cmd += int((net_gain*10)/BM.turn_count) #this is independent of the victory screen display!
+                self.cmd += int((net_gain*10)/(BM.turn_count+2)) #this is independent of the victory screen display!
 
                 renpy.show_screen('victory2')
                 renpy.pause(1)
@@ -1352,7 +1354,7 @@ init -2 python:
             self.wtype = ''
             self.shot_count = 1
             self.accuracy = 100
-
+            self.tooltip = None
 
 
 
@@ -1821,6 +1823,11 @@ init -2 python:
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
+            self.tooltip = """
+            Allows Claude to move an enemy Ryder a single square.
+            This movement will provoke Blindside attacks, if you move an enemy Ryder
+            into the range of a friendly unit with an Assault type weapon.
+            Has a limited range."""
 
             #effective range is 3 cells away and always hits
             self.accuracy = 640

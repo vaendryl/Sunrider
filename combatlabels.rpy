@@ -1,5 +1,8 @@
 #these labels are called by combat code
 
+init:
+    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
+
 
 image work_in_progress 'gameplay/work-in-progress-hi.png':
     xcenter ycenter
@@ -31,13 +34,13 @@ label test_battle:
         sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault()]
         sunrider = create_ship(Sunrider(),(8,6),sunrider_weapons)
 
-        blackjack_weapons = [Melee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+        blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
         blackjack = create_ship(BlackJack(),(10,5),blackjack_weapons)
 
         liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp(),AccDown()]
         liberty = create_ship(Liberty(),(8,7),liberty_weapons)
 
-        phoenix_weapons = [Melee(),Stealth(),GravityGun()]
+        phoenix_weapons = [PhoenixMelee(),Stealth(),GravityGun()]
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
@@ -259,6 +262,8 @@ label battle_start:
         BM.order_used = False
         renpy.take_screenshot()
         renpy.save('battlestart')
+        if BM.show_tooltips:
+            renpy.show_screen('tooltips')
         BM.xadj.value = 872
         BM.yadj.value = 370
         for ship in player_ships:
