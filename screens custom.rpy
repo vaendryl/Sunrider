@@ -111,7 +111,8 @@ screen battle_screen:
     key "[" action Return("previous ship")
 
     ##messing with the player for fun and profit
-    timer 900 repeat False action Show('game_over_gimmick')
+    if BM.battlemode:
+        timer 900 repeat False action Show('game_over_gimmick')
 
     if config.developer: #a release version should have set this to False
         key "Q" action Jump('quit')  ##DEBUG FAST QUIT##
