@@ -1068,8 +1068,8 @@ init 2 python:
             self.damage = 400    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
-            self.accuracy = 170
-            self.acc_degradation = 100
+            self.accuracy = 70
+            self.acc_degradation = 0
             self.wtype = 'Melee'
             self.name = 'Zantetsuken'  #lol
             self.type = 'Melee'
@@ -1221,8 +1221,8 @@ init 2 python:
             self.damage = 50    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
-            self.accuracy = 140
-            self.acc_degradation = 100
+            self.accuracy = 40
+            self.acc_degradation = 0
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 10
@@ -1738,8 +1738,8 @@ init 2 python:
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
-            self.accuracy = 160
-            self.acc_degradation = 100
+            self.accuracy = 60
+            self.acc_degradation = 0
             self.wtype = 'Melee'
             self.name = 'Zantetsuken'  #lol
             self.type = 'Melee'
@@ -1769,8 +1769,8 @@ init 2 python:
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
-            self.accuracy = 160
-            self.acc_degradation = 100
+            self.accuracy = 60
+            self.acc_degradation = 0
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 2
