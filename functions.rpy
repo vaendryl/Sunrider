@@ -419,6 +419,7 @@ init -6 python:
     def create_ship(ship_class,location,weapons):
 
         if location != None:
+            location = get_free_spot_near(location)
             if BM.grid[location[0]-1][location[1]-1]:
                 return
             else:
@@ -436,6 +437,22 @@ init -6 python:
             return ship
         else:
             return
+
+    def get_free_spot_near(location):
+        width = GRID_SIZE[0]
+        height = GRID_SIZE[1]
+        x = y = 0
+        dx = 0
+        dy = -1
+        for i in range((max(width, height) * 2)**2):
+            if (-width < x <= width) and (-height < y <= height):
+                loc = (x + location[0], y + location[1])
+                if get_cell_available(loc):
+                    return loc
+            if x == y or (x < 0 and x == -y) or (x > 0 and x == 1-y):
+                dx, dy = -dy, dx
+            x, y = x+dx, y+dy
+        return location
 
     def create_cover(location):
         BM.covers.append(Cover(location))
