@@ -785,7 +785,60 @@ screen orders:
                                     size 22
                                     color colour
                                     outlines [(1,colour,0,0)]
+                                    
+                        if order == 'FULL FORWARD' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
 
+                                text str('Provides +15 Aim and +20% damage to all allied units.'):
+                                    xpos 0 
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]           
+
+                        if order == 'REPAIR DRONES' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Restores 50% of the Sunrider\'s health.'):
+                                    xpos 0 
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]
+                                    
+                        if order == 'VANGUARD CANNON' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Deals 800 unavoidable damage to all units within a straight line within 7 tiles to the right of the Sunrider'):
+                                    xpos 0 
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]           
+
+                        if order == 'SHORT RANGE WARP' and BM.show_tooltips == True:
+                            frame:
+                               background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Moves the Sunrider to any point on the map. Can be used with another Order.'):
+                                    xpos 0 
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]
+                                    
+                                    #I couldn't get the mouse detection working properly with the buttons. Sorry! :S
 
     imagebutton:
             at move_down(0,590)
