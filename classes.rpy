@@ -6,6 +6,7 @@
 # 5) Weapon blueprint class
 # 6) library (specific ships/weapons)  [[MOVED]]
 # 7) planet class
+# 8) bonus stuff
 
 init -2 python:
 
@@ -2029,3 +2030,9 @@ init -2 python:
                 if self.name == other.name and self.jumpLocation == other.jumpLocation and self.xPos == other.xPos and self.yPos == other.yPos and self.showOnMapCondition == other.showOnMapCondition:
                     return True
             return False
+
+    class BonusItem(store.object):
+        def __init__(self, image, text, jumpLoc):
+            self.image = image
+            self.text = text
+            self.jumpLoc = jumpLoc

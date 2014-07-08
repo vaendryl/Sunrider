@@ -1,0 +1,139 @@
+init -1 python:
+
+    doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1")
+    
+    scenes = [doki_doki_space_whale]
+
+screen deleted_scenes:
+
+    modal True
+    zorder 200
+
+    imagemap:
+        ground "Menu/deleted_scenes_base.png"
+        hover "Menu/deleted_scenes_hover.png"
+
+        $ page = 0
+
+        # we need to make the screen update when the arrows are clicked
+        hotspot (1221, 215, 30, 146):
+            $ page += 1
+            action NullAction()
+        hotspot (1221, 724, 30, 146):
+            if page > 0:
+                $ page -= 1
+            action NullAction()
+        hotspot (726, 59, 137, 44) action [ Hide('deleted_scenes'), Show('save', transition=dissolve) ]
+        hotspot (948, 926, 107, 23) action [ Hide('deleted_scenes'), Show('bonus', transition=dissolve) ]
+        hotspot (864, 59, 137, 44) action [ Hide('deleted_scenes'), Show('load', transition=dissolve) ]
+        hotspot (1002, 59, 137, 44) action [ Hide('deleted_scenes'), Show('preferences', transition=dissolve) ]
+        hotspot (1140, 59, 137, 44) action [ Hide('deleted_scenes'), Show('main_menu', transition=dissolve) ]
+
+        #style "file_picker_frame"
+
+        $ columns = 1
+        $ rows = 5
+
+        # Display a grid of file slots.
+        grid columns rows:
+            transpose True
+            xfill True
+            #style_group "file_picker"
+            xpos 753
+            ypos 216
+            
+            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            # Display five file slots, numbered 1 - 5.
+            for i in range(1, columns * rows + 1):
+
+                button:
+
+                    xminimum 460
+                    yminimum 130
+                    background None #Solid(0,0,0,255)
+
+                    has hbox
+
+                    # Add the image and text.
+                    if page * columns * rows + i - 1 < len(scenes):
+                        $ bonusimage = 0
+                        imagebutton:
+                            idle (scenes[i - 1].image)
+                            hover hoverglow(scenes[i - 1].image)
+                            at zoom_button(0.09)
+                            action [Hide('main_menu'),Start(scenes[i - 1].jumpLoc)]
+                        text scenes[i - 1].text
+
+                    else:
+                        text str(page * columns * rows + i) + ". Deleted Scene"
+
+init -1 python:
+
+    chapter1 = BonusItem("CG/cera.jpg", " Chapter 1", "start")
+    
+    chapters = [chapter1]
+
+screen chapter_select:
+
+    modal True
+    zorder 200
+
+    imagemap:
+        ground "Menu/chapter_select_base.png"
+        hover "Menu/chapter_select_hover.png"
+
+        $ page = 0
+
+        # we need to make the screen update when the arrows are clicked
+        hotspot (1221, 215, 30, 146):
+            $ page += 1
+            action NullAction()
+        hotspot (1221, 724, 30, 146):
+            if page > 0:
+                $ page -= 1
+            action NullAction()
+        hotspot (726, 59, 137, 44) action [ Hide('chapter_select'), Show('save', transition=dissolve) ]
+        hotspot (948, 926, 107, 23) action [ Hide('chapter_select'), Show('bonus', transition=dissolve) ]
+        hotspot (864, 59, 137, 44) action [ Hide('chapter_select'), Show('load', transition=dissolve) ]
+        hotspot (1002, 59, 137, 44) action [ Hide('chapter_select'), Show('preferences', transition=dissolve) ]
+        hotspot (1140, 59, 137, 44) action [ Hide('chapter_select'), Show('main_menu', transition=dissolve) ]
+
+        #style "file_picker_frame"
+
+        $ columns = 1
+        $ rows = 5
+
+        # Display a grid of file slots.
+        grid columns rows:
+            transpose True
+            xfill True
+            #style_group "file_picker"
+            xpos 753
+            ypos 216
+            
+            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            # Display five file slots, numbered 1 - 5.
+            for i in range(1, columns * rows + 1):
+
+                button:
+
+                    xminimum 460
+                    yminimum 130
+                    background None #Solid(0,0,0,255)
+
+                    has hbox
+
+                    # Add the image and text.
+                    if page * columns * rows + i - 1 < len(chapters):
+                        $ bonusimage = 0
+                        imagebutton:
+                            idle (chapters[i - 1].image)
+                            hover hoverglow(chapters[i - 1].image)
+                            at zoom_button(0.09)
+                            action [Hide('main_menu'),Start(chapters[i - 1].jumpLoc)]
+                        text chapters[i - 1].text
+
+                    else:
+                        text str(page * columns * rows + i) + ". Unwritten Chapter"
