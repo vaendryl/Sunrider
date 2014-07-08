@@ -264,9 +264,9 @@ init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
 
     deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes")
-    chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select")
+    #chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select")
 
-    bonus_features = [deletedScenes, chapterSelect]
+    bonus_features = [deletedScenes]
 
 screen bonus:
 
