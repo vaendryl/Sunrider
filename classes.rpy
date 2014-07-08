@@ -1,10 +1,10 @@
 ## This file declares all the classes in the battle engine
 # 1) battle manager class
 # 2) status displayable class
-# 3) Action objects (these gets activated when you click a button)
+# 3) Action objects (these gets activated when you click a button)  [[DEFUNCT]]
 # 4) battleship blueprint class
 # 5) Weapon blueprint class
-# 6) library (specific ships/weapons)
+# 6) library (specific ships/weapons)  [[MOVED]]
 # 7) planet class
 
 init -2 python:
@@ -13,39 +13,37 @@ init -2 python:
         ##it gets initialized into an instance called BM, short for battlemanager
     class Battle(store.object): # handles managing a list of all battle units, handles turns and manages enemy AI
         def __init__(self):
+            #when the first instance gets created a couple of default values get initialized.
             self.save_version = config.version
-            self.ships = []
-            self.covers = []
-            self.missiles = []
-            self.selected = None
-            self.hovered = None
-            self.target = None
-            self.selectedmode = False
-            self.targetingmode = False
-            self.moving = False
-            self.just_moved = False
-            self.missile_moving = False
-            self.phase = 'Player'
-            self.weaponhover = None
-            self.active_weapon = None
-            self.mission = 1
-            self.turn_count = 1
-            self.grid = []
-            self.cmd = 0
-            self.vanguard = False
-            self.money = 0
-            self.warping = False
-            self.showing_orders = False
-            self.show_tooltips = True
-
-            #BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
+            self.ships = []           #holds all ships to display on the map
+            self.covers = []          #holds a list of all the cover on the map
+            self.missiles = []        #all the missiles on screen. right now all missiles are fired one by one
+            self.selected = None      #current selection
+            self.hovered = None       #what unit are you hovering over
+            self.target = None        #the current target of whatever attack is going on
+            self.selectedmode = False #this makes the move target buttons appear
+            self.targetingmode = False#keeps chance to hit target windows on screen etc
+            self.moving = False       #set to true when a ship is moving from point a to b
+            self.just_moved = False   #when True the button to take back your last movement is shown
+            self.missile_moving = False #tells the battle screen a missile is moving from a to b
+            self.phase = 'Player'     #keeps track of who's turn it is
+            self.weaponhover = None   #the weapon you are hovering over. used for chance to hit target window and tooltips
+            self.active_weapon = None #similar to weaponhover, but is used after you actually click a weapon so you can target something
+            self.mission = 1          #what mission are we on? decides where to loop and is important for in battle events
+            self.turn_count = 1       #most important when calculating command points awarded
+            self.grid = []            #keep track of what cells in the grid are free and which are not.
+            self.cmd = 0              #your command point total
+            self.vanguard = False     #when True the battlemap shows the vanguard cannon being fired.
+            self.money = 0            #go on, set this to 999'999'999. you know you want to.
+            self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
+            self.showing_orders = False #This is True when the list of orders is visible.
+            self.show_tooltips = True #hide or show tooltips
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
                 'VANGUARD CANNON':[2500,'vanguard_cannon'],
                 }
-
-            self.order_used = False
+            self.order_used = False   #when True the orders button is hidden.
               #environment modififiers are initialized here and can be changed later
             self.environment = {
                 'accuracy':100,
@@ -53,17 +51,22 @@ init -2 python:
                 'damage':0,
                 'energyregen':0,
                 }
-            self.battlemode = False
-            self.stopAI = False
+            self.battlemode = False   #True during battle. when set to False the battle loop will end.
+            self.stopAI = False       #when set to True all AI action is disabled.
             self.edgescroll = (0,0)
             self.xadj = ui.adjustment() #used by the viewport in the battlescreen
             self.yadj = ui.adjustment()
+
+            #when True you can drag the main viewport (the battle map with the grid) around. this needs to be
+            #disabled when text is showing on screen otherwise mouseclicks get eaten by the viewport and do not advance text
             self.draggable = True
+
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
             for a in range(GRID_SIZE[0]):
                 self.grid.append([False]*GRID_SIZE[1])
             self.battle_bg = "Background/space{!s}.jpg".format(renpy.random.randint(1,9))
 
+        #here we start defining a few methods part of the battlemanager
         def select_ship(self,ship,play_voice = True):
             self.selectedmode = True
             self.selected = ship
@@ -90,12 +93,10 @@ init -2 python:
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
-            self.just_moved = False
-            renpy.hide_screen('game_over_gimmick')
+            self.just_moved = False #this sets it so you can no longer take back your move
+            renpy.hide_screen('game_over_gimmick') #disables the screensaver gimmick
 
-
-
-            if self.stopAI and sunrider.hp < 0:
+            if self.stopAI and sunrider.hp < 0:  #some failsafe checking. stopAI functions like an emergency stop for AI code
                 renpy.jump('sunrider_destroyed')
 
             #sanity check
@@ -109,6 +110,7 @@ init -2 python:
                     if ship in BM.ships:
                         BM.ships.remove(ship)
 
+            #only used for debug
             if result == 'anime':
                 if not hasattr(store,'damage'):
                     store.damage = 50
@@ -144,9 +146,6 @@ init -2 python:
                     self.unselect_ship(self.selected)
                 else:
                     pass
-
-
-
 
             if result == "next ship":
                 if self.selected == None:
