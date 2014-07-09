@@ -25,7 +25,6 @@ label quit:
     $ renpy.quit(relaunch=False)
     return
 
-
 # The game starts here.
 label start:
 
@@ -905,7 +904,6 @@ label firstbattle_end:
     pause 0.5
 
     window hide
-
     play sound1 "Music/Posthumus_Regium_Finale.ogg" fadeout 0.5 fadein 0.5 noloop
     scene bg black2 with dissolvelong
     pause 0.1
@@ -917,6 +915,10 @@ label firstbattle_end:
     $ renpy.pause(9.0)
     hide mainlogo with dissolvelong
     pause 1.0
+
+    jump chap1_start
+
+label chap1_start:
 
     window show
 
@@ -3332,6 +3334,11 @@ label celebratepiratebase_chi:
     show eyecatch_bottom with eyecatch_wiperev
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
+
+    jump chap2_start
+
+label chap2_start:
+
     scene bg black2 with dissolvelong
     scene bg captainsoffice with dissolvelong
 
@@ -5373,9 +5380,9 @@ label mission8:
         $ check5 = True
 
     if check6 == False and BM.turn_count == 11:
-
+        
         $BM.draggable = False
-
+        
         show ava uniform facepalm onlayer screens with dissolve
 
         ava "That's enough heroics, captain! We have to get out of here now!!"
@@ -8678,6 +8685,11 @@ label porkfleetopenfire:
 
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
+
+    jump chap4_start
+
+label chap4_start:
+
     scene bg black2 with dissolvelong
     scene cg_asagakidnap_legion with dissolvelong
 
