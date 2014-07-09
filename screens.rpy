@@ -266,7 +266,7 @@ init -2 python:
     deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes")
     chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select")
 
-    bonus_features = [deletedScenes]
+    bonus_features = [deletedScenes, chapterSelect]
 
 screen bonus:
 
