@@ -1,4 +1,4 @@
-label bonus1:
+label deleted_scene_1:
     scene black
     play music "Music/The_Meteor.ogg"
     window show
@@ -62,5 +62,4 @@ label bonus1:
     play sound "sound/drum.ogg"
 
     pause
-    $ renpy.full_restart()
     return
