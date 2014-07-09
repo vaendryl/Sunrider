@@ -70,9 +70,13 @@ screen deleted_scenes:
 
 init -1 python:
 
-    chapter1 = BonusItem("CG/cera.jpg", " Chapter 1", "start")
+    chapter0 = Chapter("CG/cera.jpg", " Prologue", "start")
+    chapter1 = Chapter("Background/captainsoffice.jpg", " Chapter 1", "chap1_start", 200, 1)
+    chapter2 = Chapter("Background/captainsoffice.jpg", " Chapter 2", "chap2_start", 4570, 5)
+    chapter3 = Chapter("CG/avateatime.jpg", " Chapter 3", "ep3_start", 11870, 8)
+    chapter4 = Chapter("CG/asagakidnap_legion.jpg", " Chapter 4", "chap4_start", 15710, 10)
     
-    chapters = [chapter1]
+    chapters = [chapter0, chapter1, chapter2, chapter3, chapter4]
 
 screen chapter_select:
 
@@ -132,7 +136,7 @@ screen chapter_select:
                             idle (chapters[i - 1].image)
                             hover hoverglow(chapters[i - 1].image)
                             at zoom_button(0.09)
-                            action [Hide('main_menu'),Start(chapters[i - 1].jumpLoc)]
+                            action [Hide('main_menu'),chapters[i - 1]]
                         text chapters[i - 1].text
 
                     else:

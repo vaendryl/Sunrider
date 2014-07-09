@@ -2036,3 +2036,123 @@ init -2 python:
             self.image = image
             self.text = text
             self.jumpLoc = jumpLoc
+
+    class Chapter(BonusItem, Action):
+        def __init__(self, image, text, jumpLoc, startMoney = 0, lastMission = -1):
+            self.image = image
+            self.text = text
+            self.jumpLoc = jumpLoc
+            self.startMoney = startMoney
+            self.lastMission = lastMission
+        
+        def __call__(self):
+            
+            BM = Battle()
+            BM.money = self.startMoney
+            BM.cmd = self.startMoney / 2
+            store.player_ships = []
+            store.enemy_ships = []
+            store.sunrider = None
+            store.blackjack = None
+            store.liberty = None
+            store.phoenix = None
+            store.bianca = None
+            store.seraphim = None
+            store.paladin = None
+            store.havoc = None
+            store.paradigm = None
+            
+            store.check1 = False
+            store.check2 = False
+            store.check3 = False
+            store.check4 = False
+            store.check5 = False
+            store.check6 = False
+            store.check7 = False
+            store.check8 = False
+            store.check9 = False
+            
+            store.captain_moralist = 0
+            store.captain_prince = 0
+            store.affection_ava = 0
+            store.affection_asaga = 0
+            store.affection_chigara = 0
+            store.affection_icari = 0
+            store.affection_claude = 0
+            store.affection_tera = 0
+            store.affection_sola = 0
+            store.affection_cosette = 0
+
+            store.MetAsaga = False
+            store.ChigaraRefugee = False
+            store.mission_pirateattack = False
+
+            store.battlemusic = True
+
+            store.galaxymission1 = False
+            store.galaxymission2 = False
+            store.galaxymission3 = False
+            store.mission1 = None
+            store.mission2 = None
+            store.mission3 = None
+            store.mission1_name = None
+            store.mission2_name = None
+            store.mission3_name = None
+
+            store.mission3_complete = False
+            store.mission4_complete = False
+            store.mission5_complete = False
+            store.mission6_complete = False
+
+            store.asa_location = None
+            store.chi_location = None
+            store.pro_location = None
+            store.gal_location = None
+            store.cal_location = None
+            store.res_location = None
+            store.ica_location = None
+            store.sol_location = None
+            store.cla_location = None
+            store.cos_location = None
+            store.kry_location = None
+
+            store.warpto_tydaria = False
+            store.warpto_occupiedcera = False
+            store.warpto_astralexpanse = False
+            store.warpto_pactstation1 = False
+            store.warpto_versta = False
+            store.warpto_nomodorn = False
+
+            store.ep2_cancelwarp = False
+
+            store.supportedasagacards = False
+
+            ##new constants##
+
+            store.TURN_SPEED = 0.5  #in seconds
+            store.MOVE_IN_SPEED = 0.5 #for buttons and status displays
+            store.MOVE_OUT_SPEED = 0.5
+            store.MESSAGE_PAUSE = 0.75
+            store.MISSILE_SPEED = 0.3
+            store.SHIP_SPEED = 0.3
+            store.ZOOM_SPEED = 0.1
+            store.GRID_SIZE = (18,16)
+            BM.phase = None
+            
+            for num in range(0, self.lastMission):
+                renpy.call('mission' + str(num + 1) + '_inits')
+            
+            if self.lastMission >= 8:
+                store.player_ships.remove(agamemnon)
+                BM.ships.remove(agamemnon)
+            
+            if self.lastMission >= 9:
+                store.player_ships.remove(mochi)
+                BM.ships.remove(mochi)
+                store.bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+                store.bianca = create_ship(Bianca(),None,store.bianca_weapons)
+            
+            if self.lastMission >= 10:
+                store.player_ships.append(store.blackjack)
+            
+            renpy.jump_out_of_context(self.jumpLoc)
