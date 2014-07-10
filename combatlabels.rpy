@@ -314,6 +314,8 @@ label after_load:
 
     python:
         reset = False
+        if not hasattr(store,'BM'):
+            BM = Battle()
         if hasattr(BM,'save_version'):
             if BM.save_version != config.version:
                 reset = True

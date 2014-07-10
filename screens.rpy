@@ -292,8 +292,9 @@ screen bonus:
             xfill True
             xpos 753
             ypos 216
-            
-            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            if hasattr(store,'BM'):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
@@ -337,6 +338,8 @@ screen load:
 
     key 'mouseup_3' action Hide('load')
 
+    if not hasattr(store,'BM'):
+        $ BM = Battle()
     if not (BM.phase == 'Player' or BM.phase == None):
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5

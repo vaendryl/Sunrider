@@ -99,6 +99,11 @@ init -2 python:
 
             if self.stopAI and sunrider.hp < 0:  #some failsafe checking. stopAI functions like an emergency stop for AI code
                 renpy.jump('sunrider_destroyed')
+            if hasattr(store,'mochi'):
+                if hasattr(mochi,'hp'):
+                    if mochi.hp < 0 and mochi in player_ships:
+                        renpy.jump('sunrider_destroyed')
+
 
             #sanity check
             for ship in BM.ships:
@@ -296,10 +301,8 @@ init -2 python:
                     self.cmd -= self.orders[result][0]
                     show_message('All ships gain 20% damage and 15% accuracy!')
                     for ship in player_ships:
-                        if ship.modifiers['accuracy'][0] <= 15:
-                            ship.modifiers['accuracy'] = [15,5]
-                        if ship.modifiers['damage'][0] <= 20:
-                            ship.modifiers['damage'] = [20,5]
+                        apply_modifier(ship,'accuracy',15,5)
+                        apply_modifier(ship,'damage',20,5)
 
                     random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
                     random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
@@ -443,10 +446,6 @@ init -2 python:
                         ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
 
             if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
-#                if self.selected.en < result[1].energy_use: #sanity check. the button should not even be clickable
-#                    show_message('DEBUG: Not enough energy!')
-#                    return
-
                 if result[1].wtype == 'Support':
                     if result[1].self_buff:
                         result[1].fire(BM.selected,BM.selected)
@@ -457,6 +456,14 @@ init -2 python:
                 self.targetingmode = True   #displays targeting info over enemy_ships
                 self.active_weapon = result[1]
                 self.weaponhover = BM.active_weapon
+                ignore_evasion = False
+
+                #the hover thing is not 100% trustworthy so we calculate CTH again based on the selected weapon
+                if self.weaponhover.wtype == 'Curse':
+                    ignore_evasion = True
+                for ship in enemy_ships:
+                    ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
+
                 update_stats()
 
             if result == 'endturn':
@@ -480,7 +487,6 @@ init -2 python:
         def end_player_turn(self):
             renpy.hide_screen('commands')
             self.selected = None #some sanity checking
-            self.order_used = False
             self.target = None
             self.moving = False
             self.selectedmode = False
@@ -506,6 +512,7 @@ init -2 python:
             self.active_weapon = None
             self.selected = None
             self.selectedmode = False
+            self.order_used = False
 
             if self.battlemode:
                 renpy.music.play(PlayerTurnMusic)
@@ -1649,7 +1656,7 @@ init -2 python:
             else:
                 self.lbl = im.Rotozoom('Battle UI/map rocket.png',self.angle,1.0)
             self.eccm = parent.missile_eccm + weapon.eccm
-            self.flak_degradation = 3  #this is how much flak effectiveness gets reduced by each missile
+            self.flak_degradation = 0.02  #this is how much flak effectiveness gets reduced by each missile
             self.next_location = None
             self.shot_down = None
 
@@ -1665,7 +1672,8 @@ init -2 python:
             shot_down = 0
             if self.shot_count > shots_remaining:
                 shot_down = self.shot_count - shots_remaining
-            interceptor.flak_effectiveness -= (self.shot_count * self.flak_degradation)
+            interceptor.flak_effectiveness *= 1.0 - (self.shot_count * self.flak_degradation)
+            if interceptor.flak_effectiveness < 33: interceptor.flak_effectiveness = 33
             self.shot_count = shots_remaining
             return shot_down
 
@@ -2044,9 +2052,9 @@ init -2 python:
             self.jumpLoc = jumpLoc
             self.startMoney = startMoney
             self.lastMission = lastMission
-        
+
         def __call__(self):
-            
+
             BM = Battle()
             BM.money = self.startMoney
             BM.cmd = self.startMoney / 2
@@ -2061,7 +2069,7 @@ init -2 python:
             store.paladin = None
             store.havoc = None
             store.paradigm = None
-            
+
             store.check1 = False
             store.check2 = False
             store.check3 = False
@@ -2071,7 +2079,7 @@ init -2 python:
             store.check7 = False
             store.check8 = False
             store.check9 = False
-            
+
             store.captain_moralist = 0
             store.captain_prince = 0
             store.affection_ava = 0
@@ -2138,21 +2146,21 @@ init -2 python:
             store.ZOOM_SPEED = 0.1
             store.GRID_SIZE = (18,16)
             BM.phase = None
-            
+
             for num in range(0, self.lastMission):
                 renpy.call('mission' + str(num + 1) + '_inits')
-            
+
             if self.lastMission >= 8:
                 store.player_ships.remove(agamemnon)
                 BM.ships.remove(agamemnon)
-            
+
             if self.lastMission >= 9:
                 store.player_ships.remove(mochi)
                 BM.ships.remove(mochi)
                 store.bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 store.bianca = create_ship(Bianca(),None,store.bianca_weapons)
-            
+
             if self.lastMission >= 10:
                 store.player_ships.append(store.blackjack)
-            
+
             renpy.jump_out_of_context(self.jumpLoc)
