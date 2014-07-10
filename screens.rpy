@@ -418,6 +418,8 @@ screen save:
 
     key 'mouseup_3' action Hide('save')
 
+    if not hasattr(store,"BM"):
+        $ BM = Battle()
     if not BM.phase == 'Player':
         text 'WARNING! \n You can not save during the enemy \n turn.':
             xalign 0.5

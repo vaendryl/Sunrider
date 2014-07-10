@@ -42,7 +42,8 @@ screen deleted_scenes:
             xpos 753
             ypos 216
 
-            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+            if hasattr(store,"BM"):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):

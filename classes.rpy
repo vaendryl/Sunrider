@@ -2055,9 +2055,9 @@ init -2 python:
 
         def __call__(self):
 
-            BM = Battle()
-            BM.money = self.startMoney
-            BM.cmd = self.startMoney / 2
+            store.BM = Battle()
+            store.BM.money = self.startMoney
+            store.BM.cmd = self.startMoney / 2
             store.player_ships = []
             store.enemy_ships = []
             store.sunrider = None
@@ -2148,7 +2148,7 @@ init -2 python:
             store.GRID_SIZE = (18,16)
             BM.phase = None
 
-             if self.lastMission >= 3:
+            if self.lastMission >= 3:
                 store.liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
                 store.liberty = create_ship(Liberty(),None,liberty_weapons)
 
