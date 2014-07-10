@@ -2126,6 +2126,7 @@ init -2 python:
             store.ep2_cancelwarp = False
 
             store.supportedasagacards = False
+            store.protectmochi = False
 
             ##new constants##
 
@@ -2139,18 +2140,31 @@ init -2 python:
             store.GRID_SIZE = (18,16)
             BM.phase = None
             
-            for num in range(0, self.lastMission):
-                renpy.call('mission' + str(num + 1) + '_inits')
-            
-            if self.lastMission >= 8:
-                store.player_ships.remove(agamemnon)
-                BM.ships.remove(agamemnon)
+            if self.lastMission >= 3:
+                store.liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+                store.liberty = create_ship(Liberty(),None,liberty_weapons)
             
             if self.lastMission >= 9:
-                store.player_ships.remove(mochi)
-                BM.ships.remove(mochi)
                 store.bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 store.bianca = create_ship(Bianca(),None,store.bianca_weapons)
+            
+            for num in range(0, self.lastMission):
+                renpy.call_in_new_context('mission' + str(num + 1) + '_inits')
+            
+            if self.lastMission >= 3:
+                store.sunrider.register_weapon(SunriderPulse())
+            
+            if self.lastMission >= 8:
+                try:
+                    store.player_ships.remove(agamemnon)
+                except NameError:
+                    pass
+            
+            if self.lastMission >= 9:
+                try:
+                    store.player_ships.remove(mochi)
+                except NameError:
+                    pass
             
             if self.lastMission >= 10:
                 store.player_ships.append(store.blackjack)
