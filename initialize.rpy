@@ -15,8 +15,6 @@ init -10 python:
     SHIP_SPEED = 0.3
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16) #(X,Y) aka (width,height)
-    BM = renpy.store.object()
-    BM.phase = None
 
     planets = []
 

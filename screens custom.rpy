@@ -446,12 +446,13 @@ screen battle_screen:
                     if ship.faction == 'Player':
                         $ textcolor = '0f0'
 
-                    text '{} intercepted!'.format(intercept_count):
+                    text '{} intercepted! \neffectiveness: {}%'.format( intercept_count , int(ship.flak_effectiveness) ):
                         xanchor 0.5
                         yanchor 0.5
+#                        xmaximum 200
                         xpos xposition
                         ypos yposition
-                        size 30
+                        size 28
                         color textcolor
                         outlines [(2,'000',0,0)]
                         at delay_float_text(yposition,wait)
@@ -697,7 +698,7 @@ screen battle_screen:
             text_size 30
             action Return('cancel movement')
 
-    if not BM.showing_orders and not BM.order_used:
+    if not BM.showing_orders and not BM.order_used and not BM.missile_moving and not BM.moving and BM.phase == "Player":
         imagebutton:
             xpos 0
             ypos 0

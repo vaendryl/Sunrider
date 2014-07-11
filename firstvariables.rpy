@@ -158,7 +158,6 @@ init python:
             self.SHIP_SPEED = 0.3
             self.ZOOM_SPEED = 0.1
             self.GRID_SIZE = (18,16)
-            self.BM = renpy.store.object()
             self.BM.phase = None
 
 

@@ -83,6 +83,22 @@ init -6 python:
             if ship.boss:
                 return
 
+    def apply_modifier(target,modifier,magnitude,duration):
+        if target == None:
+            return
+        if not hasattr(target,'modifiers'):
+            return
+        if modifier in target.modifiers:
+            if target.modifiers[modifier][0] > magnitude:
+                return
+            elif target.modifiers[modifier][0] == magnitude:
+                if target.modifiers[modifier][1] > duration:
+                    return
+        else:
+            target.modifiers[modifier] = (magnitude,duration)
+            return
+
+
     def clean_grid():
         BM.grid = []
         BM.ships = []

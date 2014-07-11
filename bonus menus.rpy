@@ -1,7 +1,7 @@
 init -1 python:
 
     doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1")
-    
+
     scenes = [doki_doki_space_whale]
 
 screen deleted_scenes:
@@ -41,8 +41,9 @@ screen deleted_scenes:
             #style_group "file_picker"
             xpos 753
             ypos 216
-            
-            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            if hasattr(store,"BM"):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
@@ -75,7 +76,7 @@ init -1 python:
     chapter2 = Chapter("Background/captainsoffice.jpg", " Chapter 2", "chap2_start", 4570, 5)
     chapter3 = Chapter("CG/avateatime.jpg", " Chapter 3", "ep3_start", 11870, 8)
     chapter4 = Chapter("CG/asagakidnap_legion.jpg", " Chapter 4", "chap4_start", 15710, 10)
-    
+
     chapters = [chapter0, chapter1, chapter2, chapter3, chapter4]
 
 screen chapter_select:
@@ -115,8 +116,9 @@ screen chapter_select:
             #style_group "file_picker"
             xpos 753
             ypos 216
-            
-            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            if hasattr(store,'BM'):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
