@@ -2164,13 +2164,13 @@ init -2 python:
 
             if self.lastMission >= 8:
                 try:
-                    store.player_ships.remove(agamemnon)
+                    store.player_ships.remove(store.agamemnon)
                 except NameError:
                     pass
 
             if self.lastMission >= 9:
                 try:
-                    store.player_ships.remove(mochi)
+                    store.player_ships.remove(store.mochi)
                 except NameError:
                     pass
 
