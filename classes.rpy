@@ -2152,11 +2152,15 @@ init -2 python:
 
             if self.lastMission >= 3:
                 store.liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
-                store.liberty = create_ship(Liberty(),None,liberty_weapons)
+                store.liberty = create_ship(Liberty(),None,store.liberty_weapons)
 
             if self.lastMission >= 9:
                 store.bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 store.bianca = create_ship(Bianca(),None,store.bianca_weapons)
+            
+            if self.lastMission >= 10:
+                store.seraphim_weapons = [SeraphimKinetic(),Awaken()]
+                store.seraphim = create_ship(Seraphim(),(6,8),store.seraphim_weapons)
 
             for num in range(0, self.lastMission):
                 renpy.call_in_new_context('mission' + str(num + 1) + '_inits')
