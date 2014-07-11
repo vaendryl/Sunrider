@@ -2162,19 +2162,14 @@ init -2 python:
             if self.lastMission >= 3:
                 store.sunrider.register_weapon(SunriderPulse())
 
-            if self.lastMission >= 8:
-                try:
-                    store.player_ships.remove(agamemnon)
-                except NameError:
-                    pass
+            if hasattr(store,'agamemnon'):
+                if agamemnon in player_ships: player_ships.remove(agamemnon)
 
-            if self.lastMission >= 9:
-                try:
-                    store.player_ships.remove(mochi)
-                except NameError:
-                    pass
+            if hasattr(store,'mochi'):
+                if mochi in player_ships: player_ships.remove(mochi)
 
             if self.lastMission >= 10:
                 store.player_ships.append(store.blackjack)
 
+            clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
