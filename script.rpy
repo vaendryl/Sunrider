@@ -7030,6 +7030,7 @@ label aftermission9:
             bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
             bianca = create_ship(Bianca(),(14,7),bianca_weapons)
 
+    $ mission9_complete = True
 
     hide screen commands
     hide screen battle_screen
@@ -7929,6 +7930,11 @@ label aftermission10:
         if not blackjack in player_ships:
             blackjack.set_location(10,3)
             player_ships.append(blackjack)
+            
+        seraphim_weapons = [SeraphimKinetic(),Awaken()]
+        seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
+
+    $ mission10_complete = True
 
     scene bg bridgered with dissolve
 
@@ -8861,9 +8867,6 @@ label chap4_start:
     hide chigara with dissolve
 
     play music "Music/One_Day_in_August.ogg" fadeout 1.5
-
-    $ seraphim_weapons = [SeraphimKinetic(),Awaken()]
-    $ seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
 
     $ captaindeck = 0
     $ chi_location = "lab"
