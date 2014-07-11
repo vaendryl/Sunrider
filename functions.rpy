@@ -102,7 +102,9 @@ init -6 python:
     def clean_grid():
         BM.grid = []
         BM.ships = []
+        BM.covers = []
         store.enemy_ships = []
+
         for a in range(GRID_SIZE[0]):
                 BM.grid.append([False]*GRID_SIZE[1])
         for ship in player_ships:
