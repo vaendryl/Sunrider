@@ -2149,7 +2149,6 @@ init -2 python:
             store.SHIP_SPEED = 0.3
             store.ZOOM_SPEED = 0.1
             store.GRID_SIZE = (18,16)
-            BM.phase = None
 
             if self.lastMission >= 3:
                 store.liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
