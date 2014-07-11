@@ -2107,12 +2107,12 @@ init -2 python:
             store.mission2_name = None
             store.mission3_name = None
 
-            store.mission3_complete = lastMission >= 3
+            store.mission3_complete = self.lastMission >= 3
             store.mission4_complete = False
-            store.mission5_complete = lastMission >= 5
-            store.mission6_complete = lastMission >= 6
-            store.mission9_complete = lastMission >= 9
-            store.mission10_complete = lastMission >= 10
+            store.mission5_complete = self.lastMission >= 5
+            store.mission6_complete = self.lastMission >= 6
+            store.mission9_complete = self.lastMission >= 9
+            store.mission10_complete = self.lastMission >= 10
 
             store.asa_location = None
             store.chi_location = None
@@ -2136,7 +2136,7 @@ init -2 python:
             store.ep2_cancelwarp = False
 
             store.supportedasagacards = False
-            store.Saveddiplomats = lastMission >= 8
+            store.Saveddiplomats = self.lastMission >= 8
             store.protectmochi = False
 
             ##new constants##
