@@ -84,7 +84,7 @@ init -6 python:
                 return
 
     def apply_modifier(target,modifier,magnitude,duration):
-        """attempts to apply a buff or a curse and return True on succes, False on failue"""
+        """attempts to apply a buff or a curse and return True on succes, False on failure"""
         if target == None:
             return False
         if not hasattr(target,'modifiers'):
