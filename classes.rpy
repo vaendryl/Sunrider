@@ -2197,3 +2197,40 @@ init -2 python:
 
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
+
+    class BonusPageNext(Action):
+        def __init__(self):
+            self.page = store.bonusPage + 1
+
+        def __call__(self):
+            if not self.get_sensitive():
+                return
+
+            store.bonusPage = self.page
+            renpy.restart_interaction()
+
+        def get_sensitive(self):
+            return self.page is not None
+
+
+    class BonusPagePrevious(Action):
+        def __init__(self):
+            self.page = store.bonusPage - 1
+            if self.page < 0:
+                self.page = 0
+
+        def __call__(self):
+            if not self.get_sensitive():
+                return
+
+            store.bonusPage = self.page
+            renpy.restart_interaction()
+
+        def get_sensitive(self):
+            return store.bonusPage
+
+
+    class ResetBonusPage(Action):
+        def __call__(self):
+            store.bonusPage = 0
+            renpy.restart_interaction()

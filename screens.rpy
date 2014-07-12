@@ -314,7 +314,7 @@ screen bonus:
                             idle (bonus_features[i - 1].image)
                             hover hoverglow(bonus_features[i - 1].image)
                             at zoom_button(0.09)
-                            action [Hide('bonus'),ShowMenu(bonus_features[i - 1].jumpLoc)]
+                            action [ResetBonusPage(),Hide('bonus'),ShowMenu(bonus_features[i - 1].jumpLoc)]
                         text bonus_features[i - 1].text
 
                     else:
