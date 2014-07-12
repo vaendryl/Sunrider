@@ -2114,6 +2114,7 @@ init -2 python:
             store.mission9_complete = self.lastMission >= 9
             store.mission10_complete = self.lastMission >= 10
 
+            store.ava_location = None
             store.asa_location = None
             store.chi_location = None
             store.pro_location = None
@@ -2126,12 +2127,25 @@ init -2 python:
             store.cos_location = None
             store.kry_location = None
 
-            store.warpto_tydaria = False
-            store.warpto_occupiedcera = False
-            store.warpto_astralexpanse = False
-            store.warpto_pactstation1 = False
-            store.warpto_versta = False
-            store.warpto_nomodorn = False
+            store.ava_event = None
+            store.asa_event = None
+            store.chi_event = None
+            store.pro_event = None
+            store.gal_event = 'jumptogalaxy'
+            store.cal_event = 'ftltransponder'
+            store.res_event = 'allocatefunds'
+            store.ica_event = None
+            store.sol_event = None
+            store.cla_event = None
+            store.cos_event = None
+            store.kry_event = None
+
+            store.warpto_occupiedcera = self.lastMission >= 1
+            store.warpto_tydaria = self.lastMission >= 1
+            store.warpto_astralexpanse = self.lastMission >= 2
+            store.warpto_pactstation1 = self.lastMission >= 3
+            store.warpto_versta = self.lastMission >= 5
+            store.warpto_nomodorn = self.lastMission >= 8
 
             store.ep2_cancelwarp = False
 
@@ -2167,6 +2181,10 @@ init -2 python:
 
             if self.lastMission >= 3:
                 store.sunrider.register_weapon(SunriderPulse())
+                store.cal_location = 'captainsloft'
+            
+            if self.lastMission >= 6:
+                store.res_location = 'lab'
 
             if hasattr(store,'agamemnon'):
                 if agamemnon in player_ships: player_ships.remove(agamemnon)
