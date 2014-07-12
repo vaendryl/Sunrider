@@ -1216,15 +1216,15 @@ init 2 python:
             self.shot_count = 1
 
     class HavocMelee(Melee):
+        #wow, I never realized the Havoc had a multi hit melee attack
         def __init__(self):
             Weapon.__init__(self)
-            self.damage = 50    #multiplied by shot count
+            self.damage = 40    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
-            self.accuracy = 40
-            self.acc_degradation = 0
+            self.accuracy = 140
+            self.acc_degradation = 100
             self.wtype = 'Melee'
-            self.type = 'Melee'
             self.shot_count = 10
 
 ########################################## PIRATE BOMBER
@@ -1769,8 +1769,8 @@ init 2 python:
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
-            self.accuracy = 60
-            self.acc_degradation = 0
+            self.accuracy = 160
+            self.acc_degradation = 100
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 2

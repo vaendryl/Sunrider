@@ -341,6 +341,9 @@ screen battle_screen:
                                     #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
                                     $ mode = 'offline'
 
+                                if BM.active_weapon.wtype == 'Support':
+                                    $ mode = 'offline'
+
                                 if BM.active_weapon.name == 'Gravity Gun':
                                     #the gravity gun is a special type weapon
                                     if ship.stype != 'Ryder':
@@ -1188,8 +1191,6 @@ screen victory2:
     modal True
     $wait = 0.2
     $xx = 200
-    $store.total_money = 0
-    $store.repair_cost = 0
 
     add Solid((0,0,0,200))
 
@@ -1206,10 +1207,15 @@ screen victory2:
         size 50
         outlines [(2,'000',0,0)]
 
+    $ textsize = 50
     if len(destroyed_ships) > 12:
         $ textsize = 40
-    else:
-        $ textsize = 50
+    elif len(destroyed_ships) > 20:
+        $ textsize = 30
+
+    $ total_ships = len(destroyed_ships)
+    if store.boss_killed:
+        $ total_ships += len(enemy_ships)
 
     for ship in destroyed_ships:
         if not ship.faction == 'Player':
@@ -1224,35 +1230,57 @@ screen victory2:
                 at victory_ships(xx,wait,1)
 
             $wait += 0.3
-            $xx += 1520/len(destroyed_ships)
-            $store.total_money += ship.money_reward
-        else:
-            $store.repair_cost += int(ship.max_hp * 0.2)
+            $xx += 1520/total_ships
 
-    for ship in player_ships:
-        $store.repair_cost += int((ship.max_hp - ship.hp)*0.1)
+    if store.boss_killed:
+        for ship in enemy_ships:
+            add ship.blbl:
+                xanchor 0.5
+                at victory_ships(xx,wait,0.5)
+            text 'Surrendered':
+                xanchor 0.5
+                yanchor 1.0
+                color '090'
+                size textsize - 15
+                outlines [(2,'000',0,0)]
+                at victory_ships(xx,wait,1)
+
+            $wait += 0.3
+            $xx += 1520/total_ships
 
     $wait += 0.5
-    text 'total money gained: {}$'.format(store.total_money):
+    text 'enemy destruction reward: {}$'.format(store.total_money):
         xpos 0.2
         ypos 0.6
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)
 
+    $ yposition = 0.65
+    if store.surrender_bonus > 0:
+        $wait += 0.1
+        text 'surrender bonus: {}$'.format(int(store.surrender_bonus)):
+            xpos 0.2
+            ypos yposition
+            size 40
+            outlines [(2,'000',0,0)]
+            at delay_text(wait)
+        $ yposition += 0.05
+
+
     $wait += 0.1
     text 'repair costs: {}$'.format(int(store.repair_cost)):
         xpos 0.2
-        ypos 0.65
+        ypos yposition
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)
+    $ yposition += 0.05
 
     $wait += 0.1
-    $store.net_gain = int(store.total_money - store.repair_cost)
-    text 'net gain: {}$'.format(net_gain):
+    text 'net gain: {}$'.format(store.net_gain):
         xpos 0.2
-        ypos 0.7
+        ypos yposition
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)

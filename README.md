@@ -1,6 +1,18 @@
 #Sunrider
 ========
 
+patch 4.2
+======
+* tooltips added by Quickman
+* chapter select added by EnderShadow
+* command point generation globally reduced.
+* flak decay mechanic overhauled. you are now far less likely to get blown up in turn 1 by enemy missiles.
+* weaker buffs and curses no longer overwrite stronger buffs. this includes the buff from the 'full forward' order.
+* accuracy buffs no longer affect healing and other support skills.
+* the range on the gravity gun is now infinite.
+* enemy units surrender when their leader is destroyed which now gives you bonus money - half as much as if you had destroyed them. sniping the enemy leader asap is not much more economically viable.
+* hard difficulty again decreases damage the player does by 25%
+
 patch 4.1
 ======
 

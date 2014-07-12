@@ -141,7 +141,8 @@ init -6 python:
             accuracy -= (target.evasion + target.modifiers['evasion'][0])
 
         #an acc. buff is added as a flat bonus
-        accuracy += attacker.modifiers['accuracy'][0]
+        if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
+            accuracy += attacker.modifiers['accuracy'][0]
 
         #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
         accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))

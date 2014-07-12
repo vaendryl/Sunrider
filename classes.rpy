@@ -606,18 +606,26 @@ init -2 python:
                 renpy.pause(3.0)
                 renpy.hide_screen('victory')
 
-                repair_cost = 0
-                total_money = 0
+                store.repair_cost = 0
+                store.total_money = 0
+                store.boss_killed = False
+                store.surrender_bonus = 0
                 for ship in destroyed_ships:
                     if ship.faction == 'Player':
-                        repair_cost += int(ship.max_hp * 0.2)
+                        store.repair_cost += int(ship.max_hp * 0.2)
                     else:
-                        total_money += ship.money_reward
+                        if ship.boss: store.boss_killed = True #check if a boss was killed
+                        store.total_money += ship.money_reward
+
+                if store.boss_killed:
+                    for ship in enemy_ships:
+                        if ship.hp > 0:
+                            store.surrender_bonus += ship.money_reward / 2
 
                 for ship in player_ships:
-                    repair_cost += int((ship.max_hp - ship.hp)*0.1)
+                    store.repair_cost += int((ship.max_hp - ship.hp)*0.1)
 
-                net_gain = int(total_money - repair_cost)
+                store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
                 self.money += int(net_gain)
                 self.cmd += int((net_gain*10)/(BM.turn_count+2)) #this is independent of the victory screen display!
 
@@ -855,12 +863,11 @@ init -2 python:
                     if self.faction == 'Player':
                         damage = int(damage * 1.33)
                     else:
-                        pass
-#                        damage = int(damage * 0.75)
-
+                        damage = int(damage * 0.75)
+#                        pass
 
                 #havoc isn't allowed to die in the first turn
-                if self.name == 'Havoc' and BM.turn_count == 1 and damage > self.hp:
+                if BM.mission == 2 and self.name == 'Havoc' and BM.turn_count == 1 and damage > self.hp:
                     try:
                         renpy.call_in_new_context('miss_{}'.format(self.animation_name)) #show the miss animation
                     except:
@@ -1790,11 +1797,19 @@ init -2 python:
             #if it's a buff
             else:
 
+                successful = False
                 if hasattr(self.modifies,"__iter__"):  #this checks is the var is an iterable (like a list). if it's not it should be a string.
                     for modifier in self.modifies:
-                        target.modifiers[modifier] = [self.buff_strength,self.buff_duration]
+                        if apply_modifier(target,modifier,self.buff_strength,self.buff_duration): successful = True
                 else:
-                    target.modifiers[self.modifies] = [self.buff_strength,self.buff_duration]
+                    if apply_modifier(target,self.modifies,self.buff_strength,self.buff_duration): successful = True
+
+                if not successful:
+                    show_message('A stronger or similar effect is already present!')
+                    parent.en += self.energy_use
+                    parent.hp += self.hp_cost
+                    return 0
+
 
                 update_stats()
                 if self.wtype == 'Support':
@@ -1843,9 +1858,9 @@ init -2 python:
             into the range of a friendly unit with an Assault type weapon.
             Has a limited range."""
 
-            #effective range is 3 cells away and always hits
-            self.accuracy = 640
-            self.acc_degradation = 100
+            #always hits
+            self.accuracy = 9999
+            self.acc_degradation = 0
 
             self.name = 'Gravity Gun'
             self.shot_count = 1
@@ -2177,7 +2192,7 @@ init -2 python:
             if self.lastMission >= 9:
                 store.bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 store.bianca = create_ship(Bianca(),None,store.bianca_weapons)
-            
+
             if self.lastMission >= 10:
                 store.seraphim_weapons = [SeraphimKinetic(),Awaken()]
                 store.seraphim = create_ship(Seraphim(),(6,8),store.seraphim_weapons)
@@ -2188,7 +2203,7 @@ init -2 python:
             if self.lastMission >= 3:
                 store.sunrider.register_weapon(SunriderPulse())
                 store.cal_location = 'captainsloft'
-            
+
             if self.lastMission >= 6:
                 store.res_location = 'lab'
 
