@@ -84,20 +84,29 @@ init -6 python:
                 return
 
     def apply_modifier(target,modifier,magnitude,duration):
+        """attempts to apply a buff or a curse and return True on succes, False on failue"""
         if target == None:
-            return
+            return False
         if not hasattr(target,'modifiers'):
-            return
-        if modifier in target.modifiers:
-            if target.modifiers[modifier][0] > magnitude:
-                return
-            elif target.modifiers[modifier][0] == magnitude:
-                if target.modifiers[modifier][1] > duration:
-                    return
+            return False
+        if magnitude > 0:  #I may have to make a better check at some point
+            #buffs
+            if modifier in target.modifiers:
+                if target.modifiers[modifier][0] > magnitude:
+                    return False
+                elif target.modifiers[modifier][0] == magnitude:
+                    if target.modifiers[modifier][1] >= duration:
+                        return False
         else:
-            target.modifiers[modifier] = (magnitude,duration)
-            return
-
+            #curses
+            if modifier in target.modifiers:
+                if target.modifiers[modifier][0] < magnitude:
+                    return False
+                elif target.modifiers[modifier][0] == magnitude:
+                    if target.modifiers[modifier][1] >= duration:
+                        return False
+        target.modifiers[modifier] = [magnitude,duration]
+        return True
 
     def clean_grid():
         BM.grid = []

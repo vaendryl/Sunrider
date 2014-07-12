@@ -299,23 +299,29 @@ init -2 python:
             if result == 'FULL FORWARD':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
-                    show_message('All ships gain 20% damage and 15% accuracy!')
-                    for ship in player_ships:
-                        apply_modifier(ship,'accuracy',15,5)
-                        apply_modifier(ship,'damage',20,5)
 
-                    random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
-                    random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
-                    renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                    succesful = False
                     for ship in player_ships:
-                        ship.getting_buff = True
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    renpy.pause(1)
-                    for ship in player_ships:
-                        ship.getting_buff = False
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
+                        if apply_modifier(ship,'accuracy',15,5): succesful = True
+                        if apply_modifier(ship,'damage',20,5): succesful = True
+                    if not succesful:
+                        show_message('already active!')
+                        BM.order_used = False
+                        BM.cmd += self.orders[result][0]
+                    else:
+                        show_message('All ships gain 20% damage and 15% accuracy!')
+                        random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
+                        random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
+                        renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                        for ship in player_ships:
+                            ship.getting_buff = True
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
+                        renpy.pause(1)
+                        for ship in player_ships:
+                            ship.getting_buff = False
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
 
                 else:
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
