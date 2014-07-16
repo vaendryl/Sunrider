@@ -832,7 +832,7 @@ screen orders:
 
                         if order == 'SHORT RANGE WARP' and BM.show_tooltips == True:
                             frame:
-                               background Solid((0,0,0,200))
+                                background Solid((0,0,0,200))
                                 xpos 150
                                 ycenter 20
 
