@@ -10360,7 +10360,7 @@ label mission11:
             create_ship(MissileFrigate(),(15,5),[PactFrigateMissile()])
 
         $BM.draggable = True
-        $ check4 = True
+        $ check6 = True
 
     python:
 
