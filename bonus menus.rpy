@@ -2,9 +2,13 @@ init -1 python:
 
     bonusPage = 0
     
-    doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1")
+    doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1", 0.09)
+    after_ep2 = BonusItem("Background/poll1.jpg", " Beta 2 Post Credits", "aftercreditsep2", 0.205)
+    after_ep3 = BonusItem("CG/popularity2.jpg", " Beta 3 Post Credits", "aftercreditsep3", 0.155)
+    #uncomment this before the beta 5 release
+    #after_ep4 = BonusItem("CG/popularity3.jpg", " Beta 4 Post Credits", "aftercredits4", 0.165)
 
-    scenes = [doki_doki_space_whale]
+    scenes = [doki_doki_space_whale, after_ep2, after_ep3]
 
 screen deleted_scenes:
 
@@ -56,7 +60,7 @@ screen deleted_scenes:
                         imagebutton:
                             idle (scenes[i - 1].image)
                             hover hoverglow(scenes[i - 1].image)
-                            at zoom_button(0.09)
+                            at zoom_button(scenes[i - 1].zoom)
                             action [Hide('main_menu'),Start(scenes[i - 1].jumpLoc)]
                         text scenes[i - 1].text
 
@@ -65,11 +69,11 @@ screen deleted_scenes:
 
 init -1 python:
 
-    chapter0 = Chapter("CG/cera.jpg", " Prologue", "start")
-    chapter1 = Chapter("Background/captainsoffice.jpg", " Chapter 1", "chap1_start", 200, 1)
-    chapter2 = Chapter("Background/captainsoffice.jpg", " Chapter 2", "chap2_start", 4570, 5)
-    chapter3 = Chapter("CG/avateatime.jpg", " Chapter 3", "ep3_start", 11870, 8)
-    chapter4 = Chapter("CG/asagakidnap_legion.jpg", " Chapter 4", "chap4_start", 15710, 10)
+    chapter0 = Chapter("CG/cera.jpg", " Prologue", "start", 0.09)
+    chapter1 = Chapter("Background/captainsoffice.jpg", " Chapter 1", "chap1_start", 0.08, 200, 1)
+    chapter2 = Chapter("Background/captainsoffice.jpg", " Chapter 2", "chap2_start", 0.08, 4570, 5)
+    chapter3 = Chapter("CG/avateatime.jpg", " Chapter 3", "ep3_start", 0.09, 11870, 8)
+    chapter4 = Chapter("CG/asagakidnap_legion.jpg", " Chapter 4", "chap4_start", 0.09, 15710, 10)
 
     chapters = [chapter0, chapter1, chapter2, chapter3, chapter4]
 
@@ -123,7 +127,7 @@ screen chapter_select:
                         imagebutton:
                             idle (chapters[i - 1].image)
                             hover hoverglow(chapters[i - 1].image)
-                            at zoom_button(0.09)
+                            at zoom_button(chapters[i - 1].zoom)
                             action [Hide('main_menu'),chapters[i - 1]]
                         text chapters[i - 1].text
 

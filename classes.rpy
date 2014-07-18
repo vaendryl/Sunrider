@@ -7,6 +7,7 @@
 # 6) library (specific ships/weapons)  [[MOVED]]
 # 7) planet class
 # 8) bonus stuff
+# 9) actions
 
 init -2 python:
 
@@ -2061,16 +2062,18 @@ init -2 python:
             return False
 
     class BonusItem(store.object):
-        def __init__(self, image, text, jumpLoc):
+        def __init__(self, image, text, jumpLoc, zoom):
             self.image = image
             self.text = text
             self.jumpLoc = jumpLoc
+            self.zoom = zoom
 
     class Chapter(BonusItem, Action):
-        def __init__(self, image, text, jumpLoc, startMoney = 0, lastMission = -1):
+        def __init__(self, image, text, jumpLoc, zoom, startMoney = 0, lastMission = -1):
             self.image = image
             self.text = text
             self.jumpLoc = jumpLoc
+            self.zoom = zoom
             self.startMoney = startMoney
             self.lastMission = lastMission
 

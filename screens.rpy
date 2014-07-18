@@ -263,8 +263,8 @@ screen navigation:
 init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
 
-    deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes")
-    chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select")
+    deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes", 0.09)
+    chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select", 0.09)
 
     bonus_features = [deletedScenes, chapterSelect]
 
@@ -313,7 +313,7 @@ screen bonus:
                         imagebutton:
                             idle (bonus_features[i - 1].image)
                             hover hoverglow(bonus_features[i - 1].image)
-                            at zoom_button(0.09)
+                            at zoom_button(bonus_features[i - 1].zoom)
                             action [ResetBonusPage(),Hide('bonus'),ShowMenu(bonus_features[i - 1].jumpLoc)]
                         text bonus_features[i - 1].text
 
