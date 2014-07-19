@@ -11,6 +11,12 @@ screen upgrade:
         outlines [(1,'000',0,0)]
 
     imagebutton:
+        xpos 0.05 ypos 925
+        action Return("submit")
+        idle "Menu/submit.jpg"
+        hover "Menu/submit_hover.jpg"
+
+    imagebutton:
         xpos 0.05 ypos 975
         action Return("quit")
         idle "Menu/return.jpg"
@@ -191,30 +197,37 @@ screen upgrade:
                                 $ attribute = key
                         $ current = getattr(ship,attribute)
                         hbox:
-                            spacing 60
                             text name:
                                 color '000'
-                                min_width 400
+                                min_width 460
 
                             if increase < 1:
                                 text str(current*100)+'% -> '+ str((current+increase)*100)+'%':
                                     color '000'
-                                    min_width 200
+                                    min_width 260
                             else:
                                 text str(current)+' -> '+ str(current+increase):
                                     color '000'
-                                    min_width 200
+                                    min_width 260
 
                             text str(level):
                                 color '000'
-                                min_width 50
+                                min_width 110
                             text str(cost):
                                 color '000'
-                                min_width 60
+                                min_width 120
+                            for pending in BM.pending_upgrades:
+                                if pending[0] == BM.selected and pending[1] == attribute:
+                                    textbutton '-':
+                                        text_color 'fff'
+                                        action Return(['-', attribute])
+                                        hovered SetField(BM,'active_upgrade',upgrade)
+                                        unhovered SetField(BM,'active_upgrade',None)
+                                    $ break
                             if BM.money >= cost:
                                 textbutton '+':
                                     text_color 'fff'
-                                    action Return(attribute)
+                                    action Return(['+', attribute])
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
                             else:
