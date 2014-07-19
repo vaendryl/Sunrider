@@ -78,7 +78,10 @@ init -6 python:
                     else:
                         index += 1
                     BM.selected = player_ships[index]
-                    
+
+            elif result == 'reset':
+                reset_upgrades(BM.selected)
+            
             elif result == 'submit':
                 BM.pending_upgrades = []
 
