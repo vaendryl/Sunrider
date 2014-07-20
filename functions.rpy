@@ -45,7 +45,7 @@ init -6 python:
         for pending in reversed(BM.pending_upgrades):
             if pending[1] == upgrade:
                 revert = pending
-            break
+                break
         name,level,increase,cost,multiplier = revert[2]
         BM.money += cost
         new_value = getattr(ship,upgrade)-increase
