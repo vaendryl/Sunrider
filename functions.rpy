@@ -29,6 +29,30 @@ init -6 python:
         ship.upgrades = tempship.upgrades
         BM.money += money_returned
 
+    def process_upgrade(ship, upgrade):
+        name,level,increase,cost,multiplier = ship.upgrades[upgrade]
+        if BM.money >= cost:  #sanity check
+            BM.pending_upgrades.append([ship,upgrade,ship.upgrades[upgrade]])
+            BM.money -= cost
+            new_value = getattr(ship,upgrade)+increase
+            setattr(ship,upgrade,new_value)
+            level += 1
+            cost = int(cost * multiplier)
+            ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+    
+    def reverse_upgrade(ship, upgrade):
+        revert = []
+        for pending in reversed(BM.pending_upgrades):
+            if pending[1] == upgrade:
+                revert = pending
+            break
+        name,level,increase,cost,multiplier = revert[2]
+        BM.money += cost
+        new_value = getattr(ship,upgrade)-increase
+        setattr(ship,upgrade,new_value)
+        ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+        BM.pending_upgrades.remove(revert)
+
     def buy_upgrades():
         renpy.show_screen('upgrade')
         active = True
@@ -41,6 +65,8 @@ init -6 python:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
                     ship.missiles = ship.max_missiles
+                for pending in reversed(BM.pending_upgrades):
+                    reverse_upgrade(pending[0], pending[1])
                 active = False
                 return
 
@@ -55,18 +81,15 @@ init -6 python:
 
             elif result == 'reset':
                 reset_upgrades(BM.selected)
+            
+            elif result == 'submit':
+                BM.pending_upgrades = []
 
             elif result != None:
-                ship = BM.selected #shorter
-                name,level,increase,cost,multiplier = ship.upgrades[result]
-                if BM.money >= cost:  #sanity check
-                    BM.money -= cost
-                    new_value = getattr(ship,result)+increase
-                    setattr(ship,result,new_value)
-                    level += 1
-                    cost = int(cost * multiplier)
-                    ship.upgrades[result] = [name,level,increase,cost,multiplier]
-                    BM.active_upgrade = [name,level,increase,cost,multiplier]
+                if result[0] == '+':
+                    process_upgrade(BM.selected, result[1])
+                elif result[0] == '-':
+                    reverse_upgrade(BM.selected, result[1])
 
     def battlemode(bm):
         bm.battlemode = True

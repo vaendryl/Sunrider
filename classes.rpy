@@ -40,6 +40,7 @@ init -2 python:
             self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
             self.showing_orders = False #This is True when the list of orders is visible.
             self.show_tooltips = True #hide or show tooltips
+            self.pending_upgrades = [] #lists upgrades the user has not saved
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
