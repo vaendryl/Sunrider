@@ -326,7 +326,11 @@ label after_load:
             reset = True
 
         if reset:
+            rocketdamage = 800
+            if hasattr(store,'sunrider_rocket'):
+                rocketdamage = store.sunrider_rocket.damage
             reset_classes()
+            store.sunrider.weapons[3].damage = rocketdamage
             BM.save_version = config.version
             res_location = "lab"
             res_event = "allocatefunds"

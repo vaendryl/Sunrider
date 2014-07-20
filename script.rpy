@@ -5380,9 +5380,9 @@ label mission8:
         $ check5 = True
 
     if check6 == False and BM.turn_count == 11:
-        
+
         $BM.draggable = False
-        
+
         show ava uniform facepalm onlayer screens with dissolve
 
         ava "That's enough heroics, captain! We have to get out of here now!!"
@@ -7859,6 +7859,10 @@ label mission10:
             blackjack.set_location(10,3)
             player_ships.append(blackjack)
 
+            #if you load a game during turn 1 she would've been removed from BM.ships due to after_load cleanup code
+            if blackjack not in BM.ships:
+                BM.ships.append(blackjack)
+
         asa "Ompf. Sorry I'm late, captain!"
         kay "Asaga! Are you all right?"
 
@@ -7930,7 +7934,7 @@ label aftermission10:
         if not blackjack in player_ships:
             blackjack.set_location(10,3)
             player_ships.append(blackjack)
-            
+
         seraphim_weapons = [SeraphimKinetic(),Awaken()]
         seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
 

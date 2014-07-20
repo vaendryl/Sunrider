@@ -1,6 +1,11 @@
 #Sunrider
 ========
 
+patch 4.2a
+======
+* fixes a bug with asaga not being visible in the Mnemosyne Abyss battle if you load the game during turn 1. 
+* fixed a possible crash if you beat a boss with the vanguard cannon
+
 patch 4.2
 ======
 * tooltips added by Quickman
@@ -28,7 +33,7 @@ Beta 4
 * changed the in-game store lay-out. you can now buy an upgrade to rocket damage too
 * added AI/code for carriers that spawn ryders during battle
 * added new unit icons to the R&D screen
-* new buff unique to Sola/Nephalim: Awaken. boosts damage and accuracy for 3 turns at the cost of 100EN and 75HP
+* new buff unique to Sola/Seraphim: Awaken. boosts damage and accuracy for 3 turns at the cost of 100EN and 75HP
 * spoiler: new order avaiable later in the game: short range warp. 
 * orders have become more expensive
 * new sprite for rockets moving across the game map

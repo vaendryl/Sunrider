@@ -425,11 +425,11 @@ init -2 python:
                     store.total_shield_negation = 0
                     templist = enemy_ships[:]
                     for ship in templist:
-                        if ship.location != None: #failsaves. it's now legal for a location to be None
+                        if ship.location != None and sunrider.location != None and self.battlemode: #failsaves. it's now legal for a location to be None and it's possible the battle is already over due to zapping the boss
                             if ship.location[1] == sunrider.location[1]:
                                 if ship.location[0]-sunrider.location[0] >=0:
                                     if ship.location[0]-sunrider.location[0] <=7:
-                                        if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
+                                        if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
                                             BM.target = ship
                                             ship.receive_damage(800,sunrider,'Vanguard')
                     BM.vanguard = False
@@ -2222,6 +2222,9 @@ init -2 python:
 
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
+
+
+  ##custom actions##
 
     class BonusPageNext(Action):
         def __init__(self):

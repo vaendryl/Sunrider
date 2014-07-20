@@ -183,12 +183,15 @@ init -6 python:
             a,b = location
             X,Y = GRID_SIZE
             if a > 0 and a <= X and b > 0 and b <= Y:
-                if BM.grid[a-1][b-1]:
+                try:
+                    if BM.grid[a-1][b-1]:
+                        return False
+                    else:
+                        return True
+                except:
                     return False
-                else:
-                    return True
             else:
-                False #out of bounds is not available
+                return False #out of bounds is not available
         else:
             return False #None location is not free. failsafes.
 
