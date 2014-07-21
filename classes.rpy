@@ -1243,6 +1243,12 @@ init -2 python:
                             spawn = renpy.random.choice(possible_spawn)
                             ship,cost,weaponlist = spawn
                             create_ship(ship(),spawn_location,weaponlist)
+
+                            if BM.turn_count <= 5:
+                                enemy_ships[-1].money_reward *= 1.0 - (0.2*BM.turn_count)
+                            else:
+                                enemy_ships[-1].money_reward = 0
+
                             renpy.pause(0.2)
                             self.en -= cost
                             free_spaces.remove(spawn_location)

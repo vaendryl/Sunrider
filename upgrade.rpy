@@ -216,14 +216,7 @@ screen upgrade:
                             text str(cost):
                                 color '000'
                                 min_width 120
-                            for pending in BM.pending_upgrades:
-                                if pending[0] == BM.selected and pending[1] == attribute:
-                                    textbutton '-':
-                                        text_color 'fff'
-                                        action Return(['-', attribute])
-                                        hovered SetField(BM,'active_upgrade',upgrade)
-                                        unhovered SetField(BM,'active_upgrade',None)
-                                    $ break
+
                             if BM.money >= cost:
                                 textbutton '+':
                                     text_color 'fff'
@@ -236,6 +229,15 @@ screen upgrade:
                                     action NullAction()
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
+
+                            for pending in BM.pending_upgrades:
+                                if pending[0] == BM.selected and pending[1] == attribute:
+                                    textbutton '-':
+                                        text_color 'fff'
+                                        action Return(['-', attribute])
+                                        hovered SetField(BM,'active_upgrade',upgrade)
+                                        unhovered SetField(BM,'active_upgrade',None)
+                                    $ break
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:

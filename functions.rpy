@@ -39,7 +39,7 @@ init -6 python:
             level += 1
             cost = int(cost * multiplier)
             ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
-    
+
     def reverse_upgrade(ship, upgrade):
         revert = []
         for pending in reversed(BM.pending_upgrades):
@@ -81,9 +81,16 @@ init -6 python:
 
             elif result == 'reset':
                 reset_upgrades(BM.selected)
-            
+
             elif result == 'submit':
                 BM.pending_upgrades = []
+                renpy.hide_screen('upgrade')
+                for ship in player_ships:
+                    ship.hp = ship.max_hp
+                    ship.en = ship.max_en
+                    ship.missiles = ship.max_missiles
+                active = False
+                return
 
             elif result != None:
                 if result[0] == '+':
@@ -548,7 +555,7 @@ init -6 python:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' lost it\'s buff to it\'s ' +key+ '!')
+                            show_message('the ' +ship.name+ ' lost its buff to its ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
@@ -558,7 +565,7 @@ init -6 python:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' recovered from it\'s curse to it\'s ' +key+ '!')
+                            show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1

@@ -1,18 +1,18 @@
 #these labels are called by combat code
 
-init:
-    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
+#init:
+#    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
 
 
-image work_in_progress 'gameplay/work-in-progress-hi.png':
-    xcenter ycenter
+#image work_in_progress 'gameplay/work-in-progress-hi.png':
+#    xcenter ycenter
 image black = Solid((0, 0, 0, 255))
 
-label no_animation: #defunct
-    scene black with dissolve
-    show work_in_progress
-    pause 0.5
-    return
+#label no_animation: #defunct
+#    scene black with dissolve
+#    show work_in_progress
+#    pause 0.5
+#    return
 
 transform shake(time=0.5,repeats=20): #defunct?
     xalign 0.5 yalign 0.5
