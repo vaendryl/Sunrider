@@ -6435,7 +6435,7 @@ label noticedlikedswords:
     show icari uniform handonhip neutral with dissolve
 
     ica "In the ancient times, they said the invention of gunpowder ended the age of swordsplay. Well, the creation of personal shielding's brought it back."
-    ica "Now that people can emit shields that can deflect small arms, the only way to take them down in to draw your sword and get up close and personal with them."
+    ica "Now that people can emit shields that can deflect small arms, the only way to take them down is to draw your sword and get up close and personal with them."
     kay "Have you ever killed someone with your sword in person?"
     ica "Couple of PACT soldiers and pirates. When they pop up personal shielding, it's the best way to take them down."
 
