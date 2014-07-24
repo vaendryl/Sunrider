@@ -127,7 +127,7 @@ label start:
     kay "How much further until we get there?"
     pi "Just a moment now. Can't wait until you meet your girl, can you sir?"
     kay "I haven't seen Ava since we were in high school. I doubt she even remembers me."
-    pi "The commander? Psh, not her! I mean the Sunrider. The newest ship in the fleet!"
+    pi "The commander? Psh, not her! I mean the Sunrider, The newest ship in the fleet!"
     pi "Here, let me turn the ship around and give you a view."
 
     scene cg sunrider_drydock:
@@ -214,7 +214,7 @@ label give_report:
     show ava uniform alt neutral neutral with dissolve
 
     ava "We've been working for the past two weeks testing her systems. She's prepped to go on your word, sir."
-    kay "Good. It sounds like High Command wants us out of here asap."
+    kay "Good. It sounds like High Command wants us out of here ASAP."
 
 label give_report_menu:
     menu:
@@ -644,7 +644,7 @@ label mission1:
         ava "Welcome to the tactical screen, captain.  From here, you can issue orders to the crew during battle."
         ava "In front, you see the battle grid.  This grid shows where friendlies and enemies are positioned on the battlefield."
         ava "You may click and drag the left mouse button move the camera around the battle grid.  Further, you can use the mouse wheel to zoom in and out."
-        ava "To issue an order to a unit, simply select an unit under your command, indicated by the blue ring.  Then you may either order the unit to move to another grid, or to use an attack."
+        ava "To issue an order to a unit, simply select a unit under your command, indicated by the blue ring.  Then you may either order the unit to move to another grid, or to use an attack."
         ava "Moving and attacking expends energy.  Each unit has a finite number of energy points.  Once all of the units under your command no longer have enough energy to act, you must end your turn."
         ava "PACT units are indicated by the red ring.  Your current objective is to eliminate all PACT units from the map."
         ava "The Sunrider is armed with a comprehensive suite of weapons to fulfill this task."
@@ -956,7 +956,7 @@ label wastedenoughtime:
 
     show ava uniform alt neutral neutral with dissolve
 
-    ava "What's left of our government surrendered and was dissolved six days ago. I don't think there's any hope in looking for our military any more."
+    ava "What's left of our government surrendered and was dissolved six days ago. I don't think there's any hope in looking for our military anymore."
     jump shipwithoutflag
 
 label shipwithoutflag:
@@ -1501,7 +1501,7 @@ label secondbattle_end:
         xpos 0.65
     with dissolve
 
-    ava "Stop right there, pilot. You're going to have get searched for weapons."
+    ava "Stop right there, pilot. You're going to have to be searched for weapons."
 
     menu:
         "Hey Ava... Don't be so uptight.":
@@ -1569,10 +1569,10 @@ label asagaoakrunpilot:
 
     show asaga plugsuit neutral content with dissolve
 
-    asa "The space around here's pretty dangerous, so the Mining Union's been paying me to bust up any pirates around here. Easier said then done though! Those guys are harder to kill than cockroaches!"
+    asa "The space around here's pretty dangerous, so the Mining Union's been paying me to bust up any pirates around here. Easier said than done though! Those guys are harder to kill than cockroaches!"
 
     menu:
-        "Tell me more about your freelancing.":
+        "Tell me more about you're freelancing.":
             jump tellmorefreelancing
         "Tell me more about the pirates.":
             jump tellmorepirates
@@ -1612,7 +1612,7 @@ label tellmoreUnitedMiningFederation:
     kay "(I wonder how long that'll last...)"
 
     menu:
-        "Tell me more about your freelancing.":
+        "Tell me more about you're freelancing.":
             jump tellmorefreelancing
         "Tell me more about the pirates.":
             jump tellmorepirates
@@ -1635,7 +1635,7 @@ label tellmorepirates:
     kay "Thanks, I'll keep that in mind."
 
     menu:
-        "Tell me more about your freelancing.":
+        "Tell me more about you're freelancing.":
             jump tellmorefreelancing
         "Tell me more about the United Mining Federation.":
             jump tellmoreUnitedMiningFederation
@@ -1725,7 +1725,7 @@ label fornowsunriderrepairs:
     chi "Ah... Welcome to the Stardust Bakery."
     kay "B-bakery...? Didn't Asaga say this was a workshop?"
     ava "I knew we shouldn't have trusted her..."
-    chi "Ummm... We offer a cupcakes, cream puffs, strawberry cakes, and various muffins... Oh."
+    chi "Ummm... We offer cupcakes, cream puffs, strawberry cakes, and various muffins... Oh."
     chi "And we might just do starship repairs as well."
     kay "This is getting weirder and weirder by the minute."
     chi "If I can just come on board, I'll be able to survey the extent of the repairs and give you a quote. How's that?"
@@ -1810,7 +1810,7 @@ label girltohaveaworkship:
     show chigara plugsuitlabcoat altneutral sad with dissolve
 
     chi "Well… aside from the bakery."
-    kay "I was referring more to yourself..."
+    kay "I was referring more to you..."
 
     show chigara plugsuitlabcoat altneutral forcedsmile with dissolve
 
@@ -2204,7 +2204,7 @@ label youmadeblackjackyourself:
     show chigara plugsuitlabcoat holdingipad smile with dissolve
 
     chi "That's correct. Asaga used to pilot around a military surplus fighter that she put together from a junk heap. I used to be worried sick that it'd fall apart, so I decided that I'd build a new ryder for her."
-    kay "The Black Jack's unlike anything I've seen in my life. You know, if you worked for a engineering company, you could change the galaxy."
+    kay "The Black Jack's unlike anything I've seen in my life. You know, if you worked for an engineering company, you could change the galaxy."
 
     show chigara plugsuitlabcoat holdingipad sad with dissolve
 
@@ -2248,7 +2248,7 @@ label youalsopilotryder:
 
     chi "Eh-heh... About that..."
     chi "Asaga's been pumped up about attacking the pirates, so she's already arranged to bring the Liberty here."
-    kay "Really? Shesh, nobody's told me about that, and I'm supposed to be the captain."
+    kay "Really? Sheesh, nobody's told me about that, and I'm supposed to be the captain."
 
     if ChigaraRefugee:
         menu:
@@ -2484,7 +2484,7 @@ label meetsophita:
 label FTLTransponderintro:
 
     menu:
-        "(Call Sopita Brooks)":
+        "(Call Sophita Brooks)":
             jump introsophita
         "(Return)":
             jump dispatch
@@ -3310,7 +3310,7 @@ label celebratepiratebase_chi:
 
     show chigara plugsuit handstogether sad with dissolve
 
-    chi "Umm... Well, I guess with Asaga gone, it's going to get more lonely."
+    chi "Umm... Well, I guess with Asaga gone, it's going to get lonelier."
     chi "And business hasn't been so good at the bakery either..."
     kay "You should join us on the Sunrider too. We could use an extra pilot like you."
 
@@ -3403,7 +3403,7 @@ label chap2_start:
 
 label othershipstask:
 
-    gre " Unfortunately, because of the break down in talks, our military vessels are forbidden to enter Versta space. It is too dangerous getting the diplomats out without an armed escort, so we've had no choice but to resort to an unaligned vessel like the Sunrider."
+    gre " Unfortunately, because of the breakdown in talks, our military vessels are forbidden to enter Versta space. It is too dangerous getting the diplomats out without an armed escort, so we've had no choice but to resort to an unaligned vessel like the Sunrider."
 
     menu:
         "Are the diplomats high ranking government officials? Why do you need them protected so much?":
@@ -3431,7 +3431,7 @@ label protectedsomuch:
 label nohopejoin:
 
     gre " I'm afraid the latest reports from our negotiators have been grim. Now, Versta's in a state of total panic regarding the approaching invasion fleet, and they somehow think we're responsible for it."
-    gre " My government views it as a lost cause and just want the diplomats pulled out before PACT gets their hands on them."
+    gre " My government views it as a lost cause and just wants the diplomats pulled out before PACT gets their hands on them."
 
     menu:
         "Why do you need us? Surely, the Alliance must have other ships up to the task.":
@@ -3463,7 +3463,7 @@ label goodinbook:
 
     $ amissionforalliance = True
 
-    gre " Good.  My staff have already mailed your First Officer with the details.  You have your orders, Sunrider. I expect results. Admiral Grey out."
+    gre " Good.  My staff has already mailed your First Officer with the details.  You have your orders, Sunrider. I expect results. Admiral Grey out."
 
     hide grey with dissolve
     show ava uniform handonhip neutral:
@@ -3699,7 +3699,7 @@ label jumphotversta:
     show ava uniform alt neutral neutral with dissolve
 
 
-    ava "We've arrived at the planet of Vesta."
+    ava "We've arrived at the planet of Versta."
 
     play music "Music/Driving_the_Top_Down.ogg" fadeout 1.5
     show ava uniform alt neutral angry
@@ -4061,7 +4061,7 @@ label mission6victory:
 
     show ava uniform handonhip neutral with dissolve
 
-    ava "So you've been hired by this faction to hover around Vesta, and make sure that those diplomats are captured by PACT to spark a war.  Is that what you're saying?"
+    ava "So you've been hired by this faction to hover around Versta, and make sure that those diplomats are captured by PACT to spark a war.  Is that what you're saying?"
     ica "Now you're catching on.  You let me ensure that those diplomats are captured by PACT, and you can bet you'll have the Alliance's full support behind you in your war."
     kay "And if they find out I had anything to do with their capture?"
 
@@ -4197,7 +4197,7 @@ label consideringoptionsfornow:
 
     ava "I've made contact with the Alliance diplomats.  They're going to attempt to make an escape soon."
     kay "All right.  Will we be bringing them aboard?"
-    ava "Actually, they've arranged to escape on the civilian liner Agamemnon.  We'll be providing escort in case things gets hairy."
+    ava "Actually, they've arranged to escape on the civilian liner Agamemnon.  We'll be providing escort in case things get hairy."
     kay "Civilian liner?  I'm not so sure..."
     ava "They tell me international law prohibits them from coming aboard a foreign military vessel."
     kay "(That's the first time I've ever heard of a rule like that.  Something's amiss...)"
@@ -4405,7 +4405,7 @@ label proceed_rescuediplomats:
 
     kay "Begin captain's log. We've made contact with the diplomats on Versta and are going to attempt an escape."
     kay "I should be focused on getting them out of here safe, but I can't get what the mercenary said out of my mind."
-    kay "Some part of my head thinks that she has some ulterior motive and she's tricking us all. Maybe she's a PACT spy and making us wander into a trap."
+    kay "Some part of my head thinks that she has some ulterior motive and she's tricking us all. Maybe she's a PACT spy and is making us wander into a trap."
     kay "Maybe the diplomats know something that PACT doesn't and she's just fooling us into silencing them."
     kay "Or maybe she's really telling the truth."
 
@@ -4485,7 +4485,7 @@ label photoalbumlook:
     ica "Then there will be an interstellar war of unimaginable proportions, with PACT bringing to bear the resources of every planet of the Neutral Rim against the Alliance."
     ica "Or those diplomats can die now.  Then the Alliance will intervene while PACT is still mustering its strength."
     ica "While a few may have to be sacrificed, you will save the lives of millions."
-    ica "Admiral Grey understands this.  That is why he hired me to ensure those diplomats never make it out of Verstra space."
+    ica "Admiral Grey understands this.  That is why he hired me to ensure those diplomats never make it out of Versta space."
 
     menu:
         "You're not making any sense. Why would Admiral Grey send us here to save the diplomats, and then hire you to make sure they get captured by PACT?":
@@ -4855,7 +4855,7 @@ label maintainpreparethroughpact:
         xpos 0.8
     with wipeup
 
-    chi "Asaga, we have to do this or else Vestra won't be the last planet that PACT invades!"
+    chi "Asaga, we have to do this or else Versta won't be the last planet that PACT invades!"
 
     show asaga uniform armscrossed madshout with dissolve
 
@@ -5996,7 +5996,7 @@ label ep3_asatalk:
         "How are you adjusting to the Sunrider?":
             jump howasaadjustsunrider
 
-        "Actually, nevermind.":
+        "Actually, never mind.":
             jump gostaytroubleasaga
 
 label howasaadjustsunrider:
@@ -6110,7 +6110,7 @@ label warasagasacrifice:
 
     show asaga uniform armscrossed shoutclosedeyes with dissolve
 
-    asa "Argh, nevermind..."
+    asa "Argh, never mind..."
 
     jump supposedtohelp
 
@@ -6346,7 +6346,7 @@ label ep3_icatalk:
 label whatdomercenaryica:
 
     ica "Don't think I was just some goon for hire. I only took out PACT targets."
-    ica "Blew up a couple refueling stations here and there. Sank some crippled cruisers. Even impersonated a low level PACT veniczar once."
+    ica "Blew up a couple refueling stations here and there. Sank some crippled cruisers. Even impersonated a low level PACT Veniczar once."
     kay "I can't really imagine you as a veniczar."
 
     show icari uniform bothhandsonhips grin with dissolve
@@ -6356,22 +6356,22 @@ label whatdomercenaryica:
 
     show icari uniform armscrossed smilesidesmile with dissolve
 
-    ica "It was a slave sale bust. The Alliance hired me to bust a transaction between a pirate cell and this PACT veniczar."
+    ica "It was a slave sale bust. The Alliance hired me to bust a transaction between a pirate cell and this PACT Veniczar."
     ica "PACT's been... Ah, liberating slaves by paying off their slavers. In exchange for serving as personnel on their ships, of course."
     ica "This was going to be one of the biggest sales ever. Nearly 200 adults. The Alliance got involved when PACT accidentally included a citizen in the group."
     ica "I guess they forgot to check their passports or something."
-    kay "So you just impersonated the veniczar to pay the pirates off and free the slaves after?"
+    kay "So you just impersonated the Veniczar to pay the pirates off and free the slaves after?"
 
     show icari uniform handonhip neutral with dissolve
 
     ica "Tsch. If only if it were simple. You see, the cheapskates at the Alliance were only willing to pay to free their own citizen. Something about not wanting to fund piracy."
-    ica "Anyways, that was all irrelevant, since it was a double cross and the pirates were planning to slit the veniczar's throat after they got the money anyways."
+    ica "Anyways, that was all irrelevant, since it was a double cross and the pirates were planning to slit the Veniczar's throat after they got the money anyways."
     ica "Got grazed by a couple of their shots, which melted through my latex suit. That was a sight to see."
     kay "I bet... So how did you get out of that alive?"
 
     show icari uniform altneutral smile with dissolve
 
-    ica "I swapped places with the real veniczar just as she arrived. Haha, you should have seen the look on her face as the pirates grabbed her."
+    ica "I swapped places with the real Veniczar just as she arrived. Haha, you should have seen the look on her face as the pirates grabbed her."
     ica "Meanwhile, all the slaves got loose. It was total pandemonium in there."
     ica "Finally, the pirates opened fire on the PACT star liner, spacing everyone on board."
 
@@ -6395,7 +6395,7 @@ label crazybelieveonepiece:
 
 label couldntsaveend:
 
-    ica "No. But I still took down a veniczar and a PACT star liner, so I'd call it a good day. "
+    ica "No. But I still took down a Veniczar and a PACT star liner, so I'd call it a good day. "
 
     jump prettymuchmerclike
 
@@ -8666,7 +8666,7 @@ label porkfleetopenfire:
 
     asa "Captain... I'm sorry for lying to you all this time."
     asa "B-but... this is for the best. Ok?"
-    cul "Bwaahahahaha! You had best say your good byes now, captain. Onwards to the state wedding! Set course for Ryuvia Prime!"
+    cul "Bwaahahahaha! You had best say your good-byes now, captain. Onwards to the state wedding! Set course for Ryuvia Prime!"
 
     hide cullen with wipedown
 
@@ -8848,7 +8848,7 @@ label chap4_start:
 
     ava "And how's that going to help us?"
     kay "According to Alliance intel, the marriage will take place in low orbit around Ryuvia in the Star Palace."
-    kay "We'll make a pin point jump right next to the wedding hall, pick Asaga up, then high tail it out of Ryuvia before the PACT fleet can respond."
+    kay "We'll make a pin point jump right next to the wedding hall, pick Asaga up, and then high tail it out of Ryuvia before the PACT fleet can respond."
 
     show ava uniform neutral neutral with dissolve
 
@@ -9065,7 +9065,7 @@ label goinghardestyet:
     show chigara uniform altneutral neutral with dissolve
 
     chi "One more thing, captain. Asaga gave me this."
-    kay "A holo recording?"
+    kay "A holo-recording?"
     chi "She told me to give it to you if anything like this ever happened. With everything that's been going on, I couldn't give it to you until now."
     chi "She made me promise not to look at it, so it is meant only for you."
     kay "Thanks. I'll take a look at it in my office."
@@ -9429,7 +9429,7 @@ label recordingnotfollow:
     ava "Many millennia ago, the Ryuvian Emperor was the ruler of all life. Legend speaks that he controlled time itself, and indeed, he was worshipped throughout the galaxy not as a man, but as a god."
     kay "Exactly the sort of power a man like Arcadius would dream of wielding."
     ava "But that was then. Today, Ryuvia is merely an obscure backwater planet."
-    ava "It's former glory is gone. Just look. We had the Princess of Ryuvia on board our ship for two months and nobody even recognized her."
+    ava "its former glory is gone. Just look. We had the Princess of Ryuvia on board our ship for two months and nobody even recognized her."
     ava "Intergalactic treaties are only as powerful as the guns backing the paper. And Ryuvia has none."
     ava "Offering Asaga to Arcadius was merely a form of surrender. An offering, by a dying world to the new rising galactic power, in the hopes of being spared from the coming fire."
     ava "Asaga's sacrifice, however tragic, will spare Ryuvia from a PACT invasion."
@@ -9681,7 +9681,7 @@ label operationweddingcrash:
 
     show ava uniform alt neutral neutral with dissolve
 
-    ava "We will make a pin point jump past the entire PACT fleet and come out mere meters away from the Star Palace. A security team supported with combat drones will then launch from modified escape pods into the wedding hall, secure Asaga, then return to the Sunrider."
+    ava "We will make a pin point jump past the entire PACT fleet and come out mere meters away from the Star Palace. A security team supported with combat drones will then launch from modified escape pods into the wedding hall, secure Asaga, and then return to the Sunrider."
     ava "Following that, the Sunrider will hit full thrusters and attempt to shake the PACT fleet by swinging around the first Ryuvian moon while we prep our warp drive for a second emergency warp."
     kay "Sounds like the best we've got. All right, Operation Wedding Crash is approved."
 
@@ -9776,7 +9776,7 @@ label operationweddingcrash:
 
     arc "Silence!"
     asa "Eah!"
-    arc "How cruel is destiny, that it is we who must suffer, while a little doll like you holds a destiny greater than us."
+    arc "How cruel destiny is, that it is we who must suffer, while a little doll like you holds a destiny greater than us."
     arc "But in mere hours... You will be mine. And with that, the keys to a weapon which shall send a frozen shiver down the galaxy's spine will be in our hands."
 
     show arcadius laugh with dissolve
@@ -10992,7 +10992,7 @@ label worddaringspread:
     gre "All together, I predict at least seven battleships, six carriers, eighty cruisers, and over four hundred support vessels. Further, we believe Arcadius himself will observe the battle from his flagship, the Legion."
     kay "If we only have one fleet to defend the planet, we're outnumbered nearly one to five. Those aren’t good odds, admiral."
     gre "Yes, which is why I am appointing you my special advisor."
-    gre "You're the only one whose fought those odds. Nobody in the Alliance fleet has even seen a PACT vessel up close. Yet you know how they operate. You're the only person we have who've fought them outside of simulators."
+    gre "You're the only one who's fought those odds. Nobody in the Alliance fleet has even seen a PACT vessel up close. Yet you know how they operate. You're the only person we have who've fought them outside of simulators."
     gre "Your mission is the defense of the Alliance gateway world, Far Port. You must hold out there until our reinforcements arrive."
     kay "Understood, admiral."
     gre "I know I'm asking much. To help you prepare for the battle, I'm sending you one of my personal advisors to your starship."
@@ -11740,7 +11740,7 @@ label sohappenedparadox:
 
     kay "So what happened to the Paradox Project?"
     chi "... ... ..."
-    chi "Something went wrong with the project. We accidentally opened a black hole in orbit around the planet, destroying our research station and most of Diode in the process. Luckily, I managed to get away on an escape pod... But the rest of the team weren't so lucky."
+    chi "Something went wrong with the project. We accidentally opened a black hole in orbit around the planet, destroying our research station and most of Diode in the process. Luckily, I managed to get away on an escape pod... But the rest of the team wasn't so lucky."
     chi "Both my parents died in the accident. As far as I know, I was the only survivor."
 
     menu:
