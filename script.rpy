@@ -1,4 +1,4 @@
-﻿## this is the main script file; everything starts here
+## this is the main script file; everything starts here
 ## the goal is to offload as much declaring to the init module and jump
 ## back here for main control
 
@@ -123,7 +123,7 @@ label start:
 
     window show dissolve
 
-    "Shields leaned forward on his seat and spoke to his pilot. The pilot was obscured by his seat and Shields could only hear his burly voice humming to the tinny radio."
+    "Shields leaned forward on his seat and spoke to his pilot. The pilot was obscured by his seat and Shields could only hear his burly voice humming to the tiny radio."
     kay "How much further until we get there?"
     pi "Just a moment now. Can't wait until you meet your girl, can you sir?"
     kay "I haven't seen Ava since we were in high school. I doubt she even remembers me."
@@ -136,7 +136,7 @@ label start:
     with dissolve
 
     "Shields leaned against his window and laid his eyes on the Sunrider."
-    "Colossal in size, but still sleek looking, Shields found her to his liking. The behemoth vessel stuck a deadly image, like a poised arrowhead at the ready."
+    "Colossal in size, but still sleek looking, Shields found her to his liking. The behemoth vessel struck a deadly image, like a poised arrowhead at the ready."
     pi "Aye, there, have a look at her. So advanced that the brass needed to train a new line of officers to fly her."
     kay "She looks like a fine vessel."
     pi "Just hang tight, captain. Won't be long now."
@@ -172,7 +172,7 @@ label its_been_awhile:
     show ava uniform neutral lookleft with dissolve
 
     ava "Same to you, uh, captain."
-    kay "The last time we saw each other was your graduation in high school. I didn't ever dream that I'd ever become your commanding officer."
+    kay "The last time we saw each other was your graduation in high school. I never dreamt that I'd ever become your commanding officer."
 
     show ava uniform neutral neutral with dissolve
 
@@ -231,7 +231,7 @@ label tell_more_Sunrider:
 
     show ava uniform alt neutral neutral with dissolve
     ava "She's the newest ship in the fleet. She's armed like a warship, but built like a carrier. We can field up to twelve ryders and also provide capital ship support for them."
-    ava "Her biggest asset is the Vanguard cannon. They took a gun from a battleship-class warship, modified it extensively, and put it on top of our ship. Still, it works like a charm and can rip holes through ships over twice as big as ours."
+    ava "Her biggest asset is the Vanguard Cannon. They took a gun from a battleship-class warship, modified it extensively, and put it on top of our ship. Still, it works like a charm and can rip holes through ships over twice as big as ours."
     ava "Not only that, but the Sunrider can be flown with a crew of just 50 and has one of the most efficient warp drives in the fleet. We'll be able to jump across the galaxy in just days."
     kay "Sounds like a fine vessel."
     jump give_report_menu
@@ -417,7 +417,7 @@ label captainsloft_tour:
 
     show ava uniform alt neutral mad with dissolve
 
-    ava "Limited. The vanguard cannon is still off line. We have flak turrets, saviors, and a few shots of hell darts."
+    ava "Limited. The Vanguard Cannon is still offline. We have flak turrets, saviors, and a few shots of hell darts."
     kay "... ... ..."
     ava "Captain... You're not seriously thinking of taking the Sunrider into battle, are you? We haven't even completed any of our engine tests, much less any munitions checks."
     kay "No time like the present, Ava."
@@ -643,7 +643,7 @@ label mission1:
 
         ava "Welcome to the tactical screen, captain.  From here, you can issue orders to the crew during battle."
         ava "In front, you see the battle grid.  This grid shows where friendlies and enemies are positioned on the battlefield."
-        ava "You may click and drag the left mouse button move the camera around the battle grid.  Further, you can use the mouse wheel to zoom in and out."
+        ava "You may click and drag the left mouse button to move the camera around the battle grid.  Further, you can use the mouse wheel to zoom in and out."
         ava "To issue an order to a unit, simply select a unit under your command, indicated by the blue ring.  Then you may either order the unit to move to another grid, or to use an attack."
         ava "Moving and attacking expends energy.  Each unit has a finite number of energy points.  Once all of the units under your command no longer have enough energy to act, you must end your turn."
         ava "PACT units are indicated by the red ring.  Your current objective is to eliminate all PACT units from the map."
@@ -1080,8 +1080,8 @@ label newordersjumptotydaria:
 
 label statusofthesunrideraftercera:
 
-    ava "She's had better days. We had to sail port before we could finish any of our tests. Our missiles are empty and our Vanguard Cannons are still offline."
-    ava "And that's not even the worst. We had to leave Cera before we could pick up any of our ryders. Not only that, but we're missing our chief engineer and our doctor. Both Research and Development and the Sickbay are still dark."
+    ava "She's had better days. We had to sail port before we could finish any of our tests. Our missiles are empty and our Vanguard Cannon is still offline."
+    ava "And that's not even the worst of it. We had to leave Cera before we could pick up any of our ryders. Not only that, but we're missing our chief engineer and our doctor. Both Research and Development and the Sickbay are still dark."
     kay "Whew. Try to make do with what we have. We'll have to resupply and finish our tests at Tydaria."
     ava "On that note, I have one more issue."
     ava "Running a ship is going to take money. I've looked into some ways to raise some immediate cash."
@@ -1141,7 +1141,7 @@ label warptotydaria:
 
     window show
 
-    ava "You can use the starmap at the center of the bridge to plot our course."
+    ava "You can use the star map at the center of the bridge to plot our course."
 
     hide ava with dissolve
 
@@ -1495,7 +1495,7 @@ label secondbattle_end:
         xpos 0.35
     with dissolve
 
-    asa "Whew, that sure was hairy! I didn't ever think those pirates would pick on a military ship!"
+    asa "Whew, that sure was hairy! I never thought those pirates would pick on a military ship!"
 
     show ava uniform armscrossed frown:
         xpos 0.65
@@ -1529,7 +1529,7 @@ label sorryregularprotocol:
 
     show asaga plugsuit armscrossed sad with dissolve
 
-    asa "Uuu... Does this mean that I'm gonna have get groped by the mean lady beside you?"
+    asa "Uuu... Does this mean that I'm gonna have to get groped by the mean lady beside you?"
 
     show ava uniform armscrossed surprisemad with dissolve
 
@@ -1780,7 +1780,7 @@ label beingabakery:
     show asaga plugsuit handsonhips happy with dissolve
 
     asa "The only place!"
-    chi "Cup cakes, cream puffs, sandwiches, we have it all."
+    chi "Cupcakes, cream puffs, sandwiches, we have it all."
     kay "Errr... Do you get a lot of business here?"
 
     show chigara plugsuitlabcoat altneutral sad with dissolve
@@ -1836,7 +1836,7 @@ label completeourtestsandresupply:
     show asaga plugsuit armscrossed confident with dissolve
 
     asa "Ufufufu... Don't worry, capt'n. Chigara's a crazy genius when it comes to technology. I've never seen a single machine that she couldn't fix."
-    kay "Look over there. See that? That's a busted power convertor that took a lab of twelve  scientists a month to make. There's no way you could fix that!"
+    kay "Look over there. See that? That's a busted power converter that took a lab of twelve  scientists a month to make. There's no way you could fix that!"
 
     show chigara plugsuitlabcoat altneutral forcedsmile with dissolve
 
@@ -2002,7 +2002,7 @@ label howstheBlackJackdoing:
 
     show asaga plugsuit armscrossed confident with dissolve
 
-    asa "Uwah-hah! Thanks for askin', but nothing ever troubles mah Black Jack! It's always in tiptop form!"
+    asa "Uwah-hah! Thanks for askin', but nothing ever troubles mah Black Jack! It's always in tip-top form!"
     asa "By the way, if you happen to get your hands on any ryder upgrades, feel free to arm it on the Black Jack, or on any other ryder the Sunrider's carrying. Although preferably on the Black Jack."
     kay "How do we get ryder upgrades?"
 
@@ -2515,7 +2515,7 @@ label introsophita:
     kay "I'll keep that in mind."
     sop "Just remember, the Union will always be available to help - provided you have the money and the will."
     kay "The only two forces in the galaxy greater than any warship."
-    sop "I see we are on the same page than."
+    sop "I see we are on the same page then."
 
     menu:
         "Show me what you have for sale.":
@@ -2824,7 +2824,7 @@ label pactstationattack:
     show ava uniform handonhip mad with dissolve
 
     ava "Warp complete, captain.  The spire is right up ahead."
-    ava "Warning, PACT signatures. The spire is being protected by squad of ships led by a PACT cruiser."
+    ava "Warning, PACT signatures. The spire is being protected by a squad of ships led by a PACT cruiser."
     kay "A cruiser? I thought you said this thing was undefended!"
 
     show ava uniform armscrossed neutral with dissolve
@@ -3050,7 +3050,7 @@ label piratebaseattack:
         xpos 0.2
     with wipedown
 
-    asa "Roger that! We're all ready down here in the hanger! Just give the word, capt'n!"
+    asa "Roger that! We're all ready down here in the hangar! Just give the word, capt'n!"
 
     show ava uniform alt neutral angry with dissolve
 
@@ -3203,7 +3203,7 @@ label celebratehangar:
 
     show ava uniform neutral talk with dissolve
 
-    ava "The girls should be in the hanger. You should go and celebrate with them."
+    ava "The girls should be in the hangar. You should go and celebrate with them."
 
     $ captaindeck = 1
     $ asa_location = "hangar"
@@ -3347,7 +3347,7 @@ label chap2_start:
     play music "Music/The_Meteor.ogg"
 
     kay "Begin captain's log."
-    kay "It's been a two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
+    kay "It's been two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
     kay "Despite our efforts, PACT's invasion of the Neutral Rim has continued unabated."
     kay "Six more governments have voluntarily joined PACT and two more have been conquered.  PACT's war machine has been indiscriminate, slaughtering both civilians and combatants alike."
     kay "In the mere month since Cera, millions more innocents have been murdered."
@@ -3840,7 +3840,7 @@ label mission6victory:
 
     show ava uniform armscrossed frown with dissolve
 
-    ava "Don't celebrate just yet. That was too weak to have been the main invasion force. It was just an recon squad."
+    ava "Don't celebrate just yet. That was too weak to have been the main invasion force. It was just a recon squad."
     kay "And now the enemy knows we're here."
     kay "Asaga, Chigara, return to the Sunrider for now."
 
@@ -4024,7 +4024,7 @@ label mission6victory:
     kay "Doing what?"
     ica "What do you think? If you want anything in this galaxy, you need some undesirables erased.  Oh, nothing terrible, mind you, the admiral's a pretty principled guy."
     ica "But you have a crazed criminal on the loose? Then you need my services."
-    ica "Have a sleazy dictator whose been getting too out of hand? I can set that straight too.  Ongessite prices too high? I provide the stick - and the Admiral provides the carrots. If you catch my drift."
+    ica "Have a sleazy dictator who’s been getting too out of hand? I can set that straight too.  Ongessite prices too high? I provide the stick - and the Admiral provides the carrots. If you catch my drift."
     kay "You're a contract assassin."
     ica "Let me guess, you're here about the diplomats on Versta right?"
     kay "Looks like the big secret's out."
@@ -4471,7 +4471,7 @@ label photoalbumlook:
     ica "PACT killed my entire family years ago.  I swore I'd get PACT back for what they did, and I'm finally so close."
     ica "We can work together, you and I.  Let's bring the Alliance into this war and end the PACT invasion.  I'll even work under you as a pilot if you're going after PACT."
     kay "What if I said I don't trust you?"
-    ica "How about I let you in a little secret, captain..."
+    ica "How about I let you in on a little secret, captain..."
     kay "I thought mercenaries didn't share secrets."
     ica "I'm willing to make an exception, just for you."
     ica "Do you know who it was that hired me to take out those diplomats? It was Admiral Grey of the Solar Alliance himself."
@@ -4526,7 +4526,7 @@ label endafterwhat:
     show icari plugsuit neutral neutral:
         ease 0.5 zoom 1.8 ypos 1.6
 
-    ica "So, what will it be captain?"
+    ica "So, what will it be, captain?"
     ica "Will you stand by while PACT conquers one neutral planet after another, growing more powerful with each day; or will you make a stand and stop PACT once and for all?"
 
     menu:
@@ -5782,7 +5782,7 @@ label someonekeepouttrouble:
     ava "Ah, was that what it was?"
     kay "Of course. You were always trying to solve other people's problems. It was only a matter of time until you hurt yourself."
     ava "Heh. Alright, I won't deny that."
-    kay "Remember your campaign slogan? Something about being the duty of the student council president to solve the student body's troubles?"
+    kay "Remember your campaign slogan? Something about it being the duty of the student council president to solve the student body's troubles?"
     ava "I guess... Things were simpler back then."
     ava "You're right. I did try too hard. And in the end, I just left disappointed."
     kay "Disappointed? You never told me that."
@@ -5838,7 +5838,7 @@ label solongagoentangled:
     ava "It seems like so long ago. Now, we're entangled in Alliance conspiracies and too busy counting the dead."
     kay "This war's already a piece of hell."
     kay "It's barely even been a month and it's claimed far too many lives."
-    ava "Everything you've did was for the greater good."
+    ava "Everything you did was for the greater good."
     ava "None of us wants to see more lives taken by PACT. The crew's behind you in stopping this conflict as quickly as possible."
     kay "Still doesn't make sleeping any easier."
 
@@ -8565,7 +8565,7 @@ label exchangepromisesafety:
     hide ava with dissolve
 
     kay "There. We kept our end of the bargain."
-    cul "Hehh... Too bad for you captain, but a certain pirate has paid me quite handsomely for your head."
+    cul "Hehh... Too bad for you, captain, but a certain pirate has paid me quite handsomely for your head."
     cul "Men! Open fire! Rid this vermin from my sight!"
     kay "(I should have known better than to trust this python!)"
 
@@ -9000,7 +9000,7 @@ label hairribboncando:
 
     show chigara uniform altneutral happy with dissolve
 
-    chi "In addition to various defensive mechanisms, can also store music, tell me the time, turn into a flashlight, and keep my hair clean. Ah, with an assortment of other miscellaneous features, of course..."
+    chi "In addition to having various defensive mechanisms, it can also store music, tell me the time, turn into a flashlight, and keep my hair clean. Ah, with an assortment of other miscellaneous features, of course..."
     kay "Your hair ribbon really is indispensable, isn't it?"
 
     show chigara uniform handonchest closedeyessmile with dissolve
@@ -10958,7 +10958,7 @@ label hadwhichfulfilled:
 
 label deathtragicrallying:
 
-    gre "The death of the diplomats was tragic, but not in vain. Their deaths were a rallying cry for those in Alliance who wanted leadership instead of cowardice."
+    gre "The death of the diplomats was tragic, but not in vain. Their deaths were a rallying cry for those in the Alliance who wanted leadership instead of cowardice."
     jump worddaringspread
 
 label worddaringspread:
@@ -11322,7 +11322,7 @@ label membercrewyourself:
     show ava uniform armscrossed neutral with dissolve
     ava "I've already taken the liberty of converting the male quarters to accommodate the growing size of our female crew."
     kay "Wha-"
-    ava "Obviously, I will not allow any males join our team in light of the modifications I've made."
+    ava "Obviously, I will not allow any males to join our team in light of the modifications I've made."
     kay "(Even that Ava knows how to crack a joke, huh... Or is she actually serious!?)"
 
     jump endofkryskaintro
@@ -11511,7 +11511,7 @@ label notsleepingleft:
 
 label immortalancientpoured:
 
-    asa "Mmm... An immortal leader, huh? I remember, the ancient Ryuvians kings poured billions into researching immortality. Even though they couldn't succeed, the research lead to some crazy breakthroughs for anti-aging facial creams."
+    asa "Mmm... An immortal leader, huh? I remember, the ancient Ryuvian kings poured billions into researching immortality. Even though they couldn't succeed, the research lead to some crazy breakthroughs for anti-aging facial creams."
     kay "Ava might be interested. You wouldn't happen to have some now, would you?"
 
     show asaga uniform armscrossed grin with dissolve
@@ -11593,7 +11593,7 @@ label disputeicariphoenix:
     kry "Captain, you cannot allow such a danger to exist on your hangar bay. The safety of your pilots is at stake here, all for the ego of one mercenary."
     ica "Ah, I've used Heratium all my life and I never had problems with it!"
     ica "That's just all damned propaganda spread by the Karium lobby to make the galaxy buy an obsolete good that should have been kicked off the market ages ago."
-    ica "If the Solar Congress actually let people decide what to buy instead of gets bullied by cartel interests, then everyone would know Heratium is stronger, lighter, and more efficient!"
+    ica "If the Solar Congress actually let people decide what to buy instead of being bullied by cartel interests, then everyone would know Heratium is stronger, lighter, and more efficient!"
 
     menu:
         "Your concerns have been noted, Lieutenant. But this is my ship, and we don't follow Alliance protocols here.":
