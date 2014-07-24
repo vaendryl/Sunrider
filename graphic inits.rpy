@@ -658,7 +658,7 @@ init -5:
     image credits8 = Text("Background Art{p}         Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits9 = Text("Lead Programmer{p}         Vaendryl", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits10 = Text("Engine Programmer{p}         Renpytom", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits11 = Text("Additional Programming{p}         Renpytom, Samu-kun, Endershadow", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits11 = Text("Additional Programming{p}         Renpytom, Samu-kun, Endershadow, Quickman, Renari, KingRaptor, azureflare", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits12 = Text("Cast", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits13 = Text("Ava Crescentia:  Amber Lee Connors", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits14 = Text("Asaga di Ryuvia:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
