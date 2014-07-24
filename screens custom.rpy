@@ -648,6 +648,51 @@ screen battle_screen:
                 at vanguard_cannon
                 alpha 1.0
 
+        if BM.vanguardtarget:   #creates buttons over enemy ships 
+            for ship in BM.ships:
+                if get_distance(sunrider.location,ship.location) <= 6 and ship.faction != 'Player':
+                    $xposition = int((ship.location[0]+0.5) * 192 * zoomlevel)
+                    $yposition = int((ship.location[1]+0.5) * 120 * zoomlevel)
+                    
+                    imagebutton:
+                        at movebutton
+                        idle 'Battle UI/move_tile.png'
+                        hover 'Battle UI/move_tile.png'
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        action Return(['vanguardtarget',(ship.location[0],ship.location[1])])
+                        alternate Return("deselect")
+                            
+                    #text (str(ship.location[0]) + ',' + str(ship.location[1])): #printed the x,y coordiantes for debugging purposes
+                       # xpos xposition
+                       # ypos yposition
+                       # xanchor 0.5
+                       # yanchor 0.5
+                       # size (20 * zoomlevel)
+                       # outlines [(2,'000',0,0)]
+                
+            if not BM.hovered == None:  #displayes red tiles on location affected by vanguard
+                $ hovered_ship = BM.hovered
+                if hovered_ship.location == None:
+                    $ pass
+                elif hovered_ship.faction != 'Player':
+                    $loc1 = sunrider.location
+                    $loc2 = hovered_ship.location
+                    if get_distance(loc1, loc2) <= 6:
+                        $tiles = interpolate_rect(loc1, loc2)
+                        for i in tiles:
+                            $xposition = int(i[0] * int(192 * zoomlevel)) + int(4*zoomlevel)
+                            $yposition = int(i[1] * int(120 * zoomlevel)) + int(4*zoomlevel)
+                            $xsize = int(188 * zoomlevel)
+                            $ysize = int(116 * zoomlevel)
+                            add "Battle UI/vanguard square.png":
+                                xpos xposition
+                                ypos yposition
+                                size (xsize,ysize)
+                                alpha 0.7
+
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:

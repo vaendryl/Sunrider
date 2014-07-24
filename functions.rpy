@@ -588,24 +588,16 @@ init -6 python:
     def game_over():
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    def interpolate_rect(location1, location2):  #creates a path between location1 and location2
+        tiles = []
+        loc1 = location1
+        loc2 = location2
+        disN = get_distance(loc1, loc2)
+        if disN != 0:
+            for i in range(0, disN + 1):
+                x = int(loc1[0] * (1 - float(i)/disN) + loc2[0] * float(i)/disN)
+                y = int(loc1[1] * (1 - float(i)/disN) + loc2[1] * float(i)/disN)
+                newloc = [x,y]
+                tiles.append(newloc)
+        return tiles
