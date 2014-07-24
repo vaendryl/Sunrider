@@ -723,7 +723,7 @@ screen battle_screen:
 
     if config.developer:
         vbox:
-            ypos 80
+            ypos 100
             xalign 1.0
             textbutton "Debug Cheats" action Return('cheat')
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
@@ -739,6 +739,7 @@ screen battle_screen:
             textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
         else:
             textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
+        textbutton "restart turn" xalign 1.0 action Jump('restartturn')
 
     if BM.just_moved:
         textbutton 'cancel movement':

@@ -253,6 +253,10 @@ label endofturn:
         $ BM.phase = 'Pirate'
 
     $update_modifiers() #update buffs and curses
+    
+    if BM.phase == 'Player':
+        $ renpy.take_screenshot()
+        $ renpy.save('beginturn')
 
     return
 
@@ -263,6 +267,8 @@ label battle_start:
         BM.order_used = False
         renpy.take_screenshot()
         renpy.save('battlestart')
+        renpy.take_screenshot()
+        renpy.save('beginturn')
         if BM.show_tooltips:
             renpy.show_screen('tooltips')
         BM.xadj.value = 872
@@ -306,6 +312,13 @@ label loadsavedgame:   #used when the player chooses to load a saved game after 
 
 label tryagain:
     $renpy.load('battlestart')
+    pause
+    $show_message('this should never show up')
+    pause
+    return
+
+label restartturn:
+    $renpy.load('beginturn')
     pause
     $show_message('this should never show up')
     pause
