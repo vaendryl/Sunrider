@@ -4,8 +4,6 @@
 *.pyc
 *.pyo
 
-*.jpg
-
 *.mp3
 *.ogg
 *.wav
