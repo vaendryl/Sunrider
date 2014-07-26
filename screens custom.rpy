@@ -649,30 +649,6 @@ screen battle_screen:
                 alpha 1.0
 
         if BM.vanguardtarget:   #creates buttons over enemy ships 
-            for ship in BM.ships:
-                if get_distance(sunrider.location,ship.location) <= 6 and ship.faction != 'Player':
-                    $xposition = int((ship.location[0]+0.5) * 192 * zoomlevel)
-                    $yposition = int((ship.location[1]+0.5) * 120 * zoomlevel)
-                    
-                    imagebutton:
-                        at movebutton
-                        idle 'Battle UI/move_tile.png'
-                        hover 'Battle UI/move_tile.png'
-                        xanchor 0.5
-                        yanchor 0.5
-                        xpos xposition
-                        ypos yposition
-                        action Return(['vanguardtarget',(ship.location[0],ship.location[1])])
-                        alternate Return("deselect")
-                            
-                    #text (str(ship.location[0]) + ',' + str(ship.location[1])): #printed the x,y coordiantes for debugging purposes
-                       # xpos xposition
-                       # ypos yposition
-                       # xanchor 0.5
-                       # yanchor 0.5
-                       # size (20 * zoomlevel)
-                       # outlines [(2,'000',0,0)]
-                
             if not BM.hovered == None:  #displayes red tiles on location affected by vanguard
                 $ hovered_ship = BM.hovered
                 if hovered_ship.location == None:

@@ -359,7 +359,6 @@ init -2 python:
 
             if result == 'SHORT RANGE WARP':
                 if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
                     if BM.selected != None:
                         BM.unselect_ship(BM.selected)
                     store.zoomlevel = 0.5 #zoom out
@@ -371,9 +370,11 @@ init -2 python:
                     renpy.show_screen('battle_screen')
                     renpy.show_screen('mousefollow')
                     looping = True
+                    prev_result = result
                     while looping:
                         result = ui.interact()
                         if result[0] == "mousefollow_click":
+                            self.cmd -= self.orders[prev_result][0]
                             #mouse position gets passed through here
                             x,y = result[1]
                             gridx,gridy = GRID_SIZE #18,16 by default
@@ -407,53 +408,64 @@ init -2 python:
                             looping = False
                             renpy.hide_screen('mousefollow')
                             BM.phase = 'Player'
+                    del prev_result
                 else:
                     BM.order_used = False
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
 
             if result == 'VANGUARD CANNON':
-                if self.cmd >= self.orders[result][0]:
-                    BM.vanguardtarget = True
-                    looping = True
-                    while looping:
-                        result = ui.interact()
-                        if result[0] == "vanguardtarget":
-                            self.cmd -= self.orders[result][0]
-                            loc1 = sunrider.location
-                            loc2 = result[1]
-                            listlocs = interpolate_rect(loc1, loc2)
-                            renpy.music.play('Music/March_of_Immortals.ogg')
-                            renpy.call_in_new_context('atkanim_sunrider_vanguard')
-                            renpy.hide_screen('battle_screen')
-                            renpy.show_screen('battle_screen')
-                            renpy.pause(1)
-                            store.damage = 800
-                            store.hit_count = 1
-                            store.total_armor_negation = 0
-                            store.total_shield_negation = 0
-                            templist = enemy_ships[:]
-                            for ship in templist:
-                                for tile in listlocs:
-                                    if ship.location != None: #failsaves. it's now legal for a location to be None
-                                        if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
-                                        #if ship.location[1] == sunrider.location[1]:
-                                        #    if ship.location[0]-sunrider.location[0] >=0:
-                                        #        if ship.location[0]-sunrider.location[0] <=7:
-                                            if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
-                                                BM.target = ship
-                                                ship.receive_damage(800,sunrider,'Vanguard')
-                            looping = False
-                            BM.vanguardtarget = False
-                            renpy.hide_screen('battle_screen')
-                            renpy.show_screen('battle_screen')
-                        
-                        if result == 'deselect':
-                            looping = False
-                            BM.vanguardtarget = False
-                            BM.order_used = False
-
+                inrange = False
+                templist = enemy_ships[:]
+                for ship in templist:
+                    if get_distance(sunrider.location,ship.location) <= 6:
+                        inrange = True
+                if inrange:
+                    if self.cmd >= self.orders[result][0]:
+                        BM.vanguardtarget = True
+                        looping = True
+                        prev_result = result
+                        while looping:
+                            result = ui.interact()
+                            if result[0] == "selection":
+                                self.cmd -= self.orders[prev_result][0]
+                                loc1 = sunrider.location
+                                loc2 = result[1].location
+                                listlocs = interpolate_rect(loc1, loc2)
+                                renpy.music.play('Music/March_of_Immortals.ogg')
+                                renpy.call_in_new_context('atkanim_sunrider_vanguard')
+                                renpy.hide_screen('battle_screen')
+                                renpy.show_screen('battle_screen')
+                                renpy.pause(1)
+                                store.damage = 800
+                                store.hit_count = 1
+                                store.total_armor_negation = 0
+                                store.total_shield_negation = 0
+                                templist = reversed(enemy_ships[:])
+                                for ship in templist:
+                                    for tile in listlocs:
+                                        if ship.location != None: #failsaves. it's now legal for a location to be None
+                                            if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
+                                            #if ship.location[1] == sunrider.location[1]:
+                                            #    if ship.location[0]-sunrider.location[0] >=0:
+                                            #        if ship.location[0]-sunrider.location[0] <=7:
+                                                if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
+                                                    BM.target = ship
+                                                    ship.receive_damage(800,sunrider,'Vanguard')
+                                looping = False
+                                BM.vanguardtarget = False
+                                renpy.hide_screen('battle_screen')
+                                renpy.show_screen('battle_screen')
+                            
+                            if result == 'deselect':
+                                looping = False
+                                BM.vanguardtarget = False
+                                BM.order_used = False
+                        del prev_result
+                    else:
+                        renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                        BM.order_used = False
                 else:
-                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                    renpy.say('Ava','It\'s hopeless, captain!')
                     BM.order_used = False
 
             if result[0] == 'hover': #you are hovering over one of the weapon buttons
