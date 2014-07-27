@@ -15,6 +15,15 @@ init -10 python:
     SHIP_SPEED = 0.3
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16) #(X,Y) aka (width,height)
+    HEXW = 192   #width of hexagon (3.0 ** .5)/2.0 * HEXH
+    HEXH = 222   #height of hexagon
+    HEXD = 167   #vertical distance between hexagons (3/4) * HEXH
+    SLIDEY = 0   #vertical offset .5 * HEXH
+    SLIDEX = 96  #horixontal offset .5 * HEXW
+    ADJY = 120.0/HEXD  #needed to make sure the displayables stay in the right place
+    ADJX = 1.0   #192.0/HEXW
+    MOVY = 60    #used to offset the displayables
+    MOVX = 0
 
     planets = []
 

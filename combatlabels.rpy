@@ -253,7 +253,7 @@ label endofturn:
         $ BM.phase = 'Pirate'
 
     $update_modifiers() #update buffs and curses
-    
+
     if BM.phase == 'Player':
         $ renpy.take_screenshot()
         $ renpy.save('beginturn')
@@ -359,7 +359,7 @@ label after_load:
 
             if not hasattr(store,'liberty'):
                 liberty = None
-            if bianca == None:
+            if liberty == None:
                 pass
             else:
                 liberty.weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]

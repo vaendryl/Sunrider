@@ -119,8 +119,10 @@ screen battle_screen:
         key "A" action Return('anime')
         key "P" action Return('I WIN')
 
+    #$childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
+    #$childy = round(2160*zoomlevel)
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
-    $childy = round(2160*zoomlevel)
+    $childy = round(3006*zoomlevel+300) #extra 300 is so that the status window doesn't occlude ships in the far right bottom corner
 
 #    use tooltips    #wtf doesn't this work
 
@@ -137,24 +139,36 @@ screen battle_screen:
         edgescroll BM.edgescroll #(0,0) #(70,400*zoomlevel)
 
                 ##CREATE GRID##
-        for a in range(1,GRID_SIZE[1]+2):
-            $ yposition = a * int((120 * zoomlevel))
-            $ xposition = int((192 * zoomlevel))
-            $ xmax = 18 * int((192 * zoomlevel))
-            add "Battle UI/grid horizontal.jpg":
-                ypos yposition
-                xpos xposition
-                size (xmax,4)
-                alpha 0.4
-        for a in range(1,GRID_SIZE[0]+2):
-            $ xposition = a * int((192 * zoomlevel))
-            $ yposition = int((120 * zoomlevel))
-            $ ymax = 16 * int((120 * zoomlevel))
-            add "Battle UI/grid vertical.jpg":
-                xpos xposition
-                ypos yposition
-                size (4,ymax)
-                alpha 0.4
+#        for a in range(1,GRID_SIZE[1]+2):
+#            $ yposition = a * int((120 * zoomlevel))
+#            $ xposition = int((192 * zoomlevel))
+#            $ xmax = 18 * int((192 * zoomlevel))
+#            add "Battle UI/grid horizontal.jpg":
+#                ypos yposition
+#                xpos xposition
+#                size (xmax,4)
+#                alpha 0.4
+#        for a in range(1,GRID_SIZE[0]+2):
+#            $ xposition = a * int((192 * zoomlevel))
+#            $ yposition = int((120 * zoomlevel))
+#            $ ymax = 16 * int((120 * zoomlevel))
+#            add "Battle UI/grid vertical.jpg":
+#                xpos xposition
+#                ypos yposition
+#                size (4,ymax)
+#                alpha 0.4
+
+        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
+            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+                $xposition = dispx(a, b, zoomlevel)
+                $yposition = dispy(a, b, zoomlevel)
+                $xsize = int((HEXW + 4) * zoomlevel)
+                $ysize = int((HEXH + 4) * zoomlevel)
+                add "Battle UI/hex.png":
+                    xpos xposition
+                    ypos yposition
+                    size (xsize,ysize)
+                    alpha 0.4
 
         ##legion warning indicator
         ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
@@ -178,11 +192,11 @@ screen battle_screen:
                             $ ship = BM.hovered
                             $ effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
                             if effective_shielding > 0:
-                                $xposition = a * int(192 * zoomlevel)
-                                $yposition = b * int(120 * zoomlevel)
-                                $xsize = int(196 * zoomlevel)
-                                $ysize = int(124 * zoomlevel)
-                                add "Battle UI/blue square.png":
+                                $xposition = dispx(a,b,zoomlevel)
+                                $yposition = dispy(a,b,zoomlevel)
+                                $xsize = int((HEXW + 4) * zoomlevel)
+                                $ysize = int((HEXH + 4) * zoomlevel)
+                                add "Battle UI/blue hex.png":
                                     xpos xposition
                                     ypos yposition
                                     size (xsize,ysize)
@@ -194,11 +208,11 @@ screen battle_screen:
                             $ ship = BM.hovered
                             $effective_flak = ship.flak + ship.modifiers['flak'][0]
                             if effective_flak > 0:
-                                $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
-                                $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
-                                $xsize = int(188 * zoomlevel)
-                                $ysize = int(116 * zoomlevel)
-                                add "Battle UI/red square.png":
+                                $xposition = dispx(a,b,zoomlevel)
+                                $yposition = dispy(a,b,zoomlevel)
+                                $xsize = int((HEXW + 4) * zoomlevel)
+                                $ysize = int((HEXH + 4) * zoomlevel)
+                                add "Battle UI/red hex.png":
                                     xpos xposition
                                     ypos yposition
                                     size (xsize,ysize)
@@ -212,11 +226,11 @@ screen battle_screen:
                                 if get_distance(ship.location,(a,b)) <= ship.flak_range:
                                     $effective_flak = ship.flak + ship.modifiers['flak'][0]
                                     if effective_flak > 0:
-                                        $xposition = (a * int(192 * zoomlevel)) + int(4*zoomlevel)
-                                        $yposition = (b * int(120 * zoomlevel)) + int(4*zoomlevel)
-                                        $xsize = int(188 * zoomlevel)
-                                        $ysize = int(116 * zoomlevel)
-                                        add "Battle UI/red square.png":
+                                        $xposition = dispx(a,b,zoomlevel)
+                                        $yposition = dispy(a,b,zoomlevel)
+                                        $xsize = int((HEXW + 4) * zoomlevel)
+                                        $ysize = int((HEXH + 4) * zoomlevel)
+                                        add "Battle UI/red hex.png":
                                             xpos xposition
                                             ypos yposition
                                             size (xsize,ysize)
@@ -228,11 +242,11 @@ screen battle_screen:
                                 if get_distance(ship.location,(a,b)) <= ship.shield_range:
                                     $effective_shielding = ship.shield_generation + ship.modifiers['shield_generation'][0]
                                     if effective_shielding > 0:
-                                        $xposition = a * int(192 * zoomlevel)
-                                        $yposition = b * int(120 * zoomlevel)
-                                        $xsize = int(196 * zoomlevel)
-                                        $ysize = int(124 * zoomlevel)
-                                        add "Battle UI/blue square.png":
+                                        $xposition = dispx(a,b,zoomlevel)
+                                        $yposition = dispy(a,b,zoomlevel)
+                                        $xsize = int((HEXW + 4) * zoomlevel)
+                                        $ysize = int((HEXH + 4) * zoomlevel)
+                                        add "Battle UI/blue hex.png":
                                             xpos xposition
                                             ypos yposition
                                             size (xsize,ysize)
@@ -240,8 +254,8 @@ screen battle_screen:
 
                 ## DISPLAY COVER ##
         for cover in BM.covers:
-            $xposition = int((cover.location[0]+0.5) * 192 * zoomlevel)
-            $yposition = int((cover.location[1]+0.5) * 120 * zoomlevel)
+            $xposition = dispx(cover.location[0],cover.location[1],zoomlevel, 0.5)
+            $yposition = dispy(cover.location[0],cover.location[1],zoomlevel, 0.5)
             $xsize = int(210 * zoomlevel)
             $ysize = int(120 * zoomlevel)
             add cover.label:
@@ -265,8 +279,8 @@ screen battle_screen:
                 for ship in BM.ships: #cycle through every ship in the battle
                     if ship.location == (a,b):
                           ##first we show the circle base below every unit
-                        $xposition = int((ship.location[0]+0.5) * 192 * zoomlevel)
-                        $yposition = int((ship.location[1]+0.5) * 120 * zoomlevel)
+                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
                         $xsize = int(210 * zoomlevel)
                         $ysize = int(120 * zoomlevel)
                         if ship.faction == 'Player':
@@ -292,11 +306,12 @@ screen battle_screen:
                                 size (xsize,ysize)
 
                         $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
-                        $cell_height = 1080 / ((GRID_SIZE[1]+2)/2)
+                        $cell_height = 1503 / ((GRID_SIZE[1]+2)/2)
+                        #$cell_offset = cell_width / 2
 
                         #calculate the position of the ships on the field
-                        $xposition = int((ship.location[0]+0.5) * cell_width * zoomlevel)
-                        $yposition = int((ship.location[1]+0.25) * cell_height * zoomlevel)
+                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.25 * ADJY) + int(zoomlevel * MOVY)
 
                         if ship.getting_buff:  #used if you buff someone
                             add 'Battle UI/buff_back.png':
@@ -384,8 +399,8 @@ screen battle_screen:
 
                           ##add the HP bar and the EN bar
                         if ship.faction == 'Player':
-                            $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.66) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
                             $hp_size = int(405*(float(ship.hp)/ship.max_hp))
                             add 'Battle UI/label hp bar.png':
                                 xpos xposition
@@ -398,8 +413,8 @@ screen battle_screen:
 #                                ypos (yposition+30*zoomlevel)
 #                                size int(30 * zoomlevel)
 
-                            $xposition = int((ship.location[0]+0.08) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.72) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
                             $energy_size = int(405*(float(ship.en)/ship.max_en))
                             add 'Battle UI/label energy bar.png':
                                 xpos xposition
@@ -409,8 +424,8 @@ screen battle_screen:
 
                         else:    #enemies
 
-                            $xposition = int((ship.location[0]+0.09) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.70) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
                             $hp_size = int(405*(float(ship.hp)/ship.max_hp))
                             add 'Battle UI/label hp bar.png':
                                 xpos xposition
@@ -431,8 +446,8 @@ screen battle_screen:
         if BM.missile_moving:
             for ship in BM.ships:
                 if ship.flaksim != None:
-                    $ xposition = int((ship.location[0]+0.5) * cell_width * zoomlevel)
-                    $ yposition = int((ship.location[1]+0.25) * cell_height * zoomlevel)
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
                     $ wait = ship.flaksim[0]
                     $ intercept_count = ship.flaksim[1]
 
@@ -465,10 +480,11 @@ screen battle_screen:
 
         if BM.missile_moving:
             for missile in BM.missiles:
-                $xposition = int((missile.parent.location[0]+0.5) * 192 * zoomlevel)
-                $yposition = int((missile.parent.location[1]+0.25) * 120 * zoomlevel)
-                $next_xposition = int((missile.target.location[0]+0.5) * 192 * zoomlevel)
-                $next_yposition = int((missile.target.location[1]+0.25) * 120 * zoomlevel)
+                $xposition = dispx(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                $yposition = dispy(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+                $next_xposition = dispx(missile.target.location[0],missile.target.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                $next_yposition = dispy(missile.target.location[0],missile.target.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+
 #                if missile.shot_down != None:
 #                    $ travel_time = missile.shot_down
 #                else:
@@ -513,16 +529,16 @@ screen battle_screen:
 
 
                         if ship.location == (a,b):
-                            $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.15) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
                             add 'Battle UI/targeting_window.png':
                                 xpos xposition
                                 ypos yposition
                                 xanchor 0.5
                                 yanchor 0.5
                                 zoom (zoomlevel/1.3)
-                            $xposition = int((ship.location[0]+0.92) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.2) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.20 * ADJY) + int(zoomlevel * MOVY)
                             text (str(ship.cth) + '%'):
                                 xpos xposition
                                 ypos yposition
@@ -530,8 +546,8 @@ screen battle_screen:
                                 yanchor 0.5
                                 size (20 * zoomlevel)
                                 color '000'
-                            $xposition = int((ship.location[0]+0.75) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.40 * ADJY) + int(zoomlevel * MOVY)
                             if selected == None:  #workarounds
                                 $ effective_flak = 0
                             else:
@@ -553,8 +569,8 @@ screen battle_screen:
                                 yanchor 0.5
                                 size (14 * zoomlevel)
                                 color 'fff'
-                            $xposition = int((ship.location[0]+0.92) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.40 * ADJY) + int(zoomlevel * MOVY)
                             text str(ship.shields):
                                 xpos xposition
                                 ypos yposition
@@ -562,8 +578,8 @@ screen battle_screen:
                                 yanchor 0.5
                                 size (14 * zoomlevel)
                                 color 'fff'
-                            $xposition = int((ship.location[0]+1.0) * 192 * zoomlevel)
-                            $yposition = int((ship.location[1]+0.4) * 120 * zoomlevel)
+                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,1.0 * ADJX) + int(zoomlevel * MOVX)
+                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.4 * ADJY) + int(zoomlevel * MOVY)
                               ##when you hover over a weapon that does kinetic or assault type damage it shows you armor is double as effective
                             if BM.weaponhover == None:
                                 $weapon = BM.active_weapon
@@ -592,8 +608,8 @@ screen battle_screen:
             if hovered_ship.location == None:
                 $ pass
             elif hovered_ship.faction != 'Player':
-                $xposition = int((hovered_ship.location[0]+0.09) * 192 * zoomlevel)
-                $yposition = int((hovered_ship.location[1]+0.70) * 120 * zoomlevel)
+                $xposition = dispx(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+                $yposition = dispy(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
                 $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
                 add 'Battle UI/label hp bar.png':
                     xpos xposition
@@ -637,8 +653,8 @@ screen battle_screen:
 
           #firing the vanguard cannon
         if BM.vanguard:
-            $xposition = int((sunrider.location[0]+0.5) * 192 * zoomlevel)
-            $yposition = int((sunrider.location[1]) * 120 * zoomlevel)
+            $xposition = dispx(sunrider.locatio[0],sunrider.location[1],zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+            $yposition = dispy(sunrider.locatio[0],sunrider.location[1],zoomlevel) + int(zoomlevel * MOVY)
             add 'Battle UI/vanguard beam wave.png':
                 xanchor 0.0
                 yanchor 0.27
@@ -648,8 +664,33 @@ screen battle_screen:
                 at vanguard_cannon
                 alpha 1.0
 
-        if BM.vanguardtarget:   #creates buttons over enemy ships 
-            if not BM.hovered == None:  #displayes red tiles on location affected by vanguard
+         #selecting target for vanguard cannon
+        if BM.vanguardtarget:   #creates buttons over enemy ships
+            #for ship in BM.ships:
+                #if get_distance(sunrider.location,ship.location) <= 6 and ship.faction != 'Player':
+                    #$xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+                    #$yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
+
+                    #imagebutton:
+                       # at movebutton
+                        #idle 'Battle UI/move_tile.png'
+                        #hover 'Battle UI/move_tile.png'
+                        #xanchor 0.5
+                        #yanchor 0.5
+                        #xpos xposition
+                        #ypos yposition
+                        #action Return(['vanguardtarget',(ship.location[0],ship.location[1])])
+                        #alternate Return("deselect")
+
+                    #text (str(ship.location[0]) + ',' + str(ship.location[1])): #printed the x,y coordiantes for debugging purposes
+                       # xpos xposition
+                       # ypos yposition
+                       # xanchor 0.5
+                       # yanchor 0.5
+                       # size (20 * zoomlevel)
+                       # outlines [(2,'000',0,0)]
+
+            if not BM.hovered == None:     #displayes red tiles on location affected by vanguard
                 $ hovered_ship = BM.hovered
                 if hovered_ship.location == None:
                     $ pass
@@ -657,23 +698,24 @@ screen battle_screen:
                     $loc1 = sunrider.location
                     $loc2 = hovered_ship.location
                     if get_distance(loc1, loc2) <= 6:
-                        $tiles = interpolate_grid(loc1, loc2)
+                        $tiles = interpolate_hex(loc1, loc2)
                         for i in tiles:
-                            $xposition = int(i[0] * int(192 * zoomlevel)) + int(4*zoomlevel)
-                            $yposition = int(i[1] * int(120 * zoomlevel)) + int(4*zoomlevel)
-                            $xsize = int(188 * zoomlevel)
-                            $ysize = int(116 * zoomlevel)
-                            add "Battle UI/vanguard square.png":
+                            $xposition = dispx(i[0],i[1],zoomlevel)
+                            $yposition = dispy(i[0],i[1],zoomlevel)
+                            $xsize = int((HEXW + 4) * zoomlevel)
+                            $ysize = int((HEXH + 4) * zoomlevel)
+                            add "Battle UI/vanguard hex.png":
                                 xpos xposition
                                 ypos yposition
                                 size (xsize,ysize)
                                 alpha 0.7
 
+
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:
-                $xposition = int((location[0]) * 192 * zoomlevel) - int(100 * zoomlevel)
-                $yposition = int((location[1]-0.5) * 120 * zoomlevel) - int(100 * zoomlevel)
+                $xposition = dispx(location[0],location[1],zoomlevel) - int(100 * zoomlevel) + int(zoomlevel * MOVX)
+                $yposition = dispy(location[0],location[1],zoomlevel,-0.5 * ADJY) - int(100 * zoomlevel) + int(zoomlevel * MOVY)
                 add 'Battle UI/label_warpflash.png':
 #                    anchor 0.5  #I get a float object not iterable crash. very annoying
                     xpos xposition
@@ -681,14 +723,41 @@ screen battle_screen:
                     at warpout
                     zoom 0.25
 
+         #creates buttons on empty tiles when warping
+         #buttons return tile coordinate when clicked
+        if BM.targetwarp:
+            for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
+                for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+                    if get_cell_available((a,b)):
+                        $xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
 
+                        imagebutton:
+                            at movebutton
+                            idle 'Battle UI/move_tile.png'
+                            hover 'Battle UI/move_tile.png'
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos xposition
+                            ypos yposition
+                            action Return(['warptarget',(a,b)])
+                            alternate Return("deselect")
+
+                        #text (str(a) + ',' + str(b)): printed the x,y coordiantes for debugging purposes
+                           # xpos xposition
+                           # ypos yposition
+                           # xanchor 0.5
+                           # yanchor 0.5
+                           # size (20 * zoomlevel)
+                           # outlines [(2,'000',0,0)]
 
             ##MOVE SHIP FROM GRID TO GRID##
         if BM.moving:
-            $xposition = int((BM.selected.current_location[0]+0.5) * 192 * zoomlevel)
-            $yposition = int((BM.selected.current_location[1]+0.25) * 120 * zoomlevel)
-            $next_xposition = int((BM.selected.next_location[0]+0.5) * 192 * zoomlevel)
-            $next_yposition = int((BM.selected.next_location[1]+0.25) * 120 * zoomlevel)
+            $xposition = dispx(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+            $yposition = dispy(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+            $next_xposition = dispx(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+            $next_yposition = dispy(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+
             $travel_time = BM.selected.travel_time
 
             add BM.selected.lbl:
@@ -720,7 +789,8 @@ screen battle_screen:
     if BM.just_moved:
         textbutton 'cancel movement':
             ypos 70
-            text_size 30
+            text_size 50
+            text_color 'fff'
             action Return('cancel movement')
 
     if not BM.showing_orders and not BM.order_used and not BM.missile_moving and not BM.moving and BM.phase == "Player":
@@ -1364,7 +1434,6 @@ screen mousefollow:
 #    $ follow_image = im.matrix(follow_image).opacity(0.4)
     add MouseFollow(follow_image):
         alpha 0.7
-
 
 transform gameovergimmick(x,y,t):
     # These control the position.

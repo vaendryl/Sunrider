@@ -1,10 +1,21 @@
 #Sunrider
 ========
 
+patch 4.3
+======
+* assimilated true hexmod [Azureflare is the best!]
+* you can scroll down a bit further so that the status window doesn't cover units in the far bottom right
+
+
+
 patch 4.2a
 ======
 * fixes a bug with asaga not being visible in the Mnemosyne Abyss battle if you load the game during turn 1. 
 * fixed a possible crash if you beat a boss with the vanguard cannon
+* fixed a bug with 4.2 that erased the quantum warhead upgrade if you bought it on 4.1.
+* upgrade window became more user friendly (by Renari)
+* fixed a tooltip bug with short range warp.
+* it's no longer possible to farm enemy carriers for unlimited money.
 
 patch 4.2
 ======

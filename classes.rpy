@@ -39,6 +39,7 @@ init -2 python:
             self.vanguardtarget = False #creates buttons to select vanguard fire direction
             self.money = 0            #go on, set this to 999'999'999. you know you want to.
             self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
+            self.targetwarp = False   #used by the short ranged warp order.  it creates buttons on the tiles
             self.showing_orders = False #This is True when the list of orders is visible.
             self.show_tooltips = True #hide or show tooltips
             self.pending_upgrades = [] #lists upgrades the user has not saved
@@ -359,6 +360,7 @@ init -2 python:
 
             if result == 'SHORT RANGE WARP':
                 if self.cmd >= self.orders[result][0]:
+                    self.cmd -= self.orders[result][0]
                     if BM.selected != None:
                         BM.unselect_ship(BM.selected)
                     store.zoomlevel = 0.5 #zoom out
@@ -369,46 +371,48 @@ init -2 python:
                     renpy.hide_screen('battle_screen')
                     renpy.show_screen('battle_screen')
                     renpy.show_screen('mousefollow')
+                    BM.targetwarp = True
                     looping = True
-                    prev_result = result
                     while looping:
                         result = ui.interact()
-                        if result[0] == "mousefollow_click":
-                            self.cmd -= self.orders[prev_result][0]
+                        if result[0] == "warptarget":
                             #mouse position gets passed through here
                             x,y = result[1]
-                            gridx,gridy = GRID_SIZE #18,16 by default
-                            cell_width = 1920 / (gridx+2)
-                            cell_height = 1080 / (gridy+2)
-                            cellx = x / cell_width
-                            celly = y / cell_height
-                            cell = cellx,celly
-                            if get_cell_available(cell):
+                            #gridx,gridy = GRID_SIZE #18,16 by default this code replaced with imagebuttons
+                            #cell_width = 1440 / (gridx+2)
+                            #cell_height = 1494 / (gridy+2)
+                            #cellx = x / cell_width
+                            #celly = y / cell_height
+                            cell = x,y
 
-                                store.flash_locations = [ sunrider.location,cell ]
-                                BM.warping = True
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
-                                renpy.hide_screen('mousefollow')
-                                renpy.music.play('sound/large_warpout.ogg', channel = 'sound5')
-                                renpy.pause(1.0, hard=True)
-                                BM.warping = False
-                                x,y = BM.selected.location
-                                BM.grid[x-1][y-1] = False
-                                BM.selected.location = cell
-                                x,y = BM.selected.location
-                                BM.grid[x-1][y-1] = True
-                                looping = False
+                            #if get_cell_available(cell): now redundant
 
-                                BM.phase = 'Player'
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
+                            store.flash_locations = [ sunrider.location,cell ]
+                            BM.warping = True
+                            renpy.hide_screen('battle_screen')
+                            renpy.show_screen('battle_screen')
+                            renpy.hide_screen('mousefollow')
+                            BM.targetwarp = False
+                            renpy.music.play('sound/large_warpout.ogg', channel = 'sound5')
+                            renpy.pause(1.0, hard=True)
+                            BM.warping = False
+                            x,y = BM.selected.location
+                            BM.grid[x-1][y-1] = False
+                            BM.selected.location = cell
+                            x,y = BM.selected.location
+                            BM.grid[x-1][y-1] = True
+                            looping = False
+
+                            BM.phase = 'Player'
+                            renpy.hide_screen('battle_screen')
+                            renpy.show_screen('battle_screen')
 
                         if result == 'deselect':
+                            self.cmd += 750
                             looping = False
                             renpy.hide_screen('mousefollow')
+                            BM.targetwarp = False
                             BM.phase = 'Player'
-                    del prev_result
                 else:
                     BM.order_used = False
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
@@ -421,12 +425,42 @@ init -2 python:
                         inrange = True
                 if inrange:
                     if self.cmd >= self.orders[result][0]:
+                        self.cmd -= self.orders[result][0]
                         BM.vanguardtarget = True
                         looping = True
-                        prev_result = result
                         while looping:
                             result = ui.interact()
                             if result[0] == "selection":
+<<<<<<< HEAD
+                                if result[1].faction != 'Player':
+                                    loc1 = sunrider.location
+                                    loc2 = result[1].location
+                                    listlocs = interpolate_hex(loc1, loc2)
+                                    renpy.music.play('Music/March_of_Immortals.ogg')
+                                    renpy.call_in_new_context('atkanim_sunrider_vanguard')
+                                    renpy.hide_screen('battle_screen')
+                                    renpy.show_screen('battle_screen')
+                                    renpy.pause(1)
+                                    store.damage = 800
+                                    store.hit_count = 1
+                                    store.total_armor_negation = 0
+                                    store.total_shield_negation = 0
+                                    templist = enemy_ships[:]
+                                    for ship in templist:
+                                        for tile in listlocs:
+                                            if ship.location != None: #failsaves. it's now legal for a location to be None
+                                                if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
+                                                #if ship.location[1] == sunrider.location[1]:
+                                                #    if ship.location[0]-sunrider.location[0] >=0:
+                                                #        if ship.location[0]-sunrider.location[0] <=7:
+                                                    if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
+                                                        BM.target = ship
+                                                        ship.receive_damage(800,sunrider,'Vanguard')
+                                    looping = False
+                                    BM.vanguardtarget = False
+                                    renpy.hide_screen('battle_screen')
+                                    renpy.show_screen('battle_screen')
+=======
                                 self.cmd -= self.orders[prev_result][0]
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
@@ -455,12 +489,14 @@ init -2 python:
                                 BM.vanguardtarget = False
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
+>>>>>>> origin/master
 
                             if result == 'deselect':
+                                self.cmd += 2500
                                 looping = False
                                 BM.vanguardtarget = False
                                 BM.order_used = False
-                        del prev_result
+
                     else:
                         renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
                         BM.order_used = False

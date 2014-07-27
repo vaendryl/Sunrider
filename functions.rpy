@@ -222,17 +222,19 @@ init -6 python:
             y=(location1[1]-location2[1])/abs(location1[1]-location2[1])
         return (x,y)
 
-    def get_distance(location1,location2):
+    def get_distance(location1, location2):
         if location1 == None or location2 == None: return 999
-        result = abs(location1[0] - location2[0])
-        result += abs(location1[1] - location2[1])
+        cubic1 = convert_to_cubic(location1)
+        cubic2 = convert_to_cubic(location2)
+        result = cubic_distance(cubic1, cubic2)
         return result
 
     def get_ship_distance(ship1,ship2):
         if ship1 == None or ship2 == None: return 999
         if ship1.location == None or ship2.location == None: return 999
-        result = abs(ship1.location[0] - ship2.location[0])
-        result += abs(ship1.location[1] - ship2.location[1])
+        cubic1 = convert_to_cubic(ship1.location)
+        cubic2 = convert_to_cubic(ship2.location)
+        result = cubic_distance(cubic1, cubic2)
         return result
 
     def update_armor(parent):
@@ -541,10 +543,13 @@ init -6 python:
         tile_locations = []
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                cell_distance = abs(ship.location[0]-a) + abs(ship.location[1]-b)
+                loc1 = convert_to_cubic(ship.location)
+                loc2 = convert_to_cubic([a,b])
+                cell_distance = cubic_distance(loc1, loc2)
+
                 if not BM.grid[a-1][b-1] and cell_distance <= move_range:
-                    xposition = int((a+0.5) * 192 * zoomlevel)
-                    yposition = int((b+0.5) * 120 * zoomlevel)
+                    xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+                    yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
                     tile_locations.append((xposition,yposition,-cell_distance,a,b))
         return tile_locations
 
@@ -588,6 +593,121 @@ init -6 python:
     def game_over():
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
+<<<<<<< HEAD
+
+##conversion from offset cordinates to cubic coordinates
+##makes working with hexagons easier
+
+    #def convert_to_cubic(location):  #converts offset coordinates to cubic coordiantes
+    #    r = location[0]              #works on even vertical offset
+    #    q = location[1]
+    #    x = q - ((r + (r % 2))/2)
+    #    z = r
+    #    y = (-1 * x) - z
+    #    return [x,y,z]
+
+    def convert_to_cubic(location):  #converts offset coordinates to cubic coordiantes
+        r = location[0]              #works on even horizontal offset
+        q = location[1]
+        x = q
+        z = r - ((q + (q % 2))/2)
+        y = (-1 * x) - z
+        return [x,y,z]
+
+    #def convert_to_offset(location):  #converts cubic coordinates to offset coordinates
+    #    x = location[0]               #works on even vertical offset
+    #    y = location[1]
+    #    z = location[2]
+    #    q = x + (z + (z%2)) / 2
+    #    r = z
+    #    return [r, q]
+
+    def convert_to_offset(location):  #converts cubic coordinates to offset coordinates
+        x = location[0]               #works on even horizontal offset
+        y = location[1]
+        z = location[2]
+        q = x
+        r = z + (x + (x%2)) / 2
+        return [r, q]
+
+    def cubic_distance(location1, location2):  #calculates the distances between two cubic coordiantes
+        x1 = location1[0]
+        y1 = location1[1]
+        z1 = location1[2]
+
+        x2 = location2[0]
+        y2 = location2[1]
+        z2 = location2[2]
+
+        result = (abs(x1 - x2) + abs(y1 - y2) + abs(z1 - z2))/2
+        return result
+
+    def hex_round(location):  #rounds cubic coordinates to the nearest hexagon
+        x = location[0]
+        y = location[1]
+        z = location[2]
+        rx = int(x)
+        ry = int(y)
+        rz = int(z)
+
+        x_diff = abs(rx - x)
+        y_diff = abs(ry - y)
+        z_diff = abs(rz - z)
+
+        if x_diff > y_diff and x_diff > z_diff:
+            rx = -ry-rz
+        elif y_diff > z_diff:
+            ry = -rx-rz
+        else:
+            rz = -rx-ry
+
+        return [rx, ry, rz]
+
+    def interpolate_hex(location1, location2):  #creates a path between location1 and location2
+        tiles = []
+        loc1 = location1
+        loc2 = location2
+        cube1 = convert_to_cubic(loc1)
+        cube2 = convert_to_cubic(loc2)
+        disN = get_distance(loc1, loc2)
+
+        if disN != 0:
+            N = (1.0)/disN
+            for i in range(0, 6 + 1):
+                x = cube1[0] + (cube2[0] - cube1[0])*i*N
+                y = cube1[1] + (cube2[1] - cube1[1])*i*N
+                z = cube1[2] + (cube2[2] - cube1[2])*i*N
+                #x = cube1[0] * (1 - float(i)/disN) + cube2[0] * float(i)/disN
+                #y = cube1[1] * (1 - float(i)/disN) + cube2[1] * float(i)/disN
+                #z = cube1[2] * (1 - float(i)/disN) + cube2[2] * float(i)/disN
+                cuberound = hex_round([x, y, z])
+                newloc = convert_to_offset(cuberound)
+                if isvalid(newloc):
+                    tiles.append(newloc)
+        return tiles
+
+## functions to calculate position of displayables
+
+    def dispx(x, y, zoom, add = 0):
+        xposition = 0
+        if y % 2 == 0:
+            xposition = int(((x + add) * HEXW + SLIDEX) * zoom)
+        else:
+            xposition = int(((x + add) * HEXW) * zoom)
+        return xposition
+
+    def dispy(x, y, zoom, add = 0):
+        yposition = 0
+        if x % 2 == 0:
+            yposition = int(((y + add) * HEXD + SLIDEY) * zoom)
+        else:
+            yposition = int(((y + add) * HEXD) * zoom)
+        return yposition
+
+## function to deternime if a location is on the grid
+
+    def isvalid(location):
+=======
     
     def interpolate_grid(location1, location2): #draws a line from location1 to location2
         tiles = []
@@ -657,6 +777,7 @@ init -6 python:
         return tiles
             
     def isvalid(location): #determines if the location in on the grid
+>>>>>>> origin/master
         valid = True
         if location[0] > GRID_SIZE[0] or location[0] <=0:
             valid = False
