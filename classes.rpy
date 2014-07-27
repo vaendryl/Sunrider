@@ -417,7 +417,7 @@ init -2 python:
                 inrange = False
                 templist = enemy_ships[:]
                 for ship in templist:
-                    if get_distance(sunrider.location,ship.location) <= 6:
+                    if get_distance(sunrider.location,ship.location) <= 7:
                         inrange = True
                 if inrange:
                     if self.cmd >= self.orders[result][0]:
