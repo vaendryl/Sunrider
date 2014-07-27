@@ -1,6 +1,6 @@
 ## This file declares all the classes in the battle engine
 # 1) battle manager class
-# 2) status displayable class   [[DEFUNCT]]
+# 2) custom displayables
 # 3) Action objects (these gets activated when you click a button)  [[DEFUNCT]]
 # 4) battleship blueprint class
 # 5) Weapon blueprint classes
@@ -42,6 +42,7 @@ init -2 python:
             self.targetwarp = False   #used by the short ranged warp order.  it creates buttons on the tiles
             self.showing_orders = False #This is True when the list of orders is visible.
             self.show_tooltips = True #hide or show tooltips
+            self.debugoverlay = False #overlay coords etc for debug purposes
             self.pending_upgrades = [] #lists upgrades the user has not saved
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
@@ -771,6 +772,8 @@ init -2 python:
 
         def visit(self):
            return [ self.child ]
+
+
 
 
 

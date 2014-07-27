@@ -65,7 +65,7 @@ init -2:  ##0) transforms
             linear 0.5 alpha 0
 
     transform movebutton: #used to make it look cool when you click Move
-        zoom zoomlevel/4.0
+        zoom zoomlevel/5.0
         alpha 0.5
         on start:
             alpha 0.5
@@ -119,8 +119,6 @@ screen battle_screen:
         key "A" action Return('anime')
         key "P" action Return('I WIN')
 
-    #$childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
-    #$childy = round(2160*zoomlevel)
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
     $childy = round(3006*zoomlevel+300) #extra 300 is so that the status window doesn't occlude ships in the far right bottom corner
 
@@ -138,25 +136,7 @@ screen battle_screen:
         mousewheel False
         edgescroll BM.edgescroll #(0,0) #(70,400*zoomlevel)
 
-                ##CREATE GRID##
-#        for a in range(1,GRID_SIZE[1]+2):
-#            $ yposition = a * int((120 * zoomlevel))
-#            $ xposition = int((192 * zoomlevel))
-#            $ xmax = 18 * int((192 * zoomlevel))
-#            add "Battle UI/grid horizontal.jpg":
-#                ypos yposition
-#                xpos xposition
-#                size (xmax,4)
-#                alpha 0.4
-#        for a in range(1,GRID_SIZE[0]+2):
-#            $ xposition = a * int((192 * zoomlevel))
-#            $ yposition = int((120 * zoomlevel))
-#            $ ymax = 16 * int((120 * zoomlevel))
-#            add "Battle UI/grid vertical.jpg":
-#                xpos xposition
-#                ypos yposition
-#                size (4,ymax)
-#                alpha 0.4
+                ##CREATE HEX GRID##
 
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
@@ -651,7 +631,7 @@ screen battle_screen:
                     outlines [(2,'000',0,0)]
 
 
-          #firing the vanguard cannon
+          #firing the vanguard cannon  [[doesn't seem to be used anymore]]
         if BM.vanguard:
             $xposition = dispx(sunrider.locatio[0],sunrider.location[1],zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
             $yposition = dispy(sunrider.locatio[0],sunrider.location[1],zoomlevel) + int(zoomlevel * MOVY)
@@ -766,12 +746,30 @@ screen battle_screen:
                 yanchor 0.5
                 zoom (zoomlevel/2.5)
 
+        if BM.debugoverlay:  #may use this later for AI debug things too
+            for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
+                for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+                    $xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
+
+                    text '{}/{}'.format(a,b):
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+
+
+##not part of the viewport##
     if config.developer:
         vbox:
             ypos 100
             xalign 1.0
             textbutton "Debug Cheats" action Return('cheat')
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
+            if BM.debugoverlay:
+                textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
+            else:
+                textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',True)
 
 
     vbox:
