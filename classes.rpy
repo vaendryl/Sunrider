@@ -431,7 +431,6 @@ init -2 python:
                         while looping:
                             result = ui.interact()
                             if result[0] == "selection":
-<<<<<<< HEAD
                                 if result[1].faction != 'Player':
                                     loc1 = sunrider.location
                                     loc2 = result[1].location
@@ -460,7 +459,6 @@ init -2 python:
                                     BM.vanguardtarget = False
                                     renpy.hide_screen('battle_screen')
                                     renpy.show_screen('battle_screen')
-=======
                                 self.cmd -= self.orders[prev_result][0]
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
@@ -477,7 +475,7 @@ init -2 python:
                                 templist = reversed(enemy_ships[:])
                                 for ship in templist:
                                     for tile in listlocs:
-                                        if ship.location != None: and sunrider.location != None and self.battlemode: #failsaves. it's now legal for a location to be None and it's possible the battle is already over due to zapping the boss
+                                        if ship.location != None and self.battlemode: #failsaves. it's now legal for a location to be None and it's possible the battle is already over due to zapping the boss
                                             if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
                                             #if ship.location[1] == sunrider.location[1]:
                                             #    if ship.location[0]-sunrider.location[0] >=0:
@@ -489,7 +487,6 @@ init -2 python:
                                 BM.vanguardtarget = False
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
->>>>>>> origin/master
 
                             if result == 'deselect':
                                 self.cmd += self.orders['VANGUARD CANNON'][0]

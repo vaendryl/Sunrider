@@ -593,7 +593,6 @@ init -6 python:
     def game_over():
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
-<<<<<<< HEAD
 
 ##conversion from offset cordinates to cubic coordinates
 ##makes working with hexagons easier
@@ -703,11 +702,6 @@ init -6 python:
         else:
             yposition = int(((y + add) * HEXD) * zoom)
         return yposition
-
-## function to deternime if a location is on the grid
-
-    def isvalid(location):
-=======
     
     def interpolate_grid(location1, location2): #draws a line from location1 to location2
         tiles = []
@@ -777,7 +771,6 @@ init -6 python:
         return tiles
             
     def isvalid(location): #determines if the location in on the grid
->>>>>>> origin/master
         valid = True
         if location[0] > GRID_SIZE[0] or location[0] <=0:
             valid = False
