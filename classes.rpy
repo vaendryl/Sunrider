@@ -408,7 +408,7 @@ init -2 python:
                             renpy.show_screen('battle_screen')
 
                         if result == 'deselect':
-                            self.cmd += 750
+                            self.cmd += self.orders['SHORT RANGE WARP'][0]
                             looping = False
                             renpy.hide_screen('mousefollow')
                             BM.targetwarp = False
@@ -492,7 +492,7 @@ init -2 python:
 >>>>>>> origin/master
 
                             if result == 'deselect':
-                                self.cmd += 2500
+                                self.cmd += self.orders['VANGUARD CANNON'][0]
                                 looping = False
                                 BM.vanguardtarget = False
                                 BM.order_used = False
