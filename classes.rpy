@@ -1,9 +1,9 @@
 ## This file declares all the classes in the battle engine
 # 1) battle manager class
-# 2) status displayable class
+# 2) status displayable class   [[DEFUNCT]]
 # 3) Action objects (these gets activated when you click a button)  [[DEFUNCT]]
 # 4) battleship blueprint class
-# 5) Weapon blueprint class
+# 5) Weapon blueprint classes
 # 6) library (specific ships/weapons)  [[MOVED]]
 # 7) planet class
 # 8) bonus stuff
@@ -36,7 +36,7 @@ init -2 python:
             self.grid = []            #keep track of what cells in the grid are free and which are not.
             self.cmd = 0              #your command point total
             self.vanguard = False     #when True the battlemap shows the vanguard cannon being fired.
-            self.vanguardtarget = False #creates buttons to select vanguard fire diection
+            self.vanguardtarget = False #creates buttons to select vanguard fire direction
             self.money = 0            #go on, set this to 999'999'999. you know you want to.
             self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
             self.showing_orders = False #This is True when the list of orders is visible.
@@ -443,19 +443,19 @@ init -2 python:
                                 templist = reversed(enemy_ships[:])
                                 for ship in templist:
                                     for tile in listlocs:
-                                        if ship.location != None: #failsaves. it's now legal for a location to be None
+                                        if ship.location != None: and sunrider.location != None and self.battlemode: #failsaves. it's now legal for a location to be None and it's possible the battle is already over due to zapping the boss
                                             if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
                                             #if ship.location[1] == sunrider.location[1]:
                                             #    if ship.location[0]-sunrider.location[0] >=0:
                                             #        if ship.location[0]-sunrider.location[0] <=7:
-                                                if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
+                                                if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
                                                     BM.target = ship
                                                     ship.receive_damage(800,sunrider,'Vanguard')
                                 looping = False
                                 BM.vanguardtarget = False
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
-                            
+
                             if result == 'deselect':
                                 looping = False
                                 BM.vanguardtarget = False
@@ -2153,6 +2153,8 @@ init -2 python:
             store.MetAsaga = False
             store.ChigaraRefugee = False
             store.mission_pirateattack = False
+            store.amissionforalliance = False
+            store.missionforryuvia = False
 
             store.battlemusic = True
 
@@ -2166,12 +2168,10 @@ init -2 python:
             store.mission2_name = None
             store.mission3_name = None
 
-            store.mission3_complete = self.lastMission >= 3
+            if self.lastMission >= 3:
+                for count in range(self.lastMission):
+                    setattr(store,'mission{}_complete'.format(count+1),True)
             store.mission4_complete = False
-            store.mission5_complete = self.lastMission >= 5
-            store.mission6_complete = self.lastMission >= 6
-            store.mission9_complete = self.lastMission >= 9
-            store.mission10_complete = self.lastMission >= 10
 
             store.ava_location = None
             store.asa_location = None
@@ -2205,6 +2205,8 @@ init -2 python:
             store.warpto_pactstation1 = self.lastMission >= 3
             store.warpto_versta = self.lastMission >= 5
             store.warpto_nomodorn = self.lastMission >= 8
+            store.warpto_ryuvia = self.lastMission >= 10
+            store.warpto_farport = self.lastMission >= 12
 
             store.ep2_cancelwarp = False
 
