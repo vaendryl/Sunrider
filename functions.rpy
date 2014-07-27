@@ -589,15 +589,77 @@ init -6 python:
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
     
-    def interpolate_rect(location1, location2):  #creates a path between location1 and location2
+    def interpolate_grid(location1, location2): #draws a line from location1 to location2
         tiles = []
         loc1 = location1
-        loc2 = location2
-        disN = get_distance(loc1, loc2)
-        if disN != 0:
-            for i in range(0, disN + 1):
-                x = int(loc1[0] * (1 - float(i)/disN) + loc2[0] * float(i)/disN)
-                y = int(loc1[1] * (1 - float(i)/disN) + loc2[1] * float(i)/disN)
-                newloc = [x,y]
-                tiles.append(newloc)
+        loc2org = location2
+        mx = loc2org[0] - loc1[0] #extrapolation
+        my = loc2org[1] - loc1[1]
+        loc2 = [10*mx+loc2org[0],10*my+loc2org[1]]
+        ystep = 0
+        xstep = 0
+        error = 0
+        errorprev = 0
+        y = loc1[1]
+        x = loc1[0]
+        ddx = 0
+        ddy = 0
+        dx = loc2[0] - loc1[0]
+        dy = loc2[1] - loc1[1]
+        if dy < 0:
+            ystep = -1
+            dy = -dy
+        else:
+            ystep = 1
+        if dx < 0:
+            xstep = -1
+            dx = -dx
+        else:
+            xstep = 1
+        ddy = 2*dy
+        ddx = 2*dx
+        if ddx >= ddy:
+            errorprev = dx
+            error = dx
+            for i in range(0,dx):
+                x+=xstep
+                error+=ddy
+                if error > ddx:
+                    y+=ystep
+                    error-=ddx
+                    if error + errorprev < ddx:
+                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                            tiles.append([x,y-ystep])
+                    else:
+                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                            tiles.append([x-xstep,y])
+                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                    tiles.append([x,y])
+                errorprev = error
+        else:
+            errorprev = dy
+            error = dy
+            for i in range(0,dy):
+                y+=ystep
+                error+=ddx
+                if error > ddy:
+                    x+=xstep
+                    error-=ddy
+                    if error + errorprev < ddy:
+                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                            tiles.append([x-xstep,y])
+                    else:
+                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                            tiles.append([x,y-ystep])
+                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                    tiles.append([x,y])
+                errorprev = error
         return tiles
+            
+    def isvalid(location): #determines if the location in on the grid
+        valid = True
+        if location[0] > GRID_SIZE[0] or location[0] <=0:
+            valid = False
+        if location[1] > GRID_SIZE[1] or location[1] <=0:
+            valid = False
+        return valid

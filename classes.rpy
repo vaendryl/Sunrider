@@ -430,7 +430,7 @@ init -2 python:
                                 self.cmd -= self.orders[prev_result][0]
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
-                                listlocs = interpolate_rect(loc1, loc2)
+                                listlocs = interpolate_grid(loc1, loc2)
                                 renpy.music.play('Music/March_of_Immortals.ogg')
                                 renpy.call_in_new_context('atkanim_sunrider_vanguard')
                                 renpy.hide_screen('battle_screen')

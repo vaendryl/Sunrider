@@ -657,7 +657,7 @@ screen battle_screen:
                     $loc1 = sunrider.location
                     $loc2 = hovered_ship.location
                     if get_distance(loc1, loc2) <= 6:
-                        $tiles = interpolate_rect(loc1, loc2)
+                        $tiles = interpolate_grid(loc1, loc2)
                         for i in tiles:
                             $xposition = int(i[0] * int(192 * zoomlevel)) + int(4*zoomlevel)
                             $yposition = int(i[1] * int(120 * zoomlevel)) + int(4*zoomlevel)
