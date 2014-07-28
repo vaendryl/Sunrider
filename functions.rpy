@@ -438,50 +438,37 @@ init -6 python:
 
     def time_warp_easeout(t):  ##probably never got used
         return 1.0 - math.cos(t * math.pi / 2.0)
-        
+
     def get_mouse_location():
         a,b = renpy.get_mouse_pos()
         yoffset = 27 * store.zoomlevel
         hexheight = HEXD * store.zoomlevel
         hexwidth = HEXW * store.zoomlevel
         # xmax,ymax = GRID_SIZE
-        
+
         y = int( (b+BM.yadj.value-yoffset) / hexheight )
         if y%2==0:
             xoffset = hexwidth/2
         else:
             xoffset = 0
         x = int( (a+BM.xadj.value-xoffset) / hexwidth )
-        return (x,y)        
+        return (x,y)
         # if x <= 0 and x >= xmax:
             # return (1,1)
-        
-        
+
+
     # def test_displayable():
         # pass
-        
+
+    def ship_position(ship):
+        if ship.location is Nne:
+            return 0
+
+        a, b = ship.location
+        return a + b * 100
+
     def sort_ship_list():
-        sorting = True
-        count = len(BM.ships)-1
-        while count > 0 and sorting:
-            sorting = False
-            for x in range(count):
-            
-                if BM.ships[x].location == None:
-                    position1 = 0
-                else:
-                    a,b = BM.ships[x].location
-                    position1 = a+b*100
-                if BM.ships[x+1].location == None:
-                    position2 = 0
-                else:
-                    a,b = BM.ships[x+1].location
-                    position2 = a+b*100
-                
-                if position1 > position2:
-                    sorting = True
-                    BM.ships[x],BM.ships[x+1] = BM.ships[x+1],BM.ships[x]
-            count -= 1
+        BM.ships.sort(key=ship_position)
 
     def zoom_handling(result,bm):
         if result == None:
@@ -746,7 +733,7 @@ init -6 python:
         else:
             yposition = int(((y + add) * HEXD) * zoom)
         return yposition
-    
+
     def interpolate_grid(location1, location2): #draws a line from location1 to location2
         tiles = []
         loc1 = location1
@@ -813,7 +800,7 @@ init -6 python:
                     tiles.append([x,y])
                 errorprev = error
         return tiles
-            
+
     def isvalid(location): #determines if the location in on the grid
         valid = True
         if location[0] > GRID_SIZE[0] or location[0] <=0:
