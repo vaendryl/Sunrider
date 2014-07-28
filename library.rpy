@@ -350,7 +350,7 @@ init 2 python:
             BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
-            renpy.jump_out_of_context('sunrider_destroyed')
+            renpy.jump('sunrider_destroyed')
 
     class PhoenixBoaster(Battleship):
         def __init__(self):
