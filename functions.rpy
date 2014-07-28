@@ -461,7 +461,7 @@ init -6 python:
         # pass
 
     def ship_position(ship):
-        if ship.location is Nne:
+        if ship.location is None:
             return 0
 
         a, b = ship.location
