@@ -10,6 +10,7 @@
 # 9) actions
 
 init -2 python:
+    import pygame
 
         ##here the Battle class gets defined. it forms the core and spine of the entire combat engine.
         ##it gets initialized into an instance called BM, short for battlemanager
@@ -43,6 +44,7 @@ init -2 python:
             self.showing_orders = False #This is True when the list of orders is visible.
             self.show_tooltips = True #hide or show tooltips
             self.debugoverlay = False #overlay coords etc for debug purposes
+            self.show_grid = True     #show or hide the grid. no grid is much faster!
             self.pending_upgrades = [] #lists upgrades the user has not saved
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
@@ -157,7 +159,7 @@ init -2 python:
                     self.unselect_ship(self.selected)
                 else:
                     pass
-
+                    
             if result == "next ship":
                 if self.selected == None:
                     self.select_ship(sunrider)
@@ -189,7 +191,22 @@ init -2 python:
                                 looping = False
                         self.select_ship(player_ships[index])
 
-
+            if result[0] == 'mousefollow_click':
+                a,b = result[1]
+                yoffset = 27 * zoomlevel
+                hexheight = HEXD * zoomlevel
+                hexwidth = HEXW * zoomlevel
+                
+                y = int( (b+BM.yadj.value-yoffset) / hexheight )
+                if y%2==0:
+                    xoffset = hexwidth/2
+                else:
+                    xoffset = 0
+                x = int( (a+BM.xadj.value-xoffset) / hexwidth )
+                
+                
+                show_message( '{}/{}'.format(x,y) )
+                # show_message( '{}/{}'.format(a,b) )
 
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
@@ -742,6 +759,7 @@ init -2 python:
             self.width = 0
             self.height = 0
             self.position = renpy.get_mouse_pos()
+            self.mouse_has_moved = False
 
         def render(self, width, height, st, at):
             #create the basic Render from the passed displayable (the child)
@@ -755,9 +773,9 @@ init -2 python:
             #adjust the position so that the middle of the label lines up with the mouse cursor
             self.position = (x - self.width / 2 , y - self.height / 2)
             #blitting means actually showing it on screen
-            render.blit(child_render, self.position)
+            # render.blit(child_render, self.position)
             #request a redraw asap (= next frame)
-            renpy.redraw(self, 0)
+            # renpy.redraw(self, 0)
             #return the render object so that renpy can do things with it.
             return render
 
@@ -766,17 +784,54 @@ init -2 python:
 #            renpy.redraw(self,0)
 
         def event(self, ev, x, y, st):
-            import pygame
+            
             if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
-                return ['mousefollow_click',renpy.get_mouse_pos()]
+                self.mouse_has_moved = False
+            
+            if ev.type == pygame.MOUSEMOTION:
+                # if the left mouse button is pressed, it's a drag
+                if ev.buttons[0] == 1:
+                    BM.xadj.change(BM.xadj.value - ev.rel[0] * 2) 
+                    BM.yadj.change(BM.yadj.value - ev.rel[1] * 2)
+                    if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
+                        self.mouse_has_moved = True
+                        
+                mouse_location = get_mouse_location()
+                if BM.hovered != None:
+                    if BM.hovered.location != mouse_location:
+                        BM.hovered = None
+                        renpy.restart_interaction()
+                else:
+                    for ship in BM.ships:
+                        if ship.location == mouse_location:
+                            BM.hovered = ship
+                            renpy.restart_interaction()
+
+                    
+                    
+            if ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
+                if not self.mouse_has_moved:
+                    mouse_location = get_mouse_location()
+                    
+                    if BM.selected != None:
+                        if BM.selected.faction == 'Player':
+                            if get_cell_available(mouse_location):
+                                distance = get_distance(BM.selected.location,mouse_location)
+                                if distance <= 4:  #perhaps not really needed anymore
+                                    move_range = int(float(BM.selected.en) / BM.selected.move_cost)
+                                    if distance <= move_range:
+                                        return [ 'move' , mouse_location ]
+                    
+                    for ship in BM.ships:
+                        if ship.location == mouse_location:
+                            return ['selection',ship]
+                        else:
+                            pass
+                    
 
         def visit(self):
            return [ self.child ]
-
-
-
-
-
+           
     ##blueprints##
 
       #this class is the basis of all unit types in the game. these values are the default one if none are specified.
@@ -1604,29 +1659,10 @@ init -2 python:
             missile = self.simulate(parent,target)
             BM.missile_moving = True
 
-#            ##attempt to show the assault hit animation if it has it.
-#            if target.modifiers['flak'][0] >= 0:
-#                try:
-#                    renpy.call_in_new_context('atkanim_{}_assault'.format(target.animation_name))
-#                except:
-#                    pass
-
 
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
-## this is a nice idea and -almost- works perfectly, but when the game returns from the animation
-## the missile starts back at the parent's location. I can't think of a way to fix that.
-#            target_wait = 0
-#            if target.flaksim != None:
-#                target_wait = target.flaksim[0]
-#            if target_wait > 0:
-#                renpy.pause(target_wait)
-
-#                try:
-#                    renpy.call_in_new_context('atkanim_{}_assault'.format(target.animation_name))
-#                except:
-#                    pass
 
             if missile.shot_down != None:
                 remaining_wait = missile.shot_down

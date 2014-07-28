@@ -436,8 +436,25 @@ init -6 python:
         show_message('Reinitialization complete.')
         return
 
-    def time_warp_easeout(t):
+    def time_warp_easeout(t):  ##probably never got used
         return 1.0 - math.cos(t * math.pi / 2.0)
+        
+    def get_mouse_location():
+        a,b = renpy.get_mouse_pos()
+        yoffset = 27 * store.zoomlevel
+        hexheight = HEXD * store.zoomlevel
+        hexwidth = HEXW * store.zoomlevel
+        
+        y = int( (b+BM.yadj.value-yoffset) / hexheight )
+        if y%2==0:
+            xoffset = hexwidth/2
+        else:
+            xoffset = 0
+        x = int( (a+BM.xadj.value-xoffset) / hexwidth )
+        return (x,y)        
+        
+    # def test_displayable():
+        # pass
 
     def zoom_handling(result,bm):
         if result == None:

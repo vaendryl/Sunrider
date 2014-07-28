@@ -132,23 +132,34 @@ screen battle_screen:
         xadjustment BM.xadj
         yadjustment BM.yadj
         child_size (childx,childy)
-        draggable BM.draggable
+        draggable False #BM.draggable
         mousewheel False
         edgescroll BM.edgescroll #(0,0) #(70,400*zoomlevel)
 
                 ##CREATE HEX GRID##
 
-        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                $xposition = dispx(a, b, zoomlevel)
-                $yposition = dispy(a, b, zoomlevel)
-                $xsize = int((HEXW + 4) * zoomlevel)
-                $ysize = int((HEXH + 4) * zoomlevel)
-                add "Battle UI/hex.png":
-                    xpos xposition
-                    ypos yposition
-                    size (xsize,ysize)
-                    alpha 0.4
+##laggy as fuck!!
+        if BM.show_grid:
+            for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
+                for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+                    $xposition = dispx(a, b, zoomlevel)
+                    $yposition = dispy(a, b, zoomlevel)
+                    $xsize = int((HEXW + 4) * zoomlevel)
+                    $ysize = int((HEXH + 4) * zoomlevel)
+                    add "Battle UI/hex.png":
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
+                        alpha 0.4
+        else:
+            $xsize = int((HEXW+6) * zoomlevel) * 18
+            $ysize = int((HEXD+14) * zoomlevel) * 16
+            add 'Battle UI/hexgrid.png':
+                alpha 0.4
+                # zoom zoomlevel * 0.685
+                size (xsize,ysize)
+                xpos int(HEXW * zoomlevel)
+                ypos int((HEXD+4) * zoomlevel)
 
         ##legion warning indicator
         ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
@@ -352,18 +363,31 @@ screen battle_screen:
                             $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
                             $ lbl = hvr
 
-                        imagebutton:
+                        # imagebutton:
+                            # xanchor 0.5
+                            # yanchor 0.5
+                            # xpos xposition
+                            # ypos yposition
+                            # action act
+                            # idle lbl
+                            # hover hvr
+                            # hovered hvrd
+                            # unhovered unhvrd
+                            # focus_mask True #im.Scale(Image("Battle UI/focus mask 2.png"),500,400) this is Hard
+                            # at zoom_button(zoomlevel/2.5)
+                            
+                        if BM.hovered != None:
+                            if BM.hovered == ship:
+                                $ lbl = hoverglow(ship.lbl)
+                        
+                        add lbl:
                             xanchor 0.5
                             yanchor 0.5
                             xpos xposition
                             ypos yposition
-                            action act
-                            idle lbl
-                            hover hvr
-                            hovered hvrd
-                            unhovered unhvrd
-                            focus_mask True #im.Scale(Image("Battle UI/focus mask 2.png"),500,400) this is Hard
-                            at zoom_button(zoomlevel/2.5)
+                            zoom (zoomlevel/2.5)
+                        
+                            
 
                         if ship.getting_buff:
                             add 'Battle UI/buff_front.png':
@@ -611,16 +635,24 @@ screen battle_screen:
         if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode:
             for tile in BM.selected.movement_tiles:
 
-                imagebutton:
-                    at movebutton
-                    idle 'Battle UI/move_tile.png'
-                    hover 'Battle UI/move_tile.png'
+                # imagebutton:
+                    # at movebutton
+                    # idle 'Battle UI/move_tile.png'
+                    # hover 'Battle UI/move_tile.png'
+                    # xanchor 0.5
+                    # yanchor 0.5
+                    # xpos tile[0]
+                    # ypos tile[1]
+                    # action Return(['move',(tile[3],tile[4])])
+                    # alternate Return("deselect")
+                    
+                add 'Battle UI/move_tile.png':
+                    zoom (0.2 * zoomlevel)
+                    alpha 0.5
                     xanchor 0.5
                     yanchor 0.5
                     xpos tile[0]
                     ypos tile[1]
-                    action Return(['move',(tile[3],tile[4])])
-                    alternate Return("deselect")
 
                 text (str(BM.selected.move_cost*tile[2]) + ' EN'):
                     xpos tile[0]
@@ -631,7 +663,7 @@ screen battle_screen:
                     outlines [(2,'000',0,0)]
 
 
-          #firing the vanguard cannon  [[doesn't seem to be used anymore]]
+          #firing the vanguard cannon  [[doesn't seem to be used any more]]
         if BM.vanguard:
             $xposition = dispx(sunrider.locatio[0],sunrider.location[1],zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
             $yposition = dispy(sunrider.locatio[0],sunrider.location[1],zoomlevel) + int(zoomlevel * MOVY)
@@ -712,16 +744,24 @@ screen battle_screen:
                         $xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
                         $yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
 
-                        imagebutton:
-                            at movebutton
-                            idle 'Battle UI/move_tile.png'
-                            hover 'Battle UI/move_tile.png'
+                        # imagebutton:
+                            # at movebutton
+                            # idle 'Battle UI/move_tile.png'
+                            # hover 'Battle UI/move_tile.png'
+                            # xanchor 0.5
+                            # yanchor 0.5
+                            # xpos xposition
+                            # ypos yposition
+                            # action Return(['warptarget',(a,b)])
+                            # alternate Return("deselect")
+                            
+                        add 'Battle UI/move_tile.png':
+                            zoom (0.2 * zoomlevel)
+                            alpha 0.5
                             xanchor 0.5
                             yanchor 0.5
                             xpos xposition
-                            ypos yposition
-                            action Return(['warptarget',(a,b)])
-                            alternate Return("deselect")
+                            ypos yposition                        
 
                         #text (str(a) + ',' + str(b)): printed the x,y coordiantes for debugging purposes
                            # xpos xposition
@@ -770,6 +810,10 @@ screen battle_screen:
                 textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
             else:
                 textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',True)
+            if BM.show_grid:
+                textbutton "regular grid" xalign 1.0 action SetField(BM,'show_grid',False)
+            else:
+                textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',True)    
 
 
     vbox:

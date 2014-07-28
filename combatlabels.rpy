@@ -3,9 +3,6 @@
 #init:
 #    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
 
-
-#image work_in_progress 'gameplay/work-in-progress-hi.png':
-#    xcenter ycenter
 image black = Solid((0, 0, 0, 255))
 
 #label no_animation: #defunct
@@ -48,6 +45,7 @@ label test_battle:
         create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PactCruiser(),(14,8),[])
 
         create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
         create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
@@ -160,6 +158,7 @@ label melee_attack_player:
     pause 1.0 #I think dissolve effect also pauses for a little while
     play sound "sound/boasters.ogg"
     pause 1.4
+
 
     ## hitanim ##   little reason not to combine them if it's all dynamically generated anyway.
 
@@ -276,6 +275,9 @@ label battle_start:
         for ship in player_ships:
             ship.hp = ship.max_hp
             ship.en = ship.max_en
+        renpy.show_screen('mousefollow')
+        store.zoomlevel = 0.65
+        BM.show_grid = False
         BM.start()
 
 
