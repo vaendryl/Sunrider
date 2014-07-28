@@ -444,6 +444,7 @@ init -6 python:
         yoffset = 27 * store.zoomlevel
         hexheight = HEXD * store.zoomlevel
         hexwidth = HEXW * store.zoomlevel
+        # xmax,ymax = GRID_SIZE
         
         y = int( (b+BM.yadj.value-yoffset) / hexheight )
         if y%2==0:
@@ -452,9 +453,35 @@ init -6 python:
             xoffset = 0
         x = int( (a+BM.xadj.value-xoffset) / hexwidth )
         return (x,y)        
+        # if x <= 0 and x >= xmax:
+            # return (1,1)
+        
         
     # def test_displayable():
         # pass
+        
+    def sort_ship_list():
+        sorting = True
+        count = len(BM.ships)-1
+        while count > 0 and sorting:
+            sorting = False
+            for x in range(count):
+            
+                if BM.ships[x].location == None:
+                    position1 = 0
+                else:
+                    a,b = BM.ships[x].location
+                    position1 = a+b*100
+                if BM.ships[x+1].location == None:
+                    position2 = 0
+                else:
+                    a,b = BM.ships[x+1].location
+                    position2 = a+b*100
+                
+                if position1 > position2:
+                    sorting = True
+                    BM.ships[x],BM.ships[x+1] = BM.ships[x+1],BM.ships[x]
+            count -= 1
 
     def zoom_handling(result,bm):
         if result == None:

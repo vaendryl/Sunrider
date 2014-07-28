@@ -46,6 +46,7 @@ init -2 python:
             self.debugoverlay = False #overlay coords etc for debug purposes
             self.show_grid = True     #show or hide the grid. no grid is much faster!
             self.pending_upgrades = [] #lists upgrades the user has not saved
+            self.mouse_location = (0,0)
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
@@ -191,26 +192,27 @@ init -2 python:
                                 looping = False
                         self.select_ship(player_ships[index])
 
-            if result[0] == 'mousefollow_click':
-                a,b = result[1]
-                yoffset = 27 * zoomlevel
-                hexheight = HEXD * zoomlevel
-                hexwidth = HEXW * zoomlevel
+            # if result[0] == 'mousefollow_click':
+                # a,b = result[1]
+                # yoffset = 27 * zoomlevel
+                # hexheight = HEXD * zoomlevel
+                # hexwidth = HEXW * zoomlevel
                 
-                y = int( (b+BM.yadj.value-yoffset) / hexheight )
-                if y%2==0:
-                    xoffset = hexwidth/2
-                else:
-                    xoffset = 0
-                x = int( (a+BM.xadj.value-xoffset) / hexwidth )
+                # y = int( (b+BM.yadj.value-yoffset) / hexheight )
+                # if y%2==0:
+                    # xoffset = hexwidth/2
+                # else:
+                    # xoffset = 0
+                # x = int( (a+BM.xadj.value-xoffset) / hexwidth )
                 
                 
-                show_message( '{}/{}'.format(x,y) )
-                # show_message( '{}/{}'.format(a,b) )
+                # show_message( '{}/{}'.format(x,y) )
+                # # show_message( '{}/{}'.format(a,b) )
 
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
                 if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
+                # self.just_moved = True #zooming doesn't have to reset this button
 
             if result[0] == 'selection':  #this means you clicked on a ship, which could mean various things depending on circumstance.
                 self.target = result[1]
@@ -521,6 +523,7 @@ init -2 python:
 
             if result[0] == 'hover': #you are hovering over one of the weapon buttons
                 self.weaponhover = result[1]
+
                 if self.weaponhover.wtype == 'Support':
                     for ship in player_ships:
                         ship.cth = get_acc(result[1], BM.selected, ship)
@@ -531,6 +534,7 @@ init -2 python:
 
                     for ship in enemy_ships:
                         ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
+                
 
             if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
                 if result[1].wtype == 'Support':
@@ -759,7 +763,7 @@ init -2 python:
             self.width = 0
             self.height = 0
             self.position = renpy.get_mouse_pos()
-            self.mouse_has_moved = False
+            self.mouse_has_moved = True
 
         def render(self, width, height, st, at):
             #create the basic Render from the passed displayable (the child)
@@ -784,19 +788,31 @@ init -2 python:
 #            renpy.redraw(self,0)
 
         def event(self, ev, x, y, st):
+        
+        
             
             if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
                 self.mouse_has_moved = False
             
             if ev.type == pygame.MOUSEMOTION:
+                self.mouse_has_moved = True
+                
                 # if the left mouse button is pressed, it's a drag
                 if ev.buttons[0] == 1:
                     BM.xadj.change(BM.xadj.value - ev.rel[0] * 2) 
                     BM.yadj.change(BM.yadj.value - ev.rel[1] * 2)
-                    if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
-                        self.mouse_has_moved = True
+                    # if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
                         
                 mouse_location = get_mouse_location()
+                
+                if BM.selected != None:
+                    if BM.mouse_location != mouse_location:
+                        if get_distance(BM.selected.location,mouse_location) <=4:
+                            BM.mouse_location = mouse_location
+                            self.mouse_has_moved = True
+                            renpy.restart_interaction()
+                            
+                
                 if BM.hovered != None:
                     if BM.hovered.location != mouse_location:
                         BM.hovered = None
@@ -806,14 +822,12 @@ init -2 python:
                         if ship.location == mouse_location:
                             BM.hovered = ship
                             renpy.restart_interaction()
-
-                    
-                    
-            if ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
+                            
+            elif ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
                 if not self.mouse_has_moved:
                     mouse_location = get_mouse_location()
                     
-                    if BM.selected != None:
+                    if BM.selected != None and BM.weaponhover == None:
                         if BM.selected.faction == 'Player':
                             if get_cell_available(mouse_location):
                                 distance = get_distance(BM.selected.location,mouse_location)
@@ -822,11 +836,14 @@ init -2 python:
                                     if distance <= move_range:
                                         return [ 'move' , mouse_location ]
                     
-                    for ship in BM.ships:
-                        if ship.location == mouse_location:
-                            return ['selection',ship]
-                        else:
-                            pass
+                    if BM.weaponhover == None:
+                        for ship in BM.ships:
+                            if ship.location == mouse_location:
+                                return ['selection',ship]
+                            else:
+                                pass                            
+
+            
                     
 
         def visit(self):
@@ -1441,6 +1458,7 @@ init -2 python:
             renpy.show_screen('battle_screen')
 
             self.location = new_location
+            sort_ship_list()
             a = self.location[0]-1
             b = self.location[1]-1
             bm.grid[a][b] = True

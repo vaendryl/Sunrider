@@ -152,14 +152,14 @@ screen battle_screen:
                         size (xsize,ysize)
                         alpha 0.4
         else:
-            $xsize = int((HEXW+6) * zoomlevel) * 18
-            $ysize = int((HEXD+14) * zoomlevel) * 16
+            $xsize = int((HEXW+5.5) * zoomlevel * 18)
+            $ysize = int((HEXD+4) * zoomlevel * 16)
             add 'Battle UI/hexgrid.png':
                 alpha 0.4
                 # zoom zoomlevel * 0.685
                 size (xsize,ysize)
                 xpos int(HEXW * zoomlevel)
-                ypos int((HEXD+4) * zoomlevel)
+                ypos int((HEXD-2) * zoomlevel)
 
         ##legion warning indicator
         ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
@@ -261,190 +261,171 @@ screen battle_screen:
 
                 ## DISPLAY SHIP AVATARS ##
 
-          ## cycling through every cell in the grid in order is required so that units
-          ## do not overlap units below them making things look weird.
-        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+        for ship in BM.ships: #cycle through every ship in the battle
+                  ##first we show the circle base below every unit
+            if ship.location != None:
+                $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
+                $xsize = int(210 * zoomlevel)
+                $ysize = int(120 * zoomlevel)
+                if ship.faction == 'Player':
+                    add "Battle UI/player base.png":
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
+                if ship.faction == 'PACT':
+                    add "Battle UI/pact_base.png":
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
+                if ship.faction == 'Pirate':
+                    add "Battle UI/pirate_base.png":
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
 
-                  ##first display the coloured bases that go beneath the units
-                for ship in BM.ships: #cycle through every ship in the battle
-                    if ship.location == (a,b):
-                          ##first we show the circle base below every unit
-                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
-                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
-                        $xsize = int(210 * zoomlevel)
-                        $ysize = int(120 * zoomlevel)
-                        if ship.faction == 'Player':
-                            add "Battle UI/player base.png":
-                                xanchor 0.5
-                                yanchor 0.5
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
-                        if ship.faction == 'PACT':
-                            add "Battle UI/pact_base.png":
-                                xanchor 0.5
-                                yanchor 0.5
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
-                        if ship.faction == 'Pirate':
-                            add "Battle UI/pirate_base.png":
-                                xanchor 0.5
-                                yanchor 0.5
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
+                $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
+                $cell_height = 1503 / ((GRID_SIZE[1]+2)/2)
+                #$cell_offset = cell_width / 2
 
-                        $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
-                        $cell_height = 1503 / ((GRID_SIZE[1]+2)/2)
-                        #$cell_offset = cell_width / 2
+                #calculate the position of the ships on the field
+                $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.25 * ADJY) + int(zoomlevel * MOVY)
 
-                        #calculate the position of the ships on the field
-                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
-                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.25 * ADJY) + int(zoomlevel * MOVY)
+                if ship.getting_buff:  #used if you buff someone
+                    add 'Battle UI/buff_back.png':
+                        xpos int(xposition-(cell_width/2)*zoomlevel)
+                        zoom (zoomlevel/2.0)
+                        at buffup(yposition)
 
-                        if ship.getting_buff:  #used if you buff someone
-                            add 'Battle UI/buff_back.png':
-                                xpos int(xposition-(cell_width/2)*zoomlevel)
-                                zoom (zoomlevel/2.0)
-                                at buffup(yposition)
+                if ship.getting_curse:  #used if you curse someone
+                    add 'Battle UI/curse_back.png':
+                        xpos int(xposition-(cell_width/2)*zoomlevel)
+                        zoom (zoomlevel/2.0)
+                        at cursedown(yposition-(190)*zoomlevel)
 
-                        if ship.getting_curse:  #used if you curse someone
-                            add 'Battle UI/curse_back.png':
-                                xpos int(xposition-(cell_width/2)*zoomlevel)
-                                zoom (zoomlevel/2.0)
-                                at cursedown(yposition-(190)*zoomlevel)
+                #default values
+                $mode = '' #default
+                $act = Return(['selection',ship])
+                $lbl = ship.lbl
+                $hvr = hoverglow(ship.lbl)
+                $hvrd = SetField(BM,'hovered',ship)
+                $unhvrd = SetField(BM,'hovered',None)
 
-                        #default values
-                        $mode = '' #default
-                        $act = Return(['selection',ship])
-                        $lbl = ship.lbl
-                        $hvr = hoverglow(ship.lbl)
-                        $hvrd = SetField(BM,'hovered',ship)
-                        $unhvrd = SetField(BM,'hovered',None)
+                #some properties of the imagebutton representing a ship change depending on circumstances
+                if ship.faction == 'Player':
+                    #by default player ships can be selected, which the above values are already set to.
 
-                        #some properties of the imagebutton representing a ship change depending on circumstances
-                        if ship.faction == 'Player':
-                            #by default player ships can be selected, which the above values are already set to.
+                    if BM.targetingmode:
+                        #you cannot target yourself with an active weapon
+                        $ mode = 'offline'
 
-                            if BM.targetingmode:
-                                #you cannot target yourself with an active weapon
+                        if BM.active_weapon.wtype == 'Support':
+                            #except when the active weapon is a support skill. in that case, player ships become targets
+                            $ mode = 'target'
+
+                else: #ship is an enemy faction
+                    #by default enemy ships can be selected (to view stat details), which the above values are already set to.
+
+                    if BM.targetingmode:
+                        #with an active weapon selected enemies become targets
+                        $ mode = 'target'
+
+                        if BM.active_weapon.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
+                            #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
+                            $ mode = 'offline'
+
+                        if BM.active_weapon.wtype == 'Support':
+                            $ mode = 'offline'
+
+                        if BM.active_weapon.name == 'Gravity Gun':
+                            #the gravity gun is a special type weapon
+                            if ship.stype != 'Ryder':
                                 $ mode = 'offline'
 
-                                if BM.active_weapon.wtype == 'Support':
-                                    #except when the active weapon is a support skill. in that case, player ships become targets
-                                    $ mode = 'target'
+                if mode == 'target':
+                    $ lbl = hoverglow(ship.lbl)
+                    $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
+                elif mode == 'offline':
+                    $ act = NullAction()
+                    $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                    $ lbl = hvr
 
-                        else: #ship is an enemy faction
-                            #by default enemy ships can be selected (to view stat details), which the above values are already set to.
+                if BM.hovered != None:
+                    if BM.hovered == ship:
+                        $ lbl = hoverglow(ship.lbl)
+                
+                add lbl:
+                    xanchor 0.5
+                    yanchor 0.5
+                    xpos xposition
+                    ypos yposition
+                    zoom (zoomlevel/2.5)
+                
+                    
 
-                            if BM.targetingmode:
-                                #with an active weapon selected enemies become targets
-                                $ mode = 'target'
+                if ship.getting_buff:
+                    add 'Battle UI/buff_front.png':
+                        xpos int(xposition-96*zoomlevel)
+                        zoom (zoomlevel/2.0)
+                        at buffup(int(yposition+50*zoomlevel))
 
-                                if BM.active_weapon.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
-                                    #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
-                                    $ mode = 'offline'
+                if ship.getting_curse:
+                    add 'Battle UI/curse_front.png':
+                        xpos int(xposition-96*zoomlevel)
+                        zoom (zoomlevel/2.0)
+                        at cursedown(yposition-(190-50)*zoomlevel)
 
-                                if BM.active_weapon.wtype == 'Support':
-                                    $ mode = 'offline'
-
-                                if BM.active_weapon.name == 'Gravity Gun':
-                                    #the gravity gun is a special type weapon
-                                    if ship.stype != 'Ryder':
-                                        $ mode = 'offline'
-
-                        if mode == 'target':
-                            $ lbl = hoverglow(ship.lbl)
-                            $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
-                        elif mode == 'offline':
-                            $ act = NullAction()
-                            $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                            $ lbl = hvr
-
-                        # imagebutton:
-                            # xanchor 0.5
-                            # yanchor 0.5
-                            # xpos xposition
-                            # ypos yposition
-                            # action act
-                            # idle lbl
-                            # hover hvr
-                            # hovered hvrd
-                            # unhovered unhvrd
-                            # focus_mask True #im.Scale(Image("Battle UI/focus mask 2.png"),500,400) this is Hard
-                            # at zoom_button(zoomlevel/2.5)
-                            
-                        if BM.hovered != None:
-                            if BM.hovered == ship:
-                                $ lbl = hoverglow(ship.lbl)
-                        
-                        add lbl:
-                            xanchor 0.5
-                            yanchor 0.5
-                            xpos xposition
-                            ypos yposition
-                            zoom (zoomlevel/2.5)
-                        
-                            
-
-                        if ship.getting_buff:
-                            add 'Battle UI/buff_front.png':
-                                xpos int(xposition-96*zoomlevel)
-                                zoom (zoomlevel/2.0)
-                                at buffup(int(yposition+50*zoomlevel))
-
-                        if ship.getting_curse:
-                            add 'Battle UI/curse_front.png':
-                                xpos int(xposition-96*zoomlevel)
-                                zoom (zoomlevel/2.0)
-                                at cursedown(yposition-(190-50)*zoomlevel)
-
-                          ##add the HP bar and the EN bar
-                        if ship.faction == 'Player':
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
-                            $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                            add 'Battle UI/label hp bar.png':
-                                xpos xposition
-                                ypos yposition
-                                zoom (zoomlevel/2.5)
-                                crop (0,0,hp_size,79)
+                  ##add the HP bar and the EN bar
+                if ship.faction == 'Player':
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
+                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                    add 'Battle UI/label hp bar.png':
+                        xpos xposition
+                        ypos yposition
+                        zoom (zoomlevel/2.5)
+                        crop (0,0,hp_size,79)
 
 #                            text str(ship.hp):
 #                                xpos (xposition+60*zoomlevel)
 #                                ypos (yposition+30*zoomlevel)
 #                                size int(30 * zoomlevel)
 
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
-                            $energy_size = int(405*(float(ship.en)/ship.max_en))
-                            add 'Battle UI/label energy bar.png':
-                                xpos xposition
-                                ypos yposition
-                                zoom (zoomlevel/2.5)
-                                crop (0,0,energy_size,79)
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
+                    $energy_size = int(405*(float(ship.en)/ship.max_en))
+                    add 'Battle UI/label energy bar.png':
+                        xpos xposition
+                        ypos yposition
+                        zoom (zoomlevel/2.5)
+                        crop (0,0,energy_size,79)
 
-                        else:    #enemies
+                else:    #enemies
 
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
-                            $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                            add 'Battle UI/label hp bar.png':
-                                xpos xposition
-                                ypos yposition
-                                zoom (zoomlevel/2.5)
-                                crop (0,0,hp_size,90)
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
+                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                    add 'Battle UI/label hp bar.png':
+                        xpos xposition
+                        ypos yposition
+                        zoom (zoomlevel/2.5)
+                        crop (0,0,hp_size,90)
 
-                            text str(ship.hp):
-                                xanchor 0.5
-                                yanchor 0.5
-                                xpos int(xposition+80*zoomlevel)
-                                ypos int(yposition+27*zoomlevel)
-                                size int(16*zoomlevel)
-                                font "Font/sui generis rg.ttf"
-                                outlines [(2,'000',0,0)]
+                    text str(ship.hp):
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos int(xposition+80*zoomlevel)
+                        ypos int(yposition+27*zoomlevel)
+                        size int(16*zoomlevel)
+                        font "Font/sui generis rg.ttf"
+                        outlines [(2,'000',0,0)]
 
 ##show flak icon and intercept text
         if BM.missile_moving:
@@ -511,100 +492,95 @@ screen battle_screen:
 ##targeting window##
 
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
-          ##loop again to show the targeting window. this way other ships don't overlap with it.
         if BM.weaponhover != None or BM.targetingmode and BM.selected != None:
             $ selected = BM.selected
 
-              #the looping is NEEDED to counter overlap problems. it sucks, I know. I wish I could set zorder to individual images
-            for a in range(1,GRID_SIZE[0]+1):
-                for b in range(1,GRID_SIZE[1]+1):
-                    for ship in BM.ships:
+            for ship in BM.ships:
+                if ship.location != None:
 
-                        if BM.weaponhover == None:
-                            $BM.weaponhover = BM.active_weapon
-                        if BM.weaponhover.wtype == 'Support' and (ship.faction != 'Player' or BM.weaponhover.self_buff == True):
-                            $continue
-                        if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
-                            $continue
-                        if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
-                            $continue
-                        if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
-                            $continue
+                    if BM.weaponhover == None:
+                        $BM.weaponhover = BM.active_weapon
+                    if BM.weaponhover.wtype == 'Support' and (ship.faction != 'Player' or BM.weaponhover.self_buff == True):
+                        $continue
+                    if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
+                        $continue
+                    if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
+                        $continue
+                    if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
+                        $continue
 
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
+                    add 'Battle UI/targeting_window.png':
+                        xpos xposition
+                        ypos yposition
+                        xanchor 0.5
+                        yanchor 0.5
+                        zoom (zoomlevel/1.3)
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.20 * ADJY) + int(zoomlevel * MOVY)
+                    text (str(ship.cth) + '%'):
+                        xpos xposition
+                        ypos yposition
+                        xanchor 0.5
+                        yanchor 0.5
+                        size (20 * zoomlevel)
+                        color '000'
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.40 * ADJY) + int(zoomlevel * MOVY)
+                    if selected == None:  #workarounds
+                        $ effective_flak = 0
+                    else:
+                        if BM.weaponhover.wtype == 'Rocket':
+                            #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
+                            $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm
+                        else:
+                            $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm
 
-                        if ship.location == (a,b):
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
-                            add 'Battle UI/targeting_window.png':
-                                xpos xposition
-                                ypos yposition
-                                xanchor 0.5
-                                yanchor 0.5
-                                zoom (zoomlevel/1.3)
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.20 * ADJY) + int(zoomlevel * MOVY)
-                            text (str(ship.cth) + '%'):
-                                xpos xposition
-                                ypos yposition
-                                xanchor 0.5
-                                yanchor 0.5
-                                size (20 * zoomlevel)
-                                color '000'
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.40 * ADJY) + int(zoomlevel * MOVY)
-                            if selected == None:  #workarounds
-                                $ effective_flak = 0
-                            else:
-                                if BM.weaponhover.wtype == 'Rocket':
-                                    #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
-                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm
-                                else:
-                                    $effective_flak = ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm
+                    if effective_flak < 0:
+                        $ effective_flak = 0
+                    elif effective_flak > 100:
+                        $ effective_flak = 100
 
-                            if effective_flak < 0:
-                                $ effective_flak = 0
-                            elif effective_flak > 100:
-                                $ effective_flak = 100
-
-                            text str(effective_flak):
-                                xpos xposition
-                                ypos yposition
-                                xanchor 1.0
-                                yanchor 0.5
-                                size (14 * zoomlevel)
-                                color 'fff'
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.40 * ADJY) + int(zoomlevel * MOVY)
-                            text str(ship.shields):
-                                xpos xposition
-                                ypos yposition
-                                xanchor 1.0
-                                yanchor 0.5
-                                size (14 * zoomlevel)
-                                color 'fff'
-                            $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,1.0 * ADJX) + int(zoomlevel * MOVX)
-                            $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.4 * ADJY) + int(zoomlevel * MOVY)
-                              ##when you hover over a weapon that does kinetic or assault type damage it shows you armor is double as effective
-                            if BM.weaponhover == None:
-                                $weapon = BM.active_weapon
-                            else:
-                                $weapon = BM.weaponhover
-                            if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
-                                text (str(ship.armor) + 'x2'):
-                                    xpos xposition
-                                    ypos yposition
-                                    xanchor 0.0
-                                    yanchor 0.5
-                                    size (12 * zoomlevel)
-                                    color 'fff'
-                            else:
-                                text str(ship.armor):
-                                    xpos xposition
-                                    ypos yposition
-                                    xanchor 0.0
-                                    yanchor 0.5
-                                    size (14 * zoomlevel)
-                                    color 'fff'
+                    text str(effective_flak):
+                        xpos xposition
+                        ypos yposition
+                        xanchor 1.0
+                        yanchor 0.5
+                        size (14 * zoomlevel)
+                        color 'fff'
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,.92 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,.40 * ADJY) + int(zoomlevel * MOVY)
+                    text str(ship.shields):
+                        xpos xposition
+                        ypos yposition
+                        xanchor 1.0
+                        yanchor 0.5
+                        size (14 * zoomlevel)
+                        color 'fff'
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,1.0 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.4 * ADJY) + int(zoomlevel * MOVY)
+                      ##when you hover over a weapon that does kinetic or assault type damage it shows you armor is double as effective
+                    if BM.weaponhover == None:
+                        $weapon = BM.active_weapon
+                    else:
+                        $weapon = BM.weaponhover
+                    if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
+                        text (str(ship.armor) + 'x2'):
+                            xpos xposition
+                            ypos yposition
+                            xanchor 0.0
+                            yanchor 0.5
+                            size (12 * zoomlevel)
+                            color 'fff'
+                    else:
+                        text str(ship.armor):
+                            xpos xposition
+                            ypos yposition
+                            xanchor 0.0
+                            yanchor 0.5
+                            size (14 * zoomlevel)
+                            color 'fff'
 
           #when you hover over an emeny ship the HP bar and HP text will overlay again on top of other ships.
         if BM.hovered != None: #when you hover over a ship
@@ -646,7 +622,11 @@ screen battle_screen:
                     # action Return(['move',(tile[3],tile[4])])
                     # alternate Return("deselect")
                     
-                add 'Battle UI/move_tile.png':
+                $ lbl = 'Battle UI/move_tile.png'
+                $ tile_location = (tile[3],tile[4])
+                if tile_location == BM.mouse_location:
+                    $ lbl = hoverglow(lbl)  
+                add lbl:
                     zoom (0.2 * zoomlevel)
                     alpha 0.5
                     xanchor 0.5

@@ -278,6 +278,7 @@ label battle_start:
         renpy.show_screen('mousefollow')
         store.zoomlevel = 0.65
         BM.show_grid = False
+        sort_ship_list()
         BM.start()
 
 
