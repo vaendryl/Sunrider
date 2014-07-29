@@ -26,6 +26,8 @@ label test_battle:
         enemy_ships = []
         destroyed_ships = []
         BM.mission = 'test'
+        
+        BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
 
         #create the sunrider. you only have to create a player ship once:
         sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault()]
@@ -275,7 +277,7 @@ label battle_start:
         for ship in player_ships:
             ship.hp = ship.max_hp
             ship.en = ship.max_en
-        renpy.show_screen('mousefollow')
+        # renpy.show_screen('mousefollow')
         store.zoomlevel = 0.65
         BM.show_grid = False
         sort_ship_list()

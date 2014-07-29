@@ -113,6 +113,8 @@ screen battle_screen:
     ##messing with the player for fun and profit
     if BM.battlemode:
         timer 900 repeat False action Show('game_over_gimmick')
+    
+    add MouseTracker() #relates drags and clicks to the viewport and the BM
 
     if config.developer: #a release version should have set this to False
         key "Q" action Jump('quit')  ##DEBUG FAST QUIT##
@@ -706,50 +708,14 @@ screen battle_screen:
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:
-                $xposition = dispx(location[0],location[1],zoomlevel) - int(100 * zoomlevel) + int(zoomlevel * MOVX)
-                $yposition = dispy(location[0],location[1],zoomlevel,-0.5 * ADJY) - int(100 * zoomlevel) + int(zoomlevel * MOVY)
+                $xposition = dispx(location[0],location[1],zoomlevel) + int(zoomlevel * MOVX)
+                $yposition = dispy(location[0],location[1],zoomlevel,-0.5 * ADJY) + int(zoomlevel * MOVY)
                 add 'Battle UI/label_warpflash.png':
 #                    anchor 0.5  #I get a float object not iterable crash. very annoying
                     xpos xposition
                     ypos yposition
                     at warpout
-                    zoom 0.25
-
-         #creates buttons on empty tiles when warping
-         #buttons return tile coordinate when clicked
-        if BM.targetwarp:
-            for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-                for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                    if get_cell_available((a,b)):
-                        $xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
-                        $yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
-
-                        # imagebutton:
-                            # at movebutton
-                            # idle 'Battle UI/move_tile.png'
-                            # hover 'Battle UI/move_tile.png'
-                            # xanchor 0.5
-                            # yanchor 0.5
-                            # xpos xposition
-                            # ypos yposition
-                            # action Return(['warptarget',(a,b)])
-                            # alternate Return("deselect")
-                            
-                        add 'Battle UI/move_tile.png':
-                            zoom (0.2 * zoomlevel)
-                            alpha 0.5
-                            xanchor 0.5
-                            yanchor 0.5
-                            xpos xposition
-                            ypos yposition                        
-
-                        #text (str(a) + ',' + str(b)): printed the x,y coordiantes for debugging purposes
-                           # xpos xposition
-                           # ypos yposition
-                           # xanchor 0.5
-                           # yanchor 0.5
-                           # size (20 * zoomlevel)
-                           # outlines [(2,'000',0,0)]
+                    zoom 0.25 * zoomlevel
 
             ##MOVE SHIP FROM GRID TO GRID##
         if BM.moving:
@@ -1136,6 +1102,9 @@ screen commands: ##show the weapon buttons etc##
                         outlines [(1,'000',0,0)]
 
                 $count += 1
+                
+                
+                
 screen tooltips:
     zorder 9
 

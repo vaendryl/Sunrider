@@ -383,56 +383,47 @@ init -2 python:
                     self.cmd -= self.orders[result][0]
                     if BM.selected != None:
                         BM.unselect_ship(BM.selected)
-                    store.zoomlevel = 0.5 #zoom out
                     BM.selected = sunrider #show the sunrider's label
                     BM.phase = None #disables the end turn button
                     BM.order_used = False #debug
+                    BM.targetwarp = True
                     renpy.hide_screen('commands')
                     renpy.hide_screen('battle_screen')
                     renpy.show_screen('battle_screen')
                     renpy.show_screen('mousefollow')
-                    BM.targetwarp = True
                     looping = True
                     while looping:
                         result = ui.interact()
                         if result[0] == "warptarget":
-                            #mouse position gets passed through here
-                            x,y = result[1]
-                            #gridx,gridy = GRID_SIZE #18,16 by default this code replaced with imagebuttons
-                            #cell_width = 1440 / (gridx+2)
-                            #cell_height = 1494 / (gridy+2)
-                            #cellx = x / cell_width
-                            #celly = y / cell_height
-                            cell = x,y
-
-                            #if get_cell_available(cell): now redundant
-
-                            store.flash_locations = [ sunrider.location,cell ]
+                            new_location = result[1]
+                            store.flash_locations = [ sunrider.location,new_location ]
                             BM.warping = True
                             renpy.hide_screen('battle_screen')
                             renpy.show_screen('battle_screen')
                             renpy.hide_screen('mousefollow')
-                            BM.targetwarp = False
                             renpy.music.play('sound/large_warpout.ogg', channel = 'sound5')
-                            renpy.pause(1.0, hard=True)
+                            renpy.pause(1.0, hard=True) #hard means unskippable
                             BM.warping = False
                             x,y = BM.selected.location
                             BM.grid[x-1][y-1] = False
-                            BM.selected.location = cell
+                            BM.selected.location = new_location
                             x,y = BM.selected.location
                             BM.grid[x-1][y-1] = True
                             looping = False
-
                             BM.phase = 'Player'
+                            BM.targetwarp = False
                             renpy.hide_screen('battle_screen')
                             renpy.show_screen('battle_screen')
-
+                            
+                        if result[0] == "zoom":
+                            zoom_handling(result,self)
+                            
                         if result == 'deselect':
                             self.cmd += self.orders['SHORT RANGE WARP'][0]
                             looping = False
                             renpy.hide_screen('mousefollow')
-                            BM.targetwarp = False
                             BM.phase = 'Player'
+                            BM.targetwarp = False
                 else:
                     BM.order_used = False
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
@@ -753,6 +744,88 @@ init -2 python:
 
 
     ## Displayables ##
+    
+    class MouseTracker(renpy.Displayable):
+        """this class keeps track of where the mouse is and what it does and relates 
+        drags and clicks to the viewport and the BM. This way the ships can be simple
+        images instead of imagebuttons, reducing lag. I guess this doesn't have to be
+        a displayable but it works so meh"""
+        
+        def __init__(self,**kwargs):
+            renpy.Displayable.__init__(self,**kwargs)
+            self.width = 0
+            self.height = 0
+            self.mouse_has_moved = True
+            self.rel = (0,0)
+            
+        def render(self, width, height, st, at):
+            render = renpy.Render(self.width, self.height)
+            return render
+            
+        def event(self, ev, x, y, st):
+            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+                self.mouse_has_moved = False
+                self.rel = pygame.mouse.get_rel()
+            
+            if ev.type == pygame.MOUSEMOTION:
+                self.mouse_has_moved = True
+                renpy.hide_screen('game_over_gimmick')
+                
+                # if the left mouse button is pressed, it's a drag
+                if ev.buttons[0] == 1:
+                    BM.xadj.change(BM.xadj.value - ev.rel[0] * 2) 
+                    BM.yadj.change(BM.yadj.value - ev.rel[1] * 2)
+                    # if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
+                        
+                mouse_location = get_mouse_location()
+                
+                #check for hovering over movement tiles
+                if BM.selected != None:
+                    if BM.mouse_location != mouse_location and ev.buttons[0] != 1:
+                        if get_distance(BM.selected.location,mouse_location) <=4:
+                            BM.mouse_location = mouse_location
+                            self.mouse_has_moved = True
+                            renpy.restart_interaction()
+                
+                #check for hovering over ships
+                if BM.hovered != None:
+                    if BM.hovered.location != mouse_location:
+                        BM.hovered = None
+                        renpy.restart_interaction()
+                else:
+                    for ship in BM.ships:
+                        if ship.location == mouse_location:
+                            BM.hovered = ship
+                            renpy.restart_interaction()
+                            break
+                            
+            elif ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
+                # being very careful that the mouse -did not move- recently before an actual click is registered
+                # otherwise it's a drag
+                if not self.mouse_has_moved and pygame.mouse.get_rel() == (0,0):
+                    mouse_location = get_mouse_location()
+                    
+                    if BM.targetwarp:
+                        if get_cell_available(mouse_location):
+                            return ['warptarget',get_mouse_location()]
+                    
+                    elif BM.selected != None and BM.weaponhover == None:
+                        if BM.selected.faction == 'Player':
+                            if get_cell_available(mouse_location):
+                                distance = get_distance(BM.selected.location,mouse_location)
+                                if distance <= 4:  #perhaps not really needed anymore?
+                                    move_range = int(float(BM.selected.en) / BM.selected.move_cost)
+                                    if distance <= move_range:
+                                        return [ 'move' , mouse_location ]
+                    
+                    if (BM.weaponhover == None or BM.active_weapon != None) and not BM.targetwarp:
+                        for ship in BM.ships:
+                            if ship.location == mouse_location:
+                                return ['selection',ship]
+                            else:
+                                pass 
+        
+        
     class MouseFollow(renpy.Displayable):
         '''custom displayables harness the power of pygame directly.
         this class creates an object that will display an image at the mouse cursor
@@ -763,7 +836,6 @@ init -2 python:
             self.width = 0
             self.height = 0
             self.position = renpy.get_mouse_pos()
-            self.mouse_has_moved = True
 
         def render(self, width, height, st, at):
             #create the basic Render from the passed displayable (the child)
@@ -777,77 +849,21 @@ init -2 python:
             #adjust the position so that the middle of the label lines up with the mouse cursor
             self.position = (x - self.width / 2 , y - self.height / 2)
             #blitting means actually showing it on screen
-            # render.blit(child_render, self.position)
-            #request a redraw asap (= next frame)
-            # renpy.redraw(self, 0)
+            render.blit(child_render, self.position)
+            # request a redraw asap (= next frame)
+            renpy.redraw(self, 0)
             #return the render object so that renpy can do things with it.
             return render
 
-#        def per_interact(self):
-##            self.position = renpy.get_mouse_pos()
-#            renpy.redraw(self,0)
-
         def event(self, ev, x, y, st):
-        
-        
-            
-            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
-                self.mouse_has_moved = False
-            
-            if ev.type == pygame.MOUSEMOTION:
-                self.mouse_has_moved = True
-                
-                # if the left mouse button is pressed, it's a drag
-                if ev.buttons[0] == 1:
-                    BM.xadj.change(BM.xadj.value - ev.rel[0] * 2) 
-                    BM.yadj.change(BM.yadj.value - ev.rel[1] * 2)
-                    # if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
-                        
-                mouse_location = get_mouse_location()
-                
-                if BM.selected != None:
-                    if BM.mouse_location != mouse_location:
-                        if get_distance(BM.selected.location,mouse_location) <=4:
-                            BM.mouse_location = mouse_location
-                            self.mouse_has_moved = True
-                            renpy.restart_interaction()
-                            
-                
-                if BM.hovered != None:
-                    if BM.hovered.location != mouse_location:
-                        BM.hovered = None
-                        renpy.restart_interaction()
-                else:
-                    for ship in BM.ships:
-                        if ship.location == mouse_location:
-                            BM.hovered = ship
-                            renpy.restart_interaction()
-                            
-            elif ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
-                if not self.mouse_has_moved:
-                    mouse_location = get_mouse_location()
-                    
-                    if BM.selected != None and BM.weaponhover == None:
-                        if BM.selected.faction == 'Player':
-                            if get_cell_available(mouse_location):
-                                distance = get_distance(BM.selected.location,mouse_location)
-                                if distance <= 4:  #perhaps not really needed anymore
-                                    move_range = int(float(BM.selected.en) / BM.selected.move_cost)
-                                    if distance <= move_range:
-                                        return [ 'move' , mouse_location ]
-                    
-                    if BM.weaponhover == None:
-                        for ship in BM.ships:
-                            if ship.location == mouse_location:
-                                return ['selection',ship]
-                            else:
-                                pass                            
+            pass
+            # if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
 
-            
-                    
-
+                
         def visit(self):
            return [ self.child ]
+           
+           
            
     ##blueprints##
 
