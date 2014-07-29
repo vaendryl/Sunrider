@@ -2278,6 +2278,7 @@ init -2 python:
                 for count in range(self.lastMission):
                     setattr(store,'mission{}_complete'.format(count+1),True)
             store.mission4_complete = False
+            store.mission7_complete = False
 
             store.ava_location = None
             store.asa_location = None
@@ -2404,3 +2405,28 @@ init -2 python:
         def __call__(self):
             store.bonusPage = 0
             renpy.restart_interaction()
+
+
+    class StoreItem(store.object):
+        def __init__(self, id, visibility_condition, display_name, cost, actions, tooltip, variable_name = None, max_amt = -1):
+            self.id = id
+            self.visibility_condition = visibility_condition
+            self.display_name = display_name
+            self.cost = cost
+            self.actions = actions
+            self.tooltip = tooltip
+            self.variable_name = variable_name
+            self.max_amt = max_amt
+            
+            if self not in store_items:
+                store_items.append(self)
+
+        def __call__(self):
+            for action in self.actions:
+                action.__call__
+
+        def isVisible(self):
+            return eval(self.visibility_condition)
+
+        def __eq__(self, other):
+            return isinstance(self, other.__class__) and self.id == other.id
