@@ -512,42 +512,6 @@ init -2 python:
                     renpy.say('Ava','It\'s hopeless, captain!')
                     BM.order_used = False
 
-            if result[0] == 'hover': #you are hovering over one of the weapon buttons
-                self.weaponhover = result[1]
-
-                if self.weaponhover.wtype == 'Support':
-                    for ship in player_ships:
-                        ship.cth = get_acc(result[1], BM.selected, ship)
-                else:
-                    ignore_evasion = False
-                    if self.weaponhover.wtype == 'Curse':
-                        ignore_evasion = True
-
-                    for ship in enemy_ships:
-                        ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
-                
-
-            if result[0] == 'weapon_fire': #you actually clicked on one of the weapon buttons
-                if result[1].wtype == 'Support':
-                    if result[1].self_buff:
-                        result[1].fire(BM.selected,BM.selected)
-                        update_stats()
-                        BM.selected.movement_tiles = get_movement_tiles(BM.selected)
-                        return
-
-                self.targetingmode = True   #displays targeting info over enemy_ships
-                self.active_weapon = result[1]
-                self.weaponhover = BM.active_weapon
-                ignore_evasion = False
-
-                #the hover thing is not 100% trustworthy so we calculate CTH again based on the selected weapon
-                if self.weaponhover.wtype == 'Curse':
-                    ignore_evasion = True
-                for ship in enemy_ships:
-                    ship.cth = get_acc(result[1], BM.selected, ship, ignore_evasion)
-
-                update_stats()
-
             if result == 'endturn':
                 self.end_player_turn()
 
@@ -2441,3 +2405,54 @@ init -2 python:
 
         def __call__(self):
             create_ship(self.ship, self.location, self.weapons)
+
+
+    class HoverWeapon(Action):
+        def __init__(self, weapon):
+            self.weapon = weapon
+
+        def __call__(self):
+            BM.weaponhover = self.weapon
+
+            if BM.weaponhover.wtype == 'Support':
+                for ship in player_ships:
+                    ship.cth = get_acc(BM.weaponhover, BM.selected, ship)
+            else:
+                ignore_evasion = False
+                if BM.weaponhover.wtype == 'Curse':
+                    ignore_evasion = True
+
+                for ship in enemy_ships:
+                    ship.cth = get_acc(BM.weaponhover, BM.selected, ship, ignore_evasion)
+
+            renpy.restart_interaction()
+
+
+    class FireWeapon(Action):
+        def __init__(self, weapon):
+            self.weapon = weapon
+
+        def __call__(self):
+            if self.weapon.wtype == 'Support':
+                if self.weapon.self_buff:
+                    self.weapon.fire(BM.selected,BM.selected)
+                    update_stats()
+                    BM.selected.movement_tiles = get_movement_tiles(BM.selected)
+
+                    renpy.restart_interaction()
+                    return
+
+            BM.targetingmode = True   #displays targeting info over enemy_ships
+            BM.active_weapon = self.weapon
+            BM.weaponhover = BM.active_weapon
+            ignore_evasion = False
+
+            #the hover thing is not 100% trustworthy so we calculate CTH again based on the selected weapon
+            if BM.weaponhover.wtype == 'Curse':
+                ignore_evasion = True
+            for ship in enemy_ships:
+                ship.cth = get_acc(self.weapon, BM.selected, ship, ignore_evasion)
+
+            update_stats()
+
+            renpy.restart_interaction()

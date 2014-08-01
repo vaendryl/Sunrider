@@ -1033,8 +1033,8 @@ screen commands: ##show the weapon buttons etc##
                 #default behaviour
                 $ lbl = weapon.lbl
                 $ hvr = hoverglow(weapon.lbl)
-                $ act = If(can_fire,Return(['weapon_fire',weapon]))
-                $ hvrd = Return(['hover',weapon])
+                $ act = If(can_fire,FireWeapon(weapon))
+                $ hvrd = HoverWeapon(weapon)
                 $ unhvrd = SetField(BM,'weaponhover',None)
                 $ insens = im.MatrixColor(weapon.lbl,im.matrix.brightness(-0.50))
 
