@@ -2,17 +2,31 @@ label initStore:
     python:
         store_items = []
 
-        actions = [SetField(BM,'money',(eval('BM.money') - 300)),SetField(sunrider,'rockets',eval('sunrider.rockets') + 1)]
+        actions = [SetField(sunrider,'rockets',eval('sunrider.rockets') + 1)]
         tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
         StoreItem('Rockets', 'True', "Warhead Ammo", 300, actions, tooltip, 'sunrider.rockets', 2)
 
-        actions = [SetField(BM,'money',(eval('BM.money') - 2000)),SetField(store.sunrider_rocket,'damage',1200)]
+        actions = [SetField(store.sunrider_rocket,'damage',1200)]
         tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
         StoreItem('Rocketupgrade1', 'sunrider_rocket.damage < 1200', "Quantum Torpedo License", 2000, actions, tooltip)
 
-        actions = [SetField(BM,'money',(eval('BM.money') - 400)),SetField(sunrider,'repair_drones',eval('sunrider.repair_drones') + 1)]
+        actions = [SetField(sunrider,'repair_drones',eval('sunrider.repair_drones') + 1)]
         tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
         StoreItem('repair drones', 'sunrider.repair_drones != None', "Repair Drones", 400, actions, tooltip, 'sunrider.repair_drones', 8)
+
+        # I had to put this here or it would crash
+        alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
+
+        actions = [CreateShipAction(AllianceCruiser(),alliancecruiser_weapons)]
+        tooltip = ''
+        StoreItem('alliance cruiser', 'mission12_complete or paladin != None', "Alliance Cruiser", 2000, actions, tooltip)
+
+        # TODO
+        unionfrigate_weapons = []
+
+        actions = [CreateShipAction(UnionFrigate(),unionfrigate_weapons)]
+        tooltip = ''
+        StoreItem('union frigate', 'True', "Union Frigate", 750, actions, tooltip)
 
     return
 

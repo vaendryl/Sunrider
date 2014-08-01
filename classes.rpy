@@ -2367,6 +2367,32 @@ init -2 python:
             renpy.jump_out_of_context(self.jumpLoc)
 
 
+    class StoreItem(store.object):
+        def __init__(self, id, visibility_condition, display_name, cost, actions, tooltip, variable_name = None, max_amt = -1):
+            self.id = id
+            self.visibility_condition = visibility_condition
+            self.display_name = display_name
+            self.cost = cost
+            self.actions = actions
+            self.tooltip = tooltip
+            self.variable_name = variable_name
+            self.max_amt = max_amt
+            
+            self.actions.append(SetField(BM,'money',(eval('BM.money') - self.cost)))
+            
+            if self not in store_items:
+                store_items.append(self)
+
+        def __call__(self):
+            for action in self.actions:
+                action.__call__()
+
+        def isVisible(self):
+            return eval(self.visibility_condition)
+
+        def __eq__(self, other):
+            return isinstance(self, other.__class__) and self.id == other.id
+
   ##custom actions##
 
     class BonusPageNext(Action):
@@ -2407,26 +2433,11 @@ init -2 python:
             renpy.restart_interaction()
 
 
-    class StoreItem(store.object):
-        def __init__(self, id, visibility_condition, display_name, cost, actions, tooltip, variable_name = None, max_amt = -1):
-            self.id = id
-            self.visibility_condition = visibility_condition
-            self.display_name = display_name
-            self.cost = cost
-            self.actions = actions
-            self.tooltip = tooltip
-            self.variable_name = variable_name
-            self.max_amt = max_amt
-            
-            if self not in store_items:
-                store_items.append(self)
+    class CreateShipAction(Action):
+        def __init__(self, ship, weapons, location = None):
+            self.ship = ship
+            self.weapons = weapons
+            self.location = location
 
         def __call__(self):
-            for action in self.actions:
-                action.__call__
-
-        def isVisible(self):
-            return eval(self.visibility_condition)
-
-        def __eq__(self, other):
-            return isinstance(self, other.__class__) and self.id == other.id
+            create_ship(self.ship, self.location, self.weapons)
