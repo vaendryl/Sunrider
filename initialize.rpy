@@ -97,6 +97,8 @@ label initialize:
         paladin = None
         havoc = None
         paradigm = None
+        
+        skirmish_enabled = True
 
         check1 = False
         check2 = False

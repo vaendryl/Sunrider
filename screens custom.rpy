@@ -746,7 +746,7 @@ screen battle_screen:
 
 
 ##not part of the viewport##
-    if config.developer:
+    if config.developer and BM.phase != 'formation':
         vbox:
             ypos 100
             xalign 1.0
@@ -762,17 +762,18 @@ screen battle_screen:
                 textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',True)    
 
 
-    vbox:
-        xalign 1.0
-        if BM.edgescroll == (0,0):
-            textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
-        else:
-            textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
-        if BM.show_tooltips:
-            textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
-        else:
-            textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
-        textbutton "restart turn" xalign 1.0 action Jump('restartturn')
+    if BM.phase != 'formation':
+        vbox:
+            xalign 1.0
+            if BM.edgescroll == (0,0):
+                textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
+            else:
+                textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
+            if BM.show_tooltips:
+                textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
+            else:
+                textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
+            textbutton "restart turn" xalign 1.0 action Jump('restartturn')
 
     if BM.just_moved:
         textbutton 'cancel movement':
@@ -802,13 +803,23 @@ screen battle_screen:
         for ship in player_ships:
             if ship.en >= ship.max_en:
                 $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
-
+    
         imagebutton:
             xpos 90
             yalign 1.0
             idle endturnbutton_idle
             hover hoverglow(endturnbutton_idle)
             action Return('endturn')
+            
+            
+    if BM.phase == 'formation':
+        imagebutton:
+            xpos 90
+            yalign 1.0
+            idle 'Skirmish/start.png'
+            hover hoverglow('Skirmish/start.png')
+            action [ If( BM.selected==None , Return('start') ) ]
+    
 
 transform move_down(ystart,yend,xx=0):
     xpos xx
@@ -1102,6 +1113,124 @@ screen commands: ##show the weapon buttons etc##
                         outlines [(1,'000',0,0)]
 
                 $count += 1
+                
+
+                
+transform move_vertical(xstart,xend,xx=0):
+    #used by skirmish windows
+    xpos xstart
+    linear 0.5 xpos xend
+    on hide:
+        linear 0.5 xpos xstart
+          #not sure why this is needed. I'm calling bug in renpy
+        time 2
+        alpha 0                
+
+screen player_unit_pool_collapsed:
+    #this just shows the 'add player units' text and puts a button over it
+    zorder 2
+    
+    add 'Skirmish/addplayer.png':
+        xpos -152
+    
+    button:
+        background None
+        xpos 0
+        ypos 410
+        yminimum 150
+        ymaximum 150
+        xminimum 20
+        xmaximum 20
+        action Show('player_unit_pool')
+    
+screen player_unit_pool:
+    zorder 3
+    
+    frame:
+        background 'Skirmish/addplayer.png'
+        xmaximum 182
+        at move_vertical(-152,0)
+        
+        vbox:
+            for ship in player_ships:
+                if ship.location == None and ship != BM.selected:
+                    imagebutton:
+                        at zoom_button(0.2)
+                        idle ship.lbl
+                        hover hoverglow(ship.lbl)
+                        action Return(['selection',ship]) 
+        
+    button:
+        background None
+        xpos 162
+        ypos 410
+        yminimum 150
+        ymaximum 150
+        xminimum 20
+        xmaximum 20
+        action Hide('player_unit_pool')
+        
+
+screen enemy_unit_pool_collapsed:
+    zorder 2
+    
+    add 'Skirmish/addenemy.png':
+        xpos 1890
+    
+    button:
+        background None
+        xpos 1890
+        ypos 410
+        yminimum 150
+        ymaximum 150
+        xminimum 20
+        xmaximum 20
+        action Show('enemy_unit_pool')
+
+screen enemy_unit_pool:
+    zorder 3
+    
+    $ all_enemies = [
+        PactBomber(),  PactMook(),
+        MissileFrigate(), PactCruiser(),
+        PactCarrier(), PactOutpost(),
+        PactBattleship(),RyuvianCruiser(),
+        Havoc(), PirateBomber(),
+        PirateGrunt(), PirateDestroyer(),
+        PirateBase()
+        ]
+    
+    frame:
+        background 'Skirmish/addenemy.png'
+        # xalign 1.0
+        xmaximum 176
+        at move_vertical(1890,1744)
+        
+        viewport:
+            xpos 20
+            ypos 20
+            mousewheel True #luckily this viewport eats scrolls above it, so the main one doesn't return it.
+            
+            vbox:
+                spacing 20
+                
+                for ship in all_enemies:
+                    imagebutton:
+                        at zoom_button(0.15)
+                        idle ship.lbl
+                        hover hoverglow(ship.lbl)
+                        action Return(['selection',ship])
+                        
+    button:
+        background None
+        xpos 1738
+        ypos 410
+        yminimum 150
+        ymaximum 150
+        xminimum 30
+        xmaximum 30
+        action Hide('enemy_unit_pool')                        
+
                 
                 
                 

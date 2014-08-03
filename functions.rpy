@@ -98,8 +98,8 @@ init -6 python:
                 elif result[0] == '-':
                     reverse_upgrade(BM.selected, result[1])
 
-    def battlemode(bm):
-        bm.battlemode = True
+    def battlemode():
+        BM.battlemode = True
         config.rollback_enabled = False
 
     def VNmode():
@@ -201,6 +201,18 @@ init -6 python:
                 return False #out of bounds is not available
         else:
             return False #None location is not free. failsafes.
+            
+            
+    def set_cell_available(location, available=False):
+        #False means available(empty), True means occupied
+        if location != None:
+            a,b = location
+            X,Y = GRID_SIZE
+            if a > 0 and a <= X and b > 0 and b <= Y:
+                BM.grid[a-1][b-1] = available
+            else:
+                raise Exception("tried to set availability on a hex that does not exist")
+                # pass  #not sure if I should raise an exception or not
 
 
     def show_message(message,xpos=0.5,ypos=0.7):
@@ -333,6 +345,8 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
+                
+    
 
     def set_planets():
         Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
@@ -498,7 +512,7 @@ init -6 python:
 
         elif result[1] == "out":
             store.zoomlevel *= (1 - ZOOM_SPEED)
-            if store.zoomlevel <= 0.5: store.zoomlevel = 0.5
+            if store.zoomlevel <= 0.45: store.zoomlevel = 0.45
 
         side_distance = (1920*store.zoomlevel/0.5)*real_xpos-adjusted_xpos #I use the mousepostion that was stored at the start to calculate the new viewport position
         if side_distance < 0: side_distance = 0

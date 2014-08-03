@@ -5,7 +5,8 @@ patch 4.3
 ======
 * assimilated true hexmod [Azureflare is the best!]
 * you can scroll down a bit further so that the status window doesn't cover units in the far bottom right
-* greatly reduced lag 
+* greatly reduced lag by reworking much of the battle UI.
+* SECRETS
 
 
 patch 4.2a

@@ -94,14 +94,15 @@ init -2 python:
             ship.movement_tiles = []
 
         def start(self):
-            battlemode(self)
-            update_stats()  #used to update some attributes like armor and shields
+            battlemode()
+            update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
             renpy.jump('mission{}'.format(self.mission))
 
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
+            
             self.just_moved = False #this sets it so you can no longer take back your move
             renpy.hide_screen('game_over_gimmick') #disables the screensaver gimmick
 
@@ -193,21 +194,6 @@ init -2 python:
                         self.select_ship(player_ships[index])
 
             # if result[0] == 'mousefollow_click':
-                # a,b = result[1]
-                # yoffset = 27 * zoomlevel
-                # hexheight = HEXD * zoomlevel
-                # hexwidth = HEXW * zoomlevel
-                
-                # y = int( (b+BM.yadj.value-yoffset) / hexheight )
-                # if y%2==0:
-                    # xoffset = hexwidth/2
-                # else:
-                    # xoffset = 0
-                # x = int( (a+BM.xadj.value-xoffset) / hexwidth )
-                
-                
-                # show_message( '{}/{}'.format(x,y) )
-                # # show_message( '{}/{}'.format(a,b) )
 
             if result[0] == "zoom":
                 zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
@@ -708,6 +694,7 @@ init -2 python:
 
 
     ## Displayables ##
+    #custom displayables harness the power of pygame directly.
     
     class MouseTracker(renpy.Displayable):
         """this class keeps track of where the mouse is and what it does and relates 
@@ -767,6 +754,7 @@ init -2 python:
                 # being very careful that the mouse -did not move- recently before an actual click is registered
                 # otherwise it's a drag
                 if not self.mouse_has_moved and pygame.mouse.get_rel() == (0,0):
+                    # show_message('tried to click')
                     mouse_location = get_mouse_location()
                     
                     if BM.targetwarp:
@@ -791,9 +779,11 @@ init -2 python:
         
         
     class MouseFollow(renpy.Displayable):
-        '''custom displayables harness the power of pygame directly.
+        """
         this class creates an object that will display an image at the mouse cursor
-        which gets redrawn every frame so it follows the cursor.'''
+        which gets redrawn every frame so it follows the cursor.
+        """
+        
         def __init__(self,child,**kwargs):
             renpy.Displayable.__init__(self,**kwargs)
             self.child = renpy.displayable(child)
@@ -819,7 +809,7 @@ init -2 python:
             #return the render object so that renpy can do things with it.
             return render
 
-        def event(self, ev, x, y, st):
+        def event(self, ev, x, y, st):    
             pass
             # if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
 
@@ -1217,7 +1207,7 @@ init -2 python:
                     can_melee = True
 
             if can_melee:
-                minimum_damage = 100
+                minimum_damage = 50
             else:
                 minimum_damage = 10
 
@@ -1234,6 +1224,8 @@ init -2 python:
 
                   ##find the enemy ships you want to move towards
                 priority_target = [None,0]
+                
+                #isn't this double?
                 can_melee = False
                 for weapon in self.weapons:
                     if weapon.wtype == 'Melee':
@@ -1242,7 +1234,7 @@ init -2 python:
                 for ship in player_ships:
                     distance = get_ship_distance(self,ship)
                     if ship.stype == 'Ryder' and can_melee:
-                        priority = 10*(ship.hate/100+10) / (distance*distance/2.0)
+                        priority = 2*(ship.hate/100+10) / (distance*distance/2.0)
                     else:
                         priority = (ship.hate/100+10) / (distance*distance/2.0)
                     if  priority > priority_target[1]:
@@ -1282,7 +1274,7 @@ init -2 python:
             travel_distance = get_ship_distance(self,target)
 
             if melee_distance == False:
-                if target.stype == 'Ryder':
+                if target.stype == 'Ryder' and self.hp >= 250:
                     for weapon in self.weapons:
                         if weapon.wtype == 'Melee':
                             melee_distance = True

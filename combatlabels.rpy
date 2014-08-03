@@ -1,4 +1,5 @@
-#these labels are called by combat code
+## this file is a horrible mishmash of experimental code that often end up used in the game
+## many of this stuff should be organized in other files...
 
 #init:
 #    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
@@ -73,7 +74,128 @@ label missiontest:
     else:
         pass #continue down
 
+    # jump dispatch
     return
+    
+    
+label skirmish_battle:
+    python:
+        store.tempmoney = BM.money
+        store.tempcmd = BM.cmd
+        enemy_ships = []
+        destroyed_ships = []
+        BM.mission = 'test'
+        BM.xadj.value = 872
+        BM.yadj.value = 370 
+        store.zoomlevel = 0.65
+        BM.phase = 'formation'
+        BM.show_grid = False
+        battlemode()
+        for ship in player_ships:
+            ship.location = None
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
+    
+    hide screen deck0
+    show screen battle_screen
+    show screen player_unit_pool_collapsed
+    show screen enemy_unit_pool_collapsed
+    
+    call missionskirmish       
+    
+    python:
+        BM.phase = 'Player'
+    
+    call battle_start
+    
+    python:
+        BM.cmd = store.tempcmd
+        BM.money = store.tempmoney
+    jump dispatch
+    return
+    
+label missionskirmish:
+    python:
+        # test = 'test'
+        result = ui.interact()
+        
+        if result == True or result == False:
+            show_message('wtf is a bool returned?') #had some trouble with this at some point. still not sure what caused it.
+            renpy.jump('missionskirmish')
+        
+        elif result == 'start':
+            renpy.hide_screen('player_unit_pool_collapsed')
+            renpy.hide_screen('enemy_unit_pool_collapsed')
+            renpy.hide_screen('player_unit_pool')
+            renpy.hide_screen('enemy_unit_pool')
+            renpy.hide_screen('mousefollow')
+            BM.battlemode = False
+            
+        elif result[0] == "zoom":
+            zoom_handling(result,BM)
+            
+        elif result == 'deselect':
+            #if you picked up an enemy unit that was already put down right clicking should delete it entirely
+            #player ships automatically return to the blue pool to be placed again later.
+            if BM.selected != None:
+                if BM.selected in enemy_ships:
+                    BM.ships.remove(BM.selected)
+                    enemy_ships.remove(BM.selected)
+            BM.targetwarp = False
+            renpy.hide_screen('mousefollow')                
+            BM.selected = None
+            
+        elif result[0] == 'selection':
+            # this result can be from one of the imagebuttons in the pool screens or returned from
+            # MouseTracker because a hex with a unit in it was clicked.
+            selected_ship = result[1]
+            BM.targetwarp = True
+            renpy.show_screen('mousefollow')
+            
+            if selected_ship.faction == 'Player':
+                BM.selected = selected_ship
+            else:
+                if selected_ship.location != None:
+                    BM.selected = selected_ship
+                    if selected_ship in enemy_ships:
+                        BM.ships.remove(BM.selected)
+                        enemy_ships.remove(BM.selected)
+                else:
+                    BM.selected = deepcopy(selected_ship) #breaks alias   
+                    
+            if BM.selected.location != None:
+                set_cell_available(BM.selected.location)           
+            BM.selected.location = None
+                
+            
+        elif result[0] == 'warptarget':
+            # returned from MouseTracker if you click on an empty hex when BM.warptarget == True.
+            if BM.selected != None:
+                new_location = result[1]
+                set_cell_available(new_location,True)
+                
+                if BM.selected.faction != 'Player':
+                    enemy_ships.append(BM.selected)
+                    BM.ships.append(BM.selected)               
+                
+                BM.selected.location = new_location
+                
+                if BM.selected.faction != 'Player' and pygame.key.get_mods() != 0:
+                    BM.selected = deepcopy(BM.selected) #breaks alias
+                else:
+                    BM.targetwarp = False
+                    renpy.hide_screen('mousefollow')                
+                    BM.selected = None
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump missionskirmish #loop back
+    else:
+        pass #continue down
+
+    return
+    
+    
 
 transform melee_atkanim(img1,img2):
     img1
@@ -272,8 +394,8 @@ label battle_start:
         renpy.save('beginturn')
         if BM.show_tooltips:
             renpy.show_screen('tooltips')
-        BM.xadj.value = 872
-        BM.yadj.value = 370
+        # BM.xadj.value = 872
+        # BM.yadj.value = 370
         for ship in player_ships:
             ship.hp = ship.max_hp
             ship.en = ship.max_en
@@ -348,7 +470,8 @@ label after_load:
             if hasattr(store,'sunrider_rocket'):
                 rocketdamage = store.sunrider_rocket.damage
             reset_classes()
-            store.sunrider.weapons[3].damage = rocketdamage
+            if sunrider != None:
+                store.sunrider.weapons[3].damage = rocketdamage
             BM.save_version = config.version
             res_location = "lab"
             res_event = "allocatefunds"

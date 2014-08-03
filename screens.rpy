@@ -341,7 +341,7 @@ screen load:
 
     if not hasattr(store,'BM'):
         $ BM = Battle()
-    if not (BM.phase == 'Player' or BM.phase == None):
+    if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
@@ -421,7 +421,7 @@ screen save:
 
     if not hasattr(store,"BM"):
         $ BM = Battle()
-    if not BM.phase == 'Player':
+    if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not save during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
