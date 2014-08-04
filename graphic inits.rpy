@@ -22,6 +22,7 @@ init -5:
     define e = Character(" ")
     define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)            
     define cre = Character(" ", what_font="Font/GOTHIC.TTF", what_size=20, what_xalign=0.5, what_yoffset=-800)            
+    define kyo = Character('Kyoko', who_xalign=0.05)
 
 #####################################SIDE CHARACTERS
 
@@ -92,7 +93,61 @@ init -5:
         xanchor 0.5
         zoom 0.69
         subpixel True    
-
+        
+        
+        
+        
+    image kyoko neutral neutral:
+        "Character/Side/kyoko_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True  
+    image kyoko neutral sad:
+        "Character/Side/kyoko_neutral_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True  
+    image kyoko excited shout:
+        "Character/Side/kyoko_excited_shout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True  
+    image kyoko excited neutralshout:
+        "Character/Side/kyoko_excited_neutralshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True  
+    image kyoko excited happy:
+        "Character/Side/kyoko_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True               
+    image kyoko excited scared:
+        "Character/Side/kyoko_excited_scared.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True 
+    image kyoko dead1:
+        "Character/Side/kyoko_dead1.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True         
+    image kyoko dead2:
+        "Character/Side/kyoko_dead2.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.65
+        subpixel True                
+        
+        
+        
 #####################################SPACE BACKGROUNDS
     
     image space back1:
@@ -166,6 +221,7 @@ init -5:
         yanchor 0.5 xanchor 0.5
         xpos 0.5 ypos 0.5
         subpixel True
+        
 
         
     ##############################BACKGROUNDS
@@ -243,7 +299,41 @@ init -5:
         "Background/bridge_redtiltfore.png"
         yalign 0.5
         xalign 0.5
+    image bg beach1_fade:
+        "Background/beach_fade.jpg"
+    image beach_over:
+        "Background/beach_fadeover.png"
+    image bg beach1:
+        "Background/beach1.jpg"
+    image bg beach2:
+        "Background/beach2.jpg"
+    image bg beach2_night:
+        "Background/beach2_night.jpg"
+    image bg logcabin:
+        "Background/cabin.jpg"        
+    image bg cabindeck:
+        "Background/cabindeck.jpg"     
+    image cabindeck_fadeover:
+        "Background/cabindeck_fadeover.png"     
+    image bg cabinoutside:
+        "Background/cabinoutside.jpg"     
+    image cabinoutside_fadeover:
+        "Background/cabinbush_fadeover.png"  
+    image bg cabinday:
+        "Background/cabinday.jpg"     
 
+    image bg ongess1:
+        "Background/ongess1.jpg"
+    image bg ongess2:
+        "Background/ongess2.jpg"
+    image bg ongess3:
+        "Background/ongess3.jpg"
+
+    image bg holdingcell:
+        "Background/holdingcell.jpg"
+    
+        
+        
         
     image bg battlegrid = "Gameplay/battlegrid.jpg"
     image bg black = "Gameplay/Space/parallax_spacebase.jpg"
@@ -251,6 +341,7 @@ init -5:
     image bg sunriderwarpout = "Space/sunrider_warpout_back.jpg"
     image bg captainsoffice_nolights = "Background/captainsoffice_nolights.jpg"
     image captainsoffice_nolights_overlay = "Background/captainsoffice_nolightsoverlay.png"
+    image holding_cell_overlay = "Background/holdingcell_overlay.png"
 
 
     ###########################CGs
@@ -568,7 +659,13 @@ init -5:
     image map_astralexpanse:
         "Map/astralexpanse.jpg"
     image map_nomodorn:
-        "Map/nomodorn.jpg"
+        "Map/nomodorn.jpg"    
+    image map_farport:
+        "Map/farport.jpg"
+    image map_ryuvia:
+        "Map/ryuvia.jpg"
+    image map_ongess:
+        "Map/ongess.jpg"
         
     image map_occupiedcerainfo:
         "Map/occupiedcera_info.png"
@@ -584,6 +681,12 @@ init -5:
         "Map/versta_info.png"
     image map_nomodorn_info:
         "Map/nomodorn_info.png"
+    image map_ryuvia_info:
+        "Map/ryuvia_info.png"
+    image map_farport_info:
+        "Map/farport_info.png"        
+    image map_ongess_info:
+        "Map/ongess_info.png"        
 
     
     ########################LOGOS
@@ -648,17 +751,17 @@ init -5:
         xanchor 0.5
         yanchor 0.5
 
-    image credits1 = Text("Project Director {p}         Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits2 = Text("Writer{p}         Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits3 = Text("Lead Artist{p}         Melonbunny", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits4 = Text("Character Design{p}         Melonbunny", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits5 = Text("Additional Character Design{p}         Sixten", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits6 = Text("Mechanical Design{p}         Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits1 = Text("Project Director {p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits2 = Text("Writer{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits3 = Text("Lead Character Artist{p}         Ashton Wilson", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits5 = Text("Additional Character Design{p}         Adrian Ferrer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits6 = Text("Mechanical Design{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits7 = Text("3D Textures{p}         CGTextures", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits8 = Text("Background Art{p}         Samu-kun", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits8 = Text("Background Art{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits9 = Text("Lead Programmer{p}         Vaendryl", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits10 = Text("Engine Programmer{p}         Renpytom", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits11 = Text("Additional Programming{p}         Renpytom, Samu-kun, Endershadow, Quickman, Renari, KingRaptor, azureflare, MakainX, RegularGamer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits10 = Text("Engine Programmer{p}         Tom Rothamel", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits11 = Text("Additional Programming{p}         Tom Rothamel, Sam Yang, Endershadow", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits11b = Text("Hex Mod{p}         azureflare", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits12 = Text("Cast", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits13 = Text("Ava Crescentia:  Amber Lee Connors", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits14 = Text("Asaga di Ryuvia:  Kira Buckland", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -669,13 +772,14 @@ init -5:
     image credits16d = Text("Sola di Ryuvia:  Tina Kim", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16e = Text("Kryska Stares:  Cayla Martin", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16f = Text("Alliance Cruiser Captain:  Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16g = Text("Union Frigate Captain:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits17 = Text("Captain Kayto Shields:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits20 = Text("Voice Clean Up{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, The Fall Of Salanthine, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits23 = Text("ED Song{p}         |Firn -The Pale Sun- ft.lily-an/Maya Full |{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, Eternal Dream, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}vocals: lily-an{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits23 = Text("ED Song{p}         |Firn -The Pale Sun-|{p}vocals: lily-an, Maya{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits25 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
 
@@ -788,6 +892,8 @@ init -5:
 
     $ eyecatch_wipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
     $ eyecatch_wiperev = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=True)
+    
+    $ nightmaremissilewipe = ImageDissolve("Transitions/left_to_right.jpg", 0.5, reverse=False)
 
     define flash = Fade(0.1, 0.0, 0.5, color="#fff")
 
@@ -2356,7 +2462,86 @@ init -5:
     image quantumtorpedo:
         "gameplay/Animations/PACTBattleship/quantumexplosion.png"
         xalign 0.5 yalign 0.5
+        
+        
+    image sola_beach:
+        "CG/sola_beach.jpg"
+        xalign 0.5 yalign 0.5
+    image sola_beach_sad:
+        "CG/sola_beach_sad.jpg"
+        xalign 0.5 yalign 0.5
+    image sola_beach_surprise:
+        "CG/sola_beach_surprise.jpg"
+        xalign 0.5 yalign 0.5
 
+    
+    image chigara_beach1:
+        "CG/chigarabeach1.jpg"
+        xalign 0.5 yalign 0.5
+    image chigara_beach2:
+        "CG/chigarabeach2.jpg"
+        xalign 0.5 yalign 0.5
+    image chigara_beach3:
+        "CG/chigarabeach3.jpg"
+        xalign 0.5 yalign 0.5
+    
+        
+    image unionfrigate_side:
+        "gameplay/Animations/UnionFrigate/side.png"
+        xalign 0.5 yalign 0.5
+    image unionfrigate_side_laserfront:
+        "gameplay/Animations/UnionFrigate/laserfront.png"
+        xalign 0.5 yalign 0.5
+    image unionfrigate_side_laserback:
+        "gameplay/Animations/UnionFrigate/laserback.png"
+        xalign 0.5 yalign 0.5
+        
+    image nightmare:
+        "gameplay/Animations/Nightmare/side.png"
+        xalign 0.5 yalign 0.5
+        
+    image nightmare pulse:
+        "gameplay/Animations/Nightmare/pulse.png"
+        xalign 0.5 yalign 0.5
+    image nightmare missile:
+        "gameplay/Animations/Nightmare/side.png"
+        xalign 0.5 yalign 0.5
+    image nightmare laser:
+        "gameplay/Animations/Nightmare/side.png"
+        xalign 0.5 yalign 0.5
+
+    image nightmare_missiletrail:
+        "gameplay/Animations/Nightmare/missile_trail.png"
+        xalign 0.5 yalign 0.5
+    image nightmare_laserbeam1:
+        "gameplay/Animations/Nightmare/laser1.png"
+        xalign 0.5 yalign 0.5
+    image nightmare_laserbeam2:
+        "gameplay/Animations/Nightmare/laser2.png"
+        xalign 0.5 yalign 0.5
+    image nightmare_laserbeam3:
+        "gameplay/Animations/Nightmare/laser3.png"
+        xalign 0.5 yalign 0.5
+    image nightmare_pulseflash:
+        "gameplay/Animations/Nightmare/pulse_flash.png"
+        xanchor 0.5 yanchor 0.5
+    image nightmare_pulsebolt:
+        "gameplay/Animations/Nightmare/pulse_round.png"
+        xanchor 0.5 yanchor 0.5
+    image nightmare_missileround1:
+        "gameplay/Animations/Nightmare/missile_round.png"
+        xanchor 100 yanchor 250
+    image nightmare_missileround2:
+        "gameplay/Animations/Nightmare/missile_round.png"
+        xanchor 100 yanchor 250
+    image nightmare_missileround3:
+        "gameplay/Animations/Nightmare/missile_round.png"
+        xanchor 100 yanchor 250
+
+    image ongess_approach:
+        "CG/ongess_approach.jpg"
+        
+        
 ########################################## JOKE
 
     image bg renpytomback:
@@ -2379,6 +2564,8 @@ init -5:
         "CG/popularity2.jpg"
     image pollthree:
         "CG/popularity3.jpg"
+    image poll4:
+        "CG/popularity4.jpg"
 
 ########################
 

@@ -45,6 +45,7 @@ init -2 python:
             self.show_tooltips = True #hide or show tooltips
             self.debugoverlay = False #overlay coords etc for debug purposes
             self.show_grid = True     #show or hide the grid. no grid is much faster!
+            self.formation_range = 7  #the farthest column the player can place units during the formation phase
             self.pending_upgrades = [] #lists upgrades the user has not saved
             self.mouse_location = (0,0)
             self.orders = {
@@ -75,6 +76,10 @@ init -2 python:
                 self.grid.append([False]*GRID_SIZE[1])
             self.battle_bg = "Background/space{!s}.jpg".format(renpy.random.randint(1,9))
 
+        #return None if an attribute does not exist:
+        # def __getattr__(self,X):
+            # return None        
+        
         #here we start defining a few methods part of the battlemanager
         def select_ship(self,ship,play_voice = True):
             self.selectedmode = True
@@ -94,10 +99,22 @@ init -2 python:
             ship.movement_tiles = []
 
         def start(self):
-            battlemode()
+            battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
-            renpy.jump('mission{}'.format(self.mission))
+            
+            #new formation feature (only after mission 12 for now)
+            if self.mission > 1:
+                self.phase = 'formation'
+
+                for ship in player_ships:
+                    ship.location = None
+
+                renpy.show_screen('player_unit_pool_collapsed')
+                renpy.show_screen('player_unit_pool')
+                renpy.jump('formationphase')
+            else:
+                renpy.jump('mission{}'.format(self.mission))
 
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
@@ -667,7 +684,7 @@ init -2 python:
 
             VNmode() #return to visual novel mode. this mostly just restored scrolling rollback
             for ship in destroyed_ships:
-                if ship.faction == 'Player':
+                if ship.faction == 'Player' and not ship.mercenary:
                     player_ships.append(ship)
                     self.ships.append(ship)
             for ship in player_ships:
@@ -757,10 +774,12 @@ init -2 python:
                     # show_message('tried to click')
                     mouse_location = get_mouse_location()
                     
+                    # if you are using short range warp or are in skirmish mode this is used
                     if BM.targetwarp:
                         if get_cell_available(mouse_location):
                             return ['warptarget',get_mouse_location()]
                     
+                    #move handling
                     elif BM.selected != None and BM.weaponhover == None:
                         if BM.selected.faction == 'Player':
                             if get_cell_available(mouse_location):
@@ -770,6 +789,11 @@ init -2 python:
                                     if distance <= move_range:
                                         return [ 'move' , mouse_location ]
                     
+                    #sometimes it's possible to have nothing selected and still something left in BM.weaponhover
+                    if BM.selected == None:
+                        BM.weaponhover == None
+                    
+                    #selection handling
                     if (BM.weaponhover == None or BM.active_weapon != None) and not BM.targetwarp:
                         for ship in BM.ships:
                             if ship.location == mouse_location:
@@ -894,6 +918,7 @@ init -2 python:
             self.armor = self.base_armor
             self.armor_color = '000'
             self.weapons = []
+            self.default_weapon_list = []
             self.max_weapons = 9
             self.max_missiles = 0
             self.max_rockets = 0
@@ -906,8 +931,9 @@ init -2 python:
             self.getting_buff = False
             self.getting_curse = False
             self.boss = False
+            self.mercenary = False  #if true you don't get it back upon death
             self.spawns = []
-            self.location = (1,1)
+            self.location = None
             self.movement_tiles = []
             self.portrait = None
             self.death_animation = 'no_animation'  #the default death animation: none.
@@ -929,6 +955,10 @@ init -2 python:
                 'energy regen':[0,0],
                 }
 
+        #return None if an attribute does not exist
+        # def __getattr__(self,X):
+            # return None        
+        
         def receive_damage(self,damage,attacker,wtype):
             BM.attacker = attacker
 
@@ -1492,6 +1522,10 @@ init -2 python:
             self.shot_count = 1
             self.accuracy = 100
             self.tooltip = None
+        
+        #return None when attribute does not exist.
+        # def __getattr__(self,X):
+            # return None
 
 
 
@@ -1924,7 +1958,7 @@ init -2 python:
                     del a
                 elif target.faction != 'Player':
                     renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
-                renpy.pause(1)
+                renpy.pause(1,hard=True)
                 target.getting_buff = False
                 target.getting_curse = False
                 BM.selectedmode = True
@@ -2269,7 +2303,8 @@ init -2 python:
             store.warpto_versta = self.lastMission >= 5
             store.warpto_nomodorn = self.lastMission >= 8
             store.warpto_ryuvia = self.lastMission >= 10
-            store.warpto_farport = self.lastMission >= 12
+            store.warpto_farport = self.lastMission >= 12            
+            store.warpto_ongess = self.lastMission >= 13 #not sure
 
             store.ep2_cancelwarp = False
 
@@ -2349,7 +2384,7 @@ init -2 python:
         def __eq__(self, other):
             return isinstance(self, other.__class__) and self.id == other.id
 
-  ##custom actions##
+    ## CUSTOM ACTIONS ##
 
     class BonusPageNext(Action):
         def __init__(self):
@@ -2382,7 +2417,6 @@ init -2 python:
         def get_sensitive(self):
             return store.bonusPage
 
-
     class ResetBonusPage(Action):
         def __call__(self):
             store.bonusPage = 0
@@ -2396,7 +2430,8 @@ init -2 python:
             self.location = location
 
         def __call__(self):
-            create_ship(self.ship, self.location, self.weapons)
+            #deepcopy is used to break aliasing (we don't want to add the same ship x times)
+            create_ship(deepcopy(self.ship), self.location, self.weapons)
 
 
     class HoverWeapon(Action):

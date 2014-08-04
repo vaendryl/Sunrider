@@ -14,6 +14,8 @@ label firstvariables:
     $ MetAsaga = False
     $ ChigaraRefugee = False
     $ mission_pirateattack = False
+    $ amissionforalliance = False
+    $ missionforryuvia = False
 
     $ battlemusic = True
 
@@ -35,6 +37,9 @@ label firstvariables:
     $ mission10_complete = False
     $ mission11_complete = False
     $ mission12_complete = False
+    $ mission13_complete = False
+    $ mission14_complete = False
+    $ mission15_complete = False    
 
     $ asa_location = None
     $ chi_location = None
@@ -54,12 +59,20 @@ label firstvariables:
     $ warpto_pactstation1 = False
     $ warpto_versta = False
     $ warpto_nomodorn = False
+    $ warpto_ryuvia = False
+    $ warpto_farport = False
+    $ warpto_ongess = False
 
     $ ep2_cancelwarp = False
 
     $ supportedasagacards = False
     $ paladin = None
-
+    
+    $ versta_ambush = False
+    $ farport_losttech = False
+    $ tydaria_morepirates = False
+    
+    
     #$ sunrider = 0
     #$ blackjack = 0
     #$ liberty = 0
@@ -91,6 +104,8 @@ init python:
             self.MetAsaga = False
             self.ChigaraRefugee = False
             self.mission_pirateattack = False
+            self.amissionforalliance = False
+            self.missionforryuvia = False
 
             self.battlemusic = True
 
@@ -112,6 +127,9 @@ init python:
             self.mission10_complete = False
             self.mission11_complete = False
             self.mission12_complete = False
+            self.mission13_complete = False
+            self.mission14_complete = False
+            self.mission15_complete = False
 
             self.asa_location = None
             self.chi_location = None
@@ -131,6 +149,10 @@ init python:
             self.warpto_pactstation1 = False
             self.warpto_versta = False
             self.warpto_nomodorn = False
+            self.warpto_ryuvia = False
+            self.warpto_farport = False
+            self.warpto_ongess = False
+
 
             self.ep2_cancelwarp = False
 
@@ -145,6 +167,10 @@ init python:
             self.paradigm = None
             self.havoc = None
             self.paladin = None
+            
+            self.versta_ambush = False
+            self.farport_losttech = False
+            self.tydaria_morepirates = False
 
             self.check1 = False
             self.check2 = False

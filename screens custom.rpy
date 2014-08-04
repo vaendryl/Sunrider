@@ -757,9 +757,9 @@ screen battle_screen:
             else:
                 textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',True)
             if BM.show_grid:
-                textbutton "regular grid" xalign 1.0 action SetField(BM,'show_grid',False)
+                textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',False)
             else:
-                textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',True)    
+                textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)    
 
 
     if BM.phase != 'formation':
@@ -814,7 +814,7 @@ screen battle_screen:
             
     if BM.phase == 'formation':
         imagebutton:
-            xpos 90
+            xpos 170
             yalign 1.0
             idle 'Skirmish/start.png'
             hover hoverglow('Skirmish/start.png')
@@ -1137,10 +1137,10 @@ screen player_unit_pool_collapsed:
         background None
         xpos 0
         ypos 410
-        yminimum 150
-        ymaximum 150
-        xminimum 20
-        xmaximum 20
+        yminimum 250
+        ymaximum 250
+        xminimum 40
+        xmaximum 40
         action Show('player_unit_pool')
     
 screen player_unit_pool:
@@ -1161,13 +1161,13 @@ screen player_unit_pool:
                         action Return(['selection',ship]) 
         
     button:
-        background None
-        xpos 162
+        background None  # Solid((0,0,0,255)) #for testing
+        xpos 152
         ypos 410
-        yminimum 150
-        ymaximum 150
-        xminimum 20
-        xmaximum 20
+        yminimum 250
+        ymaximum 250
+        xminimum 40
+        xmaximum 40
         action Hide('player_unit_pool')
         
 
@@ -1181,15 +1181,17 @@ screen enemy_unit_pool_collapsed:
         background None
         xpos 1890
         ypos 410
-        yminimum 150
-        ymaximum 150
-        xminimum 20
-        xmaximum 20
+        yminimum 250
+        ymaximum 250
+        xminimum 40
+        xmaximum 40
         action Show('enemy_unit_pool')
 
 screen enemy_unit_pool:
     zorder 3
     
+    #I will want to put this in a BM field and add new stuff when they get encountered.
+    #I think I'll modify the create_ship function to add it automatically if it's not there yet
     $ all_enemies = [
         PactBomber(),  PactMook(),
         MissileFrigate(), PactCruiser(),
@@ -1225,10 +1227,10 @@ screen enemy_unit_pool:
         background None
         xpos 1738
         ypos 410
-        yminimum 150
-        ymaximum 150
-        xminimum 30
-        xmaximum 30
+        yminimum 250
+        ymaximum 250
+        xminimum 40
+        xmaximum 40
         action Hide('enemy_unit_pool')                        
 
                 

@@ -11,6 +11,11 @@ image black = Solid((0, 0, 0, 255))
 #    show work_in_progress
 #    pause 0.5
 #    return
+label testpause:
+    python:
+        renpy.pause(1)
+        
+    return
 
 transform shake(time=0.5,repeats=20): #defunct?
     xalign 0.5 yalign 0.5
@@ -117,7 +122,6 @@ label skirmish_battle:
     
 label missionskirmish:
     python:
-        # test = 'test'
         result = ui.interact()
         
         if result == True or result == False:
@@ -129,7 +133,7 @@ label missionskirmish:
             renpy.hide_screen('enemy_unit_pool_collapsed')
             renpy.hide_screen('player_unit_pool')
             renpy.hide_screen('enemy_unit_pool')
-            renpy.hide_screen('mousefollow')
+            renpy.hide_screen('mousefollow')            
             BM.battlemode = False
             
         elif result[0] == "zoom":
@@ -162,7 +166,8 @@ label missionskirmish:
                         BM.ships.remove(BM.selected)
                         enemy_ships.remove(BM.selected)
                 else:
-                    BM.selected = deepcopy(selected_ship) #breaks alias   
+                    BM.selected = deepcopy(selected_ship) #breaks alias
+                    BM.selected.weapons = BM.selected.default_weapon_list
                     
             if BM.selected.location != None:
                 set_cell_available(BM.selected.location)           
@@ -182,19 +187,110 @@ label missionskirmish:
                 BM.selected.location = new_location
                 
                 if BM.selected.faction != 'Player' and pygame.key.get_mods() != 0:
-                    BM.selected = deepcopy(BM.selected) #breaks alias
+                    BM.selected = deepcopy(BM.selected) #breaks alias                    
                 else:
                     BM.targetwarp = False
                     renpy.hide_screen('mousefollow')                
                     BM.selected = None
 
-    if BM.battlemode == True:   #whenever this is set to False battle ends.
+    if BM.battlemode:   #whenever this is set to False battle ends.
         jump missionskirmish #loop back
     else:
         pass #continue down
 
     return
     
+    
+label formationphase:  #pretty much a copy of missionskirmish but I can't be bothered merging these 2 right now
+    python:
+        result = ui.interact()
+        
+        if result == 'start':
+        
+            #check if there are still player units that are not placed
+            unplaced_units = False
+            for ship in player_ships:
+                if ship.location == None:
+                    unplaced_units = True
+            if unplaced_units:
+                show_message('there are still ships you have not placed!')
+            else:
+                renpy.hide_screen('player_unit_pool_collapsed')
+                renpy.hide_screen('enemy_unit_pool_collapsed')
+                renpy.hide_screen('player_unit_pool')
+                renpy.hide_screen('enemy_unit_pool')
+                renpy.hide_screen('mousefollow')
+                BM.phase = 'Player'
+                renpy.jump('mission{}'.format(BM.mission))
+            
+        elif result[0] == "zoom":
+            zoom_handling(result,BM)
+            
+        elif result == 'deselect':
+            #if you picked up an enemy unit that was already put down right clicking should delete it entirely
+            #player ships automatically return to the blue pool to be placed again later.
+            if BM.selected != None:
+                if BM.selected in enemy_ships:
+                    BM.ships.remove(BM.selected)
+                    enemy_ships.remove(BM.selected)
+            BM.targetwarp = False
+            renpy.hide_screen('mousefollow')                
+            BM.selected = None
+            
+        elif result[0] == 'selection':
+            # this result can be from one of the imagebuttons in the pool screens or returned from
+            # MouseTracker because a hex with a unit in it was clicked.
+            selected_ship = result[1]
+            BM.targetwarp = True
+            renpy.show_screen('mousefollow')
+            
+            if selected_ship.faction == 'Player':
+                BM.selected = selected_ship
+            else:
+                if selected_ship.location != None:
+                    BM.selected = selected_ship
+                    if selected_ship in enemy_ships:
+                        BM.ships.remove(BM.selected)
+                        enemy_ships.remove(BM.selected)
+                else:
+                    BM.selected = deepcopy(selected_ship) #breaks alias
+                    BM.selected.weapons = BM.selected.default_weapon_list
+                    
+            if BM.selected.location != None:
+                set_cell_available(BM.selected.location)           
+            BM.selected.location = None
+                
+            
+        elif result[0] == 'warptarget':
+            # returned from MouseTracker if you click on an empty hex when BM.warptarget == True.
+            if BM.selected != None:
+                new_location = result[1]
+                
+                #when setting up before a mission you can't put your ships farther to the right than column 7
+                if new_location[0] > 7:
+                    show_message('too far infield')
+                else:               
+                    set_cell_available(new_location,True)
+                    
+                    if BM.selected.faction != 'Player':
+                        enemy_ships.append(BM.selected)
+                        BM.ships.append(BM.selected)               
+                    
+                    BM.selected.location = new_location
+                    
+                    if BM.selected.faction != 'Player' and pygame.key.get_mods() != 0:
+                        BM.selected = deepcopy(BM.selected) #breaks alias                    
+                    else:
+                        BM.targetwarp = False
+                        renpy.hide_screen('mousefollow')                
+                        BM.selected = None
+
+    if BM.battlemode:   #whenever this is set to False battle ends.
+        jump formationphase #loop back
+    else:
+        pass #continue down
+
+    return    
     
 
 transform melee_atkanim(img1,img2):

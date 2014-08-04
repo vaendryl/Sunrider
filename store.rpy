@@ -1,6 +1,7 @@
 label initStore:
     python:
         store_items = []
+        #syntax: StoreItem(item id, visibility condition, display name, cost, actions, tool-tip, (optional)itemcount variable, (optional)maximum amount)
 
         actions = [SetField(sunrider,'rockets',eval('sunrider.rockets') + 1)]
         tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
@@ -10,16 +11,25 @@ label initStore:
         tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
         StoreItem('Rocketupgrade1', 'sunrider_rocket.damage < 1200', "Quantum Torpedo License", 2000, actions, tooltip)
 
-        actions = [SetField(sunrider,'repair_drones',eval('sunrider.repair_drones') + 1)]
+        ## this has got to be the stupidest workaround I've ever needed -_-
+        ## wasted way too much time dealing with the constant crashing when sunrider.repair_drones == None
+        no_repairbots = False
+        if sunrider.repair_drones == None:
+            no_repairbots = True
+            sunrider.repair_drones = 0
+            
+        actions = [SetField( sunrider,'repair_drones',eval('sunrider.repair_drones+1') )]   #bah
         tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
         StoreItem('repair drones', 'sunrider.repair_drones != None', "Repair Drones", 400, actions, tooltip, 'sunrider.repair_drones', 8)
+        if no_repairbots:
+            sunrider.repair_drones = None
 
         # I had to put this here or it would crash
         alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
 
         actions = [CreateShipAction(AllianceCruiser(),alliancecruiser_weapons)]
         tooltip = ''
-        StoreItem('alliance cruiser', 'mission12_complete or paladin != None', "Alliance Cruiser", 2000, actions, tooltip)
+        StoreItem('alliance cruiser', 'store.mission12_complete or paladin != None', "Alliance Cruiser", 2000, actions, tooltip)
 
         # TODO
         unionfrigate_weapons = []
@@ -34,7 +44,7 @@ screen store_union:
     modal True
     tag storyscreen
 
-    $ renpy.call_in_new_context('initStore')
+    #$ renpy.call_in_new_context('initStore')
 
     use store_info
 
@@ -54,7 +64,7 @@ screen store_union:
             for item in store_items:
                 if item.isVisible():
                     imagebutton:
-                        action If(BM.money >= item.cost and (item.variable_name is None or eval(item.variable_name) < item.max_amt),item.actions)
+                        action If(BM.money >= item.cost and (item.variable_name is None or eval(item.variable_name) < item.max_amt),item.actions,NullAction())
                         idle "Menu/store_item.png"
                         hover "Menu/store_item_hover.png"
                         hovered SetField(BM,'hovered',item.id)
@@ -91,8 +101,8 @@ screen store_info:
 
 
 
-screen store_missile:
-    add "Menu/unionstore_missiles.png" xpos 1170 ypos 200
+# screen store_missile:
+    # add "Menu/unionstore_missiles.png" xpos 1170 ypos 200
 
-screen store_rocket:
-    add "Menu/unionstore_rocket.png" xpos 1170 ypos 200
+# screen store_rocket:
+    # add "Menu/unionstore_rocket.png" xpos 1170 ypos 200

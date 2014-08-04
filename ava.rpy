@@ -192,21 +192,18 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-    
     image ava uniform fistup shout:
         "Character/Ava/ava_uniform_fistup_shout.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
     image ava uniform armscrossed angry:
         "Character/Ava/ava_uniform_armscrossed_angry.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
     image ava uniform armscrossed skeptical:
         "Character/Ava/ava_uniform_armscrossed_skeptical.png"
         yanchor 0.51 ypos 1.0
@@ -273,14 +270,210 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    image ava uniform altneutral snap:
+        "Character/Ava/ava_uniform_altneutral_snap.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image ava uniform altneutral snap:  
+        "Character/Ava/ava_uniform_armscrossed_snapx2.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True      
+    image ava uniform armscrossed snapx3:
+        "Character/Ava/ava_uniform_armscrossed_snapx3.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True      
+    image ava uniform fistup cry:
+        "Character/Ava/ava_uniform_fistup_cry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    image ava uniform armscrossed upset:
+        "Character/Ava/ava_uniform_armscrossed_upset.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava uniform armscrossed drunkpout:
+        "Character/Ava/ava_uniform_armscrossed_drunkpout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image ava uniform fistup shoutdrunk:
+        "Character/Ava/ava_uniform_fistup_shoutdrunk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image ava uniform handonhip drunkshout:
+        "Character/Ava/ava_uniform_handonhip_drunkshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image ava uniform altneutral neutraldrunk:
+        "Character/Ava/ava_uniform_altneutral_neutraldrunk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image ava uniform armscrossed lookawaydrunk:
+        "Character/Ava/ava_uniform_armscrossed_lookawaydrunk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava uniform point angrydrunk:
+        "Character/Ava/ava_uniform_point_angrydrunk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image ava uniform armscrossed neutraldrunk:
+        "Character/Ava/ava_uniform_armscrossed_neutraldrunk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True              
+    image ava uniform handsonhip groan:
+        "Character/Ava/ava_uniform_handonhips_groan.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image ava uniform altneutral surpriseblush:
+        "Character/Ava/ava_uniform_altneutral_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+        
+        
+        
+        
+        
+    image ava beach altneutral mad:
+        "Character/Ava/ava_beach_altneutral_mad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava beach handsonhips angry:
+        "Character/Ava/ava_beach_handsonhips_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image ava beach fistup forcedgrin:
+        "Character/Ava/ava_beach_fistup_forcedgrin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image ava beach altneutral neutral:
+        "Character/Ava/ava_beach_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image ava beach armscrossed neutral:
+        "Character/Ava/ava_beach_armscrossed_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image ava beach altneutral grumpy:
+        "Character/Ava/ava_beach_altneutral_grumpy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava beach armscrossed lookright:
+        "Character/Ava/ava_beach_armscrossed_lookright.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image ava beach handonhip talk:
+        "Character/Ava/ava_beach_handonhip_talk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image ava beach neutral neutral:
+        "Character/Ava/ava_beach_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava beach altneutral tease:
+        "Character/Ava/ava_beach_altneutral_tease.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image ava beach armscrossed tease:
+        "Character/Ava/ava_beach_armscrossed_tease.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image ava beach armscrossed frown:
+        "Character/Ava/ava_beach_armscrossed_frown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image ava beach armscrossed shout:
+        "Character/Ava/ava_beach_armscrossed_shout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                  
+    image ava beach point angry:
+        "Character/Ava/ava_beach_point_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image ava beach handonhip lookaway:
+        "Character/Ava/ava_beach_handonhip_lookaway.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image ava beach armscrossed lookleft:
+        "Character/Ava/ava_beach_armscrossed_lookleft.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image ava beach facepalm:
+        "Character/Ava/ava_beach_facepalm.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image ava beach armscrossed tears:
+        "Character/Ava/ava_beach_armscrossed_tears.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True      
+        
+        
+        
+        
+        
+        
+        
+        
         
         

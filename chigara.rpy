@@ -460,6 +460,232 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+    image chigara uniform handstogether scaredblush:
+        "Character/Chigara/chigara_uniform_handstogether_scaredblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image chigara uniform excited surpriseblush:
+        "Character/Chigara/chigara_uniform_excited_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image chigara uniform handonchest scaredblush:
+        "Character/Chigara/chigara_uniform_handonchest_scaredblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True               
+    image chigara uniform handstogether closedeyessmileblush:
+        "Character/Chigara/chigara_uniform_handstogether_closedeyessmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image chigara uniform handstogether sadderpblush:
+        "Character/Chigara/chigara_uniform_handstogether_sadderpblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image chigara uniform excited shoutblush:
+        "Character/Chigara/chigara_uniform_excited_shoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                
+    image chigara uniform handonchest dazedblush:
+        "Character/Chigara/chigara_uniform_handonchest_dazedblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image chigara uniform handonchest happyblush:
+        "Character/Chigara/chigara_uniform_handonchest_happyblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image chigara uniform handstogether sadsmileblush:
+        "Character/Chigara/chigara_uniform_handstogether_sadsmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image chigara uniform altneutral sadsmileblush:
+        "Character/Chigara/chigara_uniform_altneutral_sadsmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+        
+        
+        
+        
+        
+        
+        
+    image chigara beach twiddlefingers forcedsmile:
+        "Character/Chigara/chigara_beach_twiddlefingers_forcedsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest gloom:
+        "Character/Chigara/chigara_beach_handonchest_gloom.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest derp:
+        "Character/Chigara/chigara_beach_handonchest_derp.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach neutral neutral:
+        "Character/Chigara/chigara_beach_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handstogether derp:
+        "Character/Chigara/chigara_beach_handstogether_derp.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest smile:
+        "Character/Chigara/chigara_beach_handonchest_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach altneutral closedeyessmile:
+        "Character/Chigara/chigara_beach_altneutral_closedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handstogether neutral:
+        "Character/Chigara/chigara_beach_handstogether_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach excited happy:
+        "Character/Chigara/chigara_beach_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach altneutral sad:
+        "Character/Chigara/chigara_beach_altneutral_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach altneutral sadsmile:
+        "Character/Chigara/chigara_beach_altneutral_sadsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest forcedclosedeyessmile:
+        "Character/Chigara/chigara_beach_handonchest_forcedclosedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest forcedclosedeyessmile:
+        "Character/Chigara/chigara_beach_handonchest_forcedclosedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest fantasize:
+        "Character/Chigara/chigara_beach_handonchest_fantasize.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest neutralblush:
+        "Character/Chigara/chigara_beach_handonchest_neutralblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest surpriseblush:
+        "Character/Chigara/chigara_beach_handonchest_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach altneutral forcedclosedeyessmile:
+        "Character/Chigara/chigara_beach_altneutral_forcedclosedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach excited cryblush:
+        "Character/Chigara/chigara_beach_excited_cryblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach altneutral sadblush:
+        "Character/Chigara/chigara_beach_altneutral_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest surprise:
+        "Character/Chigara/chigara_beach_handonchest_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach palmsup surpriseblush:
+        "Character/Chigara/chigara_beach_palmsup_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach palmsup sadblush:
+        "Character/Chigara/chigara_beach_palmsup_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach excited closedeyesshout:
+        "Character/Chigara/chigara_beach_excited_closedeyesshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach twiddlefingers sadblush:
+        "Character/Chigara/chigara_beach_twiddlefingers_sadblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach handonchest nervousblush:
+        "Character/Chigara/chigara_beach_handonchest_nervousblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image chigara beach twiddlefingers confuse:
+        "Character/Chigara/chigara_beach_twiddlefingers_confuse.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+
+
 
 
 

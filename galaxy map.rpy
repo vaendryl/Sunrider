@@ -132,6 +132,17 @@ label warpto_Tydaria:
         $ mission1_name = None
         $ mission2_name = None
         $ mission3_name = None
+        
+    if tydaria_morepirates == True:
+        $ galaxymission1 = True
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = "clearoutpirates"
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = "Side: Annihilate pirate bases"
+        $ mission2_name = None
+        $ mission3_name = None
 
 
     scene bg black
@@ -279,6 +290,17 @@ label warpto_versta:
         $ mission1_name = "Main: Rescue Diplomats"
         $ mission2_name = None
         $ mission3_name = None
+        
+    if versta_ambush == True:
+        $ galaxymission1 = True
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = "ambushpactresupply"
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = "Side: Ambush Resupply Stations"
+        $ mission2_name = None
+        $ mission3_name = None
 
     else:
 
@@ -358,6 +380,135 @@ label warpto_nomodorn:
         xpos 1098 ypos 200
     call screen map_travelto
     with dissolve
+
+label warpto_ryuvia:
+
+    $ map_back = "ryuvia_back"
+
+    $ galaxymission1 = False
+    $ galaxymission2 = False
+    $ galaxymission3 = False
+    $ mission1 = None
+    $ mission2 = None
+    $ mission3 = None
+    $ mission1_name = None
+    $ mission2_name = None
+    $ mission3_name = None
+
+    scene bg black
+    show galaxymap:
+        alpha 1 zoom 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 xpos -14100 ypos -7400 zoom 10
+    show map_ryuvia:
+        zoom 0.0268041237113402
+        xpos 1410 ypos 740 alpha 0
+        parallel:
+            ease 1 alpha 1
+        parallel:
+            ease 0.75 zoom 1 xpos 0 ypos -430
+    pause 1
+    show map_ryuvia_info:
+        xpos 1098 ypos 200
+    call screen map_travelto
+    with dissolve
+
+label warpto_farport:
+
+    $ map_back = "farport_back"
+    
+    if farport_losttech == True:
+        $ galaxymission1 = True
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = "investigatemoon"
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = "Side: Investigate lost technology"
+        $ mission2_name = None
+        $ mission3_name = None
+        
+    else:
+        $ galaxymission1 = False
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = None
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = None
+        $ mission2_name = None
+        $ mission3_name = None
+
+    scene bg black
+    show galaxymap:
+        alpha 1 zoom 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 xpos -12600 ypos -7760 zoom 10
+    show map_farport:
+        zoom 0.0268041237113402
+        xpos 1260 ypos 776 alpha 0
+        parallel:
+            ease 1 alpha 1
+        parallel:
+            ease 0.75 zoom 1 xpos 0 ypos -430
+    pause 1
+    show map_farport_info:
+        xpos 1098 ypos 200
+    call screen map_travelto
+    with dissolve
+
+label warpto_ongess:
+
+    $ map_back = "ongess_back"
+
+    if greytour == True:
+
+        $ galaxymission1 = True
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = "arrivalatongess"
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = "Main: Meet Admiral Grey"
+        $ mission2_name = None
+        $ mission3_name = None
+
+    else:
+
+        $ galaxymission1 = False
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission1 = None
+        $ mission2 = None
+        $ mission3 = None
+        $ mission1_name = None
+        $ mission2_name = None
+        $ mission3_name = None
+
+    scene bg black
+    show galaxymap:
+        alpha 1 zoom 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 xpos -13450 ypos -6550 zoom 10
+    show map_ongess:
+        zoom 0.0268041237113402
+        xpos 1410 ypos 740 alpha 0
+        parallel:
+            ease 1 alpha 1
+        parallel:
+            ease 0.75 zoom 1 xpos 0 ypos -430
+    pause 1
+    show map_ongess_info:
+        xpos 1098 ypos 200
+    call screen map_travelto
+    with dissolve
+
 
 label Tydaria_back:
     hide map_tydariainfo
@@ -466,6 +617,63 @@ label nomodorn_back:
             ease 1 zoom 0.0268041237113402 xpos 1630 ypos 590
     show galaxymap:
         xpos -16300 ypos -5900 zoom 10 alpha 0
+        parallel:
+            ease 1.1 alpha 1
+        parallel:
+            ease 1 xpos 0 ypos 0 zoom 1
+    pause 1
+    call screen galaxymap_buttons
+
+label ryuvia_back:
+    hide map_ryuvia_info
+    scene bg black
+    show map_ryuvia:
+        zoom 1
+        xpos 0 ypos -430 alpha 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 zoom 0.0268041237113402 xpos 1410 ypos 740
+    show galaxymap:
+        xpos -14100 ypos -7400 zoom 10 alpha 0
+        parallel:
+            ease 1.1 alpha 1
+        parallel:
+            ease 1 xpos 0 ypos 0 zoom 1
+    pause 1
+    call screen galaxymap_buttons
+    
+label farport_back:
+    hide map_farport_info
+    scene bg black
+    show map_farport:
+        zoom 1
+        xpos 0 ypos -430 alpha 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 zoom 0.0268041237113402 xpos 1410 ypos 740
+    show galaxymap:
+        xpos -12600 ypos -7760 zoom 10 alpha 0
+        parallel:
+            ease 1.1 alpha 1
+        parallel:
+            ease 1 xpos 0 ypos 0 zoom 1
+    pause 1
+    call screen galaxymap_buttons
+
+label ongess_back:
+    hide map_ongess_info
+    scene bg black
+    show map_ongess:
+        zoom 1
+        xpos 0 ypos -430 alpha 1
+        parallel:
+            ease 0.5 alpha 0
+        parallel:
+            ease 1 zoom 0.0268041237113402 xpos 1345 ypos 655
+    show galaxymap:
+        xpos -13450 ypos -6550 zoom 10 alpha 0
         parallel:
             ease 1.1 alpha 1
         parallel:

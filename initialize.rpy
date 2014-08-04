@@ -62,6 +62,9 @@ init python:
     Planet("PACT Outpost", "warpto_pactstation", 1420, 480, "warpto_pactstation1")
     Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
     Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
+    Planet("RYUVIA PRIME", "warpto_ryuvia", 1410, 740, "warpto_ryuvia")
+    Planet("FAR PORT", "warpto_farport", 1260, 776, "warpto_farport")
+    Planet("ONGESS", "warpto_ongess", 1345, 655, "warpto_ongess")
 
 init -5:
     image sunrider_phase:
@@ -98,7 +101,8 @@ label initialize:
         havoc = None
         paradigm = None
         
-        skirmish_enabled = True
+        # maybe skirmish should be activated later on in the story. how many enemy ship types are available is an issue too
+        skirmish_enabled = True 
 
         check1 = False
         check2 = False
@@ -535,22 +539,22 @@ label mission12_inits:
         alliancecruiser2.set_location(5,9)
 
         create_ship(PactBattleship(),(13,6),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        create_ship(PactBattleship(),(12,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        create_ship(PactBattleship(),(12,8),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(13,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         create_ship(PactBattleship(),(13,9),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        create_ship(PactBattleship(),(13,10),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
 
         create_ship(PactCarrier(),(16,6),[PACTCarrierAssault()])
         create_ship(PactCarrier(),(16,9),[PACTCarrierAssault()])
 
-        create_ship(PactMook(),(10,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,7),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(11,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
-        create_ship(PactMook(),(10,10),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        create_ship(PactMook(),(11,11),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,9),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(11,10),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
-        create_ship(PactBomber(),(11,7),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(12,6),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-        create_ship(PactBomber(),(11,9),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(11,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(12,10),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -561,6 +565,165 @@ label mission12_inits:
 
     return
 
+
+label mission13_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,8)
+        blackjack.set_location(6,6)
+        bianca.set_location(6,7)
+        phoenix.set_location(6,8)
+        liberty.set_location(6,9)
+        seraphim.set_location(6,10)
+        paladin.set_location(6,11)
+        unionfrigate1.set_location(5,7)
+        unionfrigate2.set_location(5,9)
+
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+        
+        create_ship(PirateGrunt(),(9,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(9,11),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(10,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(10,12),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(14,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(15,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(15,11),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        create_ship(PirateGrunt(),(14,12),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+
+        create_ship(PirateBomber(),(11,7),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(11,11),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(15,8),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+        create_ship(PirateBomber(),(15,10),[PirateBomberMissile(),PirateBomberRocket(),PirateBomberAssault()])
+
+        create_ship(PirateDestroyer(),(9,8),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(9,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        #create_ship(PirateDestroyer(),(14,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(14,8),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        create_ship(PirateDestroyer(),(14,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        #create_ship(PirateDestroyer(),(14,11),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+
+        create_ship(PirateBase(),(10,9),[PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        create_ship(PirateBase(),(13,8),[PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        create_ship(PirateBase(),(13,10),[PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        
+    $ PlayerTurnMusic = "music/Powerful.ogg"
+    $ EnemyTurnMusic = "music/Sui_Generis.ogg"
+
+    return
+
+label mission14_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,8)
+        blackjack.set_location(6,6)
+        bianca.set_location(6,7)
+        phoenix.set_location(6,8)
+        liberty.set_location(6,9)
+        seraphim.set_location(6,10)
+        paladin.set_location(6,11)
+        unionfrigate1.set_location(5,7)
+        unionfrigate2.set_location(5,9)
+
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+    
+        create_ship(RyuvianCruiser(),(9,6),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(10,7),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(10,11),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(9,12),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(14,8),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(14,9),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(14,10),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+
+    $ PlayerTurnMusic = "music/Titan.ogg"
+    $ EnemyTurnMusic = "music/Poltergeist_Attack.ogg"
+
+    return
+
+label mission15_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        sunrider.set_location(4,8)
+        blackjack.set_location(6,6)
+        bianca.set_location(6,7)
+        phoenix.set_location(6,8)
+        liberty.set_location(6,9)
+        seraphim.set_location(6,10)
+        paladin.set_location(6,11)
+        unionfrigate1.set_location(5,7)
+        unionfrigate2.set_location(5,9)
+
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+        
+        create_ship(PactBattleship(),(9,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
+        create_ship(PactBattleship(),(9,11),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
+        create_ship(PactBattleship(),(13,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
+        create_ship(PactBattleship(),(13,11),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
+        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
+
+        create_ship(PactMook(),(9,5),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(8,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(8,12),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(9,13),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+
+        create_ship(PactBomber(),(10,7),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(10,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(10,10),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        create_ship(PactBomber(),(10,11),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
+        
+        create_ship(MissileFrigate(),(12,6),[PactFrigateMissile()])
+        create_ship(MissileFrigate(),(12,12),[PactFrigateMissile()])
+
+        create_ship(PactCruiser(),(13,8),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+        create_ship(PactCruiser(),(13,10),[PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()])
+
+        create_ship(PactOutpost(),(9,8),[PACTOutpostLaser(),PACTOutpostKinetic()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        create_ship(PactOutpost(),(9,10),[PACTOutpostLaser(),PACTOutpostKinetic()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        create_ship(PactOutpost(),(12,8),[PACTOutpostLaser(),PACTOutpostKinetic()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+        create_ship(PactOutpost(),(12,10),[PACTOutpostLaser(),PACTOutpostKinetic()])
+        enemy_ships[-1].boss=False
+        enemy_ships[-1].money_reward=350
+    
+    
+    $ PlayerTurnMusic = "music/La_Busqueda_de_Lanna.ogg"
+    $ EnemyTurnMusic = "music/Intruders.ogg"
+
+    return
 
 label preview_mission:
 

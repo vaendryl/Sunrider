@@ -524,23 +524,36 @@ init -6 python:
         bm.xadj.value = int(side_distance) #actually set the new viewport values
         bm.yadj.value = int(top_distance)
 
-    def create_ship(ship_class,location,weapons):
+    def create_ship(ship,location,weapons=[]):
 
+        #find the location
         if location != None:
             location = get_free_spot_near(location)
             if BM.grid[location[0]-1][location[1]-1]:
                 return
             else:
-                BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
-        ship = ship_class
+                #indicate that the cell on the grid is occupied
+                BM.grid[location[0]-1][location[1]-1]= True 
+        
+        #set the location
         ship.location = location
+        
+        #confirm the weapon list
+        if weapons == None or weapons == []:
+            weapons = ship.default_weapon_list
+        
+        #register the weapons
         for weapon in weapons:
             ship.register_weapon(weapon)
+        
+        #register the ship
         if ship.faction == 'Player':
             store.player_ships.append(ship)
         else:
             store.enemy_ships.append(ship)
         store.BM.ships.append(ship)
+        
+        #retun the a player ship for easy aliasing
         if ship.faction == 'Player':
             return ship
         else:

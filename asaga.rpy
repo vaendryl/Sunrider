@@ -679,17 +679,74 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True  
-
     image asaga uniform altneutral zomg:
         "Character/Asaga/asaga_uniform_altneutral_zomg.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True  
-
-
-
-
+    image asaga uniform neutral neutral:
+        "Character/Asaga/asaga_uniform_neutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga uniform handsonhips surprise:
+        "Character/Asaga/asaga_uniform_handsonhips_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga uniform armscrossed lookawaylaugh:
+        "Character/Asaga/asaga_uniform_armscrossed_lookawaylaugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga uniform armscrossed uuu:
+        "Character/Asaga/asaga_uniform_armscrossed_uuu.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga uniform armscrossed gloom:
+        "Character/Asaga/asaga_uniform_armscrossed_gloom.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform armscrossed snifflepout:
+        "Character/Asaga/asaga_uniform_armscrossed_snifflepout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform excited surpriseblush:
+        "Character/Asaga/asaga_uniform_excited_surpriseblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform armscrossed pout:
+        "Character/Asaga/asaga_uniform_armscrossed_pout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform armscrossed closedeyessmile:
+        "Character/Asaga/asaga_uniform_armscrossed_closedeyesmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga uniform handonhips angry:
+        "Character/Asaga/asaga_uniform_handonhips_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+        
+        
         
         
     image asaga wedding angry:
@@ -734,6 +791,116 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True  
+    
+
+    image asaga beach handsonhips grin:
+        "Character/Asaga/asaga_beach_handsonhips_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach excited happyclosedeyes:
+        "Character/Asaga/asaga_beach_excited_happyclosedeyes.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach thinking talk:
+        "Character/Asaga/asaga_beach_thinking_talk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach altneutral neutral:
+        "Character/Asaga/asaga_beach_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach handsonhips happy:
+        "Character/Asaga/asaga_beach_handsonhips_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach excited surprise:
+        "Character/Asaga/asaga_beach_excited_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach armscrossed closedeyessmile:
+        "Character/Asaga/asaga_beach_armscrossed_closedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach thinking thinking:
+        "Character/Asaga/asaga_beach_thinking_thinking.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach neutral thinking:
+        "Character/Asaga/asaga_beach_neutral_thinking.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach excited happy:
+        "Character/Asaga/asaga_beach_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach thinking curiouskitty:
+        "Character/Asaga/asaga_beach_thinking_curiouskitty.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach armscrossed contentkitty:
+        "Character/Asaga/asaga_beach_armscrossed_contentkitty.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach armscrossed contentsmile:
+        "Character/Asaga/asaga_beach_armscrossed_contentsmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach altneutral smileblush:
+        "Character/Asaga/asaga_beach_altneutral_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach altneutral surprise:
+        "Character/Asaga/asaga_beach_altneutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True  
+    image asaga beach neutral surprise:
+        "Character/Asaga/asaga_beach_neutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga beach armscrossed awkward:
+        "Character/Asaga/asaga_beach_armscossed_awkward.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image asaga beach excited forcedhappy:
+        "Character/Asaga/asaga_beach_excited_forcedhappy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
 
 
 

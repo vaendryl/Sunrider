@@ -2533,7 +2533,9 @@ label unionstore:
     scene store_back with dissolve
     window hide
 
-    $sunrider_rocket = sunrider.weapons[3]
+    $ renpy.call('initStore') #populate the store list
+    $ sunrider_rocket = sunrider.weapons[3]
+    $ captaindeck = 0
 
     call screen store_union
     hide screen store_rocket

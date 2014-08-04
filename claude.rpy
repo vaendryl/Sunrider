@@ -366,7 +366,206 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+    image claude uniform excited sly:
+        "Character/Claude/claude_uniform_excited_sly.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True   
+    image claude uniform fingerup closedeyessmile:
+        "Character/Claude/claude_uniform_fingerup_closedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+    image claude uniform altneutral disappoint:
+        "Character/Claude/claude_uniform_altneutral_disappoint.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True         
+       
+       
+       
+       
+        
+    image claude beach armstogether smilehappy:
+        "Character/Claude/claude_beach_armstogether_smilehappy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach fingerup smilehappy:
+        "Character/Claude/claude_beach_fingerup_smilehappy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited kittysmile:
+        "Character/Claude/claude_beach_excited_kittysmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach neutral kitty:
+        "Character/Claude/claude_beach_neutral_kitty.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach fingerup smile:
+        "Character/Claude/claude_beach_fingerup_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach fingeronlip smile:
+        "Character/Claude/claude_beach_fingeronlip_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach handstogether teehee:
+        "Character/Claude/claude_beach_handstogether_teehee.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach neutral tongueclosedeyes:
+        "Character/Claude/claude_beach_neutral_tongueclosedeyes.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited madblush:
+        "Character/Claude/claude_beach_excited_madblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach handstogether comictears:
+        "Character/Claude/claude_beach_handstogether_comictears.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited shoutblush:
+        "Character/Claude/claude_beach_excited_shoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach handonlip kittysmileblush:
+        "Character/Claude/claude_beach_handonlip_kittysmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited closedeyesblush:
+        "Character/Claude/claude_beach_excited_closedeyessmileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach altneutral droolblush:
+        "Character/Claude/claude_beach_altneutral_droolblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach altneutral hearteyesdrool:
+        "Character/Claude/claude_beach_altneutral_hearteyesdrool.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach neutral zomg:
+        "Character/Claude/claude_beach_neutral_zomg.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach knockhead teehee:
+        "Character/Claude/claude_beach_knockhead_teehee.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited happy:
+        "Character/Claude/claude_beach_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach fingeronlip heart:
+        "Character/Claude/claude_beach_fingeronlip_heart.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach fingeronlip drool:
+        "Character/Claude/claude_beach_fingeronlip_drool.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited droolblush:
+        "Character/Claude/claude_beach_excited_droolblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude beach excited grumpy:
+        "Character/Claude/claude_beach_excited_grumpy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
 
+
+
+    image claude nurse altneutral neutral:
+        "Character/Claude/claude_nurse_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fingerup closedeyeslaugh:
+        "Character/Claude/claude_nurse_fingerup_closedeyeslaugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse excited happy:
+        "Character/Claude/claude_nurse_excited_happy.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fingeronlips surprise:
+        "Character/Claude/claude_nurse_fingeronlips_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse handstogether tongueclosedeyessmile:
+        "Character/Claude/claude_nurse_handstogether_tongueclosedeyessmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse altneutral sad:
+        "Character/Claude/claude_nurse_altneutral_sad.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fingerup neutral:
+        "Character/Claude/claude_nurse_fingerup_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
 
 
 
