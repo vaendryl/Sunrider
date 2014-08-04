@@ -1947,7 +1947,7 @@ init 2 python:
             self.max_amt = 8            
             
         def __call__(self):            
-            store.repair_drones += 1
+            sunrider.repair_drones += 1
             BM.money -= self.cost
             renpy.restart_interaction()
             
