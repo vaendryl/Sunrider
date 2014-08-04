@@ -109,59 +109,53 @@ screen upgrade:
         text_outlines [(1,'000',0,0)]
         action Return('reset')
 
-##defunct
-#    textbutton 'next ship':
-#        xpos 0.8
-#        ypos 0.1
-#        text_size 50
-#        text_color 'fff'
-#        text_outlines [(1,'000',0,0)]
-#        action Return('next')
-
     ## show icons of all the player ships in player_ships
     $ count = 0
     for iconship in player_ships:
-        $ icon = None
-        $ hovericon = None
-        $ xposition = 1640
-        if count % 2 != 0:
-            $ xposition = 1758
-        $ yposition = 441 + count * 70
+        if not iconship.mercenary:
+            $ icon = None
+            $ hovericon = None
+            $ xposition = 1640
+            if count % 2 != 0:
+                $ xposition = 1758
+            $ yposition = 441 + count * 70
 
-        if iconship.name == 'Sunrider':
-            $ icon = 'Menu/upgrade_sunrider_button.png'
-            $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
-        elif iconship.name == 'Liberty':
-            $ icon = 'Menu/upgrade_liberty_button.png'
-            $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
-        elif iconship.name == 'Black Jack':
-            $ icon = 'Menu/upgrade_blackjack_button.png'
-            $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
-        elif iconship.name == 'Havoc':
-            $ icon = 'Menu/upgrade_havoc_button.png'
-            $ hovericon = 'Menu/upgrade_havoc_hover.png'
-        elif iconship.name == 'Phoenix':
-            $ icon = 'Menu/upgrade_phoenix_button.png'
-            $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
-        elif iconship.name == 'Seraphim':
-            $ icon = 'Menu/upgrade_seraphim_button.png'
-            $ hovericon = 'Menu/upgrade_seraphim_hover.png'
-        elif iconship.name == 'Bianca':
-            $ icon = 'Menu/upgrade_bianca_button.png'
-            $ hovericon = 'Menu/upgrade_bianca_hover.png'
-        elif iconship.name == 'Paladin':
-            $ icon = 'Menu/upgrade_paladin_button.png'
-            $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
+            #this is the sort of mess you get if you don't put this stuff in the library
+            if iconship.name == 'Sunrider':
+                $ icon = 'Menu/upgrade_sunrider_button.png'
+                $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
+            elif iconship.name == 'Liberty':
+                $ icon = 'Menu/upgrade_liberty_button.png'
+                $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
+            elif iconship.name == 'Black Jack':
+                $ icon = 'Menu/upgrade_blackjack_button.png'
+                $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
+            elif iconship.name == 'Havoc':
+                $ icon = 'Menu/upgrade_havoc_button.png'
+                $ hovericon = 'Menu/upgrade_havoc_hover.png'
+            elif iconship.name == 'Phoenix':
+                $ icon = 'Menu/upgrade_phoenix_button.png'
+                $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
+            elif iconship.name == 'Seraphim':
+                $ icon = 'Menu/upgrade_seraphim_button.png'
+                $ hovericon = 'Menu/upgrade_seraphim_hover.png'
+            elif iconship.name == 'Bianca':
+                $ icon = 'Menu/upgrade_bianca_button.png'
+                $ hovericon = 'Menu/upgrade_bianca_hover.png'
+            elif iconship.name == 'Paladin':
+                $ icon = 'Menu/upgrade_paladin_button.png'
+                $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
+                
 
-        imagebutton:
-            xpos xposition
-            ypos yposition
-            action SetField(BM,'selected',iconship)
-            idle icon
-            hover hovericon
-            focus_mask True
+            imagebutton:
+                xpos xposition
+                ypos yposition
+                action SetField(BM,'selected',iconship)
+                idle icon
+                hover hovericon
+                focus_mask True
 
-        $ count += 1
+            $ count += 1
 
     vbox:
         area (40, 270, 1050, 440)

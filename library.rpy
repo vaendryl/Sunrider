@@ -1901,5 +1901,90 @@ init 2 python:
             self.shot_count = 15
             self.accuracy = 80
             self.wtype = 'Pulse'
+            
+            
+    ## store items ##
+    # see classes.rpy for more details on what each field does
+    
+    class NewWarhead(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'new warhead'
+            self.display_name = "Warhead Ammo"
+            self.cost = 300            
+            self.tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
+            self.variable_name = 'sunrider.rockets'
+            self.max_amt = 2
+            
+        def __call__(self): #here is where you decide what this item -does-.
+            sunrider.rockets += 1
+            BM.money -= self.cost            #boilerplate
+            renpy.restart_interaction()      #boilerplate
+            
+    class RocketUpgrade(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'Rocketupgrade1'
+            self.display_name = "Quantum Torpedo License"
+            self.cost = 2000            
+            self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
+            self.visibility_condition = 'sunrider_rocket.damage < 1200'
+            
+        def __call__(self):            
+            store.sunrider_rocket.damage = 1200
+            BM.money -= self.cost
+            renpy.restart_interaction()
+            
+    class NewRepairDrone(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'repair drones'
+            self.display_name = "Repair Drones"
+            self.cost = 400            
+            self.tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
+            self.visibility_condition = 'sunrider.repair_drones != None'
+            self.variable_name = 'sunrider.repair_drones'
+            self.max_amt = 8            
+            
+        def __call__(self):            
+            store.repair_drones += 1
+            BM.money -= self.cost
+            renpy.restart_interaction()
+            
+    class ContractAllianceCruiser(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'alliance cruiser'
+            self.display_name = "Alliance Cruiser"
+            self.cost = 2000            
+            self.tooltip = 'Contract an Alliance cruiser to fight for you.'
+            self.visibility_condition = 'store.mission2_complete'  #not sure
+            self.variable_name = 'BM.mercenary_count'
+            self.max_amt = 10            
+            
+        def __call__(self):            
+            create_ship(AllianceCruiser()) #location=None, weaponlist=[] i.e. default
+            BM.mercenary_count += 1
+            BM.money -= self.cost
+            renpy.restart_interaction()  
 
-
+    class ContractUnionFrigate(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'union frigate'
+            self.display_name = "Union Frigate"
+            self.cost = 750            
+            self.tooltip = 'Contract a Union Frigate to fight for you.'
+            self.visibility_condition = 'store.mission2_complete'  #not sure
+            self.variable_name =  'BM.mercenary_count'
+            self.max_amt = 10            
+            
+        def __call__(self):            
+            create_ship(UnionFrigate()) #location=None, weaponlist=[] i.e. default
+            BM.mercenary_count += 1
+            BM.money -= self.cost
+            renpy.restart_interaction()                 
+            
+            
+            
+            

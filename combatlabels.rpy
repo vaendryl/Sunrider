@@ -89,7 +89,7 @@ label skirmish_battle:
         store.tempcmd = BM.cmd
         enemy_ships = []
         destroyed_ships = []
-        BM.mission = 'test'
+        BM.mission = 'skirmish'
         BM.xadj.value = 872
         BM.yadj.value = 370 
         store.zoomlevel = 0.65
@@ -111,6 +111,7 @@ label skirmish_battle:
     
     python:
         BM.phase = 'Player'
+        BM.mission = 'skirmishbattle'
     
     call battle_start
     
@@ -119,6 +120,18 @@ label skirmish_battle:
         BM.money = store.tempmoney
     jump dispatch
     return
+    
+label missionskirmishbattle:
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump missionskirmishbattle #loop back
+    else:
+        pass #continue down
+
+    # jump dispatch
+    return    
     
 label missionskirmish:
     python:
@@ -139,6 +152,30 @@ label missionskirmish:
         elif result[0] == "zoom":
             zoom_handling(result,BM)
             
+        elif result == "next ship":
+            templist = []
+            for ship in player_ships:
+                if ship.location == None:
+                    templist.append(ship)
+                    
+            if BM.selected == None:
+                if len(templist) > 0:
+                    BM.select_ship(templist[0])                
+            else:
+                if BM.selected.location != None:
+                    set_cell_available(BM.selected.location) 
+                index = templist.index(BM.selected)
+                if index == (len(templist)-1):
+                    index = 0
+                else:
+                    index += 1
+                BM.select_ship(templist[index])
+                    
+            if BM.selected != None:
+                BM.targetwarp = True
+                renpy.show_screen('mousefollow')
+                BM.selected.location = None
+            
         elif result == 'deselect':
             #if you picked up an enemy unit that was already put down right clicking should delete it entirely
             #player ships automatically return to the blue pool to be placed again later.
@@ -148,7 +185,7 @@ label missionskirmish:
                     enemy_ships.remove(BM.selected)
             BM.targetwarp = False
             renpy.hide_screen('mousefollow')                
-            BM.selected = None
+            BM.unselect_ship(BM.selected)
             
         elif result[0] == 'selection':
             # this result can be from one of the imagebuttons in the pool screens or returned from
@@ -158,7 +195,7 @@ label missionskirmish:
             renpy.show_screen('mousefollow')
             
             if selected_ship.faction == 'Player':
-                BM.selected = selected_ship
+                BM.select_ship(selected_ship)
             else:
                 if selected_ship.location != None:
                     BM.selected = selected_ship
@@ -191,7 +228,7 @@ label missionskirmish:
                 else:
                     BM.targetwarp = False
                     renpy.hide_screen('mousefollow')                
-                    BM.selected = None
+                    BM.unselect_ship(BM.selected)
 
     if BM.battlemode:   #whenever this is set to False battle ends.
         jump missionskirmish #loop back
@@ -226,6 +263,31 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
         elif result[0] == "zoom":
             zoom_handling(result,BM)
             
+        elif result == "next ship":
+            templist = []
+            for ship in player_ships:
+                if ship.location == None:
+                    templist.append(ship)
+                    
+            if BM.selected == None:
+                if len(templist) > 0:
+                    BM.select_ship(templist[0])                
+            else:
+                if BM.selected.location != None:
+                    set_cell_available(BM.selected.location) 
+                index = templist.index(BM.selected)
+                if index == (len(templist)-1):
+                    index = 0
+                else:
+                    index += 1
+                BM.select_ship(templist[index])
+                    
+            if BM.selected != None:
+                BM.targetwarp = True
+                renpy.show_screen('mousefollow')
+                BM.selected.location = None
+                   
+        
         elif result == 'deselect':
             #if you picked up an enemy unit that was already put down right clicking should delete it entirely
             #player ships automatically return to the blue pool to be placed again later.
@@ -235,7 +297,7 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
                     enemy_ships.remove(BM.selected)
             BM.targetwarp = False
             renpy.hide_screen('mousefollow')                
-            BM.selected = None
+            BM.unselect_ship(BM.selected)
             
         elif result[0] == 'selection':
             # this result can be from one of the imagebuttons in the pool screens or returned from
@@ -245,7 +307,7 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
             renpy.show_screen('mousefollow')
             
             if selected_ship.faction == 'Player':
-                BM.selected = selected_ship
+                BM.select_ship(selected_ship)
             else:
                 if selected_ship.location != None:
                     BM.selected = selected_ship
@@ -283,7 +345,7 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
                     else:
                         BM.targetwarp = False
                         renpy.hide_screen('mousefollow')                
-                        BM.selected = None
+                        BM.unselect_ship(BM.selected)                        
 
     if BM.battlemode:   #whenever this is set to False battle ends.
         jump formationphase #loop back

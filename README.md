@@ -6,7 +6,12 @@ patch 4.3
 * assimilated true hexmod [Azureflare is the best!]
 * you can scroll down a bit further so that the status window doesn't cover units in the far bottom right
 * greatly reduced lag by reworking much of the battle UI.
-* SECRETS
+* Skirmish mode. use your ships with your upgrades against any combination of enemies you please. you don't get any money or CP though :)
+* custom formations. choose your own starting positions from mission 12 onward!
+* contract mercenary ships in the story to fight for you! you'll lose them permenantly if they get destroyed.
+* added HP values on the player ships' HP bars too due to popular demand.
+* added a new ressurect order. 2000 CP to get one of your ryders back
+* reworked store backend. it'll be pretty easy to add a ton of new items to the shop. both for us and for modders.
 
 
 patch 4.2a

@@ -395,11 +395,6 @@ screen battle_screen:
                         zoom (zoomlevel/2.5)
                         crop (0,0,hp_size,79)
 
-#                            text str(ship.hp):
-#                                xpos (xposition+60*zoomlevel)
-#                                ypos (yposition+30*zoomlevel)
-#                                size int(30 * zoomlevel)
-
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
                     $energy_size = int(405*(float(ship.en)/ship.max_en))
@@ -408,6 +403,15 @@ screen battle_screen:
                         ypos yposition
                         zoom (zoomlevel/2.5)
                         crop (0,0,energy_size,79)
+                        
+                    text str(ship.hp):
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos int(xposition+80*zoomlevel)
+                        ypos int(yposition+27*zoomlevel)
+                        size int(16*zoomlevel)
+                        font "Font/sui generis rg.ttf"
+                        outlines [(2,'000',0,0)]                        
 
                 else:    #enemies
 
@@ -584,29 +588,30 @@ screen battle_screen:
                             size (14 * zoomlevel)
                             color 'fff'
 
-          #when you hover over an emeny ship the HP bar and HP text will overlay again on top of other ships.
-        if BM.hovered != None: #when you hover over a ship
-            $ hovered_ship = BM.hovered
-            if hovered_ship.location == None:
-                $ pass
-            elif hovered_ship.faction != 'Player':
-                $xposition = dispx(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
-                $yposition = dispy(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
-                $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
-                add 'Battle UI/label hp bar.png':
-                    xpos xposition
-                    ypos yposition
-                    zoom (zoomlevel/2.5)
-                    crop (0,0,hp_size,90)
+          #when you hover over an enemy ship the HP bar and HP text will overlay again on top of other ships.
+          #actually, with the hex grid overlap issues are mostly gone
+        # if BM.hovered != None: #when you hover over a ship
+            # $ hovered_ship = BM.hovered
+            # if hovered_ship.location == None:
+                # $ pass
+            # # elif hovered_ship.faction != 'Player':
+            # $xposition = dispx(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+            # $yposition = dispy(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
+            # $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
+            # add 'Battle UI/label hp bar.png':
+                # xpos xposition
+                # ypos yposition
+                # zoom (zoomlevel/2.5)
+                # crop (0,0,hp_size,90)
 
-                text str(BM.hovered.hp):
-                    xanchor 0.5
-                    yanchor 0.5
-                    xpos int(xposition+80*zoomlevel)
-                    ypos int(yposition+27*zoomlevel)
-                    size int(16*zoomlevel)
-                    font "Font/sui generis rg.ttf"
-                    outlines [(2,'000',0,0)]
+            # text str(BM.hovered.hp):
+                # xanchor 0.5
+                # yanchor 0.5
+                # xpos int(xposition+80*zoomlevel)
+                # ypos int(yposition+27*zoomlevel)
+                # size int(16*zoomlevel)
+                # font "Font/sui generis rg.ttf"
+                # outlines [(2,'000',0,0)]
 
 
                 ##DISPLAY MOVEMENT OPTIONS##
@@ -1557,6 +1562,76 @@ screen mousefollow:
     add MouseFollow(follow_image):
         alpha 0.7
 
+screen ryderlist:
+    zorder 3
+    modal True
+    
+    key "mousedown_3" action Return("deselect")
+    
+    text 'Choose which Ryder to repair':
+            xalign 0.5
+            yalign 0.1
+            size 40
+            outlines [(2,'000',0,0)]
+            
+    
+    frame:
+        xalign 0.5
+        ypos 0.2
+        xminimum 400
+        xmaximum 400
+        yminimum 300
+        ymaximum 800
+        background Solid((0,0,0,200))
+        
+        $ count = 0
+        for iconship in destroyed_ships:
+            if iconship.faction == 'Player' and not iconship.mercenary and iconship.stype == 'Ryder':
+                $ icon = None
+                $ hovericon = None
+                $ xposition = 50
+                if count % 2 != 0:
+                    $ xposition = 168
+                $ yposition = 20 + count * 70
+
+                #this is the sort of mess you get if you don't put this stuff in the library
+                if iconship.name == 'Sunrider':
+                    $ icon = 'Menu/upgrade_sunrider_button.png'
+                    $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
+                elif iconship.name == 'Liberty':
+                    $ icon = 'Menu/upgrade_liberty_button.png'
+                    $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
+                elif iconship.name == 'Black Jack':
+                    $ icon = 'Menu/upgrade_blackjack_button.png'
+                    $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
+                elif iconship.name == 'Havoc':
+                    $ icon = 'Menu/upgrade_havoc_button.png'
+                    $ hovericon = 'Menu/upgrade_havoc_hover.png'
+                elif iconship.name == 'Phoenix':
+                    $ icon = 'Menu/upgrade_phoenix_button.png'
+                    $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
+                elif iconship.name == 'Seraphim':
+                    $ icon = 'Menu/upgrade_seraphim_button.png'
+                    $ hovericon = 'Menu/upgrade_seraphim_hover.png'
+                elif iconship.name == 'Bianca':
+                    $ icon = 'Menu/upgrade_bianca_button.png'
+                    $ hovericon = 'Menu/upgrade_bianca_hover.png'
+                elif iconship.name == 'Paladin':
+                    $ icon = 'Menu/upgrade_paladin_button.png'
+                    $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
+
+                imagebutton:
+                    xpos xposition
+                    ypos yposition
+                    action Return( ['selection',iconship] )
+                    idle icon
+                    hover hovericon
+                    focus_mask True
+
+                $ count += 1
+        
+        
+        
 transform gameovergimmick(x,y,t):
     # These control the position.
     xpos x ypos y

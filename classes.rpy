@@ -47,11 +47,13 @@ init -2 python:
             self.show_grid = True     #show or hide the grid. no grid is much faster!
             self.formation_range = 7  #the farthest column the player can place units during the formation phase
             self.pending_upgrades = [] #lists upgrades the user has not saved
+            self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider
             self.mouse_location = (0,0)
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
                 'VANGUARD CANNON':[2500,'vanguard_cannon'],
+                'RESSURECTION':[2000,'ressurection']
                 }
             self.order_used = False   #when True the orders button is hidden.
               #environment modififiers are initialized here and can be changed later
@@ -82,14 +84,16 @@ init -2 python:
         
         #here we start defining a few methods part of the battlemanager
         def select_ship(self,ship,play_voice = True):
-            self.selectedmode = True
             self.selected = ship
             if ship.faction == 'Player' and play_voice:
                 a = renpy.random.randint(0,len(ship.selection_voice)-1)
                 renpy.music.play('sound/Voice/{}'.format(ship.selection_voice[a]),channel = ship.voice_channel)
                 del a
-            renpy.show_screen('commands')
-            ship.movement_tiles = get_movement_tiles(ship)
+            
+            if self.mission != 'skirmish':
+                renpy.show_screen('commands')
+                ship.movement_tiles = get_movement_tiles(ship)
+                self.selectedmode = True
 
         def unselect_ship(self,ship):
             renpy.hide_screen('commands')
@@ -104,7 +108,7 @@ init -2 python:
             renpy.show_screen('battle_screen')
             
             #new formation feature (only after mission 12 for now)
-            if self.mission > 1:
+            if self.mission != 'skirmishbattle' and self.mission > 12:   #apparently string>int is completely legal in python :o
                 self.phase = 'formation'
 
                 for ship in player_ships:
@@ -323,6 +327,32 @@ init -2 python:
 
                 ship.movement_tiles = get_movement_tiles(ship)
 
+            if result == 'RESSURECTION':
+                if self.cmd >= self.orders[result][0]:
+                    self.cmd -= self.orders[result][0]
+                    
+                    renpy.show_screen('ryderlist')
+                    result = ui.interact()
+                    
+                    if result == 'deselect':
+                        self.cmd += self.orders['RESSURECTION'][0]
+                        renpy.hide_screen('ryderlist')
+                        BM.order_used = False
+                        return
+                    
+                    elif result[0] == 'selection':
+                        revived_ship = result[1]
+                        renpy.hide_screen('ryderlist')
+                        launch_location = get_free_spot_near(sunrider.location)
+                        revived_ship.en = 0   #not sure about this
+                        revived_ship.hp = revived_ship.max_hp
+                        destroyed_ships.remove(revived_ship)
+                        player_ships.append(revived_ship)
+                        BM.ships.append(revived_ship)
+                        revived_ship.location = launch_location
+                        set_cell_available(launch_location,True) #the optional True actually lets me set this cell -un-available 
+                    
+            
             if result == 'FULL FORWARD':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
@@ -705,6 +735,8 @@ init -2 python:
             #reset the entire grid to empty and BM.ships with only the player_ships list
             clean_grid()
             BM.covers = []
+            renpy.hide_screen('battle_screen')
+            renpy.hide_screen('commands')
 
             renpy.block_rollback()
 
@@ -737,7 +769,7 @@ init -2 python:
             
             if ev.type == pygame.MOUSEMOTION:
                 self.mouse_has_moved = True
-                renpy.hide_screen('game_over_gimmick')
+                renpy.hide_screen('game_over_gimmick')   #why this no werk?
                 
                 # if the left mouse button is pressed, it's a drag
                 if ev.buttons[0] == 1:
@@ -1048,33 +1080,51 @@ init -2 python:
 
         def destroy(self,attacker,no_animation = False):
               #first take care of some AI data tracking stuff
-              #destroying enemy ships increases hate, but lowers enemy moral too
+              #destroying enemy ships increases hate, but lowers enemy morale too
             self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
+            
+            #hate/morale management
             if not self.faction == 'Player':
-
                 attacker.hate += self.max_hp*0.3
                 attacker.target = None
                 for eship in enemy_ships:
                     if get_ship_distance(self,eship) <= 4:
                         eship.morale -= 20
 
+            #show the animation of the ship getting blown up
             if not no_animation:
                 try:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
+            
+            #this list gets used after battle
             destroyed_ships.append(self)
+            
+            #list maintenance
             if self in enemy_ships:
                 enemy_ships.remove(self)
             if self in player_ships:
                 player_ships.remove(self)
                 if len(player_ships) == 0:
                     renpy.jump('gameover')
-            a = self.location[0]-1  #make the next line of code a little shorter
-            b = self.location[1]-1
-            BM.grid[a][b] = False #tell the BM that the old cell is now free again
+                    
+            #grid maintenance
+            set_cell_available(self.location)
+            # a = self.location[0]-1  #make the next line of code a little shorter
+            # b = self.location[1]-1
+            # BM.grid[a][b] = False #tell the BM that the old cell is now free again
+            
+            #more list maintenance
             if self in BM.ships:
                 BM.ships.remove(self)
+                
+            #did you lose a mercenary?
+            if self.mercenary:
+                BM.mercenary_count -= 1
+                
+            #killing a boss ends the battle (the rest surrenders)
+            #if this was the last enemy ship you win too
             if self.boss or len(enemy_ships) == 0:
                 BM.stopAI = True
                 BM.battle_end()
@@ -1988,7 +2038,7 @@ init -2 python:
             Allows Claude to move an enemy Ryder a single square.
             This movement will provoke Blindside attacks, if you move an enemy Ryder
             into the range of a friendly unit with an Assault type weapon.
-            Has a limited range."""
+            Has unlimited range."""
 
             #always hits
             self.accuracy = 9999
@@ -2017,6 +2067,7 @@ init -2 python:
 
             looping = True
             cancel = False
+            BM.weaponhover = None
 
             while looping:
                 result = ui.interact()
@@ -2035,28 +2086,28 @@ init -2 python:
             return
 
 
+## DEFUNCT
+    # class Legion(store.object):     
+        # def __init__(self):
+            # self.active = None
+            # self.row = 0
+            # self.location = None
 
-    class Legion(store.object):
-        def __init__(self):
-            self.active = None
-            self.row = 0
-            self.location = None
+        # def AI(self):
+            # fire = False
+            # if self.row != 0:
+                # pship_count = 0
+                # eship_count = 0
+                # for ship in BM.ships:
+                    # if ship.location != None:
+                        # if ship.location[1] == self.row:
+                            # if ship.faction == 'Player':
+                                # pship_count += 1
+                            # else:
+                                # eship_count += 1
 
-        def AI(self):
-            fire = False
-            if self.row != 0:
-                pship_count = 0
-                eship_count = 0
-                for ship in BM.ships:
-                    if ship.location != None:
-                        if ship.location[1] == self.row:
-                            if ship.faction == 'Player':
-                                pship_count += 1
-                            else:
-                                eship_count += 1
-
-                if eship_count < pship_count:
-                    fire = True
+                # if eship_count < pship_count:
+                    # fire = True
 
 
     class Cover(store.object):
@@ -2210,6 +2261,7 @@ init -2 python:
 
         def __call__(self):
 
+            add_new_vars() #this actually should cover most of what you need...
             store.BM = Battle()
             store.BM.money = self.startMoney
             store.BM.cmd = self.startMoney / 2
@@ -2358,25 +2410,24 @@ init -2 python:
             renpy.jump_out_of_context(self.jumpLoc)
 
 
+    #master class of all store objects
+    #the actual items are defined in the library
     class StoreItem(store.object):
-        def __init__(self, id, visibility_condition, display_name, cost, actions, tooltip, variable_name = None, max_amt = -1):
-            self.id = id
-            self.visibility_condition = visibility_condition
-            self.display_name = display_name
-            self.cost = cost
-            self.actions = actions
-            self.tooltip = tooltip
-            self.variable_name = variable_name
-            self.max_amt = max_amt
+        def __init__(self):
+            self.id = ''                 #unique name for this item
+            self.visibility_condition = 'True' #when is this item visible in store?
+            self.display_name = 'master item' #how it appears in the store
+            self.cost = 0                #cost of this item     
+            self.tooltip = ''            #text explaining what this item does
+            self.variable_name = None  #[string or None] what variable keeps track of how many of this item the player has? 
+            self.max_amt = 0             #maximum allowed of this item. irrelevant if self.amount_variable == None
             
-            self.actions.append(SetField(BM,'money',(eval('BM.money') - self.cost)))
-            
-            if self not in store_items:
-                store_items.append(self)
+            # if self not in store_items:
+                # store_items.append(self)
 
-        def __call__(self):
-            for action in self.actions:
-                action.__call__()
+        def __call__(self):            
+            #needs to be overwritten
+            pass
 
         def isVisible(self):
             return eval(self.visibility_condition)
@@ -2482,4 +2533,11 @@ init -2 python:
 
             update_stats()
 
+            renpy.restart_interaction()
+            
+    class RestartInteraction(Action):  #experimental, obviously.
+        def __init__(self):
+            Action.__init__(self)
+            
+        def __call__(self):
             renpy.restart_interaction()

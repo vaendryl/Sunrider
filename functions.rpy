@@ -204,7 +204,7 @@ init -6 python:
             
             
     def set_cell_available(location, available=False):
-        #False means available(empty), True means occupied
+        #False means available(empty/nil), True means occupied
         if location != None:
             a,b = location
             X,Y = GRID_SIZE
@@ -512,7 +512,7 @@ init -6 python:
 
         elif result[1] == "out":
             store.zoomlevel *= (1 - ZOOM_SPEED)
-            if store.zoomlevel <= 0.45: store.zoomlevel = 0.45
+            if store.zoomlevel <= 0.5: store.zoomlevel = 0.5
 
         side_distance = (1920*store.zoomlevel/0.5)*real_xpos-adjusted_xpos #I use the mousepostion that was stored at the start to calculate the new viewport position
         if side_distance < 0: side_distance = 0
@@ -524,7 +524,7 @@ init -6 python:
         bm.xadj.value = int(side_distance) #actually set the new viewport values
         bm.yadj.value = int(top_distance)
 
-    def create_ship(ship,location,weapons=[]):
+    def create_ship(ship,location=None,weapons=[]):
 
         #find the location
         if location != None:
@@ -594,7 +594,9 @@ init -6 python:
 
 
     def get_movement_tiles(ship, move_range = None):
-        if ship == None: return
+        if ship == None: return []
+        if ship.location == None: return []
+        
         if move_range == None:
             move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen

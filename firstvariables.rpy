@@ -153,7 +153,6 @@ init python:
             self.warpto_farport = False
             self.warpto_ongess = False
 
-
             self.ep2_cancelwarp = False
 
             self.supportedasagacards = False
