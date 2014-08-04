@@ -29,10 +29,14 @@ label firstvariables:
     $ mission2_name = None
     $ mission3_name = None
 
+    $ mission1_complete = False
+    $ mission2_complete = False
     $ mission3_complete = False
     $ mission4_complete = False
     $ mission5_complete = False
     $ mission6_complete = False
+    $ mission7_complete = False
+    $ mission8_complete = False
     $ mission9_complete = False
     $ mission10_complete = False
     $ mission11_complete = False
@@ -119,10 +123,14 @@ init python:
             self.mission2_name = None
             self.mission3_name = None
 
+            self.mission1_complete = False
+            self.mission2_complete = False
             self.mission3_complete = False
             self.mission4_complete = False
             self.mission5_complete = False
             self.mission6_complete = False
+            self.mission7_complete = False
+            self.mission8_complete = False
             self.mission9_complete = False
             self.mission10_complete = False
             self.mission11_complete = False

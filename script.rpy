@@ -668,6 +668,8 @@ label firstbattle_end:
     hide screen battle_screen
     hide screen commands
 
+    $ mission1_complete = True
+
     play music "Music/WorldBuilder.ogg"
 
     scene bg bridgered
@@ -1484,6 +1486,8 @@ label secondbattle_end:
 
     hide screen battle_screen
     hide screen commands
+
+    $ mission2_complete = True
 
     scene bg black2 with horizontalwipereverse
     scene bg hangar with horizontalwipereverse

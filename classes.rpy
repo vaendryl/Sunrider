@@ -2316,9 +2316,9 @@ init -2 python:
             store.mission2_name = None
             store.mission3_name = None
 
-            if self.lastMission >= 3:
-                for count in range(self.lastMission):
-                    setattr(store,'mission{}_complete'.format(count+1),True)
+            for count in range(self.lastMission):
+                setattr(store,'mission{}_complete'.format(count+1),True)
+
             store.mission4_complete = False
             store.mission7_complete = False
 
@@ -2431,9 +2431,6 @@ init -2 python:
 
         def isVisible(self):
             return eval(self.visibility_condition)
-
-        def __eq__(self, other):
-            return isinstance(self, other.__class__) and self.id == other.id
 
     ## CUSTOM ACTIONS ##
 
