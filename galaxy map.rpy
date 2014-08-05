@@ -291,7 +291,7 @@ label warpto_versta:
         $ mission2_name = None
         $ mission3_name = None
         
-    if versta_ambush == True:
+    elif versta_ambush == True:
         $ galaxymission1 = True
         $ galaxymission2 = False
         $ galaxymission3 = False
