@@ -345,16 +345,6 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
-                
-    
-
-    def set_planets():
-        Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
-        Planet("TYDARIA", "warpto_Tydaria", 1390, 540, "warpto_tydaria")
-        Planet("ASTRAL EXPANSE", "warpto_astralexpanse", 1250, 540, "warpto_astralexpanse")
-        Planet("PACT Outpost", "warpto_pactstation", 1420, 480, "warpto_pactstation1")
-        Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
-        Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
 
 
     def reset_classes():
@@ -560,19 +550,13 @@ init -6 python:
             return
 
     def get_free_spot_near(location):
-        width = GRID_SIZE[0]
-        height = GRID_SIZE[1]
-        x = y = 0
-        dx = 0
-        dy = -1
-        for i in range((max(width, height) * 2)**2):
-            if (-width < x <= width) and (-height < y <= height):
-                loc = (x + location[0], y + location[1])
+        radius = 0
+        while radius < GRID_SIZE[0] or radius < GRID_SIZE[1]:
+            locations = getInRing(location, radius)
+            for loc in locations:
                 if get_cell_available(loc):
                     return loc
-            if x == y or (x < 0 and x == -y) or (x > 0 and x == 1-y):
-                dx, dy = -dy, dx
-            x, y = x+dx, y+dy
+            radius += 1
         return location
 
     def create_cover(location):
@@ -837,3 +821,26 @@ init -6 python:
         if location[1] > GRID_SIZE[1] or location[1] <=0:
             valid = False
         return valid
+
+    def getAllInRadius(loc, radius):
+        locations = [loc]
+        if radius != 0:
+            x, y = loc
+            locations.extend(getAllInRadius((x + 1, y), radius - 1))
+            locations.extend(getAllInRadius((x - 1, y), radius - 1))
+            locations.extend(getAllInRadius((x, y + 1), radius - 1))
+            locations.extend(getAllInRadius((x, y - 1), radius - 1))
+            if y % 2 == 0:
+                locations.extend(getAllInRadius((x + 1, y + 1), radius - 1))
+                locations.extend(getAllInRadius((x + 1, y - 1), radius - 1))
+            else:
+                locations.extend(getAllInRadius((x - 1, y + 1), radius - 1))
+                locations.extend(getAllInRadius((x - 1, y - 1), radius - 1))
+        return list(set(locations))
+
+    def getInRing(loc, radius):
+        outer = getAllInRadius(loc, radius)
+        inner = getAllInRadius(loc, radius - 1)
+        for x in inner:
+            outer.remove(x)
+        return outer
