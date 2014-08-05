@@ -506,7 +506,7 @@ init -2 python:
                                     BM.vanguardtarget = False
                                     renpy.hide_screen('battle_screen')
                                     renpy.show_screen('battle_screen')
-                                self.cmd -= self.orders[prev_result][0]
+                                self.cmd -= self.orders['VANGUARD CANNON'][0]
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
                                 listlocs = interpolate_grid(loc1, loc2)
