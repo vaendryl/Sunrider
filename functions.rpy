@@ -551,11 +551,16 @@ init -6 python:
 
     def get_free_spot_near(location):
         radius = 0
+        # don't make the radius larger than width and height of the grid
         while radius < GRID_SIZE[0] or radius < GRID_SIZE[1]:
+            # get the locations in the ring at radius 'radius'
             locations = getInRing(location, radius)
+            
+            # return the first available location in the list
             for loc in locations:
                 if get_cell_available(loc):
                     return loc
+            # increment radius
             radius += 1
         return location
 
@@ -823,24 +828,31 @@ init -6 python:
         return valid
 
     def getAllInRadius(loc, radius):
+        if radius < 0:
+            return []
+        # put the given location into a list
         locations = [loc]
         if radius != 0:
             x, y = loc
+            # add the locations of each adjacent hex to the list until we have reached the desired radius
             locations.extend(getAllInRadius((x + 1, y), radius - 1))
             locations.extend(getAllInRadius((x - 1, y), radius - 1))
             locations.extend(getAllInRadius((x, y + 1), radius - 1))
             locations.extend(getAllInRadius((x, y - 1), radius - 1))
+            # the adjacent cells are different depending on whether the y value is even or odd
             if y % 2 == 0:
                 locations.extend(getAllInRadius((x + 1, y + 1), radius - 1))
                 locations.extend(getAllInRadius((x + 1, y - 1), radius - 1))
             else:
                 locations.extend(getAllInRadius((x - 1, y + 1), radius - 1))
                 locations.extend(getAllInRadius((x - 1, y - 1), radius - 1))
+        # remove all duplicates from the list and then return it
         return list(set(locations))
 
     def getInRing(loc, radius):
         outer = getAllInRadius(loc, radius)
         inner = getAllInRadius(loc, radius - 1)
+        # remove all locations in the inner ring from the outer ring
         for x in inner:
             outer.remove(x)
         return outer
