@@ -573,16 +573,6 @@ label mission13_inits:
         enemy_ships = []
         destroyed_ships = []
 
-        sunrider.set_location(4,8)
-        blackjack.set_location(6,6)
-        bianca.set_location(6,7)
-        phoenix.set_location(6,8)
-        liberty.set_location(6,9)
-        seraphim.set_location(6,10)
-        paladin.set_location(6,11)
-        unionfrigate1.set_location(5,7)
-        unionfrigate2.set_location(5,9)
-
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -631,16 +621,6 @@ label mission14_inits:
         enemy_ships = []
         destroyed_ships = []
 
-        sunrider.set_location(4,8)
-        blackjack.set_location(6,6)
-        bianca.set_location(6,7)
-        phoenix.set_location(6,8)
-        liberty.set_location(6,9)
-        seraphim.set_location(6,10)
-        paladin.set_location(6,11)
-        unionfrigate1.set_location(5,7)
-        unionfrigate2.set_location(5,9)
-
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -665,16 +645,6 @@ label mission15_inits:
         zoomlevel = 1
         enemy_ships = []
         destroyed_ships = []
-
-        sunrider.set_location(4,8)
-        blackjack.set_location(6,6)
-        bianca.set_location(6,7)
-        phoenix.set_location(6,8)
-        liberty.set_location(6,9)
-        seraphim.set_location(6,10)
-        paladin.set_location(6,11)
-        unionfrigate1.set_location(5,7)
-        unionfrigate2.set_location(5,9)
 
 
         #center the viewport on the sunrider
