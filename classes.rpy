@@ -48,12 +48,15 @@ init -2 python:
             self.formation_range = 7  #the farthest column the player can place units during the formation phase
             self.pending_upgrades = [] #lists upgrades the user has not saved
             self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider
+            self.seen_skirmish = False #if not seen skirmish before Ava explains it.
+            self.remove_mode = False  #when True the player can easily remove units in skirmish
+            self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
             self.mouse_location = (0,0)
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
                 'VANGUARD CANNON':[2500,'vanguard_cannon'],
-                'RESSURECTION':[2000,'ressurection']
+                'RESURRECTION':[2000,'resurrection']    
                 }
             self.order_used = False   #when True the orders button is hidden.
               #environment modififiers are initialized here and can be changed later
@@ -126,6 +129,8 @@ init -2 python:
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
+            if store.Difficulty < self.lowest_difficulty:
+                self.lowest_difficulty = store.Difficulty
             
             self.just_moved = False #this sets it so you can no longer take back your move
             renpy.hide_screen('game_over_gimmick') #disables the screensaver gimmick
@@ -330,7 +335,7 @@ init -2 python:
 
                 ship.movement_tiles = get_movement_tiles(ship)
 
-            if result == 'RESSURECTION':
+            if result == 'RESURRECTION':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
@@ -338,7 +343,7 @@ init -2 python:
                     result = ui.interact()
                     
                     if result == 'deselect':
-                        self.cmd += self.orders['RESSURECTION'][0]
+                        self.cmd += self.orders['RESURRECTION'][0]
                         renpy.hide_screen('ryderlist')
                         BM.order_used = False
                         return
@@ -671,6 +676,9 @@ init -2 python:
             self.hovered = None
             renpy.hide_screen('tooltips')
             BM.phase = 'Player'
+            
+            if store.Difficulty < self.lowest_difficulty:
+                self.lowest_difficulty = store.Difficulty
 
             if not lost:
                 #show the victory screen
@@ -703,7 +711,11 @@ init -2 python:
 
                 store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
                 self.money += int(net_gain)
-                self.cmd += int((net_gain*10)/(BM.turn_count+2)) #this is independent of the victory screen display!
+                
+                difficulty_penalty = store.Difficulty
+                if difficulty_penalty < 0: difficulty_penalty = 0
+                
+                self.cmd += int((net_gain*10)/(BM.turn_count+difficulty_penalty))
 
                 renpy.show_screen('victory2')
                 renpy.pause(1)
@@ -2512,6 +2524,7 @@ init -2 python:
             self.weapon = weapon
 
         def __call__(self):
+            BM.weaponhover = None
             if self.weapon.wtype == 'Support':
                 if self.weapon.self_buff:
                     self.weapon.fire(BM.selected,BM.selected)

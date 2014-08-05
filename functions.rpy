@@ -32,7 +32,6 @@ init -6 python:
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
         if BM.money >= cost:  #sanity check
-            BM.pending_upgrades.append([ship,upgrade,ship.upgrades[upgrade]])
             BM.money -= cost
             new_value = getattr(ship,upgrade)+increase
             setattr(ship,upgrade,new_value)
@@ -41,17 +40,13 @@ init -6 python:
             ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
 
     def reverse_upgrade(ship, upgrade):
-        revert = []
-        for pending in reversed(BM.pending_upgrades):
-            if pending[1] == upgrade:
-                revert = pending
-                break
-        name,level,increase,cost,multiplier = revert[2]
-        BM.money += cost
+        name,level,increase,cost,multiplier = ship.upgrades[upgrade]
+        level -= 1
+        cost = int(round(cost / multiplier))
+        BM.money += int(cost * 0.8)
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
-        BM.pending_upgrades.remove(revert)
 
     def buy_upgrades():
         renpy.show_screen('upgrade')
@@ -65,32 +60,29 @@ init -6 python:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
                     ship.missiles = ship.max_missiles
-                for pending in reversed(BM.pending_upgrades):
-                    reverse_upgrade(pending[0], pending[1])
                 active = False
                 return
 
-            elif result == 'next':
-                if BM.selected != None and len(player_ships) > 1:
-                    index = player_ships.index(BM.selected)
-                    if index == (len(player_ships)-1):
-                        index = 0
-                    else:
-                        index += 1
-                    BM.selected = player_ships[index]
+            # elif result == 'next':
+                # if BM.selected != None and len(player_ships) > 1:
+                    # index = player_ships.index(BM.selected)
+                    # if index == (len(player_ships)-1):
+                        # index = 0
+                    # else:
+                        # index += 1
+                    # BM.selected = player_ships[index]
 
             elif result == 'reset':
                 reset_upgrades(BM.selected)
 
-            elif result == 'submit':
-                BM.pending_upgrades = []
-                renpy.hide_screen('upgrade')
-                for ship in player_ships:
-                    ship.hp = ship.max_hp
-                    ship.en = ship.max_en
-                    ship.missiles = ship.max_missiles
-                active = False
-                return
+            # elif result == 'submit':
+                # renpy.hide_screen('upgrade')
+                # for ship in player_ships:
+                    # ship.hp = ship.max_hp
+                    # ship.en = ship.max_en
+                    # ship.missiles = ship.max_missiles
+                # active = False
+                # return
 
             elif result != None:
                 if result[0] == '+':
@@ -114,7 +106,7 @@ init -6 python:
                 return
 
     def apply_modifier(target,modifier,magnitude,duration):
-        """attempts to apply a buff or a curse and return True on succes, False on failure"""
+        """attempts to apply a buff or a curse and return True on success, False on failure"""
         if target == None:
             return False
         if not hasattr(target,'modifiers'):
@@ -345,7 +337,8 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
-
+                
+    
 
     def reset_classes():
         """experimental save file compatibility keeper
@@ -570,11 +563,12 @@ init -6 python:
         renpy.pause(1)
         
     def get_shot_hit(accuracy,shotcount,faction):
-        #fudging with actual hit chances for fun and profit
+        #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
+        #for now no fudging for AI.
         if faction == 'Player' and store.Difficulty <=2 and shotcount == 1:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 < int(accuracy)
-        elif store.Difficulty == 3 and accuracy < 50 and shotcount == 1: #muhahaha
+        elif faction == 'Player' and store.Difficulty == 3 and accuracy < 50 and shotcount == 1: #muhahaha
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 < int(accuracy)
         else:
@@ -882,4 +876,4 @@ init -6 python:
         # remove all locations in the inner ring from the outer ring
         for x in inner:
             outer.remove(x)
-        return outer
+        return outer        

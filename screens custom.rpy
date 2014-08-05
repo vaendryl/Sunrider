@@ -471,27 +471,25 @@ screen battle_screen:
 
         if BM.missile_moving:
             for missile in BM.missiles:
-                $xposition = dispx(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
-                $yposition = dispy(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
-                $next_xposition = dispx(missile.target.location[0],missile.target.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
-                $next_yposition = dispy(missile.target.location[0],missile.target.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+                if missile.parent.location != None and missile.target.location != None: #failsafes
+                    $xposition = dispx(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(missile.parent.location[0], missile.parent.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+                    $next_xposition = dispx(missile.target.location[0],missile.target.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                    $next_yposition = dispy(missile.target.location[0],missile.target.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
 
-#                if missile.shot_down != None:
-#                    $ travel_time = missile.shot_down
-#                else:
-                $ travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
-                add missile.lbl:
-                    at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
-                    xanchor 0.5
-                    yanchor 0.5
-                    zoom (zoomlevel/4.0)
+                    $ travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
+                    add missile.lbl:
+                        at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
+                        xanchor 0.5
+                        yanchor 0.5
+                        zoom (zoomlevel/4.0)
 
-#                text str(missile.shot_count):
-#                    at move_ship(xposition,yposition,next_xposition,next_yposition,0.1)
-#                    xanchor 0.5
-#                    yanchor 0.5
-#                    size (20/zoomlevel)
-#                    outlines [(1,'000',0,0)]
+    #                text str(missile.shot_count):
+    #                    at move_ship(xposition,yposition,next_xposition,next_yposition,0.1)
+    #                    xanchor 0.5
+    #                    yanchor 0.5
+    #                    size (20/zoomlevel)
+    #                    outlines [(1,'000',0,0)]
 
 
 
@@ -824,8 +822,40 @@ screen battle_screen:
             idle 'Skirmish/start.png'
             hover hoverglow('Skirmish/start.png')
             action [ If( BM.selected==None , Return('start') ) ]
-    
+            
+        if BM.mission == 'skirmish':
+            imagebutton:
+                xpos 88
+                ypos 690
+                idle 'Skirmish/return.png'
+                hover hoverglow('Skirmish/return.png')
+                action Return('quit')
+        
+            $ idl = 'Skirmish/remove.png'
+            if BM.remove_mode:
+                $ idl = hoverglow(im.MatrixColor('Skirmish/remove.png',im.matrix.tint(1.0, 1.0, 0)))
+            
+            imagebutton:
+                xpos 208
+                ypos 759
+                idle idl
+                hover hoverglow('Skirmish/remove.png')
+                action Return('remove')
+                
+            imagebutton:
+                xpos 328
+                ypos 828
+                idle 'Skirmish/enemymusic.png'
+                hover hoverglow('Skirmish/enemymusic.png')
+                action Return('enemymusic')
 
+            imagebutton:
+                xpos 448
+                ypos 897
+                idle 'Skirmish/playermusic.png'
+                hover hoverglow('Skirmish/playermusic.png')
+                action Return('playermusic')                 
+    
 transform move_down(ystart,yend,xx=0):
     xpos xx
     ypos ystart
@@ -959,7 +989,7 @@ screen orders:
 screen commands: ##show the weapon buttons etc##
     zorder 1 #always show on top of the battle screen
 
-        ##show status window and it's data
+        ##show status window and its data
     if not BM.selected == None:
         $ ship = BM.selected
         add 'Battle UI/statuswindow.png' xalign 1.0 yalign 1.0
@@ -1151,8 +1181,13 @@ screen player_unit_pool_collapsed:
 screen player_unit_pool:
     zorder 3
     
+    if BM.mission == 'skirmish':
+        $ frame_background = 'Skirmish/addplayer.png'
+    else:
+        $ frame_background = 'Skirmish/addplayer_nocmd.png'
+    
     frame:
-        background 'Skirmish/addplayer.png'
+        background frame_background
         xmaximum 182
         at move_vertical(-152,0)
         
@@ -1174,6 +1209,31 @@ screen player_unit_pool:
         xminimum 40
         xmaximum 40
         action Hide('player_unit_pool')
+        
+    if BM.mission == 'skirmish':
+        
+        text str(BM.cmd):
+            xalign 0.5
+            xpos 75
+            ypos 998
+            size 28
+            color '000'
+
+        imagebutton:
+            xpos 18
+            ypos 1038
+            idle 'skirmish/increase_cmd.png'
+            hover hoverglow('skirmish/increase_cmd.png')
+            action SetField( BM , 'cmd' , (BM.cmd + 100) ) 
+            alternate SetField( BM , 'cmd' , (BM.cmd + 1000) )
+            
+        imagebutton:
+            xpos 80
+            ypos 1038
+            idle 'skirmish/decrease_cmd.png'
+            hover hoverglow('skirmish/decrease_cmd.png')
+            action If( BM.cmd <= 100 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 100)) )
+            alternate If( BM.cmd <= 1000 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 1000)) )
         
 
 screen enemy_unit_pool_collapsed:
@@ -1217,6 +1277,7 @@ screen enemy_unit_pool:
             xpos 20
             ypos 20
             mousewheel True #luckily this viewport eats scrolls above it, so the main one doesn't return it.
+            scrollbars "vertical"
             
             vbox:
                 spacing 20
@@ -1523,13 +1584,48 @@ screen victory2:
         at delay_text(wait)
 
     $wait += 0.1
-    text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+2) ) ):
+    
+    $ difficulty_penalty = store.Difficulty - 1
+    if difficulty_penalty < 0: 
+        $ difficulty_penalty = 0
+                
+    text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+difficulty_penalty) ) ):
         xanchor 1.0
         xpos 0.8
         ypos 0.70
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)
+        
+    if store.Difficulty == 0:    
+        $ diff_text = "Current difficulty: VNmode"
+    if store.Difficulty == 1:    
+        $ diff_text =  "Current difficulty: Easy"
+    if store.Difficulty == 2:    
+        $ diff_text =  "Current difficulty: Normal"
+    if store.Difficulty == 3:    
+        $ diff_text =  "Current difficulty: Hard"
+        
+    if BM.lowest_difficulty == 0:    
+        $ low_diff_text = "lowest difficulty: VNmode"
+    if BM.lowest_difficulty == 1:    
+        $ low_diff_text = "lowest difficulty: Easy"
+    if BM.lowest_difficulty == 2:    
+        $ low_diff_text = "lowest difficulty: Normal"
+    if BM.lowest_difficulty == 3:    
+        $ low_diff_text = "lowest difficulty: Hard" 
+    
+    vbox:
+        xalign 1.0
+        yalign 1.0
+        
+        text diff_text:
+            size 12
+            xalign 1.0
+        text low_diff_text:
+            size 12
+            xalign 1.0
+        
 
 transform message_transform(x,y):
     # These control the position.
@@ -1630,6 +1726,33 @@ screen ryderlist:
 
                 $ count += 1
         
+screen skirmishhelp:
+    
+    frame:
+        xalign 0.5
+        ypos 0.2
+        xminimum 600
+        # xmaximum 600
+        yminimum 300
+        ymaximum 800
+        background Solid((0,0,0,200))
+        
+        vbox:
+            text "Welcome to skirmish mode! it seems this is your first time so I'll explain how things work."
+            text "On either side you will find 2 unit pools. player ships go on the left, enemy ships go on the right."
+            text "Click the 'add player ships' text to extend the pool window. Same with enemy ships!"
+            text "Once extended you can click on ships and place them wherever you like!"
+            text "Hold shift (or any other modifier) to repeatedly place the same enemy ship."
+            text "You can also click the middle mouse button to instantly grab one of the unplaced player ships!"
+            text "This will make it easy and fast to place all your units."
+            text "Click the 'remove' button to easily remove a lot of units with a single click"
+            text "You can also set a custom amount of command points at the bottom of the player pool for some fun or an extra challenge."
+            text "After the battle your total command points and your money gets reset to what it was before the battle."
+            text "That means you won't make any profit out of this simulation!"
+            
+            textbutton "I got it!":
+                xalign 0.5
+                action Hide('skirmishhelp')
         
         
 transform gameovergimmick(x,y,t):

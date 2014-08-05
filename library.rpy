@@ -1958,10 +1958,10 @@ init 2 python:
             self.id = 'alliance cruiser'
             self.display_name = "Alliance Cruiser"
             self.cost = 2000            
-            self.tooltip = 'Contract an Alliance cruiser to fight for you.'
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name = "get_shipcount_in_list('Alliance Cruiser',player_ships)"
-            self.max_amt = 10            
+            self.max_amt = 2            
+            self.tooltip = 'With the Solar Congress\' declaration of war, countless Alliance battle cruisers have been called to the front lines. With a generous payment, the Mining Union can use its leverage in the Solar Congress to assign a fully operational Alliance battle cruiser as the Sunrider\'s escort. While slow, the Alliance battle cruiser is built like a brick and packs a punch. You can have up to {} in your fleet at any time'.format(self.max_amt)
             
         def __call__(self):            
             create_ship(AllianceCruiser()) #location=None, weaponlist=[] i.e. default
@@ -1975,10 +1975,10 @@ init 2 python:
             self.id = 'union frigate'
             self.display_name = "Union Frigate"
             self.cost = 750            
-            self.tooltip = 'Contract a Union Frigate to fight for you.'
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name =  "get_shipcount_in_list('Mining Union Frigate',player_ships)"
-            self.max_amt = 10            
+            self.max_amt = 4            
+            self.tooltip = 'The Mining Union regularly fields a large private army to protect its shipping from pirates. With the payment of the appropriate fees, you too can have a Union security frigate watching your back. While small and lightly armed, these frigates are inexpensive and speedy. You can have up to {} in your fleet at any time'.format(self.max_amt)
             
         def __call__(self):            
             create_ship(UnionFrigate()) #location=None, weaponlist=[] i.e. default

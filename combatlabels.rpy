@@ -4,7 +4,8 @@
 #init:
 #    image movie = Movie(size=(400, 300), xalign=0.5, yalign=0.5)
 
-image black = Solid((0, 0, 0, 255))
+init:
+    image black = Solid((0, 0, 0, 255))
 
 #label no_animation: #defunct
 #    scene black with dissolve
@@ -96,6 +97,7 @@ label skirmish_battle:
         BM.phase = 'formation'
         BM.show_grid = False
         battlemode()
+        BM.remove_mode = False #when True player can click on units and delete them quickly
         for ship in player_ships:
             ship.location = None
 
@@ -106,6 +108,10 @@ label skirmish_battle:
     show screen battle_screen
     show screen player_unit_pool_collapsed
     show screen enemy_unit_pool_collapsed
+    
+    if not BM.seen_skirmish:
+        show screen skirmishhelp
+        $ BM.seen_skirmish = True
     
     call missionskirmish       
     
@@ -141,13 +147,42 @@ label missionskirmish:
             show_message('wtf is a bool returned?') #had some trouble with this at some point. still not sure what caused it.
             renpy.jump('missionskirmish')
         
-        elif result == 'start':
+        elif result == 'start' or result == 'quit':
+            if result == 'start':
+                if len(enemy_ships) == 0:
+                    show_message('Please add at least 1 enemy ship')
+                    renpy.jump('missionskirmish')
+            
+                player_ship_present = False
+                for ship in player_ships:
+                    if ship.location != None:
+                        player_ship_present = True
+                
+                if not player_ship_present:
+                    show_message('Please add at least 1 player ship')
+                    renpy.jump('missionskirmish')
+        
             renpy.hide_screen('player_unit_pool_collapsed')
             renpy.hide_screen('enemy_unit_pool_collapsed')
             renpy.hide_screen('player_unit_pool')
             renpy.hide_screen('enemy_unit_pool')
-            renpy.hide_screen('mousefollow')            
+            renpy.hide_screen('mousefollow')
+            renpy.hide_screen('store_union') #seems like it has trouble staying closed? 
             BM.battlemode = False
+            if result == 'quit':
+                renpy.jump('dispatch')
+                
+        elif result == 'remove':
+            if BM.remove_mode:
+                BM.remove_mode = False
+            else:
+                BM.remove_mode = True
+        
+        elif result == 'playermusic':
+            show_message('not implemented yet')
+
+        elif result == 'enemymusic':
+            show_message('not implemented yet')            
             
         elif result[0] == "zoom":
             zoom_handling(result,BM)
@@ -191,24 +226,39 @@ label missionskirmish:
             # this result can be from one of the imagebuttons in the pool screens or returned from
             # MouseTracker because a hex with a unit in it was clicked.
             selected_ship = result[1]
-            BM.targetwarp = True
-            renpy.show_screen('mousefollow')
             
-            if selected_ship.faction == 'Player':
-                BM.select_ship(selected_ship)
-            else:
+            if BM.remove_mode:
                 if selected_ship.location != None:
-                    BM.selected = selected_ship
-                    if selected_ship in enemy_ships:
-                        BM.ships.remove(BM.selected)
-                        enemy_ships.remove(BM.selected)
-                else:
-                    BM.selected = deepcopy(selected_ship) #breaks alias
-                    BM.selected.weapons = BM.selected.default_weapon_list
+                    if selected_ship.faction != 'Player':
+                        if selected_ship in enemy_ships:
+                            BM.ships.remove(selected_ship)
+                            enemy_ships.remove(selected_ship)
+                            set_cell_available(selected_ship.location)
+                    else:
+                        set_cell_available(selected_ship.location)
+                        selected_ship.location = None
+                        
                     
-            if BM.selected.location != None:
-                set_cell_available(BM.selected.location)           
-            BM.selected.location = None
+            else:
+                BM.targetwarp = True
+                renpy.show_screen('mousefollow')
+                
+                if selected_ship.faction == 'Player':
+                    BM.select_ship(selected_ship)
+                else:
+                    if selected_ship.location != None:
+                        BM.select_ship(selected_ship)
+                        if selected_ship in enemy_ships:
+                            BM.ships.remove(BM.selected)
+                            enemy_ships.remove(BM.selected)
+                    else:
+                        BM.selected = deepcopy(selected_ship) #breaks alias
+                        BM.selected.weapons = BM.selected.default_weapon_list
+                        
+            if BM.selected != None:
+                if BM.selected.location != None:
+                    set_cell_available(BM.selected.location)           
+                BM.selected.location = None
                 
             
         elif result[0] == 'warptarget':
@@ -229,7 +279,11 @@ label missionskirmish:
                     BM.targetwarp = False
                     renpy.hide_screen('mousefollow')                
                     BM.unselect_ship(BM.selected)
+            
+            sort_ship_list()
 
+    
+    
     if BM.battlemode:   #whenever this is set to False battle ends.
         jump missionskirmish #loop back
     else:

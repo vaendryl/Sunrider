@@ -22,29 +22,39 @@ screen store_union:
         idle "Menu/return.jpg"
         hover "Menu/return_hover.jpg"
 
-    frame:
-        xmaximum 800
-        xpos 10
-        ypos 270
-        background None
-        vbox:
-            spacing 20
-            for item in store_items:
-                if item.isVisible():
-                    imagebutton:
-                        action If(BM.money >= item.cost and (eval(item.variable_name) is None or eval(item.variable_name) < item.max_amt),item,NullAction())
-                        idle "Menu/store_item.png"
-                        hover "Menu/store_item_hover.png"
-                        hovered SetField(BM,'hovered',item.id)
-                        unhovered SetField(BM,'hovered',None)
-        vbox:
-            for item in store_items:
-                if item.isVisible():
-                    text item.display_name + ("    [[owned:{!s}]".format(eval(item.variable_name)) if item.variable_name != None else "") font "Font/sui generis rg.ttf" size 30 first_indent 50 line_spacing 38 color "#0a0a0a"
-        vbox:
-            for item in store_items:
-                if item.isVisible():
-                    text str(item.cost) font "Font/sui generis rg.ttf" size 30 first_indent 710 line_spacing 38 color "#0a0a0a"
+    vbox:
+        area (40, 270, 815, 440)
+        viewport:
+            draggable True
+            mousewheel True
+            scrollbars "vertical"
+            child_size (1050,2000) 
+        
+            frame:
+                xmaximum 800
+                xpos 10
+                ypos 270
+                background None
+                vbox:
+                    spacing 20
+                    for item in store_items:
+                        if item.isVisible():
+                            imagebutton:
+                                action If(BM.money >= item.cost and (eval(item.variable_name) is None or eval(item.variable_name) < item.max_amt),item,NullAction())
+                                idle "Menu/store_item.png"
+                                hover "Menu/store_item_hover.png"
+                                hovered SetField(BM,'hovered',item.id)
+                                unhovered SetField(BM,'hovered',None)
+                vbox:
+                    ypos 5
+                    for item in store_items:
+                        if item.isVisible():
+                            text item.display_name + ("    [[owned:{!s}]".format(eval(item.variable_name)) if item.variable_name != None else "") font "Font/sui generis rg.ttf" size 30 first_indent 50 line_spacing 33 color "#0a0a0a"
+                vbox:
+                    ypos 5
+                    for item in store_items:
+                        if item.isVisible():
+                            text str(item.cost) font "Font/sui generis rg.ttf" size 30 first_indent 685 line_spacing 33 color "#0a0a0a"
 
     text '{!s}$'.format(BM.money):
         size 50

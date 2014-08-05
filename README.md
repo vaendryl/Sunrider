@@ -10,8 +10,10 @@ patch 4.3
 * custom formations. choose your own starting positions from mission 12 onward!
 * contract mercenary ships in the story to fight for you! you'll lose them permenantly if they get destroyed.
 * added HP values on the player ships' HP bars too due to popular demand.
-* added a new ressurect order. 2000 CP to get one of your ryders back
+* added a new resurrect order. 2000 CP to get one of your ryders back
 * reworked store backend. it'll be pretty easy to add a ton of new items to the shop. both for us and for modders.
+* lower difficulty gives more command points. current and lowest difficulty setting are now displayed in the victory screen.
+* R&D has been changed (again). 'submit' funcitonality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. the debug reset has also been removed.
 
 
 patch 4.2a

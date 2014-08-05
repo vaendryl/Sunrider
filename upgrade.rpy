@@ -10,11 +10,11 @@ screen upgrade:
         color '090'
         outlines [(1,'000',0,0)]
 
-    imagebutton:
-        xpos 0.05 ypos 925
-        action Return("submit")
-        idle "Menu/submit.jpg"
-        hover "Menu/submit_hover.jpg"
+    # imagebutton:
+        # xpos 0.05 ypos 925
+        # action Return("submit")
+        # idle "Menu/submit.jpg"
+        # hover "Menu/submit_hover.jpg"
 
     imagebutton:
         xpos 0.05 ypos 975
@@ -101,13 +101,14 @@ screen upgrade:
     if ship == paladin:
         add "Menu/upgrade_paladin.png"
 
-    textbutton 'DEBUG: reset upgrades (refunds money)':
-        xalign 1.0
-        ypos 0.0
-        text_size 30
-        text_color 'fff'
-        text_outlines [(1,'000',0,0)]
-        action Return('reset')
+    if config.developer:
+        textbutton 'DEBUG: reset upgrades (refunds money)':
+            xalign 1.0
+            ypos 0.0
+            text_size 30
+            text_color 'fff'
+            text_outlines [(1,'000',0,0)]
+            action Return('reset')
 
     ## show icons of all the player ships in player_ships
     $ count = 0
@@ -224,14 +225,13 @@ screen upgrade:
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
 
-                            for pending in BM.pending_upgrades:
-                                if pending[0] == BM.selected and pending[1] == attribute:
-                                    textbutton '-':
-                                        text_color 'fff'
-                                        action Return(['-', attribute])
-                                        hovered SetField(BM,'active_upgrade',upgrade)
-                                        unhovered SetField(BM,'active_upgrade',None)
-                                    $ break
+                            if level > 1:
+                                textbutton '-':
+                                    text_color 'fff'
+                                    action Return(['-', attribute])
+                                    hovered SetField(BM,'active_upgrade',upgrade)
+                                    unhovered SetField(BM,'active_upgrade',None)
+                                    
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:
