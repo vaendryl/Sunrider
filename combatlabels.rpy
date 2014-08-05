@@ -329,10 +329,10 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
                 new_location = result[1]
                 
                 #when setting up before a mission you can't put your ships farther to the right than column 7
-                if new_location[0] > 7:
+                if new_location[0] > BM.formation_range:
                     show_message('too far infield')
                 else:               
-                    set_cell_available(new_location,True)
+                    set_cell_available(new_location,True) #passing True actually sets it unavailable
                     
                     if BM.selected.faction != 'Player':
                         enemy_ships.append(BM.selected)

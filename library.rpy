@@ -3,6 +3,7 @@
 ## 2) PACT ships
 ## 3) pirate ships
 ## 4) weapons
+## 5) store items
 
 init 2 python:
 
@@ -1913,8 +1914,8 @@ init 2 python:
             self.display_name = "Warhead Ammo"
             self.cost = 300            
             self.tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
-            self.variable_name = 'sunrider.rockets'
-            self.max_amt = 2
+            self.variable_name = 'sunrider.rockets'    #this decides what is shown in the store after [owned:
+            self.max_amt = 2    #you can buy no more than this number of this item. see previous field
             
         def __call__(self): #here is where you decide what this item -does-.
             sunrider.rockets += 1
@@ -1958,8 +1959,8 @@ init 2 python:
             self.display_name = "Alliance Cruiser"
             self.cost = 2000            
             self.tooltip = 'Contract an Alliance cruiser to fight for you.'
-            self.visibility_condition = 'store.mission2_complete'  #not sure
-            self.variable_name = 'BM.mercenary_count'
+            self.visibility_condition = 'store.mission12_complete'  #not sure
+            self.variable_name = "get_shipcount_in_list('Alliance Cruiser',player_ships)"
             self.max_amt = 10            
             
         def __call__(self):            
@@ -1975,8 +1976,8 @@ init 2 python:
             self.display_name = "Union Frigate"
             self.cost = 750            
             self.tooltip = 'Contract a Union Frigate to fight for you.'
-            self.visibility_condition = 'store.mission2_complete'  #not sure
-            self.variable_name =  'BM.mercenary_count'
+            self.visibility_condition = 'store.mission12_complete'  #not sure
+            self.variable_name =  "get_shipcount_in_list('Mining Union Frigate',player_ships)"
             self.max_amt = 10            
             
         def __call__(self):            

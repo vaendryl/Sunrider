@@ -99,8 +99,8 @@ screen battle_screen:
     tag tactical
     modal False
     zorder -5
-    key "mousedown_4" action Return(["zoom", "in"])    #scroll in and out
-    key "mousedown_5" action Return(["zoom", "out"])
+    key "mousedown_4" action ZoomAction(["zoom", "in"])    #scroll in and out
+    key "mousedown_5" action ZoomAction(["zoom", "out"])
     key "K_PAGEUP" action Return(["zoom", "in"])
     key "K_PAGEDOWN" action Return(["zoom", "out"])
     if 'mouseup_2' not in config.keymap['hide_windows']:

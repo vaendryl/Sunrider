@@ -100,19 +100,22 @@ init -2 python:
             self.selectedmode = False
             self.selected = None
             self.targetingmode = False
-            ship.movement_tiles = []
+            if ship != None:
+                ship.movement_tiles = []
 
         def start(self):
             battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
             
-            #new formation feature (only after mission 12 for now)
-            if self.mission != 'skirmishbattle' and self.mission > 12:   #apparently string>int is completely legal in python :o
+            #new formation feature (only after mission 12 for now)            
+            if type(self.mission) != str and self.mission > 12:   #apparently string>int is completely legal in python :o
                 self.phase = 'formation'
 
                 for ship in player_ships:
-                    ship.location = None
+                    if ship.location != None:
+                        set_cell_available(ship.location)
+                        ship.location = None
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')
@@ -1017,19 +1020,19 @@ init -2 python:
                     return
 
                 #implementing difficulty setting.
-                if Difficulty == 0:
+                if Difficulty == 0: #VNmode
                     if self.faction == 'Player':
                         damage = int(damage * 0.25)
                     else:
                         damage = int(damage * 4)
 
-                if Difficulty == 1:
+                if Difficulty == 1: #easy
                     if self.faction == 'Player':
                         damage = int(damage * 0.75)
                     else:
                         damage = int(damage * 1.33)
 
-                if Difficulty == 3:
+                if Difficulty == 3: #hard
                     if self.faction == 'Player':
                         damage = int(damage * 1.33)
                     else:
@@ -1609,10 +1612,10 @@ init -2 python:
                 return 'miss'
 
             for shot in range(self.shot_count):
-                if renpy.random.randint(1,100) > accuracy:
+                if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     pass #you missed!
                 else:
-                    damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if target.shields > 0:
                         negation = damage * target.shields / 100.0
@@ -1667,10 +1670,10 @@ init -2 python:
                 return 'miss'
 
             for shot in range(self.shot_count):
-                if renpy.random.randint(1,100) > accuracy:
+                if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     pass #you missed!
                 else:
-                    damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if damage < target.armor *2:
                         store.total_armor_negation += damage -1
@@ -1769,8 +1772,8 @@ init -2 python:
                 return 'miss'
 
             for shot in range(missile.shot_count):
-                if renpy.random.randint(0,100) <= accuracy:
-                    damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                if get_shot_hit(accuracy,self.shot_count,parent.faction):
+                    damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     damage -= target.armor
                     if damage <= 1: damage = 1
@@ -1968,7 +1971,7 @@ init -2 python:
                     a = renpy.random.randint(0,len(target.buffed_voice)-1)
                     renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
                     del a
-                renpy.pause(1)
+                renpy.invoke_in_new_context( short_pause )
                 target.getting_buff = False
                 target.getting_curse = False
                 BM.selectedmode = True
@@ -2002,13 +2005,14 @@ init -2 python:
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
                 if not target == parent and target.faction == 'Player':
-                    #this is what happens if you don't know about random.choice and you can't be arsed to fix it everywhere
+                    #this is what happens if you don't know about random.choice and you then can't be arsed to fix it everywhere
                     a = renpy.random.randint(0,len(target.buffed_voice)-1)
                     renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
                     del a
                 elif target.faction != 'Player':
                     renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
-                renpy.pause(1,hard=True)
+                
+                renpy.invoke_in_new_context( short_pause )
                 target.getting_buff = False
                 target.getting_curse = False
                 BM.selectedmode = True
@@ -2530,6 +2534,15 @@ init -2 python:
 
             update_stats()
 
+            renpy.restart_interaction()
+            
+    class ZoomAction(Action):
+        def __init__(self,direction):
+            self.direction = direction
+        
+        def __call__(self):
+            zoom_handling(self.direction,BM)
+            if BM.selectedmode: BM.selected.movement_tiles = get_movement_tiles(BM.selected)
             renpy.restart_interaction()
             
     class RestartInteraction(Action):  #experimental, obviously.

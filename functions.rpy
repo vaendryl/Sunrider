@@ -563,6 +563,33 @@ init -6 python:
             # increment radius
             radius += 1
         return location
+        
+    def short_pause():
+        #very useful combined with renpy.invoke_in_new_context
+        renpy.show_screen('battle_screen')
+        renpy.pause(1)
+        
+    def get_shot_hit(accuracy,shotcount,faction):
+        #fudging with actual hit chances for fun and profit
+        if faction == 'Player' and store.Difficulty <=2 and shotcount == 1:
+            RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
+            return RNG2 < int(accuracy)
+        elif store.Difficulty == 3 and accuracy < 50 and shotcount == 1: #muhahaha
+            RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
+            return RNG2 < int(accuracy)
+        else:
+            return renpy.random.randint(1,100) < accuracy        
+    
+    def get_shipcount_in_list(shipname,list):
+        #count number of times a ship is in a list. useful for merc counting
+        if len(list) == 0: return 0
+        if shipname == None: return 0
+
+        count = 0
+        for item in list:
+            if shipname == item.name:
+                count+=1
+        return count
 
     def create_cover(location):
         BM.covers.append(Cover(location))
