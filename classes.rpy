@@ -604,6 +604,8 @@ init -2 python:
             if self.battlemode:
                 renpy.music.play(PlayerTurnMusic)
                 renpy.call_in_new_context('endofturn')
+            renpy.take_screenshot()
+            renpy.save('beginturn')
 
         def enemy_AI(self):
 
@@ -2094,6 +2096,9 @@ init -2 python:
                 if result == 'deselect':
                     cancel = True
                     looping = False
+
+            if cancel:
+                parent.en += self.energy_use
 
             target.faction = target_faction
             target.weapons = target_weapons
