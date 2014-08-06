@@ -101,14 +101,13 @@ screen upgrade:
     if ship == paladin:
         add "Menu/upgrade_paladin.png"
 
-    if config.developer:
-        textbutton 'DEBUG: reset upgrades (refunds money)':
-            xalign 1.0
-            ypos 0.0
-            text_size 30
-            text_color 'fff'
-            text_outlines [(1,'000',0,0)]
-            action Return('reset')
+    textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
+        xalign 1.0
+        ypos 0.0
+        text_size 30
+        text_color 'fff'
+        text_outlines [(1,'000',0,0)]
+        action Return('reset')
 
     ## show icons of all the player ships in player_ships
     $ count = 0
@@ -151,7 +150,7 @@ screen upgrade:
             imagebutton:
                 xpos xposition
                 ypos yposition
-                action SetField(BM,'selected',iconship)
+                action [ SetField(BM,'selected',iconship) , Play('sound1','Sound/research_changeunit.ogg'), SetField(store.yadj,'value',0) ]
                 idle icon
                 hover hovericon
                 focus_mask True
@@ -159,13 +158,15 @@ screen upgrade:
             $ count += 1
 
     vbox:
-        area (40, 270, 1050, 440)
+        area (40, 270, 1040, 440)
 
         viewport id "upgrade_list":
             draggable True
             mousewheel True
             scrollbars "vertical"
-            child_size (1050,2000)
+            child_size (1020,2000)
+            xadjustment store.xadj #not actually used
+            yadjustment store.yadj
 
             vbox:
 
@@ -194,23 +195,34 @@ screen upgrade:
                         hbox:
                             text name:
                                 color '000'
-                                min_width 460
+                                min_width 370
 
                             if increase < 1:
                                 text str(current*100)+'% -> '+ str((current+increase)*100)+'%':
                                     color '000'
-                                    min_width 260
+                                    min_width 240
                             else:
                                 text str(current)+' -> '+ str(current+increase):
                                     color '000'
-                                    min_width 260
+                                    min_width 240
 
                             text str(level):
                                 color '000'
-                                min_width 110
+                                min_width 75
+                                
+                            if level > 1:
+                                $cost_width = 100
+                            else:
+                                $cost_width = 200
+                            
                             text str(cost):
                                 color '000'
-                                min_width 120
+                                min_width cost_width
+                                
+                            if level > 1:
+                                text "({})".format( int(round(cost/multiplier)*0.8) ) :
+                                    color '900'
+                                    min_width 100
 
                             if BM.money >= cost:
                                 textbutton '+':
@@ -221,7 +233,7 @@ screen upgrade:
                             else:
                                 textbutton 'X':
                                     text_color 'c00'
-                                    action NullAction()
+                                    action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
 

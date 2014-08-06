@@ -71,6 +71,7 @@ label firstvariables:
 
     $ supportedasagacards = False
     $ paladin = None
+    $ wishall = False
     
     $ versta_ambush = False
     $ farport_losttech = False
@@ -164,6 +165,7 @@ init python:
             self.ep2_cancelwarp = False
 
             self.supportedasagacards = False
+            self.wishall = False
 
             self.sunrider = None
             self.blackjack = None

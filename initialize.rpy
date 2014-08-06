@@ -101,9 +101,6 @@ label initialize:
         havoc = None
         paradigm = None
         
-        # maybe skirmish should be activated later on in the story. how many enemy ship types are available is an issue too
-        skirmish_enabled = True 
-
         check1 = False
         check2 = False
         check3 = False
@@ -534,6 +531,14 @@ label mission12_inits:
         phoenix.set_location(6,8)
         liberty.set_location(6,9)
         seraphim.set_location(6,10)
+        
+        if paladin == None: #mostly used by chapter select
+            paladin_weapons = [PaladinMissile(),PaladinAssault(),PaladinKinetic()]
+            paladin = create_ship(Paladin(),(9,8),paladin_weapons)
+            alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
+            alliancecruiser1 = create_ship(AllianceCruiser(),(5,5),alliancecruiser_weapons)
+            alliancecruiser2 = create_ship(AllianceCruiser(),(5,4),alliancecruiser_weapons)
+        
         paladin.set_location(6,11)
         alliancecruiser1.set_location(5,7)
         alliancecruiser2.set_location(5,9)
@@ -631,8 +636,9 @@ label mission14_inits:
         create_ship(RyuvianCruiser(),(10,11),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(9,12),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(14,8),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
-        create_ship(RyuvianCruiser(),(14,9),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(14,10),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(17,10),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
+        create_ship(RyuvianCruiser(),(17,10),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
 
     $ PlayerTurnMusic = "music/Titan.ogg"
     $ EnemyTurnMusic = "music/Poltergeist_Attack.ogg"
@@ -710,7 +716,7 @@ label preview_mission:
         blackjack = create_ship(BlackJack(),(6,5),blackjack_weapons)
         liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp()]
         liberty = create_ship(Liberty(),(6,6),liberty_weapons)
-        phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+        phoenix_weapons = [PhoenixAssault(),PhoenixMeleeEnemy(),Stealth()]
         phoenix = create_ship(Phoenix(),(6,7),phoenix_weapons)
         seraphim_weapons = [SeraphimKinetic()]
         seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)

@@ -32,12 +32,17 @@ init -6 python:
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
         if BM.money >= cost:  #sanity check
+            renpy.music.play('sound/upgrade_purchase.ogg',channel = 'sound1')
             BM.money -= cost
             new_value = getattr(ship,upgrade)+increase
             setattr(ship,upgrade,new_value)
             level += 1
             cost = int(cost * multiplier)
             ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+            BM.active_upgrade = ship.upgrades[upgrade]
+        else:
+            renpy.music.play('sound/Voice/Chigara/Others Line 4.ogg',channel = 'chivoice')
+        
 
     def reverse_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
@@ -47,15 +52,27 @@ init -6 python:
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+        BM.active_upgrade = ship.upgrades[upgrade]
 
     def buy_upgrades():
         renpy.show_screen('upgrade')
         active = True
+        renpy.music.play('sound/Voice/Chigara/Others Line 1.ogg',channel = 'chivoice')
+        
         while active:
             result = ui.interact()
 
             if result == 'quit':
                 renpy.hide_screen('upgrade')
+                
+                voicelist = [
+                    'sound/Voice/Chigara/Others Line 2.ogg',
+                    'sound/Voice/Chigara/Others Line 3.ogg'
+                    ]
+                renpy.music.play(renpy.random.choice(voicelist),channel = 'chivoice')
+                
+                
+                
                 for ship in player_ships:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
@@ -63,32 +80,17 @@ init -6 python:
                 active = False
                 return
 
-            # elif result == 'next':
-                # if BM.selected != None and len(player_ships) > 1:
-                    # index = player_ships.index(BM.selected)
-                    # if index == (len(player_ships)-1):
-                        # index = 0
-                    # else:
-                        # index += 1
-                    # BM.selected = player_ships[index]
-
             elif result == 'reset':
                 reset_upgrades(BM.selected)
-
-            # elif result == 'submit':
-                # renpy.hide_screen('upgrade')
-                # for ship in player_ships:
-                    # ship.hp = ship.max_hp
-                    # ship.en = ship.max_en
-                    # ship.missiles = ship.max_missiles
-                # active = False
-                # return
 
             elif result != None:
                 if result[0] == '+':
                     process_upgrade(BM.selected, result[1])
+                    
                 elif result[0] == '-':
                     reverse_upgrade(BM.selected, result[1])
+                    renpy.music.play('sound/upgrade_sell.ogg',channel = 'sound2')
+                
 
     def battlemode():
         BM.battlemode = True
@@ -437,6 +439,9 @@ init -6 python:
         return 1.0 - math.cos(t * math.pi / 2.0)
 
     def get_mouse_location():
+        """
+        get the mouse position and return the hex location the mouse is over.
+        """
         a,b = renpy.get_mouse_pos()
         yoffset = 27 * store.zoomlevel
         hexheight = HEXD * store.zoomlevel
@@ -562,6 +567,52 @@ init -6 python:
         renpy.show_screen('battle_screen')
         renpy.pause(1)
         
+        
+    def get_remaining_player_ships():
+        count = 0
+        for ship in player_ships:
+            if ship.location != None:
+                count += 1
+        return count
+    
+    def clean_battle_exit():
+        BM.battlemode = False #this ends the battle loop
+        if BM.selected != None: BM.unselect_ship(BM.selected)
+        BM.targetingmode = False
+        BM.weaponhover = None
+        BM.hovered = None
+        renpy.hide_screen('tooltips')
+        BM.phase = 'Player'
+        BM.turn_count = 1
+        BM.ships = []
+        BM.selectedmode = False
+        VNmode() #return to visual novel mode. this mostly just restores scrolling rollback
+        for ship in destroyed_ships:
+            if ship.faction == 'Player' and not ship.mercenary:
+                player_ships.append(ship)
+                BM.ships.append(ship)
+        for ship in player_ships:
+            BM.ships.append(ship)
+        for ship in player_ships:
+            ship.en = ship.max_en
+            ship.hp = ship.max_hp
+            ship.hate = 100
+            ship.total_damage = 0
+            ship.total_missile_damage = 0
+            ship.total_kinetic_damage = 0
+            ship.total_energy_damage = 0
+            ship.missiles = ship.max_missiles
+            ship.location = None #this helps if you add new ships but don't know the current location of the existing ones.
+            for modifier in ship.modifiers:
+                ship.modifiers[modifier] = [0,0]
+
+        #reset the entire grid to empty and BM.ships with only the player_ships list
+        clean_grid()
+        BM.covers = []
+        renpy.hide_screen('battle_screen')
+        renpy.hide_screen('commands')
+        renpy.block_rollback()
+        
     def get_shot_hit(accuracy,shotcount,faction):
         #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
         #for now no fudging for AI.
@@ -572,7 +623,21 @@ init -6 python:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 < int(accuracy)
         else:
-            return renpy.random.randint(1,100) < accuracy        
+            return renpy.random.randint(1,100) < accuracy  
+
+    def test_RNG(accuracy):
+        #you can use this to see the difference between the 2 ways of calculating a hit.
+        hits1RN = 0
+        hits2RN = 0
+        
+        for i in range(1000):
+            if (renpy.random.randint(1,50) + renpy.random.randint(0,50)) < accuracy:
+                hits2RN += 1
+            if renpy.random.randint(1,100) < accuracy:
+                hits1RN += 1
+        
+        return (hits1RN,hits2RN)
+            
     
     def get_shipcount_in_list(shipname,list):
         #count number of times a ship is in a list. useful for merc counting
@@ -848,6 +913,8 @@ init -6 python:
             valid = False
         return valid
 
+    
+       
     def getAllInRadius(loc, radius):
         if radius < 0:
             return []

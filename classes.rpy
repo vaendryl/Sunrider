@@ -46,8 +46,7 @@ init -2 python:
             self.debugoverlay = False #overlay coords etc for debug purposes
             self.show_grid = True     #show or hide the grid. no grid is much faster!
             self.formation_range = 7  #the farthest column the player can place units during the formation phase
-            self.pending_upgrades = [] #lists upgrades the user has not saved
-            self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider
+            self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider. [no longer used]
             self.seen_skirmish = False #if not seen skirmish before Ava explains it.
             self.remove_mode = False  #when True the player can easily remove units in skirmish
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
@@ -55,8 +54,7 @@ init -2 python:
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'REPAIR DRONES':[750,'repair_drones'],
-                'VANGUARD CANNON':[2500,'vanguard_cannon'],
-                'RESURRECTION':[2000,'resurrection']    
+                'VANGUARD CANNON':[2500,'vanguard_cannon']                
                 }
             self.order_used = False   #when True the orders button is hidden.
               #environment modififiers are initialized here and can be changed later
@@ -74,6 +72,7 @@ init -2 python:
 
             #when True you can drag the main viewport (the battle map with the grid) around. this needs to be
             #disabled when text is showing on screen otherwise mouseclicks get eaten by the viewport and do not advance text
+            #DEFUNCT!
             self.draggable = True
 
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
@@ -469,6 +468,10 @@ init -2 python:
                     BM.order_used = False
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
 
+            if result == 'RETREAT':
+                clean_battle_exit()
+                renpy.jump('retreat')
+            
             if result == 'VANGUARD CANNON':
                 inrange = False
                 templist = enemy_ships[:]
@@ -499,47 +502,19 @@ init -2 python:
                                     templist = enemy_ships[:]
                                     for ship in templist:
                                         for tile in listlocs:
-                                            if ship.location != None: #failsaves. it's now legal for a location to be None
+                                            if ship.location != None and self.battlemode: #failsaves. it's now legal for a location to be None
                                                 if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
                                                 #if ship.location[1] == sunrider.location[1]:
                                                 #    if ship.location[0]-sunrider.location[0] >=0:
                                                 #        if ship.location[0]-sunrider.location[0] <=7:
-                                                    if ship in enemy_ships and self.battlemode: #it's possible the ship was already deleted because of the boss being killed
+                                                    if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
                                                         BM.target = ship
                                                         ship.receive_damage(800,sunrider,'Vanguard')
                                     looping = False
                                     BM.vanguardtarget = False
                                     renpy.hide_screen('battle_screen')
                                     renpy.show_screen('battle_screen')
-                                self.cmd -= self.orders['VANGUARD CANNON'][0]
-                                loc1 = sunrider.location
-                                loc2 = result[1].location
-                                listlocs = interpolate_grid(loc1, loc2)
-                                renpy.music.play('Music/March_of_Immortals.ogg')
-                                renpy.call_in_new_context('atkanim_sunrider_vanguard')
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
-                                renpy.pause(1)
-                                store.damage = 800
-                                store.hit_count = 1
-                                store.total_armor_negation = 0
-                                store.total_shield_negation = 0
-                                templist = reversed(enemy_ships[:])
-                                for ship in templist:
-                                    for tile in listlocs:
-                                        if ship.location != None and self.battlemode: #failsaves. it's now legal for a location to be None and it's possible the battle is already over due to zapping the boss
-                                            if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
-                                            #if ship.location[1] == sunrider.location[1]:
-                                            #    if ship.location[0]-sunrider.location[0] >=0:
-                                            #        if ship.location[0]-sunrider.location[0] <=7:
-                                                if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
-                                                    BM.target = ship
-                                                    ship.receive_damage(800,sunrider,'Vanguard')
-                                looping = False
-                                BM.vanguardtarget = False
-                                renpy.hide_screen('battle_screen')
-                                renpy.show_screen('battle_screen')
-
+                                    
                             if result == 'deselect':
                                 self.cmd += self.orders['VANGUARD CANNON'][0]
                                 looping = False
@@ -940,10 +915,10 @@ init -2 python:
                 'max_en':['Energy Reactor',1,5,200,1.4],
                 'move_cost_multiplier':['Move Cost',1,-0.05,100,2.5],
                 'evasion':['Evasion',1,5,500,2.5],
-                'kinetic_dmg':['Kinetic Damage',1,0.05,100,1.5],
+                'kinetic_dmg':['Kinetic Damage',1,0.05,105,1.55],
                 'kinetic_acc':['Kinetic Accuracy',1,0.05,100,1.5],
                 'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.0],
-                'energy_dmg':['Energy Damage',1,0.05,100,1.5],
+                'energy_dmg':['Energy Damage',1,0.05,95,1.45],
                 'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
                 'energy_cost':['Energy Energy Cost',1,-0.05,100,2.0],
                 'missile_dmg':['Missile Damage',1,0.10,100,1.5],
@@ -956,7 +931,7 @@ init -2 python:
                 'shield_generation':['Shield Power',1,5,500,2],
                 'shield_range':['Shield Range',1,1,1000,5],
                 'flak':['Flak',1,5,500,2],
-                'base_armor':['Armor',1,5,500,2],
+                'base_armor':['Armor',1,1,100,1.3],
                 'repair':['Repair Crew',1,50,500,2]
                 }
             self.total_damage = 0  #refers to damage done, not taken. used by AI
@@ -1012,9 +987,9 @@ init -2 python:
             BM.attacker = attacker
 
             if damage == 'no energy':
-                renpy.say('ERROR','the {} does not have the energy for this attack'.format(self.name))
+                renpy.say('ERROR','the {} does not have the energy for this attack'.format(attacker.name))
             elif damage == 'no ammo':
-                renpy.say('ERROR','the {} does not have enough ammo for this attack'.format(self.name))
+                renpy.say('ERROR','the {} does not have enough ammo for this attack'.format(attacker.name))
             elif damage == 'miss':
                 if wtype == 'Melee':
                     store.damage = damage
@@ -1123,20 +1098,26 @@ init -2 python:
                 enemy_ships.remove(self)
             if self in player_ships:
                 player_ships.remove(self)
-                if len(player_ships) == 0:
+                if len(player_ships) == 0 and BM.mission != 'skirmish':
                     renpy.jump('gameover')
+                    
+            #in skirmish mode some player ships might still be in player_ships but have no location
+            #and as such do not participate in battle. if the last player ship with a location
+            #gets destroyed the skirmish should end. 
+            ## TO DO: add a defeat screen like the victory screen
+            if BM.mission == 'skirmish' and get_remaining_player_ships() == 0:
+                show_message('You were defeated! better luck next time...')
+                clean_battle_exit()
+                renpy.jump('dispatch')
                     
             #grid maintenance
             set_cell_available(self.location)
-            # a = self.location[0]-1  #make the next line of code a little shorter
-            # b = self.location[1]-1
-            # BM.grid[a][b] = False #tell the BM that the old cell is now free again
             
             #more list maintenance
             if self in BM.ships:
                 BM.ships.remove(self)
                 
-            #did you lose a mercenary?
+            #did you lose a mercenary?   (not really used anymore)
             if self.mercenary:
                 BM.mercenary_count -= 1
                 
@@ -2009,7 +1990,6 @@ init -2 python:
                     parent.hp += self.hp_cost
                     return 0
 
-
                 update_stats()
                 if self.wtype == 'Support':
                     target.getting_buff = True
@@ -2032,6 +2012,10 @@ init -2 python:
                 BM.selectedmode = True
                 renpy.hide_screen('battle_screen')
                 renpy.show_screen('battle_screen')
+                
+                if self.name == 'Disable':  #I should probably put stuff like this in the library at some point
+                    parent.hate += 250
+                
                 return 0
 
     class Curse(Support):
@@ -2426,6 +2410,9 @@ init -2 python:
 
             if self.lastMission >= 10:
                 store.player_ships.append(store.blackjack)
+                
+            if self.lastMission >= 10:
+                store.sunrider.repair_drones = 0
 
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)

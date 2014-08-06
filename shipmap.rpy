@@ -113,14 +113,13 @@ screen deck0:
                     idle "Menu/cal_button.png"
                     hover "Menu/cal_button_hover.png"
                     activate_sound "Sound/click.mp3"
-            # if hasattr(store,'skirmish_enabled'):
-                # if skirmish_enabled:
-            imagebutton:
-                idle 'Menu/skirmish_button.png'
-                hover 'Menu/skirmish_button_hover.png'
-                activate_sound "Sound/click.mp3"
-                action Jump('skirmish_battle') 
-                # at zoom_button(0.5)
+            if hasattr(store,'skirmish_enabled'):
+                if skirmish_enabled:
+                    imagebutton:
+                        idle 'Menu/skirmish_button.png'
+                        hover 'Menu/skirmish_button_hover.png'
+                        activate_sound "Sound/click.mp3"
+                        action Jump('skirmish_battle') 
 
 
     frame:##################################### SICKBAY

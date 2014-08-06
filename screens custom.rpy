@@ -124,8 +124,6 @@ screen battle_screen:
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
     $childy = round(3006*zoomlevel+300) #extra 300 is so that the status window doesn't occlude ships in the far right bottom corner
 
-#    use tooltips    #wtf doesn't this work
-
     add BM.battle_bg xalign 0.5 yalign 0.5 #zoom 0.5 ##background for the battlefield##
 
     viewport id "grid":
@@ -154,6 +152,7 @@ screen battle_screen:
                         size (xsize,ysize)
                         alpha 0.4
         else:
+##much faster!
             $xsize = int((HEXW+5.5) * zoomlevel * 18)
             $ysize = int((HEXD+4) * zoomlevel * 16)
             add 'Battle UI/hexgrid.png':
@@ -173,9 +172,8 @@ screen battle_screen:
 #                        size int(120*zoomlevel)
 ##                        layout nowrap
 
-
-
           ##display shield and flak ranges
+          ##I'm sure this could be made to be much much faster
 
         if not BM.hovered == None: #when you hover over a ship
             if BM.hovered.shield_generation > 0:
@@ -969,6 +967,20 @@ screen orders:
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
 
+                        if order == 'RESURRECTION' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Select a downed unit to launch into the battle once more at full health.'):
+                                    xpos 0
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]
+
+
                                     #I couldn't get the mouse detection working properly with the buttons. Sorry! :S
 
     imagebutton:
@@ -1738,19 +1750,15 @@ screen skirmishhelp:
         background Solid((0,0,0,200))
         
         vbox:
-            text "Welcome to skirmish mode! it seems this is your first time so I'll explain how things work."
-            text "On either side you will find 2 unit pools. player ships go on the left, enemy ships go on the right."
-            text "Click the 'add player ships' text to extend the pool window. Same with enemy ships!"
-            text "Once extended you can click on ships and place them wherever you like!"
-            text "Hold shift (or any other modifier) to repeatedly place the same enemy ship."
-            text "You can also click the middle mouse button to instantly grab one of the unplaced player ships!"
-            text "This will make it easy and fast to place all your units."
-            text "Click the 'remove' button to easily remove a lot of units with a single click"
-            text "You can also set a custom amount of command points at the bottom of the player pool for some fun or an extra challenge."
-            text "After the battle your total command points and your money gets reset to what it was before the battle."
-            text "That means you won't make any profit out of this simulation!"
+            text "Welcome to skirmish mode! Here, you will be able to refine your strategies by fighting custom battles."
+            text "Click on ADD PLAYER SHIPS and click and drop your units to the map. Do the same to add enemy units."
+            text "Pressing SHIFT allows you to add the selected unit multiple times to the map."
+            text "Pressing the MIDDLE MOUSE BUTTON allows you to instantly grab the next player unit from the player pool."
+            text "To remove placed units, simply press the REMOVE button, then click on the unit you wish to remove."
+            text "You may set the amount of usable command points during the battle using the buttons on the player pool bar."
+            text "However, you will not earn any money or command points in Skirmish Mode."
             
-            textbutton "I got it!":
+            textbutton "PROCEED":
                 xalign 0.5
                 action Hide('skirmishhelp')
         

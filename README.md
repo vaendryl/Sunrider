@@ -14,6 +14,7 @@ patch 4.3
 * reworked store backend. it'll be pretty easy to add a ton of new items to the shop. both for us and for modders.
 * lower difficulty gives more command points. current and lowest difficulty setting are now displayed in the victory screen.
 * R&D has been changed (again). 'submit' funcitonality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. the debug reset has also been removed.
+* upgrade costs rebalanced (requires a new game to take effect). kinetic damage is more expensive to upgrade while energy damage became cheaper. armor is now more expensive for ryders.
 
 
 patch 4.2a

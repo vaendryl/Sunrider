@@ -332,7 +332,10 @@ init -5:
     image bg holdingcell:
         "Background/holdingcell.jpg"
     
-        
+    image bg captainsoffice2:
+        "Background/captainsoffice2.jpg"     
+    image bg captainsoffice2_dark:
+        "Background/captainsoffice2_dark.jpg"     
         
         
     image bg battlegrid = "Gameplay/battlegrid.jpg"
@@ -645,6 +648,10 @@ init -5:
         "CG/emeraldfleet_warpin6.png"
         xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
     
+    image cg_chigarahug1:
+        "CG/chigarahug1.jpg"
+    image cg_chigarahug2:
+        "CG/chigarahug2.jpg"
 
     ########################################MAP
     
@@ -759,8 +766,9 @@ init -5:
     image credits7 = Text("3D Textures{p}         CGTextures", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits8 = Text("Background Art{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits9 = Text("Lead Programmer{p}         Vaendryl", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits10 = Text("Engine Programmer{p}         Tom Rothamel", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits10 = Text("Renpy Engine Programmer{p}         Tom Rothamel", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11 = Text("Additional Programming{p}         Tom Rothamel, Sam Yang, Endershadow", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits11c = Text("Github Contributors{p}         Tom Rothamel, Quickman, Renari, KingRaptor", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11b = Text("Hex Mod{p}         azureflare", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits12 = Text("Cast", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits13 = Text("Ava Crescentia:  Amber Lee Connors", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -780,7 +788,7 @@ init -5:
     image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, Eternal Dream, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}vocals: lily-an{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun-|{p}vocals: lily-an, Maya{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss, kiddpark", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits25 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
 
     image credits26 = Text("We thank the following Kickstarter backers...", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -2540,6 +2548,9 @@ init -5:
 
     image ongess_approach:
         "CG/ongess_approach.jpg"
+        
+    image item_wishall:
+        "CG/item_wishall.png"
         
         
 ########################################## JOKE

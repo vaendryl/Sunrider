@@ -23,6 +23,7 @@ init 2 python:
             self.max_missiles = 1
             self.max_rockets = 2
             self.repair_drones = None
+            self.upgrades['base_armor'] = ['Armor',1,5,500,2]
             self.missiles = self.max_missiles
             self.rockets = 0
             self.evasion = -25  # cruisers are easy to hit
@@ -607,7 +608,7 @@ init 2 python:
             self.name = 'Nightmare'
             self.animation_name = 'nightmare'
             self.faction = 'Ryuvian'
-            self.max_hp = 3000
+            self.max_hp = 3200
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
@@ -1816,6 +1817,20 @@ init 2 python:
 
 
  ###########################################PHOENIX ENEMY
+ 
+    class PhoenixMeleeEnemy(Melee):
+        def __init__(self):
+            Weapon.__init__(self)
+            self.damage = 250    #multiplied by shot count
+            self.energy_use = 40
+            self.ammo_use = 0
+            self.accuracy = 160 
+            self.acc_degradation = 100  #this is needed for AI melee weapons or else range is infinite.
+            self.wtype = 'Melee'
+            self.name = 'Zantetsuken' 
+            self.type = 'Melee'
+            self.shot_count = 2
+            self.lbl = 'Battle UI/button_melee.png'
 
 ################################################# SERAPHIM
     class SeraphimKinetic(Kinetic):
@@ -1868,7 +1883,7 @@ init 2 python:
     class NightmareMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
-            self.damage = 800    #multiplied by shot count
+            self.damage = 900    #multiplied by shot count
             self.energy_use = 30
             self.ammo_use = 0
             self.accuracy = 160
@@ -1880,7 +1895,7 @@ init 2 python:
     class NightmareMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 80
+            self.damage = 100
             self.energy_use = 60
             self.shot_count = 15
             self.accuracy = 100
@@ -1889,18 +1904,18 @@ init 2 python:
     class NightmareLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 450
+            self.damage = 575
             self.energy_use = 40
             self.shot_count = 1
             self.accuracy = 120
 
-    class NightmarePulse(Kinetic):
+    class NightmarePulse(Laser):
         def __init__(self):
-            Kinetic.__init__(self)
-            self.damage = 50
+            Laser.__init__(self)
+            self.damage = 70
             self.energy_use = 30
             self.shot_count = 15
-            self.accuracy = 80
+            self.accuracy = 85
             self.wtype = 'Pulse'
             
             
@@ -1911,7 +1926,7 @@ init 2 python:
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'new warhead'
-            self.display_name = "Warhead Ammo"
+            self.display_name = "WARHEAD AMMO"
             self.cost = 300            
             self.tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
             self.variable_name = 'sunrider.rockets'    #this decides what is shown in the store after [owned:
@@ -1926,7 +1941,7 @@ init 2 python:
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'Rocketupgrade1'
-            self.display_name = "Quantum Torpedo License"
+            self.display_name = "QUANTUM TORPEDO LICENSE"
             self.cost = 2000            
             self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
             self.visibility_condition = 'sunrider_rocket.damage < 1200'
@@ -1940,7 +1955,7 @@ init 2 python:
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'repair drones'
-            self.display_name = "Repair Drones"
+            self.display_name = "REPAIR DRONE"
             self.cost = 400            
             self.tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
             self.visibility_condition = 'sunrider.repair_drones != None'
@@ -1956,7 +1971,7 @@ init 2 python:
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'alliance cruiser'
-            self.display_name = "Alliance Cruiser"
+            self.display_name = "ALLIANCE CRUISER"
             self.cost = 2000            
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name = "get_shipcount_in_list('Alliance Cruiser',player_ships)"
@@ -1973,7 +1988,7 @@ init 2 python:
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'union frigate'
-            self.display_name = "Union Frigate"
+            self.display_name = "UNION FRIGATE"
             self.cost = 750            
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name =  "get_shipcount_in_list('Mining Union Frigate',player_ships)"
@@ -1986,6 +2001,18 @@ init 2 python:
             BM.money -= self.cost
             renpy.restart_interaction()                 
             
+    class SellWishallArtifact(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'wishall'
+            self.display_name = "SELL WISHALL"
+            self.cost = -10000            
+            self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instantaneous cash infusion of 10 000 credits.'
+            self.visibility_condition = "store.wishall"
             
+        def __call__(self): #here is where you decide what this item -does-.
+            store.wishall = False
+            BM.money -= self.cost            #boilerplate
+            renpy.restart_interaction()      #boilerplate            
             
             

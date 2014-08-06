@@ -7,6 +7,10 @@ label initStore:
         store_items.append(NewRepairDrone())
         store_items.append(ContractAllianceCruiser())
         store_items.append(ContractUnionFrigate())
+        store_items.append(SellWishallArtifact())  
+        
+
+        
         
     return
 
@@ -29,7 +33,7 @@ screen store_union:
             mousewheel True
             scrollbars "vertical"
             child_size (1050,2000) 
-        
+
             frame:
                 xmaximum 800
                 xpos 10
@@ -40,21 +44,21 @@ screen store_union:
                     for item in store_items:
                         if item.isVisible():
                             imagebutton:
-                                action If(BM.money >= item.cost and (eval(item.variable_name) is None or eval(item.variable_name) < item.max_amt),item,NullAction())
+                                action If(BM.money >= item.cost and (eval(item.variable_name) is None or eval(item.variable_name) < item.max_amt),[Play('sound1','Sound/kaching.ogg'),item],NullAction())
                                 idle "Menu/store_item.png"
                                 hover "Menu/store_item_hover.png"
                                 hovered SetField(BM,'hovered',item.id)
                                 unhovered SetField(BM,'hovered',None)
                 vbox:
-                    ypos 5
+                    ypos 12
                     for item in store_items:
                         if item.isVisible():
-                            text item.display_name + ("    [[owned:{!s}]".format(eval(item.variable_name)) if item.variable_name != None else "") font "Font/sui generis rg.ttf" size 30 first_indent 50 line_spacing 33 color "#0a0a0a"
+                            text item.display_name + ("    [[owned:{!s}]".format(eval(item.variable_name)) if item.variable_name != None else "") font "Font/sui generis rg.ttf" size 20 first_indent 50 line_spacing 45 color "#0a0a0a"
                 vbox:
-                    ypos 5
+                    ypos 12
                     for item in store_items:
                         if item.isVisible():
-                            text str(item.cost) font "Font/sui generis rg.ttf" size 30 first_indent 685 line_spacing 33 color "#0a0a0a"
+                            text str(item.cost) font "Font/sui generis rg.ttf" size 20 first_indent 685 line_spacing 45 color "#0a0a0a"
 
     text '{!s}$'.format(BM.money):
         size 50
@@ -67,7 +71,7 @@ screen store_info:
     zorder 10
 
     frame:
-        xmaximum 600
+        xmaximum 580
         background None
         xpos 0.5
         ypos 0.2
