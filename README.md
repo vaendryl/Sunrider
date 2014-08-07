@@ -2,6 +2,13 @@ patch 5.1
 ======
 
 * gravity gun can now be used on friendly targets as well.
+* fixed some typos in the script
+* fixed skirmish not ending properly after a defeat
+* fixed game not ending properly after the after-credits scene (when using chapter select)
+* fixed crash when clicking addon select screen
+* fixed enemy phoenix not getting added properly to the Vesta mision
+* chapter select gives no more than 4000 CP
+* fixed being able to delete enemies during formation setup phase (at the start of battles 13, 14 and 15)
 
 beta 5
 ======

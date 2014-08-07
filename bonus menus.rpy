@@ -155,6 +155,8 @@ screen mod_scenes:
         hotspot (1140, 59, 137, 44) action [ Hide('mod_scenes'), Show('main_menu', transition=dissolve) ]
 
         #style "file_picker_frame"
+        
+        $ addon_scenes = []
 
         $ columns = 1
         $ rows = 5
