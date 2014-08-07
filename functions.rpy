@@ -612,6 +612,7 @@ init -6 python:
         renpy.hide_screen('battle_screen')
         renpy.hide_screen('commands')
         renpy.block_rollback()
+        renpy.music.play("Music/Mission_Briefing.ogg") #else battle theme keeps playing after battle
         
     def get_shot_hit(accuracy,shotcount,faction):
         #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)

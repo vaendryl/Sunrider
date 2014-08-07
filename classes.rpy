@@ -536,7 +536,11 @@ init -2 python:
                 self.battle_end()
                 renpy.hide_screen('battle_screen')
 
-
+            if BM.mission == 'skirmishbattle' and get_remaining_player_ships() == 0:
+                show_message('You were defeated! better luck next time...')
+                clean_battle_exit()
+                renpy.jump('dispatch')             
+            
             if len(player_ships) == 0:  #all player units destroyed!
                 self.battlemode = False #this ends the battle loop
                 VNmode()
@@ -1116,7 +1120,7 @@ init -2 python:
             #and as such do not participate in battle. if the last player ship with a location
             #gets destroyed the skirmish should end. 
             ## TO DO: add a defeat screen like the victory screen
-            if BM.mission == 'skirmish' and get_remaining_player_ships() == 0:
+            if BM.mission == 'skirmishbattle' and get_remaining_player_ships() == 0:
                 show_message('You were defeated! better luck next time...')
                 clean_battle_exit()
                 renpy.jump('dispatch')
@@ -2310,7 +2314,8 @@ init -2 python:
             add_new_vars() #this actually should cover most of what you need...
             store.BM = Battle()
             store.BM.money = self.startMoney
-            store.BM.cmd = self.startMoney / 2
+            store.BM.cmd = self.lastMission * 1000
+            if store.BM.cmd > 4000: store.BM.cmd = 4000  #you gain a lot over the course of the game but you typically spend a lot too.
             store.player_ships = []
             store.enemy_ships = []
             store.sunrider = None

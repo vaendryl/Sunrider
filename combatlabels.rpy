@@ -144,7 +144,7 @@ label missionskirmish:
         result = ui.interact()
         
         if result == True or result == False:
-            show_message('wtf is a bool returned?') #had some trouble with this at some point. still not sure what caused it.
+            # show_message('wtf is a bool returned?') #had some trouble with this at some point. still not sure what caused it.
             renpy.jump('missionskirmish')
         
         elif result == 'start' or result == 'quit':
@@ -167,8 +167,10 @@ label missionskirmish:
             renpy.hide_screen('player_unit_pool')
             renpy.hide_screen('enemy_unit_pool')
             renpy.hide_screen('mousefollow')
+            renpy.hide_screen('battle_screen')
             renpy.hide_screen('store_union') #seems like it has trouble staying closed? 
             BM.battlemode = False
+            clean_battle_exit()
             if result == 'quit':
                 renpy.jump('dispatch')
                 
@@ -357,24 +359,15 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
             # this result can be from one of the imagebuttons in the pool screens or returned from
             # MouseTracker because a hex with a unit in it was clicked.
             selected_ship = result[1]
-            BM.targetwarp = True
-            renpy.show_screen('mousefollow')
             
             if selected_ship.faction == 'Player':
-                BM.select_ship(selected_ship)
-            else:
-                if selected_ship.location != None:
-                    BM.selected = selected_ship
-                    if selected_ship in enemy_ships:
-                        BM.ships.remove(BM.selected)
-                        enemy_ships.remove(BM.selected)
-                else:
-                    BM.selected = deepcopy(selected_ship) #breaks alias
-                    BM.selected.weapons = BM.selected.default_weapon_list
+                BM.targetwarp = True
+                renpy.show_screen('mousefollow')
+                BM.select_ship(selected_ship)           
                     
-            if BM.selected.location != None:
-                set_cell_available(BM.selected.location)           
-            BM.selected.location = None
+                if BM.selected.location != None:
+                    set_cell_available(BM.selected.location)           
+                BM.selected.location = None
                 
             
         elif result[0] == 'warptarget':

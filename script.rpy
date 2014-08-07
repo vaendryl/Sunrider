@@ -13495,7 +13495,7 @@ label beachchigara:
     
     show chigara beach handonchest fantasize with dissolve
     
-    chi "I've always imagined that I'd set up a shop in a quant little neighborhood. All the kids would run to it during lunch time for the pastries."
+    chi "I've always imagined that I'd set up a shop in a quaint little neighborhood. All the kids would run to it during lunch time for the pastries." #fixed   quant
     chi "In the afternoon, the neighborhood ladies would come by to buy pastries for their families. And I'd be at the counter all day, smiling and waiting for the next customer."
     chi "We'll live up above the store on the second floor. And eventually, we'll even have little children running around to carry on the business. Eh-hehh..."
     chi "... ... ..."
@@ -13760,7 +13760,7 @@ label beachsola:
     
     show sola beach handonchest neutral with dissolve
     
-    sol "I... rarely spent time at the palace, but I still remember it vividly in my memories."
+    sol "I... rarely spent time at the palace, but I still remember it vividly."  #fixed  ...in my memories."
     kay "I don't remember the ruins having this keep though."
     sol "Perhaps... nostalgia has embellished some of the details."
     sol "I remember being swept away with wonder upon seeing the palace for the first time. It was a feeling which I will remember for the rest of my life."
@@ -13775,7 +13775,7 @@ label beachsola:
     
     sol "... ... ..."
     sol "It is as you say."
-    kay "Then who really are you?"
+    kay "Then who are you really?" #fixed from kay "Then who really are you?"
     sol "... ... ..."
     
     show sola beach altneutral smile with dissolve
@@ -13903,7 +13903,7 @@ label beachclaude:
     show claude beach handonlip kittysmileblush with dissolve
     
     cla "I could help with that..."
-    "Shields took a sat on a nearby foldup chair."
+    "Shields took a seat on a nearby foldup chair." #fixed   took a sat
     kay "So, you never told me what you want out of this."
     cla "Mmm?"
     kay "Asaga and Sola are in this for Ryuvia. Icari's in it for revenge. Chigara's here for Asaga. Kryska's here on orders."
@@ -13939,7 +13939,7 @@ label beachclaude:
     
     show ava beach point angry with dissolve
     
-    ava "Perhaps we ought to tighten the chains around her neck a bit. Just to remind everyone to we have some boundaries on board this ship..."
+    ava "Perhaps we ought to tighten the chains around her neck a bit. Just to remind everyone that we have some boundaries on board this ship..." #fixed   to we have some
     
     show claude beach neutral zomg with dissolve
     
@@ -14018,7 +14018,7 @@ label afterbeachtalk:
     show ava beach armscrossed neutral with dissolve
     
     ava "Captain. Please do not get overly sentimental."
-    ava "I do not wish have to blame the onions if you are seen by the crew crying."
+    ava "I do not wish to have to blame the onions if you are seen by the crew crying." #fixed   wish have to blame
     kay "So, what made you change your mind?"
     
     show ava beach handonhip talk with dissolve
@@ -14034,7 +14034,7 @@ label afterbeachtalk:
     
     show ava beach altneutral neutral with dissolve
     
-    ava "Perhaps a little break every now and than isn't so bad."
+    ava "Perhaps a little break every now and then isn't so bad." #fixed now and than
     ava "I don't remember ever going to the beach with family. I'm afraid such frivolities are lost in my family."
     kay "Not even once?"
     ava "I do not recall."
@@ -14184,7 +14184,7 @@ label afterbeachtalk:
     
     show chigara beach handonchest gloom with dissolve
     
-    chi "Uuu..."
+    chi "Uuu..." #uguu!
     
     show icari beach point shout with dissolve
     
@@ -14196,7 +14196,7 @@ label afterbeachtalk:
     
     asa "U-uhh..."
     asa "Yeah, Chigara! You can do this!"
-    asa "Remember how you're always repairing me whenever I get busted up in battle? You've saved my hide here more than I can count."
+    asa "Remember how you're always repairing me whenever I get busted up in battle? You've saved my hide more than I can count." #fixed   my hide here
     asa "Uh, basically, what I'm sayin' is that you're my friend! The best one I ever had!"
     
     show asaga beach excited forcedhappy with dissolve
@@ -14424,7 +14424,7 @@ label promisesacrificecaptain:
 
     sol "A-ah..."
     sol "... ... ..."
-    sol "Nobody has spoken to me those words before."
+    sol "Nobody has spoken those words to me before." #fixed   has spoken to me
     sol "I had expected to die for such a long time that... I had forgotten what it meant to live."
     sol "... ... ..."
     sol "I..."
@@ -14505,7 +14505,7 @@ label heardexplosioncolor:
     with dissolve
     
     ava "Ahem. I expect all crew to be on their best behavior for this overnight stay."
-    ava "While we may all be sleeping under all roof, I remind all of you that we are proud soldiers of the Cer-"
+    ava "While we may all be sleeping under one roof, I remind all of you that we are proud soldiers of the Cer-" #fixed    under all roof,
     
     show claude uniform excited happy:
         xpos 0.6
@@ -14913,7 +14913,7 @@ label heardexplosioncolor:
     show chigara uniform altneutral sadsmileblush with dissolve
 
     chi "... ... ..."
-    chi "It's late. I should be getting going."
+    chi "It's late. I should be going."  #fixed    should be getting going
     kay "Good night. Sleep tight."
     chi "I will. Good night, captain."
     
@@ -14931,7 +14931,7 @@ label heardexplosioncolor:
         zoom 1.3 xpos 0.8 ypos 1.2
     with dissolve
 
-    ica "Well, that ends that, I suppose."
+    ica "Well. that ends that, I suppose."
     ica "Oh well. Time for us to go to bed too, I guess."
     cla "Aww..."
     
@@ -16089,7 +16089,7 @@ label onroutetoongess:
     ava "The Alliance liberated it from PACT last week. Ongess is best known for its vast Ongessite reserves. Ongessite's a rare ore which can be found nowhere else in the galaxy. Just a drop of liquid Ongessite's more valuable than an entire barrel of crude fuel."
     ava "Due to its resources, Ongess has had a long and troubled history. First conquered by the Ryuvians, then by the New Empire, then by PACT, Ongess has been the target of virtually every space faring power for as long as recorded history."
     kay "Liquid Ongessite... I hear it's almost magical."
-    ava "There's nothing magical about it. It does has numerous military applications though, including powering warp drives and ryders. It can also be converted into a super dense solid used in the manufacture of high grade armor and munitions."
+    ava "There's nothing magical about it. It does have numerous military applications though, including powering warp drives and ryders. It can also be converted into a super dense solid used in the manufacture of high grade armor and munitions." #fixed it does has
     ava "The Alliance devoted considerable resources into taking it from PACT. The Battle of Ongess lasted five days between nine fleets. Hundreds of thousands of casualties on both sides."
     kay "Makes Far Port seem small in comparison."
     ava "We're ready to warp on your word, captain."
@@ -16506,7 +16506,7 @@ label chigarateatimedoubts:
     kay "All of our smartest and most experienced captains are dead. All that's left is us, the newest ship in the fleet."
     kay "I've made some calls here I'm not so sure about."
     kay "Everything's so much easier in a simulator in officer school. When you actually have to make the call on the spot, it's just impossible."
-    kay " You never knew what's going to happen next. You don't have time to think the consequences through. It's just a... split second, twitch decision."
+    kay " You never know what's going to happen next. You don't have time to think the consequences through. It's just a... split second, twitch decision." #fixed  never knew
     kay "It terrifies me, to think that the lives of everyone on this ship depend on nothing more than my guesses."
     chi "Captain..."
     chi "You've done an amazing job, so far. None of us would have made it this far if it wasn't for you."
@@ -16959,7 +16959,7 @@ label suddenlymaskedalleyway:
     
     cos "Babies are born with one eye. Six fingers."
     cos "Sometimes, you vomit blood for no apparent reason."
-    cos "Lucky for me, it just made me stop growing since I eleven."
+    cos "Lucky for me, it just made me stop growing since I was eleven." #fixed since I eleven
     cos "Hmmm. How old do you figure I am, captain?"
     "Shields shrugged."
     kay "It's not kind to guess a woman's age."
@@ -17306,7 +17306,7 @@ label goingpresstruth:
     gre "Captain, in war, atrocities occur!"
     kay "Only when good men fail to act!"
     gre "...You..."
-    gre "Every Grey since the High Admiral have dedicated their lives to serving the Alliance... So many of us have died to protect the Alliance's ideals throughout the galaxy..."
+    gre "Every Grey since the High Admiral has dedicated their lives to serving the Alliance... So many of us have died to protect the Alliance's ideals throughout the galaxy..." #fixed have dedicated
     gre "Only to see it torn apart by the squabbling politicians in the Solar Congress! I will not let them end me here! Not with all we've accomplished!"
     kay "... ... ..."
     kay "This has nothing to do with the innocents of Ongess. It's about you getting elected!"
@@ -17400,7 +17400,7 @@ label alliancecannotbetrusted:
     kry "Captain, the Alliance has no intention of robbing Ongess. We can establish trade routes with the Ongessians. Exchange food, medicine, technology, for their Ongessite."
     kay "We of the Neutral Rim have never wanted such things."
     kay "There were countless times when Cera was invited to sit in the Solar Congress. Each time, we turned it down."
-    kay "Had Cera been a part of the Alliance, we knew PACT would never dare strike us. But despite that, we choose to remain independent."
+    kay "Had Cera been a part of the Alliance, we knew PACT would never dare strike us. But despite that, we chose to remain independent." #fixed we choose to remain
     kay "Can you believe that there are people in the galaxy who value their freedom, Kryska?"
     kry "... ... ..."
     kry "I do not understand, captain. Now Cera is under PACT occupation, and without our help, Ongess will become another dark world."
@@ -17787,6 +17787,7 @@ label aftercredits5:
     
     ava "Once our government is restored, I'll file a big harassment lawsuit right up his--"
     
+    $ renpy.full_restart()
     return
 
 label aftercredits4:
