@@ -463,13 +463,11 @@ transform melee_hitanim(img1,yy):
 screen melee_player:
     zorder 2
 
-    try:
+    if hasattr(BM.target, 'sprites'):
         if store.damage == 'miss':
             add melee_hitanim(BM.target.sprites['standard'],-1.5)
         else:
             add melee_hitanim(BM.target.sprites['standard'],0.5)
-    except:
-        pass
 
     if BM.attacker.faction == 'Player':
         add melee_atkanim(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
