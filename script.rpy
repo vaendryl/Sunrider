@@ -14505,7 +14505,7 @@ label heardexplosioncolor:
     with dissolve
     
     ava "Ahem. I expect all crew to be on their best behavior for this overnight stay."
-    ava "While we may all be sleeping under all roof, I remind all of you that we are proud soldiers of the Cer-"
+    ava "While we may all be sleeping under one roof, I remind all of you that we are proud soldiers of the Cer-"
     
     show claude uniform excited happy:
         xpos 0.6
@@ -15044,7 +15044,7 @@ label heardexplosioncolor:
     
     show ava uniform salute angry with dissolve
     
-    ava "I am, and I always will ready to be your XO, captain."
+    ava "I am, and I always will be ready to be your XO, captain."
     kay "Good."
     kay "I knew I could trust you, Ava."
     kay "Now let's go."
