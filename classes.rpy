@@ -262,7 +262,7 @@ init -2 python:
 
                     #did you click an ally?
                     elif self.target.faction == 'Player':
-                        if weapon.wtype == 'Support':
+                        if weapon.wtype == 'Support' or weapon.wtype == 'Special':
                             if self.target.cth <= 0:
                                 self.draggable = False
                                 renpy.say('Ava','It\'s hopeless, captain!')
@@ -287,7 +287,7 @@ init -2 python:
                             return #do end the method, this is important.
                         else:
                             BM.attacker = BM.selected
-                            if self.active_weapon.wtype == 'Curse':
+                            if self.active_weapon.wtype == 'Curse' or self.active_weapon.wtype == 'Special':
                                 weapon.fire(self.selected,self.target)
                                 self.active_weapon = None
                                 self.weaponhover = None
@@ -986,10 +986,14 @@ init -2 python:
         def receive_damage(self,damage,attacker,wtype):
             BM.attacker = attacker
 
+            if damage == None:
+                return
             if damage == 'no energy':
                 renpy.say('ERROR','the {} does not have the energy for this attack'.format(attacker.name))
+                return
             elif damage == 'no ammo':
                 renpy.say('ERROR','the {} does not have enough ammo for this attack'.format(attacker.name))
+                return
             elif damage == 'miss':
                 if wtype == 'Melee':
                     store.damage = damage
@@ -2032,12 +2036,12 @@ init -2 python:
             self.uses_rockets = False
             self.energy_use = 60
             self.hp_cost = 0
-            self.wtype = 'Curse'
+            self.wtype = 'Special'
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
             self.tooltip = """
-            Allows Claude to move an enemy Ryder a single square.
+            Allows Claude to move any Ryder a single hex.
             This movement will provoke Blindside attacks, if you move an enemy Ryder
             into the range of a friendly unit with an Assault type weapon.
             Has unlimited range."""
@@ -2052,42 +2056,68 @@ init -2 python:
 
         def fire(self,parent,target):
 
+            #only works on ryders
+            if target.stype != 'Ryder':
+                show_message('you can only use this ability on ryders!')
+                return
+            
+            #energy handeling
             if parent.en < self.energy_use:
                 return
             parent.en -= self.energy_use
+            
+            #make movement buttons appear
             BM.selectedmode = True
 
+            #store the target's faction and weapons and EN value
             target_faction = target.faction
             target_weapons = target.weapons
+            target_en = target.en
 
+            #set the target up for the player to move it one space
             target.faction = 'Player'
             target.weapons = []
-            target.en = 100
-
+            target.en = target.move_cost
             BM.select_ship(target, play_voice = False)
+            #show movement tiles around the target for 1 hex away
             target.movement_tiles = get_movement_tiles(target,1)
 
+            #set up the loop
             looping = True
             cancel = False
             BM.weaponhover = None
 
+            #movement loop
             while looping:
                 result = ui.interact()
+                
+                # player clicked a spot to move to
                 if result[0] == 'move':
+                    #if we don't reset the faction now enemies will counter attack their own allies!
                     target.faction = target_faction
                     target.move_ship(result[1],BM) #result[1] is the new location to move towards
                     looping = False
+                
+                # player clicked the right mouse button
                 if result == 'deselect':
                     cancel = True
                     looping = False
 
             if cancel:
+                #refund the energy cost of the gravity gun as the target never moved
                 parent.en += self.energy_use
 
+            #hand the target over back to the enemy (if applicable) and reset their weapons and energy.
             target.faction = target_faction
             target.weapons = target_weapons
+            target.en = target_en
+            
+            #select the parent again (usually the bianca)
             BM.select_ship(parent, play_voice = False)
+            #update the movement tiles as the target could now be blocking a spot the parent could have moved to before.
             parent.movement_tiles = get_movement_tiles(parent)
+            #cancelling the movement just leads to annoying problem
+            BM.just_moved = False
             return
 
 
@@ -2497,12 +2527,13 @@ init -2 python:
         def __call__(self):
             BM.weaponhover = self.weapon
 
-            if BM.weaponhover.wtype == 'Support':
+            #wtype:'Support' targets only allies, wtype:'Special' targets everyone
+            if BM.weaponhover.wtype == 'Support' or BM.weaponhover.wtype == 'Special':
                 for ship in player_ships:
                     ship.cth = get_acc(BM.weaponhover, BM.selected, ship)
             else:
                 ignore_evasion = False
-                if BM.weaponhover.wtype == 'Curse':
+                if BM.weaponhover.wtype == 'Curse' or BM.weaponhover.wtype == 'Special':
                     ignore_evasion = True
 
                 for ship in enemy_ships:

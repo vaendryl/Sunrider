@@ -310,13 +310,17 @@ screen battle_screen:
                         zoom (zoomlevel/2.0)
                         at cursedown(yposition-(190)*zoomlevel)
 
+                
+            ## as of the new UI interact code (with MouseTracker) most of the following is defunct.
+            ## only the parts that affect lbl do anything anymore.
+            
                 #default values
                 $mode = '' #default
-                $act = Return(['selection',ship])
+                # $act = Return(['selection',ship])
                 $lbl = ship.lbl
                 $hvr = hoverglow(ship.lbl)
-                $hvrd = SetField(BM,'hovered',ship)
-                $unhvrd = SetField(BM,'hovered',None)
+                # $hvrd = SetField(BM,'hovered',ship)
+                # $unhvrd = SetField(BM,'hovered',None)
 
                 #some properties of the imagebutton representing a ship change depending on circumstances
                 if ship.faction == 'Player':
@@ -344,22 +348,26 @@ screen battle_screen:
                         if BM.active_weapon.wtype == 'Support':
                             $ mode = 'offline'
 
-                        if BM.active_weapon.name == 'Gravity Gun':
-                            #the gravity gun is a special type weapon
-                            if ship.stype != 'Ryder':
-                                $ mode = 'offline'
+                if BM.active_weapon != None:
+                    if BM.active_weapon.name == 'Gravity Gun':
+                        #the gravity gun is a bit unique
+                        if ship.stype != 'Ryder':
+                            $ mode = 'offline'
+                        else:
+                            $ mode = 'target'
 
                 if mode == 'target':
                     $ lbl = hoverglow(ship.lbl)
-                    $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
+                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
                 elif mode == 'offline':
-                    $ act = NullAction()
-                    $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
-                    $ lbl = hvr
+                    # $ act = NullAction()
+                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                    $ lbl = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
 
                 if BM.hovered != None:
                     if BM.hovered == ship:
-                        $ lbl = hoverglow(ship.lbl)
+                        if mode != 'offline':
+                            $ lbl = hoverglow(ship.lbl)
                 
                 add lbl:
                     xanchor 0.5
@@ -368,8 +376,6 @@ screen battle_screen:
                     ypos yposition
                     zoom (zoomlevel/2.5)
                 
-                    
-
                 if ship.getting_buff:
                     add 'Battle UI/buff_front.png':
                         xpos int(xposition-96*zoomlevel)
@@ -495,7 +501,7 @@ screen battle_screen:
 
           ##if targeting mode is active show a targeting window over all enemy_ships that gives you chance to hit and other data
         if BM.weaponhover != None or BM.targetingmode and BM.selected != None:
-            $ selected = BM.selected
+            $ selected = BM.selected  #the screen sometimes loses track of BM.selected and crashes so a local is required
 
             for ship in BM.ships:
                 if ship.location != None:
@@ -504,10 +510,13 @@ screen battle_screen:
                         $BM.weaponhover = BM.active_weapon
                     if BM.weaponhover.wtype == 'Support' and (ship.faction != 'Player' or BM.weaponhover.self_buff == True):
                         $continue
-                    if BM.weaponhover.wtype != 'Support' and ship.faction == 'Player':
+                    elif BM.weaponhover.wtype != 'Support' and ship.faction == 'Player' and BM.weaponhover.wtype != 'Special':
+                        # wtype:'Special' is a support type that's neither a curse nor a buff but can be used on enemies and player units both
                         $continue
-                    if BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
+                    elif BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
                         $continue
+                    
+                    #the gravity gun is a little... special
                     if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
                         $continue
 

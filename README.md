@@ -1,7 +1,9 @@
-#Sunrider
-========
+patch 5.1
+======
 
-patch 4.3
+* gravity gun can now be used on friendly targets as well.
+
+beta 5
 ======
 * assimilated true hexmod [Azureflare is the best!]
 * you can scroll down a bit further so that the status window doesn't cover units in the far bottom right
@@ -13,7 +15,7 @@ patch 4.3
 * added a new resurrect order. 2000 CP to get one of your ryders back
 * reworked store backend. it'll be pretty easy to add a ton of new items to the shop. both for us and for modders.
 * lower difficulty gives more command points. current and lowest difficulty setting are now displayed in the victory screen.
-* R&D has been changed (again). 'submit' funcitonality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. the debug reset has also been removed.
+* R&D has been changed (again). 'submit' funcitonality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. 
 * upgrade costs rebalanced (requires a new game to take effect). kinetic damage is more expensive to upgrade while energy damage became cheaper. armor is now more expensive for ryders.
 
 

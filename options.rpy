@@ -15,7 +15,7 @@ init -1 python hide:
     ## set to False before the game is released, so the user can't
     ## cheat using developer tools.
 
-    config.developer = False
+    config.developer = True
     #config.use_cpickle = False
     #config.save_dump = True
     config.log = None
@@ -29,7 +29,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider First Arrival"
-    config.version = " Beta 5.0"
+    config.version = " Beta 5.1"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 15
