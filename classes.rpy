@@ -1067,7 +1067,11 @@ init -2 python:
                 self.hp -= damage
 
                 if wtype == 'Melee':
-                    renpy.call_in_new_context('melee_attack_player')
+                
+                    try:
+                        renpy.call_in_new_context('melee_attack_player')
+                    except:
+                        pass
                 else:
                     try:
                         renpy.call_in_new_context('hitanim_{}_{}'.format(self.animation_name,wtype.lower()))
