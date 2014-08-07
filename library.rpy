@@ -1818,7 +1818,7 @@ init 2 python:
 
  ###########################################PHOENIX ENEMY
  
-    class PhoenixMeleeEnemy(Melee):
+    class PhoenixEnemyMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
             self.damage = 250    #multiplied by shot count
