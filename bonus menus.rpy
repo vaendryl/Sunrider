@@ -135,7 +135,11 @@ screen chapter_select:
                         text chapters[chaptercount].text
                     else:
                         text str(bonusPage * columns * rows + i) + ". Unwritten Chapter"
-                        
+
+init -1 python:
+    # needs to be here or else renpy won't recognize the list
+    addon_scenes = []
+
 screen mod_scenes:
 
     modal True
@@ -155,8 +159,6 @@ screen mod_scenes:
         hotspot (1140, 59, 137, 44) action [ Hide('mod_scenes'), Show('main_menu', transition=dissolve) ]
 
         #style "file_picker_frame"
-        
-        $ addon_scenes = []
 
         $ columns = 1
         $ rows = 5
@@ -185,11 +187,13 @@ screen mod_scenes:
 
                     # Add the image and text.
                     if bonusPage * columns * rows + i - 1 < len(addon_scenes):
+                        $ is_label = renpy.has_label(addon_scenes[i - 1].jumpLoc)
                         imagebutton:
                             idle (addon_scenes[i - 1].image)
                             hover hoverglow(addon_scenes[i - 1].image)
                             at zoom_button(addon_scenes[i - 1].zoom)
-                            action [Hide('main_menu'),Start(addon_scenes[i - 1].jumpLoc)]
+                            action If(is_label, true = [Hide('main_menu'),Start(addon_scenes[i - 1].jumpLoc)], false = [Hide('mod_scenes'),ShowMenu(addon_scenes[i - 1].jumpLoc)])
+                        $ del is_label
                         text addon_scenes[i - 1].text
 
                     else:

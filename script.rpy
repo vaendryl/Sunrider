@@ -15294,6 +15294,7 @@ label mission13:
 label mission13_end:
     
     $ tydaria_morepirates = False
+    $ mission13_complete = True
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
     hide screen battle_screen
@@ -15556,6 +15557,7 @@ label mission14:
 label mission14_end:
     
     $ farport_losttech = False
+    $ mission14_complete = True
     $ del BM.orders['RETREAT'] 
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
@@ -15792,6 +15794,7 @@ label mission15:
 label aftermission15:
     
     $ versta_ambush = False
+    $ mission15_complete = True
     play music "Music/The_Meteor.ogg" fadeout 1.5
 
     hide screen battle_screen
