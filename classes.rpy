@@ -997,7 +997,10 @@ init -2 python:
             elif damage == 'miss':
                 if wtype == 'Melee':
                     store.damage = damage
-                    renpy.call_in_new_context('melee_attack_player')
+                    try:
+                        renpy.call_in_new_context('melee_attack_player')
+                    except:
+                        pass #player probably attacked a non-ryder. silly players. 
                 else:
                     try:
                         renpy.call_in_new_context('miss_{}'.format(self.animation_name)) #show the miss animation
@@ -1892,6 +1895,10 @@ init -2 python:
         def fire(self, parent, target):
             update_armor(target)
 
+            #don't really want to fix this yet :D
+            # if target.stype != 'Ryder':
+                # return 0
+           
             energy_cost = int(self.energy_use * parent.melee_cost)
             if parent.en < energy_cost:  #energy handling
                 return 'no energy'
@@ -1905,10 +1912,10 @@ init -2 python:
             store.total_armor_negation = 0
             store.total_shield_negation = 0
             for shot in range(self.shot_count):
-                if renpy.random.randint(0,100) > accuracy:
+                if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     pass #you missed!
                 else:
-                    damage = self.damage * parent.melee_dmg * renpy.random.triangular(0.8,1.2)  #add a little variation in the damage
+                    damage = self.damage * parent.melee_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if damage < target.armor *2:
                         store.total_armor_negation += damage -1

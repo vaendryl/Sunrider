@@ -5372,7 +5372,7 @@ label mission8:
         hide asaga onlayer screens with dissolve
 
         python:
-            create_ship(PhoenixEnemy(),(18,6),[PhoenixEnemyMelee(),PhoenixEnemyAssault()])
+            create_ship(PhoenixEnemy(),(18,6),[PhoenixEnemyMelee(),PhoenixAssault()])
 
         $ BM.draggable = True
         $ check4 = True
