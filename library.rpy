@@ -587,7 +587,7 @@ init 2 python:
             self.base_armor = 0
             self.money_reward = 200
             self.armor = 0
-            self.default_weapon_list = [PhoenixEnemyMelee(),PhoenixEnemyAssault()]
+            self.default_weapon_list = [PhoenixEnemyMelee(),PhoenixAssault()]
             self.blbl = 'Battle UI/label_phoenixenemy.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
