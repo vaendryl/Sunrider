@@ -914,28 +914,30 @@ init -6 python:
             valid = False
         return valid
 
-    
-       
-    def getAllInRadius(loc, radius):
-        if radius < 0:
-            return []
-        # put the given location into a list
-        locations = [loc]
-        if radius != 0:
-            x, y = loc
-            # add the locations of each adjacent hex to the list until we have reached the desired radius
-            locations.extend(getAllInRadius((x + 1, y), radius - 1))
-            locations.extend(getAllInRadius((x - 1, y), radius - 1))
-            locations.extend(getAllInRadius((x, y + 1), radius - 1))
-            locations.extend(getAllInRadius((x, y - 1), radius - 1))
-            # the adjacent cells are different depending on whether the y value is even or odd
-            if y % 2 == 0:
-                locations.extend(getAllInRadius((x + 1, y + 1), radius - 1))
-                locations.extend(getAllInRadius((x + 1, y - 1), radius - 1))
-            else:
-                locations.extend(getAllInRadius((x - 1, y + 1), radius - 1))
-                locations.extend(getAllInRadius((x - 1, y - 1), radius - 1))
-        # remove all duplicates from the list and then return it
+    def getAllInRadius(location, radius):
+        locations = []
+        pending = [location]
+        while radius > 0:
+            pending2 = []
+            for loc in pending:
+                x, y = loc
+                pending2.append((x + 1, y))
+                pending2.append((x - 1, y))
+                pending2.append((x, y + 1))
+                pending2.append((x, y - 1))
+                if y % 2 == 0:
+                    pending2.append((x + 1, y + 1))
+                    pending2.append((x + 1, y - 1))
+                else:
+                    pending2.append((x - 1, y + 1))
+                    pending2.append((x - 1, y - 1))
+            locations.extend(pending)
+            pending = list(set(pending2))
+            for loc in pending:
+                if loc in locations:
+                    pending.remove(loc)
+            radius -= 1
+        locations.extend(pending)
         return list(set(locations))
 
     def getInRing(loc, radius):
