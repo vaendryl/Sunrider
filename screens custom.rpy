@@ -956,7 +956,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
 
-                                text str('Deals 800 unavoidable damage to all units within a straight line within 7 tiles to the right of the Sunrider'):
+                                text str('Deals 800 unavoidable damage to all units in a in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'):
                                     xpos 0
                                     ypos 0
                                     size 18
@@ -1523,7 +1523,7 @@ screen victory2:
             add ship.blbl:
                 xanchor 0.5
                 at victory_ships(xx,wait,0.5)
-            text '{}$'.format(ship.money_reward):
+            text '{}$'.format(int(ship.money_reward)):
                 xanchor 0.5
                 yanchor 1.0
                 size textsize
@@ -1792,4 +1792,3 @@ screen game_over_gimmick:
             $randt = renpy.random.randint(100,600) / 100.0
     #        text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
             add 'Battle UI/label_pactbattleship.png' xpos randx ypos randy zoom (randint / 300.0) at gameovergimmick(randx,randy, randt)
-

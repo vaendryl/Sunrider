@@ -22,7 +22,7 @@ beta 5
 * added a new resurrect order. 2000 CP to get one of your ryders back
 * reworked store backend. it'll be pretty easy to add a ton of new items to the shop. both for us and for modders.
 * lower difficulty gives more command points. current and lowest difficulty setting are now displayed in the victory screen.
-* R&D has been changed (again). 'submit' funcitonality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. 
+* R&D has been changed (again). 'submit' functionality is gone. instead, you can always 'sell' an upgrade for 80% of its cost. 
 * upgrade costs rebalanced (requires a new game to take effect). kinetic damage is more expensive to upgrade while energy damage became cheaper. armor is now more expensive for ryders.
 
 

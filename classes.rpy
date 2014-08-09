@@ -924,7 +924,7 @@ init -2 python:
                 'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.0],
                 'energy_dmg':['Energy Damage',1,0.05,95,1.45],
                 'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
-                'energy_cost':['Energy Energy Cost',1,-0.05,100,2.0],
+                'energy_cost':['Energy Cost',1,-0.05,100,2.0],
                 'missile_dmg':['Missile Damage',1,0.10,100,1.5],
                 'missile_eccm':['Missile Flak Resistance',1,1,100,1.5],
                 'missile_cost':['Missile Energy Cost',1,-0.10,100,2.0],
@@ -1584,7 +1584,7 @@ init -2 python:
             self.wtype = ''
             self.shot_count = 1
             self.accuracy = 100
-            self.tooltip = None
+            self.tooltip = ''
         
         #return None when attribute does not exist.
         # def __getattr__(self,X):
@@ -2455,14 +2455,17 @@ init -2 python:
                 if mochi in player_ships: player_ships.remove(mochi)
 
             if self.lastMission >= 10:
-                store.player_ships.append(store.blackjack)
+                if blackjack not in player_ships:
+                    store.player_ships.append(store.blackjack)
                 
             if self.lastMission >= 10:
                 store.sunrider.repair_drones = 0
+            
+            if self.lastMission >= 11:                
+                BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']    
 
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
-
 
     #master class of all store objects
     #the actual items are defined in the library
@@ -2473,7 +2476,7 @@ init -2 python:
             self.display_name = 'master item' #how it appears in the store
             self.cost = 0                #cost of this item     
             self.tooltip = ''            #text explaining what this item does
-            self.variable_name = None  #[string or None] what variable keeps track of how many of this item the player has? 
+            self.variable_name = None    #[string or None] what variable keeps track of how many of this item the player has? 
             self.max_amt = 0             #maximum allowed of this item. irrelevant if self.amount_variable == None
             
             # if self not in store_items:

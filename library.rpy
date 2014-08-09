@@ -607,7 +607,7 @@ init 2 python:
             self.stype = 'Ryder'
             self.name = 'Nightmare'
             self.animation_name = 'nightmare'
-            self.faction = 'Ryuvian'
+            self.faction = 'PACT' #for now...
             self.max_hp = 3200
             self.hp = self.max_hp
             self.max_en = 100

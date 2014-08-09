@@ -170,8 +170,9 @@ label missionskirmish:
             renpy.hide_screen('battle_screen')
             renpy.hide_screen('store_union') #seems like it has trouble staying closed? 
             BM.battlemode = False
-            clean_battle_exit()
+            
             if result == 'quit':
+                clean_battle_exit()
                 renpy.jump('dispatch')
                 
         elif result == 'remove':

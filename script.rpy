@@ -2033,7 +2033,7 @@ label aboutjoiningtheSunrider:
             jump whyjoinSunrider
         "Tell me more about the pirates you're after.":
             jump tellmoreaboutpirates
-        "I think I'll have to think about it more...":
+        "I'll have to think about it more...":
             jump illhavetothinkmore
         "All right, you've got a deal.":
             jump youvegotadeal
@@ -14505,9 +14505,8 @@ label heardexplosioncolor:
     with dissolve
     
     ava "Ahem. I expect all crew to be on their best behavior for this overnight stay."
-
     ava "While we may all be sleeping under one roof, I remind all of you that we are proud soldiers of the Cer-" #fixed    under all roof,
-
+    
     show claude uniform excited happy:
         xpos 0.6
     with dissolve
