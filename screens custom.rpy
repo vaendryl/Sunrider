@@ -956,7 +956,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
 
-                                text str('Deals 800 unavoidable damage to all units in a in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'):
+                                text str('Deals 800 unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'):
                                     xpos 0
                                     ypos 0
                                     size 18
