@@ -584,7 +584,14 @@ init -2 python:
                 renpy.music.play(PlayerTurnMusic)
                 renpy.call_in_new_context('endofturn')
             renpy.take_screenshot()
-            renpy.save('beginturn')
+            
+            # I've sometimes been getting this error for some silly reason:
+            # WindowsError: [Error 183] Cannot create a file when that file already exists
+            # may just be me, but to be safe I'll put a catch here
+            try:
+                renpy.save('beginturn')
+            except:
+                pass
 
         def enemy_AI(self):
 

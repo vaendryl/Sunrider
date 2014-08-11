@@ -854,14 +854,14 @@ screen battle_screen:
                 ypos 828
                 idle 'Skirmish/enemymusic.png'
                 hover hoverglow('Skirmish/enemymusic.png')
-                action Return('enemymusic')
+                action Show('enemy_music')
 
             imagebutton:
                 xpos 448
                 ypos 897
                 idle 'Skirmish/playermusic.png'
                 hover hoverglow('Skirmish/playermusic.png')
-                action Return('playermusic')                 
+                action Show('player_music')                 
     
 transform move_down(ystart,yend,xx=0):
     xpos xx
@@ -887,11 +887,9 @@ screen orders:
             for order in BM.orders:
                 button:
                     xpos 20
-#                    insensitive_background im.MatrixColor('Battle UI/commandbar_button.png',im.matrix.brightness(-0.50))
                     idle_background 'Battle UI/commandbar_button.png'
                     hover_background hoverglow('Battle UI/commandbar_button.png')
                     action [Return(order),Hide('orders'),SetField(BM,'showing_orders',False),SetField(BM,'order_used',True)]
-#                    action If(BM.cmd >= BM.orders[order][1],[Return(order),Hide('orders'),SetField(BM,'showing_orders',False)])
 
                     has hbox
 
@@ -1320,9 +1318,81 @@ screen enemy_unit_pool:
         xmaximum 40
         action Hide('enemy_unit_pool')                        
 
+screen player_music:
+    modal True
+    
+    #maybe this list should be defined in the inits
+    python:
+        music_list = {
+            "Driving The Top Down": 'Music/Driving_the_Top_Down.ogg',
+            "La Busqueda de Lanna": 'Music/La_Busqueda_de_Lanna.ogg',
+            "Powerful": 'Music/Powerful.ogg',
+            "Riding With The Wind": 'Music/Riding_With_the_Wind.ogg',
+            "Titan": 'Music/Titan.ogg'
+            }
+            
+    add "Skirmish/playermusic_back.png"
+    
+    vbox:
+        xalign 0.4
+        yalign 0.4
+        spacing 20
+        
+        for song in music_list: 
+
+            button:
+                xpos 0
+                idle_background "Skirmish/song_button.png"
+                hover_background hoverglow("Skirmish/song_button.png")
+                action [ Hide('player_music'), Return( ["playermusic",music_list[song]] ) ]
                 
+                text song:
+                    min_width 544   #length of the background. needed for hover
+                    xalign 0.5
+                    color '000'
+                    size 28
+
+screen enemy_music:
+    modal True
+    
+    python:
+        music_list = {
+            "Battle Against Time": 'Music/Battle_Against_Time.ogg',
+            "Dusty Universe": 'Music/Dusty_Universe.ogg',
+            "Intruders": 'Music/Intruders.ogg',
+            "Poltergeist Attack": 'Music/Poltergeist_Attack.ogg',
+            "Posthumus Regium": 'Music/Posthumus_Regium.ogg',
+            "Sui Generis": 'Music/Sui_Generis.ogg'
+            }
+             
+    add "Skirmish/enemymusic_back.png"
+    
+    vbox:
+        xalign 0.4
+        yalign 0.4
+        spacing 20
+        
+        for song in music_list: 
+
+            button:
+                xpos 0
+                idle_background "Skirmish/song_button.png"
+                hover_background hoverglow("Skirmish/song_button.png")
+                action [ Hide('enemy_music'), Return( ["enemymusic",music_list[song]] ) ]
                 
-                
+                text song:
+                    min_width 544   #length of the background. needed for hover
+                    xalign 0.5
+                    color '000'
+                    size 28                    
+                    
+            
+        
+        
+        
+        
+        
+        
 screen tooltips:
     zorder 9
 

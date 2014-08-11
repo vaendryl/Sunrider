@@ -7,7 +7,7 @@
 
 init -10 python:
     ## a few constants
-    TURN_SPEED = 0.5  #in seconds
+    TURN_SPEED = 0.75 #in seconds
     MOVE_IN_SPEED = 0.5 #for buttons and status displays
     MOVE_OUT_SPEED = 0.5
     MESSAGE_PAUSE = 0.75

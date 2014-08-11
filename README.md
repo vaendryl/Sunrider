@@ -1,3 +1,13 @@
+patch 5.2
+======
+
+* un-broke the skirmish mode. (oops)
+* added player and enemy turn music selection into skirmish
+* fixed the vanguard's tooltip
+* changed "Energy Energy Cost" into "Energy Cost" (will require a reset to show up)
+* fixed display of destruction loot of carrier-spawned ryders.
+* very minor tweaks to the start of a new turn. (animation speed and sound) (requires a new game for full effect)
+
 patch 5.1
 ======
 
