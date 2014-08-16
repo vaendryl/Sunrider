@@ -2014,5 +2014,21 @@ init 2 python:
             store.wishall = False
             BM.money -= self.cost            #boilerplate
             renpy.restart_interaction()      #boilerplate            
+
+    class SunriderShieldUpgrade(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'sunrider_shield_upgrade'
+            self.display_name = "SUNRIDER SHIELD UPGRADE"
+            self.cost = 1500            
+            self.tooltip = 'TODO'
+            self.visibility_condition = 'store.sunrider.shield_generation == 0'
+
+        def __call__(self):            
+            store.sunrider.shield_generation = 25
+            store.sunrider.shields = store.sunrider.shield_generation
+            store.sunrider.shield_range = 1
+            BM.money -= self.cost
+            renpy.restart_interaction()
             
             
