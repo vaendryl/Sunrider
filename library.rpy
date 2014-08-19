@@ -39,7 +39,12 @@ init 2 python:
             self.armor = self.base_armor
             self.test = 'test1234'
             self.test2 = 'test2'
-
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_sunrider.png'
+            self.icon = 'Menu/upgrade_sunrider_button.png'
+            self.hovericon = 'Menu/upgrade_sunrider_button_hover.png'
+            
             ####################VOICES
             self.voice_channel = "avavoice"
             self.selection_voice = ['Ava/Ava Selection 1.ogg','Ava/Ava Selection 2.ogg','Ava/Ava Selection 3.ogg','Ava/Ava Selection 4.ogg','Ava/Ava Selection 5.ogg','Ava/Ava Selection 6.ogg','Ava/Ava Selection 7.ogg']
@@ -89,7 +94,12 @@ init 2 python:
                 'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
                 }
             self.flak = 35
-
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_blackjack.png'
+            self.icon = 'Menu/upgrade_blackjack_button.png'
+            self.hovericon = 'Menu/upgrade_blackjack_button_hover.png'
+            
             ####################VOICES
             self.voice_channel = "asavoice"
             self.attack_voice = ["sound/Voice/Asaga/Asaga Melee 1.ogg","sound/Voice/Asaga/Asaga Melee 2.ogg","sound/Voice/Asaga/Asaga Melee 3.ogg","sound/Voice/Asaga/Asaga Melee 4.ogg"]
@@ -124,6 +134,11 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_liberty.png'
+            self.icon = 'Menu/upgrade_liberty_button.png'
+            self.hovericon = 'Menu/upgrade_liberty_button_hover.png'
 
             ####################VOICES
             self.voice_channel = "chivoice"
@@ -162,6 +177,11 @@ init 2 python:
                 }
             self.flak = 20
             self.upgrades['max_hp'] = ['Hull Plating',1,100,100,2.0]
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_phoenix.png'
+            self.icon = 'Menu/upgrade_phoenix_button.png'
+            self.hovericon = 'Menu/upgrade_phoenix_button_hover.png'
 
             ####################VOICES
             self.voice_channel = "icavoice"
@@ -197,6 +217,11 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_bianca.png'
+            self.icon = 'Menu/upgrade_bianca_button.png'
+            self.hovericon = 'Menu/upgrade_bianca_hover.png'
 
             ####################VOICES
             self.voice_channel = "clavoice"
@@ -231,6 +256,11 @@ init 2 python:
                 'standard':'gameplay/Animations/Seraphim/side.png',
                 }
             self.flak = 0
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_seraphim.png'
+            self.icon = 'Menu/upgrade_seraphim_button.png'
+            self.hovericon = 'Menu/upgrade_seraphim_hover.png'
 
             ####################VOICES
             self.voice_channel = "solvoice"
@@ -266,6 +296,11 @@ init 2 python:
                 'character':"Character/Kryska/kryska_plugsuit_handonhip_focussmile.png"
                 }
             self.flak = 18
+            
+            ####################UPGRADE BACKGROUND AND ICONS
+            self.upgrade_menu = 'Menu/upgrade_paladin.png'
+            self.icon = 'Menu/upgrade_paladin_button.png'
+            self.hovericon = 'Menu/upgrade_paladin_button_hover.png'
 
             ####################VOICES
             self.voice_channel = "kryvoice"
