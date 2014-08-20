@@ -619,12 +619,12 @@ init -6 python:
         #for now no fudging for AI.
         if faction == 'Player' and store.Difficulty <=2 and shotcount == 1:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
-            return RNG2 < int(accuracy)
+            return RNG2 <= int(accuracy)
         elif faction == 'Player' and store.Difficulty == 3 and accuracy < 50 and shotcount == 1: #muhahaha
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
-            return RNG2 < int(accuracy)
+            return RNG2 <= int(accuracy)
         else:
-            return renpy.random.randint(1,100) < accuracy  
+            return renpy.random.randint(1,100) <= accuracy  
 
     def test_RNG(accuracy):
         #you can use this to see the difference between the 2 ways of calculating a hit.
