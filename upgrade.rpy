@@ -86,21 +86,10 @@ screen upgrade:
     if ship.repair > 0:
         $ upgrade_list.append(ship.upgrades['repair'])
 
-    if ship == sunrider:
-        add "Menu/upgrade_sunrider.png"
-    if ship == blackjack:
-        add "Menu/upgrade_blackjack.png"
-    if ship == liberty:
-        add "Menu/upgrade_liberty.png"
-    if ship == phoenix:
-        add "Menu/upgrade_phoenix.png"
-    if ship == bianca:
-        add "Menu/upgrade_bianca.png"
-    if ship == seraphim:
-        add "Menu/upgrade_seraphim.png"
-    if ship == paladin:
-        add "Menu/upgrade_paladin.png"
-
+    ## Upgrade backgrounds moved to their individual classes in the library
+    
+    add ship.upgrade_menu
+    
     textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
         ypos 0.0
@@ -113,39 +102,14 @@ screen upgrade:
     $ count = 0
     for iconship in player_ships:
         if not iconship.mercenary:
-            $ icon = None
-            $ hovericon = None
+            $ icon = iconship.icon
+            $ hovericon = iconship.hovericon
             $ xposition = 1640
             if count % 2 != 0:
                 $ xposition = 1758
             $ yposition = 441 + count * 70
 
-            #this is the sort of mess you get if you don't put this stuff in the library
-            if iconship.name == 'Sunrider':
-                $ icon = 'Menu/upgrade_sunrider_button.png'
-                $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
-            elif iconship.name == 'Liberty':
-                $ icon = 'Menu/upgrade_liberty_button.png'
-                $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
-            elif iconship.name == 'Black Jack':
-                $ icon = 'Menu/upgrade_blackjack_button.png'
-                $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
-            elif iconship.name == 'Havoc':
-                $ icon = 'Menu/upgrade_havoc_button.png'
-                $ hovericon = 'Menu/upgrade_havoc_hover.png'
-            elif iconship.name == 'Phoenix':
-                $ icon = 'Menu/upgrade_phoenix_button.png'
-                $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
-            elif iconship.name == 'Seraphim':
-                $ icon = 'Menu/upgrade_seraphim_button.png'
-                $ hovericon = 'Menu/upgrade_seraphim_hover.png'
-            elif iconship.name == 'Bianca':
-                $ icon = 'Menu/upgrade_bianca_button.png'
-                $ hovericon = 'Menu/upgrade_bianca_hover.png'
-            elif iconship.name == 'Paladin':
-                $ icon = 'Menu/upgrade_paladin_button.png'
-                $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
-                
+            ## upgrade icons and hovericons are now in the library
 
             imagebutton:
                 xpos xposition
