@@ -100,7 +100,7 @@ label initialize:
         paladin = None
         havoc = None
         paradigm = None
-        
+
         check1 = False
         check2 = False
         check3 = False
@@ -110,6 +110,21 @@ label initialize:
         check7 = False
         check8 = False
         check9 = False
+
+        #music list across the game
+        music_list = {
+            "Driving The Top Down"  : 'Music/Driving_the_Top_Down.ogg',
+            "La Busqueda de Lanna"  : 'Music/La_Busqueda_de_Lanna.ogg',
+            "Powerful"              : 'Music/Powerful.ogg',
+            "Riding With The Wind"  : 'Music/Riding_With_the_Wind.ogg',
+            "Titan"                 : 'Music/Titan.ogg',
+            "Battle Against Time"   : 'Music/Battle_Against_Time.ogg',
+            "Dusty Universe"        : 'Music/Dusty_Universe.ogg',
+            "Intruders"             : 'Music/Intruders.ogg',
+            "Poltergeist Attack"    : 'Music/Poltergeist_Attack.ogg',
+            "Posthumus Regium"      : 'Music/Posthumus_Regium.ogg',
+            "Sui Generis"           : 'Music/Sui_Generis.ogg'
+            }
     return
 
 
@@ -531,14 +546,14 @@ label mission12_inits:
         phoenix.set_location(6,8)
         liberty.set_location(6,9)
         seraphim.set_location(6,10)
-        
+
         if paladin == None: #mostly used by chapter select
             paladin_weapons = [PaladinMissile(),PaladinAssault(),PaladinKinetic()]
             paladin = create_ship(Paladin(),(9,8),paladin_weapons)
             alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
             alliancecruiser1 = create_ship(AllianceCruiser(),(5,5),alliancecruiser_weapons)
             alliancecruiser2 = create_ship(AllianceCruiser(),(5,4),alliancecruiser_weapons)
-        
+
         paladin.set_location(6,11)
         alliancecruiser1.set_location(5,7)
         alliancecruiser2.set_location(5,9)
@@ -582,7 +597,7 @@ label mission13_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PirateGrunt(),(9,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(9,11),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(10,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
@@ -613,14 +628,14 @@ label mission13_inits:
         create_ship(PirateBase(),(13,10),[PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()])
         enemy_ships[-1].boss=False
         enemy_ships[-1].money_reward=350
-        
+
     $ PlayerTurnMusic = "music/Powerful.ogg"
     $ EnemyTurnMusic = "music/Sui_Generis.ogg"
 
     return
 
 label mission14_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -630,7 +645,7 @@ label mission14_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-    
+
         create_ship(RyuvianCruiser(),(9,6),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(10,7),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(10,11),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
@@ -646,7 +661,7 @@ label mission14_inits:
     return
 
 label mission15_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -656,7 +671,7 @@ label mission15_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PactBattleship(),(9,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         enemy_ships[-1].modifiers['energy regen'] = [-100,2]
         create_ship(PactBattleship(),(9,11),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
@@ -675,7 +690,7 @@ label mission15_inits:
         create_ship(PactBomber(),(10,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(10,10),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(10,11),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-        
+
         create_ship(MissileFrigate(),(12,6),[PactFrigateMissile()])
         create_ship(MissileFrigate(),(12,12),[PactFrigateMissile()])
 
@@ -694,8 +709,8 @@ label mission15_inits:
         create_ship(PactOutpost(),(12,10),[PACTOutpostLaser(),PACTOutpostKinetic()])
         enemy_ships[-1].boss=False
         enemy_ships[-1].money_reward=350
-    
-    
+
+
     $ PlayerTurnMusic = "music/La_Busqueda_de_Lanna.ogg"
     $ EnemyTurnMusic = "music/Intruders.ogg"
 
