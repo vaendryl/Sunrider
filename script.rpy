@@ -15555,9 +15555,14 @@ label mission14:
     
 label mission14_end:
     
-    $ farport_losttech = False
-    $ mission14_complete = True
-    $ del BM.orders['RETREAT'] 
+    python:
+        farport_losttech = False
+        mission14_complete = True
+        
+        try:
+            del BM.orders['RETREAT']
+        except:
+            pass
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
