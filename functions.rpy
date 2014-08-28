@@ -933,12 +933,12 @@ init -6 python:
                     pending2.append((x - 1, y - 1))
             locations.extend(pending)
             pending = list(set(pending2))
-            for loc in pending:
-                if loc in locations:
+            for loc in locations:
+                if loc in pending:
                     pending.remove(loc)
             radius -= 1
         locations.extend(pending)
-        return list(set(locations))
+        return locations
 
     def getInRing(loc, radius):
         outer = getAllInRadius(loc, radius)
