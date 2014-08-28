@@ -915,6 +915,9 @@ init -6 python:
         return valid
 
     def getAllInRadius(location, radius):
+        if radius < 0:
+            return []
+        
         locations = []
         pending = [location]
         while radius > 0:
