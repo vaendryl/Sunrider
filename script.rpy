@@ -6995,7 +6995,7 @@ label mission9:
         with dissolve
 
         python:
-            BM.grid[13][5] = False
+            BM.grid[13][6] = False
             BM.ships.remove(mochi)
             player_ships.remove(mochi)
 
