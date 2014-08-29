@@ -82,27 +82,26 @@ label endofturn:
     show screen battle_screen
     $update_stats()
 
+    play sound1 'sound/battle.wav'
     if not BM.phase == 'Player':
-        play sound1 'sound/battle.wav'
         show sunrider_phase onlayer screens zorder 50
         pause TURN_SPEED
         play sound2 'sound/drum.ogg'
         hide sunrider_phase onlayer screens zorder 50 with dissolve
         $ BM.phase = 'Player'
-    elif BM.phase == 'Player' and enemy_ships[0].faction == 'PACT':
-        play sound1 'sound/battle.wav'
-        show PACT_phase onlayer screens zorder 50
-        pause TURN_SPEED
-        play sound2 'sound/drum.ogg'
-        hide PACT_phase onlayer screens zorder 50 with dissolve
-        $ BM.phase = 'PACT'
-    elif BM.phase == 'Player' and enemy_ships[0].faction == 'Pirate':
-        play sound1 'sound/battle.wav'
-        show Pirate_phase onlayer screens zorder 50
-        pause TURN_SPEED
-        play sound2 'sound/drum.ogg'
-        hide Pirate_phase onlayer screens zorder 50 with dissolve
-        $ BM.phase = 'Pirate'
+    elif BM.phase == 'Player':
+        if enemy_ships[0].faction == 'PACT':
+            show PACT_phase onlayer screens zorder 50
+            pause TURN_SPEED
+            play sound2 'sound/drum.ogg'
+            hide PACT_phase onlayer screens zorder 50 with dissolve
+        elif enemy_ships[0].faction == 'Pirate':
+            show Pirate_phase onlayer screens zorder 50
+            pause TURN_SPEED
+            play sound2 'sound/drum.ogg'
+            hide Pirate_phase onlayer screens zorder 50 with dissolve
+
+        $ BM.phase = enemy_ships[0].faction
 
     $update_modifiers() #update buffs and curses
 

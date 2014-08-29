@@ -62,7 +62,7 @@ init -6 python:
         while active:
             result = ui.interact()
 
-            if result == 'quit':
+            if result[0] == 'quit':
                 renpy.hide_screen('upgrade')
                 
                 voicelist = [
@@ -70,9 +70,7 @@ init -6 python:
                     'sound/Voice/Chigara/Others Line 3.ogg'
                     ]
                 renpy.music.play(renpy.random.choice(voicelist),channel = 'chivoice')
-                
-                
-                
+
                 for ship in player_ships:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
@@ -80,13 +78,12 @@ init -6 python:
                 active = False
                 return
 
-            elif result == 'reset':
+            elif result[0] == 'reset':
                 reset_upgrades(BM.selected)
 
             elif result != None:
                 if result[0] == '+':
                     process_upgrade(BM.selected, result[1])
-                    
                 elif result[0] == '-':
                     reverse_upgrade(BM.selected, result[1])
                     renpy.music.play('sound/upgrade_sell.ogg',channel = 'sound2')
@@ -108,7 +105,7 @@ init -6 python:
                 return
 
     def apply_modifier(target,modifier,magnitude,duration):
-        """attempts to apply a buff or a curse and return True on success, False on failure"""
+        #attempts to apply a buff or a curse and return True on success, False on failure
         if target == None:
             return False
         if not hasattr(target,'modifiers'):
@@ -243,9 +240,6 @@ init -6 python:
         result = cubic_distance(cubic1, cubic2)
         return result
 
-    def update_armor(parent):
-        parent.armor = (parent.base_armor + parent.modifiers['armor'][0]) * parent.hp / parent.max_hp
-
     def real_damage(weapon,parent):
         if weapon == None or parent == None:
             return 0
@@ -291,9 +285,8 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.armor_update()
+            ship1.armor_color_update()
         for ship1 in enemy_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -318,9 +311,8 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.armor_update()
+            ship1.armor_color_update()
 
     def weapon_type(weapon):
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
@@ -439,9 +431,7 @@ init -6 python:
         return 1.0 - math.cos(t * math.pi / 2.0)
 
     def get_mouse_location():
-        """
-        get the mouse position and return the hex location the mouse is over.
-        """
+        #get the mouse position and return the hex location the mouse is over.
         a,b = renpy.get_mouse_pos()
         yoffset = 27 * store.zoomlevel
         hexheight = HEXD * store.zoomlevel
@@ -472,13 +462,13 @@ init -6 python:
     def sort_ship_list():
         BM.ships.sort(key=ship_position)
 
-    def zoom_handling(result,bm):
-        if result == None:
-            return
+    def zoom_handling(bm):
         if bm == None:
             return
+        if bm.result == None:
+            return
         mouse_xpos, mouse_ypos = renpy.get_mouse_pos() #such a handy function. Thanks Tom!  I use this to zoom in onto your mouse position
-        if result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
+        if bm.result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
             if mouse_xpos > 960:
                 adjusted_xpos = 960 + (mouse_xpos-960)*1.5
             else:
@@ -494,11 +484,11 @@ init -6 python:
         real_xpos = (bm.xadj.value + adjusted_xpos) / (1920*store.zoomlevel/0.5)  #this stores the position of the mouse relative to the entire battlefield
         real_ypos = (bm.yadj.value + adjusted_ypos) / (1080*store.zoomlevel/0.5)
 
-        if result[1] == "in": #check if you scrolled up or scrolled down.
+        if bm.result[1] == "in": #check if you scrolled up or scrolled down.
             store.zoomlevel *= (1 + ZOOM_SPEED)
             if store.zoomlevel >= 2.0: store.zoomlevel = 2.0 #set a maximum value so you can't zoom in endlessly
 
-        elif result[1] == "out":
+        elif bm.result[1] == "out":
             store.zoomlevel *= (1 - ZOOM_SPEED)
             if store.zoomlevel <= 0.5: store.zoomlevel = 0.5
 
@@ -817,7 +807,7 @@ init -6 python:
                 #z = cube1[2] * (1 - float(i)/disN) + cube2[2] * float(i)/disN
                 cuberound = hex_round([x, y, z])
                 newloc = convert_to_offset(cuberound)
-                if isvalid(newloc):
+                if isValid(newloc):
                     tiles.append(newloc)
         return tiles
 
@@ -878,12 +868,12 @@ init -6 python:
                     y+=ystep
                     error-=ddx
                     if error + errorprev < ddx:
-                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                        if get_distance(location1,(x,y-ystep))<= 6 and isValid((x,y-ystep)):
                             tiles.append([x,y-ystep])
                     else:
-                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                        if get_distance(location1,(x-xstep,y))<= 6 and isValid((x-xstep,y)):
                             tiles.append([x-xstep,y])
-                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                if get_distance(location1,(x,y))<= 6 and isValid((x,y)):
                     tiles.append([x,y])
                 errorprev = error
         else:
@@ -896,17 +886,17 @@ init -6 python:
                     x+=xstep
                     error-=ddy
                     if error + errorprev < ddy:
-                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                        if get_distance(location1,(x-xstep,y))<= 6 and isValid((x-xstep,y)):
                             tiles.append([x-xstep,y])
                     else:
-                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                        if get_distance(location1,(x,y-ystep))<= 6 and isValid((x,y-ystep)):
                             tiles.append([x,y-ystep])
-                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                if get_distance(location1,(x,y))<= 6 and isValid((x,y)):
                     tiles.append([x,y])
                 errorprev = error
         return tiles
 
-    def isvalid(location): #determines if the location in on the grid
+    def isValid(location): #determines if the location in on the grid
         valid = True
         if location[0] > GRID_SIZE[0] or location[0] <=0:
             valid = False
