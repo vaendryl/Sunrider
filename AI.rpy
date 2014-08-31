@@ -221,39 +221,6 @@ init python:
             return True
         else:
             return False #wasn't able to do anything.
-        
-                            
-                        
-                    
-                    
-                    
-                        
-                    
-                    
-                
-                        
-        
-        
-        
-                    
-
-                    
-                    
-                    
-                    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

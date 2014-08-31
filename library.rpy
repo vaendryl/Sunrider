@@ -109,6 +109,8 @@ init 2 python:
             self.movebackward_voice = ['Asaga/Asaga Backwards 1.ogg','Asaga/Asaga Backwards 2.ogg','Asaga/Asaga Backwards 3.ogg']
             self.buffed_voice = ['Asaga/Asaga Buffed 1.ogg','Asaga/Asaga Buffed 2.ogg']
             self.cursed_voice = ['Asaga/Asaga Cursed 1.ogg','Asaga/Asaga Cursed 2.ogg','Asaga/Asaga Cursed 3.ogg']
+            self.resurrect_voice = ['Asaga/Asaga Revive 1.ogg','Asaga/Asaga Revive 2.ogg']
+
 
     class Liberty(Battleship):  #you can use any existing blueprint as a base, which makes things really easy.
         def __init__(self):
@@ -148,6 +150,7 @@ init 2 python:
             self.buffed_voice = ['Chigara/Buffed Line 1.ogg','Chigara/Buffed Line 2.ogg']
             self.cursed_voice = ['Chigara/Cursed Line 1.ogg','Chigara/Cursed Line 2.ogg','Chigara/Cursed Line 3.ogg']
             self.cursing_voice = ['Chigara/Curse Line 1.ogg','Chigara/Curse Line 2.ogg','Chigara/Curse Line 3.ogg','Chigara/Curse Line 4.ogg','Chigara/Curse Line 5.ogg','Chigara/Curse Line 6.ogg','Chigara/Curse Line 7.ogg','Chigara/Curse Line 8.ogg','Chigara/Curse Line 9.ogg','Chigara/Curse Line 10.ogg']
+            self.resurrect_voice = ['Chigara/Revive Line 1.ogg','Chigara/Revive Line 2.ogg']
 
 
     class Phoenix(Battleship):
@@ -192,6 +195,7 @@ init 2 python:
             self.movebackward_voice = ['Icari/Icari Move Backward 1.ogg','Icari/Icari Move Backward 2.ogg','Icari/Icari Move Backward 3.ogg']
             self.buffed_voice = ['Icari/Icari Buffed 1.ogg','Icari/Icari Buffed 2.ogg']
             self.cursed_voice = ['Icari/Icari Cursed 1.ogg','Icari/Icari Cursed 2.ogg','Icari/Icari Cursed 3.ogg','Icari/Icari Cursed 4.ogg']
+            self.resurrect_voice = ['Icari/Icari Revive 1.ogg','Icari/Icari Revive 2.ogg']
 
     class Bianca(Battleship):
         def __init__(self):
@@ -231,6 +235,7 @@ init 2 python:
             self.buffed_voice = ['Claude/Buffed 1.ogg','Claude/Buffed 2.ogg']
             self.cursed_voice = ['Claude/Cursed 1.ogg','Claude/Cursed 2.ogg','Claude/Cursed 3.ogg','Claude/Cursed 4.ogg','Claude/Cursed 5.ogg']
             self.cursing_voice = ['Claude/Curse 1.ogg','Claude/Curse 2.ogg','Claude/Curse 3.ogg','Claude/Curse 4.ogg','Claude/Curse 5.ogg','Claude/Curse 6.ogg','Claude/Curse 7.ogg','Claude/Curse 8.ogg','Claude/Curse 9.ogg','Claude/Curse 10.ogg']
+            self.resurrect_voice = ['Claude/Revive 1.ogg','Claude/Revive 2.ogg']
 
     class Seraphim(Battleship):
         def __init__(self):
@@ -270,6 +275,7 @@ init 2 python:
             self.movebackward_voice = ['Sola/Backward 1.ogg','Sola/Backward 2.ogg','Sola/Backward 3.ogg','Sola/Backward 4.ogg']
             self.buffed_voice = ['Sola/Buffed 1.ogg','Sola/Buffed 2.ogg']
             self.cursed_voice = ['Sola/Curse 1.ogg','Sola/Curse 2.ogg','Sola/Curse 3.ogg','Sola/Curse 4.ogg']
+            self.resurrect_voice = ['Sola/Revive1.ogg','Sola/Revive2.ogg']
 
     class Paladin(Battleship):
         def __init__(self):
@@ -310,6 +316,7 @@ init 2 python:
             self.movebackward_voice = ['Kryska/Backwards 1.ogg','Kryska/Backwards 2.ogg','Kryska/Backwards 3.ogg']
             self.buffed_voice = ['Kryska/Buffed 1.ogg','Kryska/Buffed 2.ogg']
             self.cursed_voice = ['Kryska/Cursed 1.ogg','Kryska/Cursed 2.ogg','Kryska/Cursed 3.ogg','Kryska/Cursed 4.ogg','Kryska/Cursed 5.ogg']
+            self.resurrect_voice = ['Kryska/Revive 1.ogg','Kryska/Revive 2.ogg']
 
     class AllianceCruiser(Battleship):
         def __init__(self):
@@ -383,6 +390,7 @@ init 2 python:
             self.movebackward_voice = ['UnionFrigate/attack1.ogg','UnionFrigate/attack2.ogg']
             self.buffed_voice = ['UnionFrigate/selection2.ogg']
             self.cursed_voice = ['UnionFrigate/attack1.ogg','UnionFrigate/attack2.ogg']
+            self.cursing_voice = []
 
 
     class Agamemnon(Battleship):
@@ -2015,9 +2023,9 @@ init 2 python:
             self.buff_duration = 1
             self.cumulative = True  #do not overwrite but add to the current modifier.
             self.name = 'Shield Jam'
-            self.lbl = 'Battle UI/button_shdjam'
+            self.lbl = 'Battle UI/button_shdjam.png'
             self.tooltip = """
-            Temporarily reduce the target's shield generation by 15 points."""
+            Temporarily reduce the target's shield generation by 15 points. Can be used multiple times on the same target."""
 
 
 ###are these still used?##
@@ -2364,7 +2372,7 @@ init 2 python:
             self.id = 'sunrider_shield_upgrade'
             self.display_name = "SUNRIDER SHIELD UPGRADE"
             self.cost = 1500            
-            self.tooltip = 'TODO'
+            self.tooltip = "Install an older 2nd hand shield generator into the Sunrider. It's not very powerful but it's reliable and affordable."
             self.visibility_condition = 'store.sunrider.shield_generation == 0'
 
         def __call__(self):            

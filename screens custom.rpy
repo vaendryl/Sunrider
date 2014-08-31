@@ -928,12 +928,25 @@ screen orders:
                                 xpos 150
                                 ycenter 20
 
-                                text str('Provides +15 Aim and +20% damage to all allied units.'):
+                                text str('Provides +15 Aim and +20% damage to all allied units. Will cancel All Guard if active.'):
                                     xpos 0
                                     ypos 0
                                     size 18
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
+                        
+                        if order == 'ALL GUARD' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Provides +10 Flak, +10 Evasion and +10 shield generation to all ships. Will cancel Full Forward if active.'):
+                                    xpos 0
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]                                    
 
                         if order == 'REPAIR DRONES' and BM.show_tooltips == True:
                             frame:
@@ -953,8 +966,15 @@ screen orders:
                                 background Solid((0,0,0,200))
                                 xpos 150
                                 ycenter 20
-
-                                text str('Deals 800 unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'):
+                                
+                                $ damage = 800
+                                if store.Difficulty == 0:
+                                    $ damage *= 4
+                                if store.Difficulty == 1:
+                                    $ damage = int(damage * 1.33)
+                                if store.Difficulty == 3:
+                                    $ damage = int(damage * 0.75)
+                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'.format(damage) ):
                                     xpos 0
                                     ypos 0
                                     size 18

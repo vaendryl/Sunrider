@@ -170,7 +170,7 @@ init -2 python:
                 if BM.target == None:
                     BM.target = sunrider
                 try:
-                    renpy.call_in_new_context('atkanim_pactelite_laser')
+                    renpy.call_in_new_context('atkanim_pactasdfelite_laser')
                 except:
                     show_message('animation label does not exist!')
 
@@ -358,26 +358,32 @@ init -2 python:
                     elif result[0] == 'selection':
                         revived_ship = result[1]
                         renpy.hide_screen('ryderlist')
-                        launch_location = get_free_spot_near(sunrider.location)
+                        launch_location = get_free_spot_near(sunrider.location) #so useful
                         revived_ship.en = 0   #not sure about this
                         revived_ship.hp = revived_ship.max_hp
                         destroyed_ships.remove(revived_ship)
                         player_ships.append(revived_ship)
                         BM.ships.append(revived_ship)
                         revived_ship.location = launch_location
-                        set_cell_available(launch_location,True) #the optional True actually lets me set this cell -un-available 
+                        set_cell_available(launch_location,True) #the optional True actually lets me set this cell /un/available 
+                        if hasattr(revived_ship,'resurrect_voice'):
+                            if len(revived_ship.resurrect_voice) > 0:
+                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(revived_ship.resurrect_voice),channel=revived_ship.voice_channel )
+                else:
+                    BM.order_used = False
+              
                     
             if result == 'ALL GUARD':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
                     if self.active_strategy[0] == 'full forward':                        
-                        show_message = "Full Forward order canceled!"
+                        show_message("Full Forward order canceled!")
                         for ship in player_ships:
                             if ship.modifiers['accuracy'][0] == 15:
-                                ship.modifiers['accuracy'] = [0.0]
+                                ship.modifiers['accuracy'] = [0,0]
                             if ship.modifiers['damage'][0] == 20:
-                                ship.modifiers['damage'] = [0.0]
+                                ship.modifiers['damage'] = [0,0]
 
                     self.active_strategy = ['all guard',5]                    
                     
@@ -392,7 +398,7 @@ init -2 python:
                         BM.order_used = False
                         BM.cmd += self.orders[result][0]
                     else:
-                        show_message('all ships gained improved flak, shielding and evasion!')
+                        store.show_message('all ships gained improved flak, shielding and evasion!')
                         random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
                         random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
                         renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
@@ -417,14 +423,14 @@ init -2 python:
                     self.cmd -= self.orders[result][0]
                     
                     if self.active_strategy == 'all guard':
-                        show_message = "All Guard order canceled!"
+                        show_message("All Guard order canceled!")
                         for ship in player_ships:
                             if ship.modifiers['flak'][0] == 10:
-                                ship.modifiers['flak'] = [0.0]
+                                ship.modifiers['flak'] = [0,0]
                             if ship.modifiers['shield_generation'][0] == 10:
-                                ship.modifiers['shield_generation'] = [0.0]
+                                ship.modifiers['shield_generation'] = [0,0]
                             if ship.modifiers['evasion'][0] == 10:
-                                ship.modifiers['evasion'] = [0.0]
+                                ship.modifiers['evasion'] = [0,0]
                                     
                     self.active_strategy = ['full forward',5]
                     
@@ -437,7 +443,7 @@ init -2 python:
                         BM.order_used = False
                         BM.cmd += self.orders[result][0]
                     else:
-                        show_message('All ships gain 20% damage and 15% accuracy!')
+                        store.show_message('All ships gain 20% damage and 15% accuracy!')
                         random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
                         random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
                         renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
@@ -2132,7 +2138,15 @@ init -2 python:
                         renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
                         del a
                     elif target.faction != 'Player':
-                        renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
+                        if hasattr(parent,'cursing_voice'):
+                            if len(parent.cursing_voice) > 0:
+                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
+                else:
+                    #enemy turn
+                    if target.faction == 'Player':
+                        if hasattr(target,'cursed_voice'):
+                            if len(target.cursed_voice) > 0:
+                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(target.cursed_voice),channel=target.voice_channel )
                 
                 renpy.invoke_in_new_context( short_pause )
                 target.getting_buff = False

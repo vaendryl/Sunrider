@@ -705,22 +705,27 @@ init -6 python:
         """
         called when the phase changes. it ticks down modifiers and removes them when expired.
         """
-        order_expired = False
-        strat,duration = BM.active_strategy
-        if strat != None:
-            if duration <= 1:
-                show_message( '{} has expired!'.format(strat) )
-                order_expired = True
-                BM.active_strategy = [None,0]
-            else:
-                BM.active_strategy = [strat,duration -1]
-        
+
         if BM.phase == 'Player':
-            for ship in player_ships:
+        
+            #order management
+            order_expired = False
+            strat,duration = BM.active_strategy
+            if strat != None:
+                if duration <= 1:
+                    show_message( '{} has expired!'.format(strat) )
+                    order_expired = True
+                    BM.active_strategy = [None,0]
+                else:
+                    BM.active_strategy = [strat,duration -1]
+        
+            #handle the actual modifiers
+            for ship in player_ships:                
                 for key in ship.modifiers:
-                    if ship.modifiers[key][1] > 0:
-                        if ship.modifiers[key][1] == 1:
-                            if ship.modifiers[key][0] < 0:
+                    mod_power,duration = ship.modifiers[key]
+                    if mod_power > 0:
+                        if duration == 1:
+                            if mod_power < 0:
                                 show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')
                             else:
                                 if not order_expired:
