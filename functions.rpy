@@ -941,7 +941,7 @@ init -6 python:
                     pending.remove(loc)
             radius -= 1
         locations.extend(pending)
-        return locations
+        return list(set(locations))
 
     def getInRing(loc, radius):
         outer = getAllInRadius(loc, radius)
