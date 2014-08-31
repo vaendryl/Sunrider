@@ -5,6 +5,7 @@ label initStore:
         store_items.append(NewWarhead())
         store_items.append(RocketUpgrade())
         store_items.append(NewRepairDrone())
+        store_items.append(SunriderShieldUpgrade())
         store_items.append(ContractAllianceCruiser())
         store_items.append(ContractUnionFrigate())
         store_items.append(SellWishallArtifact())  

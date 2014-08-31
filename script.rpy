@@ -15129,35 +15129,44 @@ label checkformissions:
 
 label afterbeachcarry:
     
-    $ BM.ships.remove(alliancecruiser1)
-    $ player_ships.remove(alliancecruiser1)
-    $ BM.ships.remove(alliancecruiser2)
-    $ player_ships.remove(alliancecruiser2)
-    $ BM.orders['RESURRECTION'] = [2000,'resurrect']
-    
-    $ versta_ambush = True
-    $ farport_losttech = True
-    $ tydaria_morepirates = True
-    
-    $ captaindeck = 1
-            
-    $ chi_location = "captainsloft"
-    $ chi_event = "newoffice"
-    
-    $ cla_location = "sickbay"
-    $ cla_event = "medicallicensereinstated"
-    
-    $ asa_location = None
-    $ ava_location = None
-    $ kry_location = None
-    $ ica_location = None
-    $ sol_location = None
-    $ pro_location = None
-    $ gal_location = "bridge"
-    
-    $ warpto_ryuvia = True
-    $ warpto_farport = True
-    $ sidemissions1 = True
+    python:
+        try:
+            BM.ships.remove(alliancecruiser1)
+            player_ships.remove(alliancecruiser1)
+        except:
+            pass
+        
+        try:
+            BM.ships.remove(alliancecruiser2)
+            player_ships.remove(alliancecruiser2)
+        except:
+            pass
+        
+        BM.orders['RESURRECTION'] = [2000,'resurrect']
+        
+        versta_ambush = True
+        farport_losttech = True
+        tydaria_morepirates = True
+        
+        captaindeck = 1
+        
+        chi_location = "captainsloft"
+        chi_event = "newoffice"
+        
+        cla_location = "sickbay"
+        cla_event = "medicallicensereinstated"
+        
+        asa_location = None
+        ava_location = None
+        kry_location = None
+        ica_location = None
+        sol_location = None
+        pro_location = None
+        gal_location = "bridge"
+        
+        warpto_ryuvia = True
+        warpto_farport = True
+        sidemissions1 = True
     
     jump dispatch
 
@@ -15555,9 +15564,14 @@ label mission14:
     
 label mission14_end:
     
-    $ farport_losttech = False
-    $ mission14_complete = True
-    $ del BM.orders['RETREAT'] 
+    python:
+        farport_losttech = False
+        mission14_complete = True
+        
+        try:
+            del BM.orders['RETREAT']
+        except:
+            pass
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
     

@@ -788,7 +788,8 @@ init -2 python:
                 store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
                 self.money += int(net_gain)
                 
-                difficulty_penalty = store.Difficulty -1
+                difficulty_penalty = store.Difficulty - 1
+
                 if difficulty_penalty < 0: difficulty_penalty = 0
                 
                 self.cmd += int((net_gain*10)/(BM.turn_count+difficulty_penalty))
