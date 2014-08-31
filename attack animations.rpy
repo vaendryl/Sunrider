@@ -17697,17 +17697,17 @@ label attacksuccess_paladin:
     $ Random = renpy.random.randint(1,6)
 
     if Random == 1:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 2.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 1.ogg"
     if Random == 2:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 3.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 2.ogg"
     if Random == 3:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 4.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 3.ogg"
     if Random == 4:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 5.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 4.ogg"
     if Random == 5:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 6.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 5.ogg"
     if Random == 6:
-        play kryvoice "sound/Voice/Kryska/After Successful Attack 7.ogg"
+        play kryvoice "sound/Voice/Kryska/After Successful Attack 6.ogg"
 
     show kryska plugsuit salute confidentsmile:
         xzoom -1 xpos -0.2
@@ -19023,4 +19023,2653 @@ label die_nightmare:
     pause 2
 
     return
+
+label hitanim_pactsupport_kinetic:   ####################################PACT SUPPORT
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    show sunrider_kineticround1:
+        xpos -200 ypos 520
+        linear 0.25 xpos 968 ypos 540
+        alpha 0
+
+    pause 0.25
+
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2(repeats=6)
+    show piratebomber_kinetichit1:
+        xpos 0.4 ypos 0.5
+        ease 1.2 alpha 0
+
+    show sunrider_kineticround2:
+        xpos -200 ypos 460
+        linear 0.25 xpos 1235 ypos 480
+        alpha 0
+
+    pause 0.25
+
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2(repeats=6)
+    show piratebomber_kinetichit2:
+        xpos 0.6 ypos 0.5
+        ease 1.2 alpha 0
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactsupport_missile:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+
+    play sound "sound/missilefly.ogg"
+
+    show pactmissilefrigate_hitmissile1:
+        alpha 0 xpos 543 ypos 0 zoom 1.2
+        pause 0.35
+        alpha 1
+        linear 0.5 xpos 1350 ypos 480
+        alpha 0
+
+    show pactmissilefrigate_hitmissile2:
+        alpha 0 xpos 353 ypos 0 zoom 1.2
+        pause 0.25
+        alpha 1
+        linear 0.5 xpos 1190 ypos 520
+        alpha 0
+
+    show pactmissilefrigate_hitmissile3:
+        alpha 0 xpos 243 ypos 0 zoom 1.2
+        pause 0.15
+        alpha 1
+        linear 0.5 xpos 1000 ypos 460
+        alpha 0
+
+    show pactmissilefrigate_hitmissile4:
+        alpha 0 xpos 64 ypos 0 zoom 1.2
+        pause 0.05
+        alpha 1
+        linear 0.5 xpos 910 ypos 510
+        alpha 0
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.9, repeats=12)
+    show piratebomber_kinetichit2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.9
+        alpha 1
+        ease 1 alpha 0
+
+    show piratebomber_kinetichit1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 1
+        alpha 1
+        ease 1 alpha 0
+
+    pause 0.15
+
+    show pactmissilefrigate_hitmissiletrail with pactmissilefrigate_missilehitwipe
+    hide pactmissilefrigate_hitmissiletrail with dissolve
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactsupport_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound1 "sound/Laser 1.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show piratebomber_laserhitexplode1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show piratebomber_laserhitexplode2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.3
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show piratebomber_laserhittrail behind piratebomber_laserhitexplode1 with pactmissilefrigate_laserhitwipe
+    hide piratebomber_laserhittrail with pactmissilefrigate_laserhitwipe
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactsupport_pulse:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5    ## salvo 1
+
+    show layer master
+    show blackjack_pulse1:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse2:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse3:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse4:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+
+    play sound1 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit1:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2  ## salvo 2
+
+    show layer master
+    show blackjack_pulse5:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse6:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse7:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse8:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+
+    play sound2 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit2:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2   #salvo 3
+
+    show layer master
+    show blackjack_pulse1:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse2:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse3:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse4:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+
+    play sound3 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit3:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactsupport_rocket: #(damage):
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+    show piratebomber_hitrocket:
+        xpos -200 ypos 440
+        linear 0.4 xpos 1010 ypos 448
+        alpha 0
+
+    if sunrider.weapons[3].damage == 800:
+        show layer master at shake2(pausetime=0.4,repeats=8)
+        play sound "sound/explosion4.ogg"
+        show pactmissilefrigate_die3:
+            xpos 0.5 ypos 0.5 alpha 0
+            pause 0.4
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+
+    if sunrider.weapons[3].damage == 1200:
+        play sound1 "sound/quantumtorpedo.ogg"
+        show quantumtorpedo:
+            alpha 0 zoom 0
+            pause 0.4
+            ease 0.4 alpha 1.0 zoom 1.5
+            parallel:
+                ease 3.0 rotate 360
+            parallel:
+                pause 2.0
+                ease 1.0 zoom 0.0
+
+    pause 0.1
+
+    show piratebomber_hitrockettrail behind piratebomber_hitrocket:
+        xpos 0.5 ypos 0.5
+    with pactmissilefrigate_laserhitwipe
+    show piratebomber_hitrockettrail:
+        ease 1.0 alpha 0
+
+    if sunrider.weapons[3].damage == 1200:
+        pause 3.0
+        play sound2 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_die1:
+            xpos 0.55 ypos 0.52 alpha 0 zoom 2.0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.1
+        play sound3 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.4 ypos 0.5 alpha 0 zoom 2.0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.25
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+    
+    return
+
+label hitanim_pactsupport_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+
+    play sound1 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode1:
+        xpos 0.32 ypos 0.62 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode2:
+        xpos 0.62 ypos 0.57 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound2 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode3:
+        xpos 0.74 ypos 0.14 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode4:
+        xpos 0.82 ypos 0.47 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound3 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode5:
+        xpos 0.20 ypos 0.80 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound4 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode6:
+        xpos 0.58 ypos 0.72 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode7:
+        xpos 0.72 ypos 0.12 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound5 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode8:
+        xpos 0.80 ypos 0.44 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound6 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode9:
+        xpos 0.38 ypos 0.85 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound7 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode10:
+        xpos 0.24 ypos 0.39 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode11:
+        xpos 0.38 ypos 0.35 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactsupport_vanguard:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/vanguard cannon laser.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show layer master at shake2(pausetime=0.5,repeats=6)
+    show layer master at shake2(pausetime=0.8,repeats=6)
+    show layer master at shake2(pausetime=1.1,repeats=6)
+
+    play sound1 "sound/explosion1.ogg"
+
+    show hitanim_vanguard_explode1:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode2:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.5
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode3:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.8
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode4:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 1.1
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_beam behind pactmissilefrigate_hitlaserexplode with laserwipe
+
+    play sound2 "sound/explosion2.ogg"
+
+    pause 1.5
+
+    return
+
+label miss_pactsupport:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show miss:
+        xpos 0.5 ypos 0.5
+        ease 3 ypos 0.3 alpha 0
+
+    show pactsupport behind miss:
+        xpos 0.5 ypos 0.5
+
+    pause 2
+
+    $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+
+
+    return
+
+label die_pactsupport:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactsupport:
+        xpos 0.5 ypos 0.5
+
+    play sound1 "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show piratebomber_die1 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.5
+
+    play sound2 "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show piratebomber_die2 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.75
+
+    play sound3 "sound/explosion4.ogg"
+
+    show layer master at shake2(shakeinterval=0.1,repeats=10)
+    hide pactsupport
+    show piratebomber_die3:
+        alpha 0
+        ease 0.4 alpha 1
+        pause 0.5
+        ease 1.5 alpha 0
+
+    pause 2
+
+    return
+
+label atkanim_pactelite_missile: #################################################    PACT ELITE
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactelite:
+        zoom 2 xpos 0.8 ypos 0.5
+        ease 0.5 zoom 1 xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    show pactelite missile with dissolve
+
+    play sound "sound/missile.ogg"
+
+    show pactelite_missileround1:
+        xpos 1030 ypos 240 alpha 0
+        pause 0.4
+        alpha 1
+        linear 0.6 xpos -300 ypos 20
+
+    show pactelite_missileround2:
+        xpos 1280 ypos 210 alpha 0
+        pause 0.3
+        alpha 1
+        linear 0.7 xpos -300 ypos -70
+
+    show pactelite_missileround3:
+        xpos 1100 ypos 622 alpha 0
+        pause 0.4
+        alpha 1
+        linear 0.6 xpos -300 ypos 370
+        
+    show pactelite_missileround4:
+        xpos 1090 ypos 672 alpha 0
+        pause 0.4
+        alpha 1
+        linear 0.6 xpos -300 ypos 410
+
+    show pactelite_missiletrail with pactmissilefrigate_missilewipe
+    hide pactelite_missiletrail with dissolve
+
+    pause 0.1
+
+    return
+
+label atkanim_pactelite_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactelite:
+        zoom 2 xpos 0.8 ypos 0.5
+        ease 0.5 zoom 1 xpos 0.5
+
+    pause 0.5
+    play sound "sound/elitegun.ogg"
+
+    show pactelite_assaultflash1:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+        
+    pause 0.1
+
+    play sound1 "sound/elitegun.ogg"
+
+    show pactelite_assaultflash2:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+
+    pause 0.1
+
+    play sound2 "sound/elitegun.ogg"
+
+    show pactelite_assaultflash3:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+
+    pause 0.1
+
+    play sound3 "sound/elitegun.ogg"
+
+    show pactelite_assaultflash4:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+
+    pause 0.1
+
+    play sound4 "sound/elitegun.ogg"
+
+    show pactelite_assaultflash5:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+
+    pause 0.1
+
+    play sound1 "sound/elitegun.ogg"
+
+    show pactelite_assaultflash6:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0.0
+        repeat 2
+
+    pause 0.8
+
+    return
+
+label atkanim_pactelite_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactelite:
+        zoom 2 xpos 0.8 ypos 0.5
+        ease 0.5 zoom 1 xpos 0.5
+
+    pause 0.5
+
+    show pactelite laser with dissolve
+    
+    show pactelite_laserflash1:
+        alpha 0
+        ease 0.3 alpha 1
+        ease 0.7 alpha 0
+
+    play sound "sound/Laser 1.ogg"
+
+    show pactelite_laserflash2 behind pactelite_laserflash1 with enemy_laserhitwipequick
+    hide pactelite_laserflash2 behind pactelite_laserflash1 with enemy_laserhitwipequick
+
+    pause 0.5
+
+    return
+    
+label hitanim_pactelite_kinetic:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    show sunrider_kineticround1:
+        xpos -200 ypos 520
+        linear 0.25 xpos 968 ypos 540
+        alpha 0
+
+    pause 0.25
+
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2(repeats=6)
+    show piratebomber_kinetichit1:
+        xpos 0.4 ypos 0.5
+        ease 1.2 alpha 0
+
+    show sunrider_kineticround2:
+        xpos -200 ypos 460
+        linear 0.25 xpos 1235 ypos 480
+        alpha 0
+
+    pause 0.25
+
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2(repeats=6)
+    show piratebomber_kinetichit2:
+        xpos 0.6 ypos 0.5
+        ease 1.2 alpha 0
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactelite_missile:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+
+    play sound "sound/missilefly.ogg"
+
+    show pactmissilefrigate_hitmissile1:
+        alpha 0 xpos 543 ypos 0 zoom 1.2
+        pause 0.35
+        alpha 1
+        linear 0.5 xpos 1350 ypos 480
+        alpha 0
+
+    show pactmissilefrigate_hitmissile2:
+        alpha 0 xpos 353 ypos 0 zoom 1.2
+        pause 0.25
+        alpha 1
+        linear 0.5 xpos 1190 ypos 520
+        alpha 0
+
+    show pactmissilefrigate_hitmissile3:
+        alpha 0 xpos 243 ypos 0 zoom 1.2
+        pause 0.15
+        alpha 1
+        linear 0.5 xpos 1000 ypos 460
+        alpha 0
+
+    show pactmissilefrigate_hitmissile4:
+        alpha 0 xpos 64 ypos 0 zoom 1.2
+        pause 0.05
+        alpha 1
+        linear 0.5 xpos 910 ypos 510
+        alpha 0
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.9, repeats=12)
+    show piratebomber_kinetichit2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.9
+        alpha 1
+        ease 1 alpha 0
+
+    show piratebomber_kinetichit1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 1
+        alpha 1
+        ease 1 alpha 0
+
+    pause 0.15
+
+    show pactmissilefrigate_hitmissiletrail with pactmissilefrigate_missilehitwipe
+    hide pactmissilefrigate_hitmissiletrail with dissolve
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactelite_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound1 "sound/Laser 1.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show piratebomber_laserhitexplode1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show piratebomber_laserhitexplode2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.3
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show piratebomber_laserhittrail behind piratebomber_laserhitexplode1 with pactmissilefrigate_laserhitwipe
+    hide piratebomber_laserhittrail with pactmissilefrigate_laserhitwipe
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactelite_pulse:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5    ## salvo 1
+
+    show layer master
+    show blackjack_pulse1:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse2:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse3:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show blackjack_pulse4:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+
+    play sound1 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit1:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2  ## salvo 2
+
+    show layer master
+    show blackjack_pulse5:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse6:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse7:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show blackjack_pulse8:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+
+    play sound2 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit2:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2   #salvo 3
+
+    show layer master
+    show blackjack_pulse1:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse2:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse3:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show blackjack_pulse4:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+
+    play sound3 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit3:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactelite_rocket: #(damage):
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+    show piratebomber_hitrocket:
+        xpos -200 ypos 440
+        linear 0.4 xpos 1010 ypos 448
+        alpha 0
+
+    if sunrider.weapons[3].damage == 800:
+        show layer master at shake2(pausetime=0.4,repeats=8)
+        play sound "sound/explosion4.ogg"
+        show pactmissilefrigate_die3:
+            xpos 0.5 ypos 0.5 alpha 0
+            pause 0.4
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+
+    if sunrider.weapons[3].damage == 1200:
+        play sound1 "sound/quantumtorpedo.ogg"
+        show quantumtorpedo:
+            alpha 0 zoom 0
+            pause 0.4
+            ease 0.4 alpha 1.0 zoom 1.5
+            parallel:
+                ease 3.0 rotate 360
+            parallel:
+                pause 2.0
+                ease 1.0 zoom 0.0
+
+    pause 0.1
+
+    show piratebomber_hitrockettrail behind piratebomber_hitrocket:
+        xpos 0.5 ypos 0.5
+    with pactmissilefrigate_laserhitwipe
+    show piratebomber_hitrockettrail:
+        ease 1.0 alpha 0
+
+    if sunrider.weapons[3].damage == 1200:
+        pause 3.0
+        play sound2 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_die1:
+            xpos 0.55 ypos 0.52 alpha 0 zoom 2.0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.1
+        play sound3 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.4 ypos 0.5 alpha 0 zoom 2.0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.25
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+    
+    return
+
+label hitanim_pactelite_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+
+    play sound1 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode1:
+        xpos 0.32 ypos 0.62 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode2:
+        xpos 0.62 ypos 0.57 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound2 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode3:
+        xpos 0.74 ypos 0.14 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode4:
+        xpos 0.82 ypos 0.47 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound3 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode5:
+        xpos 0.20 ypos 0.80 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound4 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode6:
+        xpos 0.58 ypos 0.72 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode7:
+        xpos 0.72 ypos 0.12 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound5 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode8:
+        xpos 0.80 ypos 0.44 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound6 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode9:
+        xpos 0.38 ypos 0.85 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound7 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode10:
+        xpos 0.24 ypos 0.39 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode11:
+        xpos 0.38 ypos 0.35 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactelite_vanguard:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/vanguard cannon laser.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show layer master at shake2(pausetime=0.5,repeats=6)
+    show layer master at shake2(pausetime=0.8,repeats=6)
+    show layer master at shake2(pausetime=1.1,repeats=6)
+
+    play sound1 "sound/explosion1.ogg"
+
+    show hitanim_vanguard_explode1:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode2:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.5
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode3:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.8
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode4:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 1.1
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_beam behind pactmissilefrigate_hitlaserexplode with laserwipe
+
+    play sound2 "sound/explosion2.ogg"
+
+    pause 1.5
+
+    return
+
+label miss_pactelite:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show miss:
+        xpos 0.5 ypos 0.5
+        ease 3 ypos 0.3 alpha 0
+
+    show pactelite behind miss:
+        xpos 0.5 ypos 0.5
+
+    pause 2
+
+    $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+
+
+    return
+
+label die_pactelite:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactelite:
+        xpos 0.5 ypos 0.5
+
+    play sound1 "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show piratebomber_die1 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.5
+
+    play sound2 "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show piratebomber_die2 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.75
+
+    play sound3 "sound/explosion4.ogg"
+
+    show layer master at shake2(shakeinterval=0.1,repeats=10)
+    hide pactelite
+    show piratebomber_die3:
+        alpha 0
+        ease 0.4 alpha 1
+        pause 0.5
+        ease 1.5 alpha 0
+
+    pause 2
+
+    return
+
+label atkanim_pactassaultcarrier_kinetic: ################################# PACT ASSAULT CARRIER
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.2
+
+    show layer master at shake1
+    show pactassaultcarrier_kineticflash1:
+        alpha 0
+        ease 0.1 alpha 1
+        ease 0.1 alpha 0
+    show pactassaultcarrier_kineticbullet1:
+        xpos 264 ypos 525
+        linear 0.15 xpos -300 ypos 540
+    play sound1 'sound/explosion1.ogg'
+    pause 0.1
+
+    show layer master at shake1
+    show pactassaultcarrier_kineticflash2:
+        alpha 0
+        ease 0.1 alpha 1
+        ease 0.1 alpha 0
+    show pactassaultcarrier_kineticbullet2:
+        xpos 391 ypos 508
+        linear 0.15 xpos -300 ypos 520
+    play sound2 'sound/explosion1.ogg'
+    pause 0.2
+
+    show layer master at shake1
+    show pactassaultcarrier_kineticflash3:
+        alpha 0
+        ease 0.1 alpha 1
+        ease 0.1 alpha 0
+    show layer master at shake1
+    show pactassaultcarrier_kineticbullet3:
+        xpos 807 ypos 430
+        linear 0.15 xpos -300 ypos 400
+    play sound3 'sound/explosion1.ogg'
+    pause 0.1
+    
+    show layer master at shake1
+    show pactassaultcarrier_kineticflash4:
+        alpha 0
+        ease 0.1 alpha 1
+        ease 0.1 alpha 0
+    show layer master at shake1
+    show pactassaultcarrier_kineticbullet4:
+        xpos 920 ypos 418
+        linear 0.15 xpos -300 ypos 350
+    play sound4 'sound/explosion1.ogg'
+    pause 0.5
+    return
+
+label atkanim_pactassaultcarrier_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+    pause 0.5
+
+    python:
+        flak_positions1 = [
+            (558,448),
+            (630,440),
+            (648,468),
+            (725,466),
+            (1036,358),
+            (1102,380),
+            (1162,373),
+            (1220,370),
+            (1184,435),
+            (1300,431)
+            ]
+        Flak1 = FlakShield("gameplay/Animations/PACTAssaultCarrier/flakbullet.png",flak_positions1,3000,dispersion=5, angle=285, interval=0.15)
+
+        flak_positions2 = [
+            (594,443),
+            (605,470),
+            (686,465),
+            (770,460),
+            (1065,357),
+            (1077,382),
+            (1135,375),
+            (1188,372),
+            (1244,434),
+            (1342,420)
+            ]
+        Flak2 = FlakShield("gameplay/Animations/PACTAssaultCarrier/flakbullet.png",flak_positions2,3000,dispersion=5, angle=285, interval=0.15)
+
+    play sound "sound/Flak.ogg"
+
+    $ Flak1.show()
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    $ Flak1.stop()
+    $ Flak2.show()
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    $ Flak2.stop()
+    $ Flak1.start()
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    show pactassaultcarrier_flakflash1
+    pause 0.01
+    hide pactassaultcarrier_flakflash1
+    pause 0.01
+    $ Flak1.stop()
+    $ Flak2.start()
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    show pactassaultcarrier_flakflash2
+    pause 0.01
+    hide pactassaultcarrier_flakflash2
+    pause 0.01
+    $ Flak2.stop()
+
+    pause 0.5
+
+    return
+
+label atkanim_pactassaultcarrier_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+    play sound2 'sound/legion_laser.ogg'
+
+    pause 0.001
+
+    show pactassaultcarrier_laserfront:
+        xpos 0.5 ypos 0.5
+    show pactassaultcarrier_laserrear behind pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+    with enemy_laserhitwipe
+
+    hide pactassaultcarrier_laserfront
+    hide pactassaultcarrier_laserrear
+    with enemy_laserhitwipe
+
+    pause 0.5
+    return
+
+label atkanim_pactassaultcarrier_missile:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.01
+
+
+    show pactassaultcarrier_missile1:
+        xpos 1493 ypos 474 alpha 0
+        pause 0.69
+        alpha 1
+        linear 0.88 xpos -350 ypos -170
+
+    show pactassaultcarrier_missile2:
+        xpos 1570 ypos 467 alpha 0
+        pause 0.67
+        alpha 1
+        linear 0.88 xpos -350 ypos -210
+
+    show pactassaultcarrier_missile3:
+        xpos 1630 ypos 459 alpha 0
+        pause 0.65
+        alpha 1
+        linear 0.88 xpos -350 ypos -220
+
+    pause 0.505
+    play sound "sound/missile.ogg"
+
+    show pactassaultcarrier_missiletrail:
+        xpos 0.5 ypos 0.5
+    with pactmissilefrigate_missilewipe
+    hide pactassaultcarrier_missiletrail with dissolve
+
+    pause 0.1
+
+    return
+
+label hitanim_pactassaultcarrier_kinetic:  
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    show sunrider_kineticround1:
+        xpos -200 ypos 520
+        linear 0.25 xpos 968 ypos 540
+        alpha 0
+
+    pause 0.25
+
+    play sound1 "sound/explosion1.ogg"
+
+    show layer master at shake2(repeats=6)
+    show pactcruiser_kineticexplode1:
+        xpos 0.5 ypos 0.5
+        ease 1.2 alpha 0
+
+    show sunrider_kineticround2:
+        xpos -200 ypos 460
+        linear 0.25 xpos 1235 ypos 480
+        alpha 0
+
+    pause 0.25
+
+    play sound2 "sound/explosion1.ogg"
+
+    show layer master at shake2(repeats=6)
+    show pactcruiser_kineticexplode2:
+        xpos 0.5 ypos 0.5
+        ease 1.2 alpha 0
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_missile:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+
+    play sound "sound/missilefly.ogg"
+
+    show pactmissilefrigate_hitmissile1:
+        alpha 0 xpos 543 ypos 0
+        pause 0.35
+        alpha 1
+        linear 0.5 xpos 1350 ypos 480
+        alpha 0
+
+    show pactmissilefrigate_hitmissile2:
+        alpha 0 xpos 353 ypos 0
+        pause 0.25
+        alpha 1
+        linear 0.5 xpos 1190 ypos 520
+        alpha 0
+
+    show pactmissilefrigate_hitmissile3:
+        alpha 0 xpos 243 ypos 0
+        pause 0.15
+        alpha 1
+        linear 0.5 xpos 1000 ypos 460
+        alpha 0
+
+    show pactmissilefrigate_hitmissile4:
+        alpha 0 xpos 64 ypos 0
+        pause 0.05
+        alpha 1
+        linear 0.5 xpos 910 ypos 510
+        alpha 0
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.9, repeats=12)
+    show pactmissilefrigate_hitmissileexplode1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.9
+        alpha 1
+        ease 1 alpha 0
+
+    show pactmissilefrigate_hitmissileexplode2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 1
+        alpha 1
+        ease 1 alpha 0
+
+    pause 0.15
+
+    show pactmissilefrigate_hitmissiletrail with pactmissilefrigate_missilehitwipe
+    hide pactmissilefrigate_hitmissiletrail with dissolve
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show pactmissilefrigate_hitlaserexplode:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show pactmissilefrigate_hitlaser behind pactmissilefrigate_hitlaserexplode with pactmissilefrigate_laserhitwipe
+    hide pactmissilefrigate_hitlaser behind pactmissilefrigate_hitlaserexplode with pactmissilefrigate_laserhitwipe
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_pulse:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5    ## salvo 1
+
+    show layer master
+    show sunrider_pulse1:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse2:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse1b:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse2b:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+
+    play sound1 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit1:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2  ## salvo 2
+
+    show layer master
+    show sunrider_pulse3:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse4:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse3b:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse4b:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+
+    play sound2 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit2:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2   #salvo 3
+
+    show layer master
+    show sunrider_pulse5:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse6:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse5b:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse6b:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+
+    play sound3 "sound/explosion3.ogg"
+
+    show pactmissilefrigate_pulsehit3:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_rocket: #(damage):
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+    show sunrider_rocket:
+        yanchor 98 xanchor 400 xpos 0 ypos 570
+        linear 1.1 xpos 1160 ypos 570
+        alpha 0
+
+
+    show layer master at shake2(pausetime=1,repeats=8)
+    if sunrider.weapons[3].damage == 800:
+        play sound1 "sound/explosion5.ogg"
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.5 ypos 0.5 alpha 0
+            pause 1
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        
+    if sunrider.weapons[3].damage == 1200:
+        play sound1 "sound/quantumtorpedo.ogg"
+        show quantumtorpedo:
+            alpha 0 zoom 0
+            pause 1
+            ease 0.05 alpha 1.0 zoom 1.0 
+            parallel:
+                ease 3.0 rotate 360
+            parallel:
+                pause 2.0
+                ease 1.0 zoom 0.0
+
+    pause 0.1
+
+    show pactmissilefrigate_rockettrail:
+        xpos 0.5 ypos 0.5
+    with pactmissilefrigate_rockethitwipe
+
+    show pactmissilefrigate_rockettrail:
+        ease 1.0 alpha 0
+    
+    if sunrider.weapons[3].damage == 1200:
+        pause 1.5
+        play sound2 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.4 ypos 0.5 alpha 0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.1
+        play sound3 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_die1:
+            xpos 0.55 ypos 0.52 alpha 0 zoom 1.5
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.25
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    play sound1 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode1:
+        xpos 0.32 ypos 0.62 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode2:
+        xpos 0.62 ypos 0.57 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound2 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode3:
+        xpos 0.74 ypos 0.14 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode4:
+        xpos 0.82 ypos 0.47 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound3 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode5:
+        xpos 0.20 ypos 0.80 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound4 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode6:
+        xpos 0.58 ypos 0.72 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode7:
+        xpos 0.72 ypos 0.12 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound5 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode8:
+        xpos 0.80 ypos 0.44 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound6 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode9:
+        xpos 0.38 ypos 0.85 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound7 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode10:
+        xpos 0.24 ypos 0.39 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode11:
+        xpos 0.38 ypos 0.35 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pactassaultcarrier_vanguard:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/vanguard cannon laser.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show layer master at shake2(pausetime=0.5,repeats=6)
+    show layer master at shake2(pausetime=0.8,repeats=6)
+    show layer master at shake2(pausetime=1.1,repeats=6)
+
+    play sound1 "sound/explosion1.ogg"
+
+    show hitanim_vanguard_explode1:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode2:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.5
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode3:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.8
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode4:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 1.1
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_beam behind pactmissilefrigate_hitlaserexplode with laserwipe
+
+    play sound2 "sound/explosion2.ogg"
+
+    pause 1.5
+
+    return
+
+
+label die_pactassaultcarrier:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pactassaultcarrier_side:
+        xpos 0.5 ypos 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show pactcruiser_dead1 zorder 1:
+        alpha 0 zoom 1.2
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show pactcruiser_dead2 zorder 1:
+        alpha 0 zoom 1.2
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.75
+    show white:
+        alpha 0
+        ease 0.3 alpha 1.0
+        ease 0.3 alpha 0
+
+    play sound "sound/explosion4.ogg"
+
+    show layer master at shake2(shakeinterval=0.1,repeats=10)
+    hide pactassaultcarrier_side
+    show pactcruiser_dead3:
+        alpha 0 zoom 1.5
+        ease 0.4 alpha 1
+        pause 0.5
+        ease 1.5 alpha 0
+
+    pause 2
+
+    return
+
+label miss_pactassaultcarrier:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show miss:
+        xpos 0.5 ypos 0.5
+        ease 3 ypos 0.3 alpha 0
+
+    show pactassaultcarrier_side behind miss:
+        xpos 0.5 ypos 0.5
+
+    pause 2
+
+    $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label atkanim_pirateironhog_rocket: ################################# PIRATE IRONHOG
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.2
+
+    play sound "sound/missilelaunch.ogg"
+
+    show pirateironhog norockets
+    
+    show pirateironhog_rocket1:
+        ease 0.7 xpos -1.5
+    
+    show pirateironhog_rocket2 behind pirateironhog:
+        pause 0.1
+        ease 0.7 xpos -1.5
+
+    show pirateironhog_rocket3 behind pirateironhog:
+        pause 0.2
+        ease 0.7 xpos -1.5
+
+    show pirateironhog_rocket4 behind pirateironhog:
+        pause 0.3
+        ease 0.7 xpos -1.5
+
+    pause 1.2
+    return
+
+label atkanim_pirateironhog_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+        
+    play sound "sound/flakguns.ogg"
+    
+    show pirateironhog_assaultflash1:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+    
+    show pirateironhog_assaultbullet1:
+        xpos 1263 ypos 502
+        ease 0.18 xpos -500 ypos 300
+        repeat 3
+    
+    pause 0.1
+    show pirateironhog_assaultflash7:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+
+    show pirateironhog_assaultbullet2:
+        xpos 1250 ypos 447
+        ease 0.18 xpos -513 ypos 245
+        repeat 3
+
+    pause 0.1
+    show pirateironhog_assaultflash3:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+        
+    show pirateironhog_assaultbullet3:
+        xpos 1350 ypos 320
+        ease 0.18 xpos -413 ypos 118
+        repeat 3
+        
+    pause 0.1
+    show pirateironhog_assaultflash4:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+        
+    show pirateironhog_assaultbullet4:
+        xpos 1480 ypos 440
+        ease 0.18 xpos -283 ypos 238
+        repeat 3
+        
+    pause 0.1
+    show pirateironhog_assaultflash5:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+        
+    show pirateironhog_assaultbullet5:
+        xpos 1496 ypos 492
+        ease 0.18 xpos -267 ypos 290
+        repeat 3
+        
+    pause 0.1
+    show pirateironhog_assaultflash6:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+        
+    show pirateironhog_assaultbullet6:
+        xpos 1103 ypos 360
+        ease 0.18 xpos -660 ypos 158
+        repeat 3
+        
+    pause 0.1
+    show pirateironhog_assaultflash2:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 3
+    show pirateironhog_assaultbullet7:
+        xpos 1168 ypos 330
+        ease 0.18 xpos -595 ypos -44
+        repeat 3
+        
+    pause 0.1
+    show pirateironhog_assaultflash8:
+        alpha 0
+        ease 0.09 alpha 1.0
+        ease 0.09 alpha 0
+        repeat 2
+    show pirateironhog_assaultbullet8:
+        xpos 1280 ypos 352
+        ease 0.18 xpos -483 ypos 150
+        repeat 3
+    
+    pause 0.7
+    
+    stop sound
+    
+    pause 0.3
+
+    return
+
+label hitanim_pirateironhog_kinetic: 
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    show sunrider_kineticround1:
+        xpos -200 ypos 520
+        linear 0.25 xpos 968 ypos 540
+        alpha 0
+
+    pause 0.25
+
+    play sound1 "sound/explosion1.ogg"
+
+    show layer master at shake2(repeats=6)
+    show pactmissilefrigate_kinetichit1:
+        xpos 0.5 ypos 0.5
+        ease 1.2 alpha 0
+
+    show sunrider_kineticround2:
+        xpos -200 ypos 460
+        linear 0.25 xpos 1235 ypos 480
+        alpha 0
+
+    pause 0.25
+
+    play sound2 "sound/explosion1.ogg"
+
+    show layer master at shake2(repeats=6)
+    show pactmissilefrigate_kinetichit2:
+        xpos 0.5 ypos 0.5
+        ease 1.2 alpha 0
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+    return
+
+label hitanim_pirateironhog_missile:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+
+    play sound "sound/missilefly.ogg"
+
+    show pactmissilefrigate_hitmissile1:
+        alpha 0 xpos 543 ypos 0
+        pause 0.35
+        alpha 1
+        linear 0.5 xpos 1350 ypos 480
+        alpha 0
+
+    show pactmissilefrigate_hitmissile2:
+        alpha 0 xpos 353 ypos 0
+        pause 0.25
+        alpha 1
+        linear 0.5 xpos 1190 ypos 520
+        alpha 0
+
+    show pactmissilefrigate_hitmissile3:
+        alpha 0 xpos 243 ypos 0
+        pause 0.15
+        alpha 1
+        linear 0.5 xpos 1000 ypos 460
+        alpha 0
+
+    show pactmissilefrigate_hitmissile4:
+        alpha 0 xpos 64 ypos 0
+        pause 0.05
+        alpha 1
+        linear 0.5 xpos 910 ypos 510
+        alpha 0
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.9, repeats=12)
+    show pactmissilefrigate_hitmissileexplode1:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.9
+        alpha 1
+        ease 1 alpha 0
+
+    show pactmissilefrigate_hitmissileexplode2:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 1
+        alpha 1
+        ease 1 alpha 0
+
+    pause 0.15
+
+    show pactmissilefrigate_hitmissiletrail with pactmissilefrigate_missilehitwipe
+    hide pactmissilefrigate_hitmissiletrail with dissolve
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pirateironhog_laser:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show pactmissilefrigate_hitlaserexplode:
+        alpha 0 xpos 0.5 ypos 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show pactmissilefrigate_hitlaser behind pactmissilefrigate_hitlaserexplode with pactmissilefrigate_laserhitwipe
+    hide pactmissilefrigate_hitlaser behind pactmissilefrigate_hitlaserexplode with pactmissilefrigate_laserhitwipe
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pirateironhog_pulse:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5    ## salvo 1
+
+    show sunrider_pulse1:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse2:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse1b:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+    pause 0.05
+    show sunrider_pulse2b:
+        xpos 0 ypos 540
+        linear 0.15 xpos 940 ypos 540
+        alpha 0
+
+    play sound1 "sound/explosion3.ogg"
+    show pactmissilefrigate_pulsehit1:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2  ## salvo 2
+
+    show layer master
+    show sunrider_pulse3:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse4:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse3b:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+    pause 0.05
+    show sunrider_pulse4b:
+        xpos 0 ypos 460 alpha 1
+        linear 0.15 xpos 1180 ypos 460
+        alpha 0
+
+    play sound2 "sound/explosion3.ogg"
+    show pactmissilefrigate_pulsehit2:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    pause 0.2   #salvo 3
+
+    show layer master
+    show sunrider_pulse5:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse6:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse5b:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+    pause 0.05
+    show sunrider_pulse6b:
+        xpos 0 ypos 550 alpha 1
+        linear 0.15 xpos 1380 ypos 550
+        alpha 0
+
+    play sound3 "sound/explosion3.ogg"
+    show pactmissilefrigate_pulsehit3:
+        xpos 0.5 ypos 0.5 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1 alpha 0
+    show layer master at shake1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pirateironhog_rocket: #(damage):
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.1
+    show sunrider_rocket:
+        yanchor 98 xanchor 400 xpos 0 ypos 570
+        linear 1.1 xpos 1160 ypos 570
+        alpha 0
+
+
+    show layer master at shake2(pausetime=1,repeats=8)
+    if sunrider.weapons[3].damage == 800:
+        play sound1 "sound/explosion5.ogg"
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.5 ypos 0.5 alpha 0
+            pause 1
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        
+    if sunrider.weapons[3].damage == 1200:
+        play sound1 "sound/quantumtorpedo.ogg"
+        show quantumtorpedo:
+            alpha 0 zoom 0
+            pause 1
+            ease 0.05 alpha 1.0 zoom 1.0 
+            parallel:
+                ease 3.0 rotate 360
+            parallel:
+                pause 2.0
+                ease 1.0 zoom 0.0
+
+    pause 0.1
+
+    show pactmissilefrigate_rockettrail:
+        xpos 0.5 ypos 0.5
+    with pactmissilefrigate_rockethitwipe
+
+    show pactmissilefrigate_rockettrail:
+        ease 1.0 alpha 0
+    
+    if sunrider.weapons[3].damage == 1200:
+        pause 1.5
+        play sound2 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_rocketexplode:
+            xpos 0.4 ypos 0.5 alpha 0
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.1
+        play sound3 "sound/explosion5.ogg"
+        show layer master at shake2
+        show pactmissilefrigate_die1:
+            xpos 0.55 ypos 0.52 alpha 0 zoom 1.5
+            ease 0.1 alpha 1
+            pause 0.5
+            ease 0.5 alpha 0
+        pause 0.25
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+    
+    return
+
+label hitanim_pirateironhog_assault:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    play sound1 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode1:
+        xpos 0.32 ypos 0.62 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode2:
+        xpos 0.62 ypos 0.57 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound2 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode3:
+        xpos 0.74 ypos 0.14 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master
+    show pactmissilefrigate_flakexplode4:
+        xpos 0.82 ypos 0.47 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound3 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode5:
+        xpos 0.20 ypos 0.80 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound4 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode6:
+        xpos 0.58 ypos 0.72 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode7:
+        xpos 0.72 ypos 0.12 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound5 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode8:
+        xpos 0.80 ypos 0.44 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound6 "sound/explosion3.ogg"
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode9:
+        xpos 0.38 ypos 0.85 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    play sound7 "sound/explosion3.ogg"
+
+    show layer master
+    show pactmissilefrigate_flakexplode10:
+        xpos 0.24 ypos 0.39 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    show layer master at shake1(shakeinterval=0.5, repeats=6)
+    show pactmissilefrigate_flakexplode11:
+        xpos 0.38 ypos 0.35 alpha 0
+        ease 0.05 alpha 1
+        pause 0.2
+        ease 1.8 alpha 0
+    pause 0.1
+
+    $renpy.call('attacksuccess_{}'.format(BM.attacker.animation_name))
+
+    return
+
+label hitanim_pirateironhog_vanguard:
+
+    $renpy.show_screen('show_background',_layer='master')
+    show screen animation_hp
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+
+    play sound "sound/vanguard cannon laser.ogg"
+
+    show layer master at shake2(pausetime=0.2,repeats=6)
+    show layer master at shake2(pausetime=0.5,repeats=6)
+    show layer master at shake2(pausetime=0.8,repeats=6)
+    show layer master at shake2(pausetime=1.1,repeats=6)
+
+    play sound1 "sound/explosion1.ogg"
+
+    show hitanim_vanguard_explode1:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.2
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode2:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.5
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode3:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 0.8
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_explode4:
+        alpha 0 xalign 0.5 yalign 0.5
+        pause 1.1
+        ease 0.1 alpha 1
+        ease 2 alpha 0
+
+    show hitanim_vanguard_beam behind pactmissilefrigate_hitlaserexplode with laserwipe
+
+    play sound2 "sound/explosion2.ogg"
+
+    pause 1.5
+
+    return
+
+label die_pirateironhog:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show pirateironhog:
+        xpos 0.5 ypos 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show pactmissilefrigate_die1 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.5
+
+    play sound "sound/explosion1.ogg"
+
+    show layer master at shake1
+    show pactmissilefrigate_die2 zorder 1:
+        alpha 0
+        ease 0.2 alpha 1
+        pause 0.2
+        ease 1.5 alpha 0
+
+    pause 0.75
+
+    play sound "sound/explosion4.ogg"
+
+    show layer master at shake2(shakeinterval=0.1,repeats=10)
+    hide pirateironhog
+    show pactmissilefrigate_die3:
+        alpha 0
+        ease 0.4 alpha 1
+        pause 0.5
+        ease 1.5 alpha 0
+
+    pause 2
+
+    return
+
+label miss_pirateironhog:
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show miss:
+        xpos 0.5 ypos 0.5
+        ease 3 ypos 0.3 alpha 0
+
+    show pirateironhog behind miss:
+        xpos 0.5 ypos 0.5
+
+    pause 2
+
+    $renpy.call('attackfail_{}'.format(BM.attacker.animation_name))
+
+    return
+
+
 

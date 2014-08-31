@@ -107,12 +107,20 @@ init -6 python:
             if ship.boss:
                 return
 
-    def apply_modifier(target,modifier,magnitude,duration):
+    def apply_modifier(target,modifier,magnitude,duration, cumulative = False):
         """attempts to apply a buff or a curse and return True on success, False on failure"""
         if target == None:
             return False
         if not hasattr(target,'modifiers'):
             return False
+        
+        if cumulative:
+            current_magnitude, current_duration = target.modifiers[modifier]
+            magnitude += current_magnitude
+            duration += current_duration  #not sure if this is wanted
+            target.modifiers[modifier] = [magnitude,duration]
+            return True
+        
         if magnitude > 0:  #I may have to make a better check at some point
             #buffs
             if modifier in target.modifiers:
@@ -205,17 +213,21 @@ init -6 python:
             if a > 0 and a <= X and b > 0 and b <= Y:
                 BM.grid[a-1][b-1] = available
             else:
-                raise Exception("tried to set availability on a hex that does not exist")
-                # pass  #not sure if I should raise an exception or not
+                if config.developer:
+                    raise Exception("tried to set availability on a hex that does not exist")
+                else:
+                    pass  #not sure if I should raise an exception or not
 
 
     def show_message(message,xpos=0.5,ypos=0.7):
+        """briefly show some text on screen"""
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
         try:
-            renpy.pause(MESSAGE_PAUSE)
+            renpy.pause(MESSAGE_PAUSE)            
         except:
             pass
+        renpy.hide_screen('message')
 
     def calculate_vector(location1,location2):  #target location, current location
         if location1[0]-location2[0] == 0:
@@ -478,7 +490,7 @@ init -6 python:
         if bm == None:
             return
         mouse_xpos, mouse_ypos = renpy.get_mouse_pos() #such a handy function. Thanks Tom!  I use this to zoom in onto your mouse position
-        if result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
+        if result[1] == 'in':   #fudging the mouse position a little so you zoom in further than you actually point
             if mouse_xpos > 960:
                 adjusted_xpos = 960 + (mouse_xpos-960)*1.5
             else:
@@ -552,7 +564,7 @@ init -6 python:
         # don't make the radius larger than width and height of the grid
         while radius < GRID_SIZE[0] or radius < GRID_SIZE[1]:
             # get the locations in the ring at radius 'radius'
-            locations = getInRing(location, radius)
+            locations = get_in_ring(location, radius)
             
             # return the first available location in the list
             for loc in locations:
@@ -690,13 +702,30 @@ init -6 python:
         return tile_locations
 
     def update_modifiers():
+        """
+        called when the phase changes. it ticks down modifiers and removes them when expired.
+        """
+        order_expired = False
+        strat,duration = BM.active_strategy
+        if strat != None:
+            if duration <= 1:
+                show_message( '{} has expired!'.format(strat) )
+                order_expired = True
+                BM.active_strategy = [None,0]
+            else:
+                BM.active_strategy = [strat,duration -1]
+        
         if BM.phase == 'Player':
             for ship in player_ships:
                 for key in ship.modifiers:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
+                            if ship.modifiers[key][0] < 0:
+                                show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')
+                            else:
+                                if not order_expired:
+                                    show_message('the ' +ship.name+ ' lost its buff to its ' +key+ '!')
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' lost its buff to its ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
@@ -705,26 +734,15 @@ init -6 python:
                 for key in ship.modifiers:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
+                            if ship.modifiers[key][0] < 0:                            
+                                show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')
+                            else:
+                                show_message('the ' +ship.name+ ' lost its buff to its ' +key+ '!')
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
 
-##experimental AI##
-    def scan_local_area(ship):
-        if ship == None:
-            return
-
-        move_range = ship.en/ship.move_cost
-        cells_in_range = []
-
-        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                distance = get_distance(ship.location,(a,b))
-                if distance <= move_range:
-                    for pship in player_ships:
-                        ship.AI_estimate_damage(pship)
 
     def game_over():
         renpy.hide_screen('game_over_gimmick')
@@ -914,7 +932,7 @@ init -6 python:
             valid = False
         return valid
 
-    def getAllInRadius(location, radius):
+    def get_all_in_radius(location, radius):
         locations = []
         pending = [location]
         while radius > 0:
@@ -938,12 +956,29 @@ init -6 python:
                     pending.remove(loc)
             radius -= 1
         locations.extend(pending)
-        return list(set(locations))
+        return clean_locations(list(set(locations)))
 
-    def getInRing(loc, radius):
-        outer = getAllInRadius(loc, radius)
-        inner = getAllInRadius(loc, radius - 1)
+    def get_in_ring(loc, radius):
+        outer = get_all_in_radius(loc, radius)
+        inner = get_all_in_radius(loc, radius - 1)
         # remove all locations in the inner ring from the outer ring
         for x in inner:
             outer.remove(x)
-        return outer        
+        return outer   
+
+    def clean_locations(locations):
+        """
+        removes all the locations that are out of bounds
+        """
+        if locations == None: return []
+        if locations == []: return []
+        
+        result = []
+        x,y = GRID_SIZE
+        
+        for location in locations:
+            a,b = location
+            if a > 0 and a <= x and b > 0 and b <= y:
+                result.append(location)
+        
+        return result        

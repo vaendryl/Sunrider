@@ -320,7 +320,7 @@ init 2 python:
             self.animation_name = 'unionfrigate'
             self.faction = 'Player'
             self.mercenary = True
-            self.max_hp = 400
+            self.max_hp = 475
             self.hp = self.max_hp
             self.max_en = 100
             self.base_armor = 4
@@ -333,7 +333,7 @@ init 2 python:
             self.evasion = 5
             self.blbl = 'Battle UI/label_unionfrigate.png'  #base(default) label
             self.lbl = self.blbl
-            self.default_weapon_list = [UnionFrigateLaser()]  #just this?
+            self.default_weapon_list = [UnionFrigateLaser(),ShdJam()]  #just this?
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
@@ -634,6 +634,72 @@ init 2 python:
             self.shields = self.shield_generation
             self.shield_range = 2
 
+    class PactElite(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder'
+            self.name = 'PACT Elite'
+            self.animation_name = 'pactelite'
+            self.faction = 'PACT' #for now...
+            self.max_hp = 700
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.evasion = 30
+            self.move_cost = 20
+            self.base_armor = 3
+            self.money_reward = 80
+            self.max_missiles = 1
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.armor = 3
+            self.default_weapon_list = [PACTEliteLaser(),PACTEliteMissile(),PACTEliteMelee(),PACTEliteAssault()]
+            self.blbl = 'Battle UI/label_pactelite.png'  #this is the battle avatar
+            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PACTElite/side.png',
+                'melee':'gameplay/Animations/PACTElite/melee.png',
+                }
+            self.flak = 30
+            self.flak_range = 1
+            self.shield_generation = 0
+            self.shields = self.shield_generation
+            self.shield_range = 0
+
+    class PactSupport(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Ryder'
+            self.name = 'PACT Support'
+            self.support = True  #signifies to the AI this unit uses support skills
+            self.animation_name = 'pactsupport'
+            self.faction = 'PACT'
+            self.max_hp = 450
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.evasion = 40
+            self.move_cost = 20
+            self.base_armor = 0
+            self.money_reward = 80
+            self.max_missiles = 0
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.armor = 0
+            self.default_weapon_list = [PactRepair(), DisableLite(), PactRestore(), PactFlakOff(), PactShutOff()]
+            self.blbl = 'Battle UI/pactsupport_label.png'  #this is the battle avatar
+            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/PACTSupport/side.png',
+                }
+            self.flak = 0
+            self.flak_range = 0
+            self.shield_generation = 25
+            self.shields = self.shield_generation
+            self.shield_range = 1
+
     class PactCruiser(Battleship):
         def __init__(self):
             Battleship.__init__(self)
@@ -785,6 +851,40 @@ init 2 python:
             self.move_cost = 50
             self.armor = self.base_armor
 
+    class PactAssaultCarrier(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Assault Carrier'
+            self.name = 'PACT Assault Carrier'
+            #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
+            self.spawns = [
+                ( PactElite,60,[ PACTEliteLaser(),PACTEliteMissile(),PACTEliteAssault(),PACTEliteMelee() ] ),
+                ( PactSupport,60,[ PactRepair(), DisableLite(), PactRestore(), PactFlakOff(), PactShutOff() ] )
+                ]
+            self.faction = 'PACT'
+            self.animation_name = 'pactassaultcarrier'
+            self.max_hp = 2000
+            self.hp = self.max_hp
+            self.max_en = 120
+            self.en = self.max_en
+            self.money_reward = 500
+            self.max_missiles = 2
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.evasion = -30
+            self.blbl = 'Battle UI/label_pactassaultcarrier.png'  #this is the battle avatar
+            self.lbl = self.blbl
+            self.default_weapon_list = [PACTAssaultCarrierAssault(),PACTAssaultCarrierMissile(),PACTAssaultCarrierKinetic(),PACTAssaultCarrierLaser()]
+            self.flak = 45
+            self.flak_range = 2
+            self.shield_generation = 0
+            self.shields = self.shield_generation
+            self.shield_range = 0
+            self.base_armor = 20
+            self.move_cost = 30
+            self.armor = self.base_armor
+
 ### pirate ships ###
 
     class PirateBomber(Battleship):
@@ -929,6 +1029,36 @@ init 2 python:
             self.base_armor = 50
             self.armor = self.base_armor
             self.move_cost = 1000
+
+    class PirateIronhog(Battleship):
+        def __init__(self):
+            Battleship.__init__(self)
+            self.stype = 'Destroyer'
+            self.name = 'Pirate Ironhog'
+            self.faction = 'Pirate'
+            self.animation_name = 'pirateironhog'
+            self.max_hp = 480
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.max_missiles = 0
+            self.max_rockets = 3
+            self.boss = False
+            self.money_reward = 175
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.evasion = -10  # cruisers are easy to hit
+            self.blbl = 'Battle UI/label_pirateironhog.png'  #this is the battle avatar
+            self.lbl = self.blbl
+            self.default_weapon_list = [PirateIronhogAssault(),PirateIronhogRocket()]
+            self.flak = 60
+            self.flak_range = 1
+            self.shield_generation = 0
+            self.shields = self.shield_generation
+            self.shield_range = 0
+            self.base_armor = 7
+            self.armor = self.base_armor
+            self.move_cost = 20
 
 
 ### Weapons ###
@@ -1338,6 +1468,29 @@ init 2 python:
             self.accuracy = 60
             self.shot_count = 1
 
+########################################## PIRATE IRONHOG
+
+    class PirateIronhogAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 19
+            self.energy_use = 50
+            self.shot_count = 23
+            self.accuracy = 65
+            self.wtype = 'Assault'
+
+    class PirateIronhogRocket(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 275
+            self.energy_use = 60
+            self.uses_rockets = True
+            self.uses_missiles = False
+            self.eccm = 10
+            self.wtype = 'Rocket'
+            self.accuracy = 80
+            self.shot_count = 4
+
 ########################################### PIRATE DESTROYER
 
     class PirateDestroyerLaser(Laser):
@@ -1478,6 +1631,42 @@ init 2 python:
             self.accuracy = 80
             self.shot_count = 1
 
+################################################PACT ASSAULT CARRIER
+
+    class PACTAssaultCarrierLaser(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 320
+            self.energy_use = 60
+            self.shot_count = 1
+            self.accuracy = 100
+
+    class PACTAssaultCarrierKinetic(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 350
+            self.energy_use = 60
+            self.shot_count = 2
+            self.accuracy = 65
+
+    class PACTAssaultCarrierAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 30
+            self.energy_use = 30
+            self.shot_count = 15
+            self.accuracy = 55
+            self.wtype = 'Assault'
+
+    class PACTAssaultCarrierMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 50
+            self.energy_use = 30
+            self.shot_count = 10
+            self.accuracy = 80
+            self.wtype = 'Missile'
+
 ###################################################################PACT CARRIER
 
     class PACTCarrierAssault(Kinetic):
@@ -1518,6 +1707,97 @@ init 2 python:
             self.wtype = 'Assault'
 
 
+######################################### PACT ELITE
+
+    class PACTEliteMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 50
+            self.energy_use = 30
+            self.shot_count = 10
+            self.accuracy = 70
+            self.wtype = 'Missile'
+
+    class PACTEliteAssault(Kinetic):
+        def __init__(self):
+            Kinetic.__init__(self)
+            self.damage = 18
+            self.energy_use = 40
+            self.shot_count = 20
+            self.accuracy = 65
+            self.wtype = 'Assault'
+
+    class PACTEliteLaser(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 230
+            self.energy_use = 60
+            self.accuracy = 110
+            self.shot_count = 1
+
+    class PACTEliteMelee(Melee):
+        def __init__(self):
+            Weapon.__init__(self)
+            self.damage = 375
+            self.energy_use = 50
+            self.accuracy = 80
+            self.acc_degradation = 100
+            self.wtype = 'Melee'
+            self.shot_count = 1
+
+######################################### PACT SUPPORT
+
+    class PactRepair(Support):
+            def __init__(self):
+                Support.__init__(self)
+                self.repair = True
+                self.damage = 300 #also used for heals
+                self.energy_use = 60
+                self.name = 'Repair I'
+                self.shot_count = 1
+                
+    class DisableLite(Curse): #halves available EN
+            def __init__(self):
+                Curse.__init__(self)
+                self.energy_use = 100
+                self.accuracy = 9999
+                self.modifies = 'energy regen'
+                self.buff_strength = -50
+                self.buff_duration = 2 
+                self.name = 'Disable Lite'
+                
+    class PactRestore(Support):
+            def __init__(self):
+                Support.__init__(self)
+                self.energy_use = 60
+                self.modifies = 'restore'
+                self.buff_strength = 1
+                self.buff_duration = 1
+                self.name = 'Restore'
+
+    class PactFlakOff(Curse):
+            def __init__(self):
+                Curse.__init__(self)
+                self.energy_use = 40
+                self.modifies = 'flak'
+                self.sort_on = 'pship.flak'
+                self.accuracy = 9999
+                self.buff_strength = -100
+                self.buff_duration = 2
+                self.name = 'Flak Off'
+
+    class PactShutOff(Curse):  
+        def __init__(self):
+            Curse.__init__(self)
+            self.energy_use = 40
+            self.accuracy = 9999
+            self.modifies = 'shield_generation'
+            self.sort_on = 'pship.shield_generation'
+            self.buff_strength = -100
+            self.buff_duration = 2
+            self.name = 'Shield Down'
+            
+            
 ############################################## PIRATE BASE
 
     class PirateBaseKinetic(Kinetic):
@@ -1597,6 +1877,7 @@ init 2 python:
             self.buff_strength = 1
             self.buff_duration = 1
             self.name = 'Restore'
+            self.energy_use = 40
             self.lbl = 'Battle UI/button_restore.png'
             self.tooltip = """
             Removes all enemy status ailments from the target.
@@ -1689,6 +1970,19 @@ init 2 python:
             self.tooltip = """
             Deactivates the target's shields for two turns."""
 
+    class ShdJam(Curse):  #shuts down shield generation
+        def __init__(self):
+            Curse.__init__(self)
+            self.energy_use = 40
+            self.accuracy = 9999
+            self.modifies = 'shield_generation'
+            self.buff_strength = -15
+            self.buff_duration = 1
+            self.cumulative = True  #do not overwrite but add to the current modifier.
+            self.name = 'Shield Jam'
+            self.lbl = 'Battle UI/button_shdjam'
+            self.tooltip = """
+            Temporarily reduce the target's shield generation by 15 points."""
 
 
 ###are these still used?##
@@ -1948,6 +2242,20 @@ init 2 python:
             
         def __call__(self):            
             store.sunrider_rocket.damage = 1200
+            BM.money -= self.cost
+            renpy.restart_interaction()
+            
+    class RepairUpgrade(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'RepairUpgrade1'
+            self.display_name = "PORTABLE REPAIR BOOSTER"
+            self.cost = 750            
+            self.tooltip = 'While extensive repairs require time in the dry dock, battlefield repairs are still a must for combat operations. These new portable repair drones will allow the Liberty to repair 200 more HP.'
+            self.visibility_condition = 'store.chigara_repair.damage < 500'
+            
+        def __call__(self):            
+            store.chigara_repair.damage = 500
             BM.money -= self.cost
             renpy.restart_interaction()
             

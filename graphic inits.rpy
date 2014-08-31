@@ -553,6 +553,8 @@ init -5:
         "CG/chigarateatimesad.jpg"
     image cg_chigarateatime_embarassed:
         "CG/chigarateatimeembarassed.jpg"
+    image cg_chigarateatime_happy:
+        "CG/chigara_teahappy.jpg"
         
     image cg_farport 1:
         "CG/farport_map1.jpg"
@@ -568,6 +570,14 @@ init -5:
         "CG/farport_map6.jpg"
     image cg_farport 7:
         "CG/farport_map7.jpg"
+
+    image cg_ongess 1:
+        "CG/ongess_map1.jpg"
+    image cg_ongess 2:
+        "CG/ongess_map2.jpg"
+    image cg_ongess 3:
+        "CG/ongess_map3.jpg"
+
 
     image cg_farport_charge1:
         "CG/farport_charge1.jpg"
@@ -652,6 +662,36 @@ init -5:
         "CG/chigarahug1.jpg"
     image cg_chigarahug2:
         "CG/chigarahug2.jpg"
+        
+        
+    image cg_ongess_carrier_back:
+        "CG/ongess_assaultin_back.jpg"
+    image cg_ongess_carrier_carrier1:
+        "CG/ongess_assaultin_carrier1.png"    
+    image cg_ongess_carrier_carrier2:
+        "CG/ongess_assaultin_carrier2.png"    
+    image cg_ongess_carrier_carrier3:
+        "CG/ongess_assaultin_carrier3.png"    
+    image cg_ongess_carrier_ryder1:
+        "CG/ongess_assaultin_ryder1.png"    
+    image cg_ongess_carrier_ryder2:
+        "CG/ongess_assaultin_ryder2.png"    
+    image cg_ongess_carrier_ryder3:
+        "CG/ongess_assaultin_ryder3.png"    
+    image cg_ongess_carrier_ryder4:
+        "CG/ongess_assaultin_ryder4.png"  
+        
+    image cg_bomberline:
+        "CG/bomberline.jpg"  
+    image cg_bomberline_missiletrail:
+        "CG/bomberline_missiletrail.png"  
+        
+    image cg_ongessport1:
+        "CG/ongess_port1.jpg"
+    image cg_ongessport2:
+        "CG/ongess_port2.jpg"
+
+
 
     ########################################MAP
     
@@ -2552,7 +2592,160 @@ init -5:
     image item_wishall:
         "CG/item_wishall.png"
         
+
+    image pactsupport:
+        "gameplay/Animations/PACTSupport/side.png"
+        xalign 0.5 yalign 0.5
+
+    image pactelite:
+        "gameplay/Animations/PACTElite/side.png"
+        xalign 0.5 yalign 0.5
+    image pactelite laser:
+        "gameplay/Animations/PACTElite/laser.png"
+        xalign 0.5 yalign 0.5
+    image pactelite missile:
+        "gameplay/Animations/PACTElite/missile.png"
+        xalign 0.5 yalign 0.5
+    image pactelite_assaultflash1:
+        "gameplay/Animations/PACTElite/assaultflash1.png"
+    image pactelite_assaultflash2:
+        "gameplay/Animations/PACTElite/assaultflash2.png"
+    image pactelite_assaultflash3:
+        "gameplay/Animations/PACTElite/assaultflash3.png"
+    image pactelite_assaultflash4:
+        "gameplay/Animations/PACTElite/assaultflash4.png"
+    image pactelite_assaultflash5:
+        "gameplay/Animations/PACTElite/assaultflash5.png"
+    image pactelite_assaultflash6:
+        "gameplay/Animations/PACTElite/assaultflash6.png"
+    image pactelite_laserflash1:
+        "gameplay/Animations/PACTElite/laserflash1.png"
+    image pactelite_laserflash2:
+        "gameplay/Animations/PACTElite/laserflash2.png"
+
+    image pactelite_missileround1:
+        "gameplay/Animations/PACTElite/missile_round.png"
+        xanchor 53 yanchor 70
+    image pactelite_missileround2:
+        "gameplay/Animations/PACTElite/missile_round.png"
+        xanchor 53 yanchor 70
+    image pactelite_missileround3:
+        "gameplay/Animations/PACTElite/missile_round.png"
+        xanchor 53 yanchor 70
+    image pactelite_missileround4:
+        "gameplay/Animations/PACTElite/missile_round.png"
+        xanchor 53 yanchor 70
+    image pactelite_missiletrail:
+        "gameplay/Animations/PACTElite/missiletrail.png"
+
+
+    image pactassaultcarrier_side:
+        "gameplay/Animations/PACTAssaultCarrier/side.png"
+        xanchor 0.5 yanchor 0.5
+    image pactassaultcarrier_kineticflash1:
+        "gameplay/Animations/PACTAssaultCarrier/kineticflash1.png"
+    image pactassaultcarrier_kineticflash2:
+        "gameplay/Animations/PACTAssaultCarrier/kineticflash2.png"
+    image pactassaultcarrier_kineticflash3:
+        "gameplay/Animations/PACTAssaultCarrier/kineticflash3.png"
+    image pactassaultcarrier_kineticflash4:
+        "gameplay/Animations/PACTAssaultCarrier/kineticflash4.png"
+    image pactassaultcarrier_kineticbullet1:
+        "gameplay/Animations/PACTAssaultCarrier/kinetic.png"
+        xanchor 108 yanchor 70
+    image pactassaultcarrier_kineticbullet2:
+        "gameplay/Animations/PACTAssaultCarrier/kinetic.png"
+        xanchor 108 yanchor 70
+    image pactassaultcarrier_kineticbullet3:
+        "gameplay/Animations/PACTAssaultCarrier/kinetic.png"
+        xanchor 108 yanchor 70
+    image pactassaultcarrier_kineticbullet4:
+        "gameplay/Animations/PACTAssaultCarrier/kinetic.png"
+        xanchor 108 yanchor 70
+    image pactassaultcarrier_flakflash1:
+        "gameplay/Animations/PACTAssaultCarrier/assaultflash1.png"
+    image pactassaultcarrier_flakflash2:
+        "gameplay/Animations/PACTAssaultCarrier/assaultflash2.png"
+    image pactassaultcarrier_laserfront:
+        "gameplay/Animations/PACTAssaultCarrier/laser.png"
+        xanchor 0.5 yanchor 0.5
+    image pactassaultcarrier_laserrear:
+        "gameplay/Animations/PACTAssaultCarrier/laserrear.png"
+        xanchor 0.5 yanchor 0.5        
+    image pactassaultcarrier_missiletrail:
+        "gameplay/Animations/PACTAssaultCarrier/missiletrail.png"
+        xanchor 0.5 yanchor 0.5
+    image pactassaultcarrier_missile1:
+        "gameplay/Animations/PACTAssaultCarrier/missile.png"
+        xanchor 52 yanchor 70
+    image pactassaultcarrier_missile2:
+        "gameplay/Animations/PACTAssaultCarrier/missile.png"
+        xanchor 52 yanchor 70
+    image pactassaultcarrier_missile3:
+        "gameplay/Animations/PACTAssaultCarrier/missile.png"
+        xanchor 52 yanchor 70
+
+    image pirateironhog:
+        "gameplay/Animations/PirateIronhog/side.png"
+        xanchor 0.5 yanchor 0.5
+    image pirateironhog norockets:
+        "gameplay/Animations/PirateIronhog/norockets.png"
+        xanchor 0.5 yanchor 0.5
+    image pirateironhog_rocket1:
+        "gameplay/Animations/PirateIronhog/rocket1.png"
+    image pirateironhog_rocket2:
+        "gameplay/Animations/PirateIronhog/rocket2.png"
+    image pirateironhog_rocket3:
+        "gameplay/Animations/PirateIronhog/rocket3.png"
+    image pirateironhog_rocket4:
+        "gameplay/Animations/PirateIronhog/rocket4.png"
         
+    image pirateironhog_assaultflash1:
+        "gameplay/Animations/PirateIronhog/assault1.png"
+    image pirateironhog_assaultflash2:
+        "gameplay/Animations/PirateIronhog/assault2.png"
+    image pirateironhog_assaultflash3:
+        "gameplay/Animations/PirateIronhog/assault3.png"
+    image pirateironhog_assaultflash4:
+        "gameplay/Animations/PirateIronhog/assault4.png"
+    image pirateironhog_assaultflash5:
+        "gameplay/Animations/PirateIronhog/assault5.png"
+    image pirateironhog_assaultflash6:
+        "gameplay/Animations/PirateIronhog/assault6.png"
+    image pirateironhog_assaultflash7:
+        "gameplay/Animations/PirateIronhog/assault7.png"
+    image pirateironhog_assaultflash8:
+        "gameplay/Animations/PirateIronhog/assault8.png"
+        
+    image pirateironhog_assaultbullet1:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet2:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet3:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet4:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet5:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet6:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet7:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+    image pirateironhog_assaultbullet8:
+        "gameplay/Animations/PirateIronhog/assaultbullet.png"
+        xanchor 64 yanchor 45
+
+
+
+
+
 ########################################## JOKE
 
     image bg renpytomback:

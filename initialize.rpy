@@ -701,6 +701,73 @@ label mission15_inits:
 
     return
 
+label mission16_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+        
+        create_ship(PactBattleship(),(14,7))
+        
+        create_ship(PactMook(),(13,4))
+        create_ship(PactMook(),(13,5))
+        create_ship(PactMook(),(13,7))
+        create_ship(PactMook(),(13,8))
+
+        create_ship(PactCarrier(),(16,8))
+        
+        create_ship(PirateIronhog(),(14,12))
+        create_ship(PirateIronhog(),(14,14))
+        
+        create_ship(PirateBomber(),(13,13))
+        create_ship(PirateBomber(),(13,14))
+
+        create_ship(PirateDestroyer(),(12,12))
+        create_ship(PirateDestroyer(),(12,13))
+        create_ship(PirateDestroyer(),(12,14))
+        
+        create_ship(PactSupport(),(17,6))
+        create_ship(PactSupport(),(15,8))
+    
+    $ PlayerTurnMusic = "music/Powerful.ogg"
+    $ EnemyTurnMusic = "music/The_Departure.ogg"
+
+    return
+
+label mission17_inits:
+
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+        
+        create_ship(PactBattleship(),(11,9))
+        create_ship(PactAssaultCarrier(),(12,6))
+        create_ship(PactAssaultCarrier(),(12,10))
+        create_ship(PactElite(),(10,6))
+        create_ship(PactElite(),(10,7))
+        create_ship(PactElite(),(10,9))
+        create_ship(PactElite(),(10,10))
+        create_ship(PactSupport(),(11,5))
+        create_ship(PactSupport(),(11,11))
+        create_ship(PactCruiser(),(11,6))
+        create_ship(PactCruiser(),(12,7))
+        create_ship(PactCruiser(),(12,10))
+    
+    $ PlayerTurnMusic = "music/Overpowered.ogg"
+    $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
+
+    return
+
 label preview_mission:
 
     python:

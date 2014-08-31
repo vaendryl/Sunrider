@@ -8,8 +8,7 @@ label initStore:
         store_items.append(ContractAllianceCruiser())
         store_items.append(ContractUnionFrigate())
         store_items.append(SellWishallArtifact())  
-        
-
+        store_items.append(RepairUpgrade())  
         
         
     return

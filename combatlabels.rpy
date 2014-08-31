@@ -43,13 +43,14 @@ label test_battle:
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
         enemy_ships[-1].hp = 1
-        create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
-        create_ship(PactCruiser(),(14,8),[])
+        create_ship(PactSupport(),(14,5))
+        # create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        # create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        # create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
+        # create_ship(PactCruiser(),(14,8),[])
 
-        create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-        create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        # create_ship(PirateDestroyer(),(16,5),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
+        # create_ship(PirateDestroyer(),(16,7),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
 
         #center the viewport on the sunrider
         BM.xadj.value = 872
@@ -189,12 +190,21 @@ label after_load:
             reset = True
 
         if reset:
+            #temporary fix
             rocketdamage = 800
+            chi_repair = 300
+            
             if hasattr(store,'sunrider_rocket'):
                 rocketdamage = store.sunrider_rocket.damage
+            if hasattr(store,'chigara_repair'):
+                chi_repair = store.liberty.weapons[1].damage
+                
             reset_classes()
+            
             if sunrider != None:
                 store.sunrider.weapons[3].damage = rocketdamage
+            if liberty != None:
+                store.liberty.weapons[1].damage = chi_repair                
             
             BM.save_version = config.version
             
