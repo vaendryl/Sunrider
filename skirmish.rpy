@@ -33,6 +33,7 @@ label skirmish_battle:
     python:
         BM.phase = 'Player'
         BM.mission = 'skirmishbattle'
+        update_stats()
     
     call battle_start
     

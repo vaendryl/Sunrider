@@ -18,6 +18,7 @@ init -5:
     define cul = Character('Cullen', who_xalign=0.05)
     define sop = Character('Sophita', who_xalign=0.05)
     define fon = Character('Fontana', who_xalign=0.05)
+    define mar = Character('Maray', who_xalign=0.05)
     define cen = Character(" ", what_font="Font/PERTILI.TTF", what_size=25, what_xalign=0.5, what_text_align=0.5, what_yalign=0.5)
     define e = Character(" ")
     define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)            
@@ -147,7 +148,14 @@ init -5:
         subpixel True                
         
         
-        
+    image maray dead:
+        "Character/Maray/neutral_dead.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+
+
 #####################################SPACE BACKGROUNDS
     
     image space back1:
@@ -2770,6 +2778,8 @@ init -5:
         "CG/popularity3.jpg"
     image poll4:
         "CG/popularity4.jpg"
+    image poll5:
+        "CG/popularity5.jpg"
 
 ########################
 

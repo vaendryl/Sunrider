@@ -190,6 +190,14 @@ label after_load:
             reset = True
 
         if reset:
+            
+            #replace old union frigates with new ones
+            for ship in player_ships[:]:
+                if ship.name == 'Mining Union Frigate':
+                    if len(ship.weapons) == 1:
+                        create_ship(UnionFrigate(),ship.location)
+                        player_ships.remove(ship)
+        
             #temporary fix
             rocketdamage = 800
             chi_repair = 300

@@ -226,7 +226,7 @@ screen battle_screen:
                                             ypos yposition
                                             size (xsize,ysize)
                                             alpha 0.9
-            if BM.weaponhover.wtype == 'Laser' or BM.weaponhover.wtype == 'Pulse' or BM.weaponhover.name == 'Shield Down':
+            if BM.weaponhover.wtype == 'Laser' or BM.weaponhover.wtype == 'Pulse' or BM.weaponhover.name == 'Shield Down' or BM.weaponhover.name == 'Shield Jam':
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
                         for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
                             for ship in enemy_ships:

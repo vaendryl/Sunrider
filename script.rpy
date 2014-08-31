@@ -37,9 +37,13 @@ label start:
 #####################################VARIABLE SET UP
 
     #temporary
-    #jump test_battle
-
-
+    if config.developer:
+        menu:
+            "normal start":
+                $ pass
+            "test battle":
+                jump test_battle
+    
     stop music fadeout 3.0
     play sound "Sound/buttonclick.wav"
     scene bg cera:
@@ -2539,6 +2543,7 @@ label unionstore:
 
     python:
         sunrider_rocket = sunrider.weapons[3]
+        chigara_repair = liberty.weapons[1]
         renpy.call('initStore') #populate the store list
         captaindeck = 0
 
@@ -15129,44 +15134,35 @@ label checkformissions:
 
 label afterbeachcarry:
     
-    python:
-        try:
-            BM.ships.remove(alliancecruiser1)
-            player_ships.remove(alliancecruiser1)
-        except:
-            pass
-        
-        try:
-            BM.ships.remove(alliancecruiser2)
-            player_ships.remove(alliancecruiser2)
-        except:
-            pass
-        
-        BM.orders['RESURRECTION'] = [2000,'resurrect']
-        
-        versta_ambush = True
-        farport_losttech = True
-        tydaria_morepirates = True
-        
-        captaindeck = 1
-        
-        chi_location = "captainsloft"
-        chi_event = "newoffice"
-        
-        cla_location = "sickbay"
-        cla_event = "medicallicensereinstated"
-        
-        asa_location = None
-        ava_location = None
-        kry_location = None
-        ica_location = None
-        sol_location = None
-        pro_location = None
-        gal_location = "bridge"
-        
-        warpto_ryuvia = True
-        warpto_farport = True
-        sidemissions1 = True
+    $ BM.ships.remove(alliancecruiser1)
+    $ player_ships.remove(alliancecruiser1)
+    $ BM.ships.remove(alliancecruiser2)
+    $ player_ships.remove(alliancecruiser2)
+    $ BM.orders['RESURRECTION'] = [2000,'resurrect']
+    
+    $ versta_ambush = True
+    $ farport_losttech = True
+    $ tydaria_morepirates = True
+    
+    $ captaindeck = 1
+            
+    $ chi_location = "captainsloft"
+    $ chi_event = "newoffice"
+    
+    $ cla_location = "sickbay"
+    $ cla_event = "medicallicensereinstated"
+    
+    $ asa_location = None
+    $ ava_location = None
+    $ kry_location = None
+    $ ica_location = None
+    $ sol_location = None
+    $ pro_location = None
+    $ gal_location = "bridge"
+    
+    $ warpto_ryuvia = True
+    $ warpto_farport = True
+    $ sidemissions1 = True
     
     jump dispatch
 
@@ -15564,14 +15560,9 @@ label mission14:
     
 label mission14_end:
     
-    python:
-        farport_losttech = False
-        mission14_complete = True
-        
-        try:
-            del BM.orders['RETREAT']
-        except:
-            pass
+    $ farport_losttech = False
+    $ mission14_complete = True
+    $ del BM.orders['RETREAT'] 
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
@@ -15816,6 +15807,8 @@ label aftermission15:
     scene bg bridgered
     show ava uniform fistup yes
     with dissolve
+    
+    window show
 
     ava "Mission complete, captain! All PACT units have been eliminated!"
     kay "All units, fall back to the Sunrider. Let's get out of here before PACT brings in reinforcements."
@@ -17549,6 +17542,1134 @@ label reportwhattranspiredongess:
     
     window hide
 
+    stop music fadeout 1.5
+
+    show eyecatch_top with eyecatch_wipe
+    show eyecatch_bottom with eyecatch_wiperev
+    show eyecatch_logo with dissolve
+    $ renpy.pause (2.0)
+    
+    jump afterrescue
+
+label afterrescue:
+    
+    scene bg black2 with dissolvelong
+    scene bg bridge with dissolvelong
+    
+    window show
+    
+    play music "Music/Grasping_Some_Beauty.ogg"
+    
+    show ava uniform alt neutral neutral with dissolve
+
+    ava "Warp signature detected, captain."
+    ava "It's another PACT scout ship."
+    kay "Status?"
+    ava "Hovering out of range."
+    kay "... ... ..."
+    
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "That's the fifteenth one this past week. PACT must be planning something."
+    kay "They know most of the Combined Fleet's stationed at Ongess."
+    kay "Most likely, they want us to chase their scouts, so a strike fleet can warp in and hit the Alliance's ships while they're refueling."
+    kay "Maintain our position. If PACT manages to slip a ship past us, they'll ignite the Ongessite being stored on our docks and wipe out the entire Combined Fleet."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Aye captain."
+    
+    show kryska uniform armscrossed frown:
+        xpos 0.76
+    with dissolve
+    
+    kry "I feel like we're swimming in the middle of a minefield."
+    kay "We are, lieutenant. There's enough liquid Ongessite in orbit around the planet to blow us all the way back to Far Port."
+    kay "Ava, any intel on their new commander?"
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "Veniczar Fontana. He's quite young considering his position at the top of the PACT chain of command."
+    ava "Despite his age, he's seen as Arcadius' right hand man. Brilliant just as he is deadly, he is a foe not to be trifled with."
+    kay "Crushing on the enemy commander's a capital offense, commander."
+    
+    show ava uniform facepalm with dissolve
+    
+    ava "Captain..."
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "Ahem. Also, I believe one of our crew may have encountered him in the past"
+    kay "Oh?"
+    ava "I believe Asaga briefly met him while she was captured."
+    kay "What does she say?"
+    ava "You can imagine. \"Oh right, that guy. He was actually pretty good lookin' for a red!\""
+    kay "Heh, not quite helpful."
+    ava "Regardless, he is a far more fearsome foe than anyone we've encountered in the past. We should not underestimate him."
+    kay "All right, thanks for the advice."
+    
+    $ gal_location = None
+    $ asa_location = "hangar"
+    $ asa_event = "asagagladseeup"
+    $ chi_location = "messhall"
+    $ chi_event = "messhallasagacalibrating"
+    $ ica_location = "hangar"
+    $ ica_event = "icaribelievelet"
+    $ sol_location = "messhall"
+    $ sol_event = "ryuvianongesssharr"
+    $ kry_location = "hangar"
+    $ kry_event = "icaribelievelet"
+    $ ava_location = None
+    $ cla_location = None
+    $ pro_location = "bridge"
+    $ pro_event = "captainsituationpiratepact"
+    
+    $ captaindeck = 1
+    
+    jump dispatch
+
+label asagagladseeup:
+    
+    hide screen ship_map
+    scene bg hangar
+    show asaga uniform neutral happy
+    with dissolve
+    
+    window show
+
+    asa "O-oh! Capt'n!"
+    asa "Glad to see ya up and about! Ya had us all worried for a sec there!"
+    kay "Don't worry. I wouldn't let myself get killed by the likes of Cosmos."
+    
+    show asaga uniform excited angry with dissolve
+    
+    asa "Did she hurt you anywhere!? The next time I tangle with her, I'm gonna give her a piece of mah mind!"
+    kay "Just a bump to the head. Nothing serious."
+    asa "T-that... scum!! I'll be sure to get you some payback, capt'n!"
+    
+    menu:
+        "We'll take down Cosette together.":
+            jump wellcosettedown
+            
+        "Cosette's just fighting to protect her own people. She's not as bad as you think, Asaga.":
+            jump cosettefightingbad
+            
+label wellcosettedown:
+    
+    $ affection_asaga += 1
+    
+    show asaga uniform armscrossed mad with dissolve
+    
+    asa "You betcha! Next time I see her, I'll put her down for good! You'll see!"
+
+    jump asagasmileleave
+
+label cosettefightingbad:
+    
+    $ affection_cosette += 1
+    
+    show asaga uniform armscrossed mad with dissolve
+    
+    asa "No, no, no, no!"
+    asa "Don't listen to her propaganda, capt'n! She's just an evil pirate, that's all!"
+    asa "We'll pound her to the ground for everyone she's hurt! Including you!"
+    kay "Heh-heh... All right, Asaga..."
+    
+    jump asagasmileleave
+
+label asagasmileleave:
+
+    kay "Thanks for the concern. But don't worry, I'm all right now."
+    "Shields gave Asaga a smile and turned to leave."
+    "She grabbed the tail of his coat."
+    
+    show asaga uniform altneutral sadblush with dissolve
+    
+    asa "... ... ..."
+    asa "Don't do that to us again. We were all worried."
+    kay "... ... ..."
+    kay "I was careless. It won't happen again."
+    
+    show asaga uniform armscrossed blushsmile with dissolve
+    
+    asa "Good..."
+    asa "... ... ..."
+    
+    show asaga uniform armscrossed laugh with dissolve
+    
+    asa "Well then, I better get back to work on muh Black Jack! We've got another big battle comin'!"
+    asa "And I'll bet my money that Cosette's gonna show her mug again. And this time, I'll be ready!"
+    kay "(That Asaga... She never changes...)"
+    kay "Carry on, Asaga..."
+    
+    $ asa_location = None
+    $ captaindeck = 2
+    jump dispatch
+
+label ryuvianongesssharr:
+    
+    hide screen ship_map
+    scene bg messhallwindows
+    show sola uniform altneutral neutral
+    with dissolve
+    
+    window show
+
+    sol "Captain."
+    kay "Do the stars answer any of your questions?"
+    sol "... ... ..."
+    sol "You wish to talk?"
+    kay "The Ryuvian Empire of your time ruled Ongess. Tell me, if you were the Sharr, would you give the Ongessians independence?"
+    
+    show sola uniform handonchest neutral with dissolve
+    
+    sol "I? I have given such matters little thought."
+    kay "The Ongessians have suffered under the hands of foreign powers for millennia. But they will not be able to recover without foreign intervention."
+    kay "To complicate matters, we need their Ongessite to win this war. Without it, thousands of lives will be lost. Deaths we can prevent by making better arms with Ongessite."
+    sol "... ... ..."
+    sol "Such dilemmas came with sitting on the throne of Ryuvia. But men craved it. Killed for it."
+    sol "But you are different, are you not? You were thrust onto this stage, not by choice, but by circumstance."
+    sol "To be Emperor was to decide who lived and who died. Such power was inherent to the throne."
+    
+    show sola uniform neutral neutral with dissolve
+    
+    sol "But it was always my hope that the man who sat in the Star Palace would be a fair ruler, who made decisions for the good of the Empire."
+    sol "Far too many Emperors of my time sought riches and glory for themselves at the expense of the people. And perhaps that was why our empire eventually collapsed."
+    kay "The good of the Empire, huh..."
+    sol "... ... ..."
+    sol "Whatever happens, I am sure that you will make your decision based on what is good for the galaxy."
+    kay "I wonder what that is. Terms like the ,\"good of the galaxy\" are hard to define. It could mean anything."
+    
+    show sola uniform backturn neutral with dissolve
+    
+    sol "... ... ..."
+    sol "I am merely a peasant girl, captain. Please do not expect too much out of me."
+    kay "Hahahaha."
+    kay "Thanks, Sola. I'll come back to you any time if I need advice."
+    sol "Mm."
+
+    $ sol_location = None
+    $ captaindeck = 0
+    jump dispatch
+
+
+label messhallasagacalibrating:
+    
+    hide screen ship_map
+    scene bg messhall
+    show chigara uniform handonchest smile
+    with dissolve
+    
+    window show
+    
+    chi "Ah, captain."
+    kay "Huh, you're by yourself today."
+    
+    show chigara uniform handstogether sad with dissolve
+    
+    chi "Ah, yes... Asaga's been acting strange lately."
+    chi "She's been calibrating the Black Jack more often. She's even stopped playing her games and now spends all day practicing in the simulator."
+    kay "Uh, really? That's unusual."
+    kay "(Could it be that Asaga's finally decided to grow up?)"
+    kay "(... ... ...)"
+    kay "(Pfft. Like that would ever happen!)"
+    chi "It's good that she's been taking her duties more seriously, but I wonder if she's overdoing it..."
+    chi "She really can't do anything in moderation..."
+    kay "That's Asaga for you."
+    
+    show chigara uniform excited determined with dissolve
+    
+    chi "Everyone knows there's another battle coming. We're all doing our best."
+    kay "... ... ..."
+    kay "I feel like this one's going to be different. PACT's been acting strange."
+
+    show chigara uniform neutral neutral with dissolve
+
+    chi "In what way?"
+    kay "They came back with a smaller force after withdrawing. A force that size wouldn't be able to conquer Ongess by itself."
+    kay "I'm not sure what they're after this time."
+    chi "Do you think Cosette's pirates have something to do with it?"
+    kay "No doubt."
+    kay "The only strategy I can think of is that PACT plans to sneak past our defensive line and hit the Combined Fleet while it's docked."
+    kay "They'll try to wear us down for weeks with feints until we finally get careless and let a ship warp past us."
+    kay "It's a waiting game they must be playing..."
+    
+    show chigara uniform excited determined with dissolve
+    
+    chi "Don't worry captain, we won't let anything past!"
+    
+    show asaga uniform neutral neutral:
+        xpos 0.23
+    with dissolve
+    
+    asa "... ... ..."
+    kay "Hey, on another topic, there's Asaga right there."
+    
+    show asaga uniform neutral guck with dissolve
+    
+    asa "Uck..."
+    
+    show asaga uniform armscrossed forcedhappy with dissolve
+    
+    asa "W-well, hello there, capt'n! Enjoying your lunch break with Chigara!? Uwah-hahah!!"
+    kay "I was just trying to figure some things out."
+    
+    show asaga uniform excited happy with dissolve
+    
+    asa "Ooo, I wonder what's on the menu today! Yesterday, we even had bulgogi! Uwah, Alliance requisitions sure are generous, huh?"
+    asa "Looks like it's super spicy curry for me today! With a side of even more hot sauce!"
+    asa "Listen up, Chigara! The key to victory in war is first to conquer spicy food! A true hero is not born unless you can handle spice!"
+    
+    show chigara uniform handonchest forcedsmileblush with dissolve
+    
+    chi "I... see..."
+    "Asaga picked up a tray of curry from the counter."
+    
+    show asaga uniform armscrossed grin with dissolve
+    
+    asa "And with that, I'm off! Enjoy your chat together!"
+    kay "You're not joining us?"
+    asa "Oh, no, no, no, no, no! I've got more scenarios to run on the simulator!"
+    asa "Can't let the skills get dull, ya know! Who knows when PACT might attack again!"
+    
+    menu:
+        "Make sure you don't over exert yourself, Asaga.":
+            jump sureexertasaga
+            
+        "Wow, I'm impressed. What's come over you?":
+            jump impressedcomeyou
+            
+label sureexertasaga:
+    
+    asa "Thanks for the concern, capt'n! But dun worry, I never run outta energy!"
+
+    jump seeenjoyworry
+
+label impressedcomeyou:
+
+    asa "Oh nuthin, just a certain pirate to beat and a ship to protect!"
+    asa "I'm just doing my part to the ship, capt'n!"
+    
+    jump seeenjoyworry
+    
+label seeenjoyworry:
+
+    asa "See ya guys! Enjoy yourselves!"
+    
+    show asaga uniform armscrossed grin:
+        zoom 1.0
+        ease 0.1 xpos 0.24
+        ease 0.6 xpos -0.5
+    
+    chi "... ... ..."
+    
+    show chigara uniform handonchest sad with dissolve
+    
+    chi "Sometimes, I worry about her..."
+    kay "Don't worry, Chigara. I'll talk to her later and find out what's going on."
+    chi "Thank you, captain."
+    
+    $ chi_location = None
+    $ captaindeck = 0
+    jump dispatch
+
+
+label icaribelievelet:
+
+    hide screen ship_map
+    scene bg hangar
+    show icari uniform armscrossed smilesidesmile:
+        xpos 0.3
+    show kryska uniform armscrossed frown:
+        xpos 0.55
+    with dissolve
+    
+    window show
+
+    ica "Heh, I can't believe you actually let yourself get captured by that little runt."
+    kry "I reiterate, she was being escorted by forty armed gunmen. We had no choice but to surrender."
+    
+    show icari uniform armscrossed tsun with dissolve
+    
+    ica "Pft. The first time you told me, there were just twenty gunmen. And now there's over forty?"
+    
+    show kryska uniform bothhandsonhips angry with dissolve
+    
+    kry "It was a chaotic situation! You cannot expect me to remember every detail!"
+    kay "You guys... Will you two ever get along?"
+    kry "T-the mercenary started it!"
+    
+    show kryska uniform salute mad with dissolve
+    
+    kry "E-er, I mean, sir!"
+    ica "Heh, it's not my fault soldier boy got herself captured."
+    
+    show claude uniform fingerup closedeyessmile:
+        xpos 0.85
+    with dissolve
+    
+    cla "Ah ah ah Icari... Weren't you the one who nearly started crying when you found out?"
+    
+    show icari uniform neutral surprise with dissolve
+    
+    ica "W-wha!?"
+    cla "In fact, you then marched down to the armory and strapped more weapons on yourself than you could carry, screaming something about a rescue mission!"
+    cla "The commander had to get six guys from security to finally put you down!"
+    
+    show icari uniform armscrossed laughblush with dissolve
+    
+    ica "I-I-I have n-no idea what you're talking about! H-hahaha!!"
+    
+    show claude uniform fingeronlip hearteyeblush with dissolve
+    
+    cla "Oh my... Could it be that you actually care about Kryska?"
+    
+    show icari uniform point shoutblush with dissolve
+    
+    ica "EAAHHH!!! S-shut up, shut up, shut up!"
+    ica "I don't care about anyone!"
+    ica "I'm Icari Isidolde! Mercenary of cold steel!"
+    
+    show icari uniform neutral madblush with dissolve
+    
+    ica "I-In fact, you could say I'm just too experienced to care about relationships! N-not that I'm interested in that kinda stuff! 'C-cause I'm not, ya hear!?"
+    cla "You're turning red..."
+    ica "I-I'm leaving! T-the Phoenix needs... calibrations!"
+    
+    show icari uniform neutral madblush:
+        zoom 1.0
+        ease 0.1 xpos 0.32
+        ease 0.7 xpos -0.5
+    
+    kay "She's always trying to act cool, and yet..."
+    
+    show icari uniform point shoutblush:
+        zoom 1.0 xpos -0.2
+        ease 0.3 xpos 0.1 rotate 15
+    
+    ica "I DO NOT ALWAYS TRY TO ACT COOL!"
+    
+    show icari uniform point shoutblush:
+        zoom 1.0
+        ease 0.7 xpos -0.5 rotate 0
+    
+    kay "See what I mean?"
+    kry "I apologize for the mercenary's lack of respect, sir!"
+    kay "(On the other hand, she's always straight laced about everything...)"
+    kay "Uh... carry on, lieutenant. With whatever you were doing..."
+    kay "And Claude... Try to stay out of trouble."
+    
+    show claude uniform oops teehee with dissolve
+    
+    cla "Teehee."
+    
+    $ kry_location = None
+    $ ica_location = None
+    $ captaindeck = 2
+    
+    jump dispatch
+
+label captainsituationpiratepact:
+    
+    hide screen ship_map
+    scene bg bridge
+    show ava uniform alt neutral neutral
+    with dissolve
+    
+    window show
+
+    ava "Captain, we have a situation."
+    kay "Report."
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "We just picked up new warp signatures. A pirate fleet has just warped in high orbit around Ongess."
+    kay "Red alert. Power our weapons and prepare to launch our ryders."
+    
+    play music "Music/Proditionis.ogg" fadeout 1.5
+    play sound "sound/redalert.ogg"
+    scene bg bridgered
+    show ava uniform handonhip neutral
+    with dissolve
+    
+    kay "Should have figured Cosette would show her face sooner or later. Size?"
+    ava "The largest pirate fleet we've seen yet. We never thought they could organize something that large. They must have pulled in ships from over fifteen different crime rings."
+    ava "The PACT fleet is closing in as well. It seems they were waiting for the pirates to fill their ranks."
+    ava "We are receiving a transmission from the PACT fleet."
+    kay "Put it through."
+    
+    show ava uniform handonhip neutral:
+        zoom 1.0
+        ease 0.5 xpos 0.8
+        
+    pause 0.0001
+    
+    show fontana:
+        xpos 0.3
+    with wipeup
+    
+    fon "Captain Shields. A pleasure to finally meet you. I am Veniczar B. Fontana of the Crimson Fleet. I am here to retrieve the princess and end your occupation of Ongess."
+    kay "I'm afraid that wedding's been annulled. Something about shooting the father-in-law dead during the wedding."
+    fon "Unfortunate. Then it appears I have no choice but to take her by force."
+    kay "Not so fast, Fontana. We already took care of your friend. Uhh... what was his name..."
+    kay "The big guy with the mustache! And you're coming at us with less than half the ships he did."
+    kay "There's no way you're going to win this."
+    fon "Hmph. Cullen was a mere fool and a stain to our cause. His Imperial decadence made him weak willed and cowardly. You will find my fleet to be quite different, captain."
+    fon "Numbers are irrelevant where tactics are concerned."
+    kay "That's... my line."
+    fon "Heh. I am eager to finally cross cannons with the Vanguard of Far Port."
+    fon "Prepare yourself!"
+    
+    hide fontana with wipedown
+    
+    kay "That's enough of Veniczar Fabulous. Ava, put the situation on the screen."
+    
+    show cg_ongess 1:
+        xpos 0.1 ypos 0.2
+    with dissolve
+   
+    ava "Aye sir. We have the PACT fleet approaching here."
+    
+    show ava uniform altneutral frown with dissolve
+    
+    ava "The pirate fleet approaches from the bottom."
+    ava "Our forces have been stretched out in a perimeter around our docks."
+    kay "A pincer attack, huh..."
+    kay "The PACT fleet must have been biding its time, waiting for backup to arrive."
+    kay "They're going to hit a single point on our perimeter to break through and detonate the Ongessite in our docks."
+    
+    show cg_ongess 2 with dissolve
+    
+    kay "The Alliance fleet will merge their forces here to meet the two fleets. But even then, over half our ships won't be able to fire on the enemy fleets by the time they hit the perimeter."
+    kay "Our only hope is to hold the combined enemy fleet back until the remaining Alliance ships arrive."
+    ava "Understood, captain."
+    
+    hide cg_ongess with dissolve
+    
+    kay "All hands, this is the captain speaking. Assume combat stations. Scramble all our ryders."
+    kay "It's the moment we've been waiting for. Remember your training, and make us proud!"
+
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+
+    window hide
+
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+    
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+
+    call mission16_inits
+    $ BM.mission = 16
+    jump battle_start
+
+label mission16:
+
+    $BM.battle_bg = "Background/space9.jpg"
+
+    $BM.battle()  #continue the battle
+    
+    if check1 == False and BM.turn_count == 3:
+        
+        $ check1 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        
+        python:
+            
+            create_ship(PactBattleship(),(12,1))
+            create_ship(PactBattleship(),(13,1))
+            
+    if check2 == False and BM.turn_count == 4:
+        
+        $ check2 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 5.ogg"
+        
+        python:
+            
+            create_ship(PirateIronhog(),(12,16))
+            create_ship(PirateIronhog(),(13,16))
+            
+            create_ship(PirateGrunt(),(16,11))
+            create_ship(PirateGrunt(),(16,12))
+            create_ship(PirateGrunt(),(16,13))
+            create_ship(PirateGrunt(),(16,14))
+            create_ship(PirateGrunt(),(16,15))
+
+    if check3 == False and BM.turn_count == 5:
+        
+        $ check3 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        
+        python:
+            
+            create_ship(PactSupport(),(17,5))
+            create_ship(PactSupport(),(17,8))
+
+    if check4 == False and BM.turn_count == 7:
+        
+        $ check4 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        
+        python:
+            
+            create_ship(PactBattleship(),(17,5))
+            create_ship(PactBattleship(),(17,8))
+            create_ship(PactCarrier(),(18,7))
+            
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission16 #loop back
+    else:
+        pass #continue down to the next label
+
+label aftermission16:
+    
+    hide screen battle_screen
+    hide screen commands
+    
+    scene bg bridgered
+    show ava uniform fistup yes
+    with dissolve
+
+    window show
+    
+    ava "Mission complete, captain. The enemy force has been decimated."
+    ava "The Alliance fleet is steadily gaining on the enemy."
+    kay "Send a message to the PACT flagship."
+    
+    show ava uniform fistup yes:
+        zoom 1.0
+        ease 0.5 xpos 0.3
+    
+    pause 0.0001
+    
+    show fontana:
+        xpos 0.7
+    with wipeup
+    
+    kay "You see, Fontana? Now why don't you stick your tail between your legs and scurry back to New Eden?"
+    fon "You overestimate yourself, captain."
+    fon "You have quite an interesting vessel. I believe it was instrumental in winning the Battle of Far Port, was it not?"
+    
+    show ava uniform altneutral angry with dissolve
+    
+    ava "Captain, we're detecting new warp signatures!"
+    
+    play music "Music/March_to_Glory.ogg"
+    
+    scene cg_ongess_carrier_back with dissolve
+    
+    play sound "sound/large_warpout.ogg"
+    
+    show cg_ongess_carrier_carrier1:
+        xpos 1.0 ypos -0.3
+        ease 0.5 xpos 0.0 ypos 0.0
+    show white:
+        alpha 0
+        pause 0.2
+        ease 0.2 alpha 0.8
+        ease 0.2 alpha 0.0
+    
+    fon "An assault carrier... Swift as a battle cruiser, and supported by a squadron of ryders like a carrier..."
+    fon "Capable of both lightning strikes and long range operations. Quite impressive, considering it was made by a single Neutral Rim world."
+    fon "Now, imagine not a single prototype vessel, but an entire fleet of advanced warships built with the resources of all the worlds of the People's Alliance!"
+    
+    play sound "sound/large_warpout.ogg"
+    show cg_ongess_carrier_carrier2 behind cg_ongess_carrier_carrier1:
+        xpos 1.0 ypos -0.3
+        ease 0.2 xpos 0.0 ypos 0.0
+    pause 0.4
+    
+    play sound1 "sound/large_warpout.ogg"
+    show cg_ongess_carrier_carrier3 behind cg_ongess_carrier_carrier2:
+        xpos 1.0 ypos -0.3
+        ease 0.3 xpos 0.0 ypos 0.0
+        
+    pause 0.5
+
+    play sound2 "sound/mechfligh.ogg"
+
+    show cg_ongess_carrier_ryder1:
+        xpos 1.0 ypos -0.3
+        ease 0.5 xpos 0.0 ypos 0.0
+        
+    pause 0.4
+    
+    show cg_ongess_carrier_ryder2:
+        xpos 1.0 ypos -0.3
+        ease 0.5 xpos 0.0 ypos 0.0
+        
+    pause 0.4
+
+    show cg_ongess_carrier_ryder3:
+        xpos 1.0 ypos -0.3
+        ease 0.5 xpos 0.0 ypos 0.0
+        
+    pause 0.4
+    
+    show cg_ongess_carrier_ryder4:
+        xpos 1.0 ypos -0.3
+        ease 0.5 xpos 0.0 ypos 0.0
+        
+    pause 0.4
+
+    kay "Fontana...!"
+    fon "This is the end for you, captain!"
+    ava "It's a trap! The initial PACT fleet was merely a decoy, captain!"
+    kay "Regroup our forces! Engage the new ships!"
+
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+
+    window hide
+
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+    
+    $ check1 = False
+    $ check2 = False
+
+    call mission17_inits
+    $ BM.mission = 17
+    jump battle_start
+
+label mission17:
+
+    $BM.battle_bg = "Background/space9.jpg"
+    
+    if check1 == False and BM.turn_count == 3:
+        
+        $ check1 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+        python:
+            create_ship(PactAssaultCarrier(),(14,3))
+            create_ship(PactAssaultCarrier(),(14,15))
+            create_ship(MissileFrigate(),(14,4))
+            create_ship(MissileFrigate(),(15,4))
+            create_ship(MissileFrigate(),(13,14))
+
+    if check2 == False and BM.turn_count == 6:
+        
+        $ check2 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 5.ogg"
+        python:
+            create_ship(PactAssaultCarrier(),(15,6))
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission17 #loop back
+    else:
+        pass #continue down to the next label
+
+
+label aftermission17:
+    
+    hide screen battle_screen
+    hide screen commands
+    
+    play music "Music/Invasion of Chaos.ogg"
+    
+    scene bg bridgered
+    show ava uniform altneutral angry
+    with dissolve
+    
+    window show
+    
+    ava "We've sank all the ships in our area! However, the Alliance fleet is still facing substantial resistance from the enemy!"
+    kay "Fontana! It's over!"
+    kay "Your new toys are gone. Surrender, or we'll scrap your entire fleet!"
+    
+    show fontana:
+        xpos 0.8
+    with wipeup
+    
+    fon "... ... ..."
+    fon "No. It is our victory."
+    kay "What?"
+    
+    show cosette plugsuit handsonhip evilsmile:
+        xpos 0.21
+    with wipeup
+    
+    cos "Heh-heh-heh... Did you forget about me already, captain?"
+    
+    show ava uniform neutral angrytalk with dissolve
+    
+    ava "Warning! New pirate signatures!"
+    kay "What!? Where!?"
+    ava "From inside the Ongess habitat stations!"
+    
+    show cosette plugsuit point evilsmile with dissolve
+    
+    cos "All ryders! It's go time!"
+    ava "Enemy ryders are flooding out from the orbital habitats! They must have been hiding inside them all this time!"
+    cos "Heh-hehehe..."
+    cos "Fontana and the pirate fleets were just decoys! Now the Combined Fleet's as vulnerable as sitting ducks!"
+    kay "Get the situation on screen!"
+    
+    hide cosette
+    hide fontana
+    with dissolve
+    
+    show ava uniform neutral angrytalk:
+        zoom 1.0
+        ease 0.5 xpos 0.8
+    
+    pause 0.0001
+    
+    show cg_ongess 3:
+        xpos 0.1 ypos 0.2
+    with dissolve
+    
+    ava "The Alliance fleet has merged here to counter the enemy fleets!"
+    ava "Cosette, and a battalion of bomber ryders approach from the orbital habitats! Time until they intercept our docks: 4 minutes!"
+    kay "Fall back! Intercept Cosette and her bombers!"
+    ava "We're entangled with Fontana's forces! There's no way we'll make it back in time!"
+    
+    play music "Music/The_Flight_of_the_Crow.ogg" fadeout 1.5
+    
+    hide cg_ongess 3 with dissolve
+    show fontana:
+        xpos 0.2
+    with dissolve
+    
+    fon "Hahahaha...."
+    fon "Haahahahaha!!!"
+    fon "How disappointing, captain. I expected more from the victor of Far Port."
+    fon "In one fell swoop, every Alliance ship of the Combined Fleet will be cast into the hell fire of the very Ongessite they sought to steal from Ongess."
+    fon "Poetic justice, is it not? A fitting end to the their Imperialistic ambitions in the Neutral Rim!"
+    fon "Just as the Imperials before them, they will fall not to our cannon fire, but to the fruits of their own greed. For their systematic exploitation of the weak is but a cancer which will eventually consume their body, unless it is cleansed with fire."
+    fon "Now, captain, behold PACT's true goal! The eradication of the Imperialists and the birth of our new galactic order!"
+    
+    scene cg_bomberline with dissolve
+    
+    cos "The Ongessite tanks are in range!"
+    cos "This is for you, captain. You were always my favorite."
+    
+    play sound "sound/missilelaunch.ogg"
+    show cg_bomberline_missiletrail with horizontalwipereverse
+    
+    cos "Heh-hehehe... Aaahahahaha!!!"
+    
+    scene cg_ongessport1 with dissolve
+    
+    pause 1.0
+    
+    play sound "sound/explosion4.ogg"
+    
+    scene cg_ongessport2:
+        ease 0.02 xpos 0.0
+        ease 0.02 xpos 0.01
+        ease 0.04 xpos -0.01
+        repeat 8
+    with dissolve
+    
+    pause 4.0
+    
+    scene bg bridgered
+    show ava uniform neutral surpriseangry
+    show fontana:
+        xpos 0.2
+    with dissolve
+    
+    ava "The enemy ryders have begun their attack! The Combined Fleet is being sunk!"
+    ava "Catastrophic losses are being reported! Your orders, captain!?"
+    "Shields clenched his fists."
+    kay "FONTANA...!!!"
+    fon "It is over, captain. The Alliance fleet is lost. Your ship will be seized and the Princess returned to Arcadius."
+    fon "As for you, you will stand trial for your crimes against humanity. Cosmos tells me you were responsible for quite a number of civilian deaths on Ongess."
+    
+    show grey:
+        xpos 0.8
+    with wipeup
+    
+    gre "Not yet."
+    fon "So the great Grey of the Emerald Fleet finally speaks. Have you come to discuss terms of surrender?"
+    gre "You little punk."
+    gre "Don't think you're the first commander to dare raise sword against me. But you're still young."
+    gre "Sit down boy, and let me show you {i}war.{i}"
+    ava "Captain, I'm detecting radiation charges coming from the Combined Fleet!"
+    gre "I've just ordered every Alliance ship to arm their nuclear torpedoes at Ongess."
+    gre "These are my terms. Tell your little pirate friend to turn around and scurry back to the rat hole she crawled out of."
+    gre "And as for you, take your ships back to New Eden and shore up your defenses. You'll need them to escape the coming hellfire."
+    gre "Or else I'll drop enough nukes on Ongess to make it glow brighter than the sun for the next millennia!"
+    fon "You cannot be serious, admiral. A man of the Alliance would not mass murder 40 billion civilians!"
+    gre "Try me, boy..."
+    fon "Tsch..."
+    
+    play music "Music/Coming_Soon_Part1.ogg" fadeout 1.5
+    
+    hide ava
+    show cosette plugsuit handsonhips shout
+    with dissolve 
+    
+    cos "He's bluffing! We can wipe out the entire Alliance fleet here and now!!"
+    fon "... ... ..."
+    gre "You have to the count of three to withdraw your forces!"
+    gre "One..."
+    cos "DON'T LISTEN TO HIM!! He's too much of a coward to fire!!"
+    fon "... ... ..."
+    
+    show cosette plugsuit point yandereshout with dissolve
+    
+    cos "FONTANA!!!!!"
+    cos "All their ships are gathered here!! We'll never get another chance like this!!!"
+    cos "We can end the Alliance's military supremacy in just fifteen more seconds! This will be the end of the Alliance, and the beginning of a new era!!"
+    gre "TWO!!"
+    cos "We'll all die if it means the end of the Alliance! INDEPENDENCE OR DEATH!!!"
+    cos "Just give us ten more seconds!!! We can do this!!!"
+    
+    menu:
+
+        "Admiral, stop this madness!!":
+            jump admiralstopthismadness
+        "You've lost, Fontana.":
+            jump youvelostfontana
+
+label admiralstopthismadness:
+    
+    $ affection_cosette += 1
+    $ captain_moralist += 2
+    
+    jump holdwarpcoordinatesyour
+    
+label youvelostfontana:
+    
+    $ captain_prince += 1
+    
+    jump holdwarpcoordinatesyour
+    
+label holdwarpcoordinatesyour:
+
+    play music "Music/Coming_Soon_Part2.ogg" fadeout 1.5 noloop
+
+    fon "All units, hold your fire and warp to the fall back coordinates! Cosmos, withdraw your forces!"
+    cos "You idiot!!"
+    fon "A victory at the cost of Ongess is no victory at all, but a catastrophic defeat. We have hurt the Combined Fleet enough. We will reserve our forces for another opportunity."
+    cos "Another opportunity like this won't ever come!!"
+    fon "Enough, Cosmos. If you care for the plight of your people at all, then you will order your ships to retreat."
+    cos "AARGGHHH!!! Fuck you Fontana!"
+    cos "As for you, captain..."
+    
+    play music "Music/Prayers.ogg" fadeout 1.5
+    
+    if affection_cosette == 3:
+        jump youllregretlots
+    if affection_cosette < 3:
+        jump oncehandsyoucrew
+    
+label youllregretlots:
+
+    cos "You'll regret ever throwing your lots with the Alliance...!"
+    cos "The Alliance will plant their flag on every world in the Neutral Rim, until the entire galaxy is being sucked dry to fatten Solaris!"
+    cos "Just you wait... You think you're winning this war... But the Alliance will stick a knife up your back one day!"
+    cos "And then... and only then... Will you realize what you've done today!"
+    
+    jump unitsbreakpointtoday
+
+label oncehandsyoucrew:
+
+    cos "Once I get my hands on you and your crew..."
+    cos "I'll tie up all your little lovers... And I'll have you watch as I slowly remove one body part after another from them... And then I'll feed them to you, until you crave nothing but the meat of your comrades!!"
+    cos "And once you're finally a broken shell of your former self... I'll keep you around as a slave... And you'll do nothing but adore me as your master."
+    cos "YOU'LL REGRET EVER FUCKING WITH ME!!!"
+    
+    jump unitsbreakpointtoday
+
+label unitsbreakpointtoday:
+
+    cos "All units! Break off and warp away to the fall back point! We've done enough for today!"
+    
+    hide cosette with dissolve
+    hide fontana with dissolve
+    show ava uniform altneutral angry with dissolve
+    
+    ava "The enemy fleets are falling back! The plan worked!"
+    
+    
+    kay "... ... ..."
+    kay "Stop all combat operations and prepare to assist with salvage and recovery."
+    
+    scene bg bridge
+    show ava uniform altneutral angry
+    show grey:
+        xpos 0.8
+    with dissolve
+    
+    "Shields fell into his chair."
+    kay "... ... ..."
+    
+    show ava uniform handonhip mad with dissolve
+    
+    ava "All enemies have warped out of the system."
+    kay "And our status?"
+    ava "Substantial damage to our docks. We have uncontrollable Ongessite leaks at nearly 40 percent of the tanks. All together, we've lost nearly 120 battle cruisers during the attack."
+    kay "That's nearly 30 percent of our entire fleet."
+    gre "This attack was grave. But we have avoided the worst of it."
+    gre "I will regroup our forces. More reinforcements are due from our core worlds soon."
+    gre "Fear not captain. With this crisis averted, we will be able to push further into the PACT occupied territory as planned."
+    gre "I believe Cera is not that far away now, is it?"
+    kay "No."
+    gre "Well then, we best get to work."
+    
+    hide grey with wipedown
+    
+    kay "... ... ..."
+    
+    if OngessTruth == True:
+        jump incidentongesshit
+        
+    if OngessTruth == False:
+        jump newssecondongessthe
+
+label incidentongesshit:
+    
+    scene black with horizontalwipe
+    scene bg captainsoffice2
+    show ava uniform armscrossed neutral
+    with horizontalwipe
+
+    ava "News of the incident at Ongess has hit the holonet."
+    kay "What's the response?"
+    ava "Virtually every Progress Party affiliated news source is calling it a massacre. While each news source varies greatly in the details, 300 to 1500 civilian deaths are commonly being reported."
+    ava "In the latest opinion poll published by All Alliance News, Admiral Grey lost 4 points in his standings. He now controls 41 percent of the vote, against 44 percent for Progress candidate Frandall."
+    ava "Meanwhile, the Progress Party has started a new bill in the Solar Congress calling for the withdrawal of all Alliance ships from Ongess. While it is not expected to pass while Alythe is a lame duck president, party leaders have vowed to mount legal challenges in the Solar Court if Grey is elected to the presidency."
+    kay "... ... ..."
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "Are you feeling all right, captain?"
+    kay "You suppose Cosette's right?"
+    
+    show ava uniform alt neutral mad with dissolve
+    
+    ava "Captain. Cosette is a madwoman and a criminal."
+    kay "I saw a man nearly glass an entire planet today."
+    kay "We can call ourselves the heroes all we want. We can argue we didn't start this war and that PACT was the aggressor."
+    kay "But after today, we're hardly any better than Arcadius."
+    ava "Captain, threatening to use force and the use of force are two very different things."
+    ava "A threat coupled with the ability to carry the threat out is merely a diplomatic tool. Every civilized government in the galaxy recognizes such threats as an acceptable use of diplomacy to achieve policy without bloodshed."
+    ava "Only the use of force is regulated by galactic law. Words are not."
+    kay "A very fine distinction, Ava. But history shows humanity will never appreciate the line between the two. Or else the Holy Ryuvian Empire would never have destroyed itself and cast the galaxy into a dark age."
+    ava "Neither us or the Alliance asked for this war. It was thrust upon us."
+    kay "... ... ..."
+    kay "What else will we be forced to do? And where will we cut the line?"
+    ava "... ... ..."
+    ava "This is war. It's either them or us."
+    kay "... ... ..."
+    kay "That will be all, commander."
+    ava "Captain."
+
+    jump crewdownmean
+
+label newssecondongessthe:
+
+    scene black with horizontalwipe
+    scene bg captainsoffice2
+    show ava uniform armscrossed neutral
+    with horizontalwipe
+    
+    ava "News of the Second Battle of Ongess has hit the holonet."
+    kay "What's the response?"
+    ava "Virtually every Universalist affiliated news source is calling it a resounding victory, and further proof that PACT is losing the war."
+    ava "With this, PACT has been defeated at Far Port, and twice at Ongess. Many are drawing parallels between this war and the Alliance-Imperial War which led to the creation of the Solar Alliance."
+    ava "Once again, the free people of the Alliance will unite to defeat a tyrant who seeks to rule all of mankind. And just like two hundred years ago, a great Grey will lead the Alliance to total victory against the forces of evil. Or so they say."
+    ava "In the latest opinion poll published by All Alliance News, Admiral Grey gained 4 points in his standings. He now soundly dominates the polls at 48 points, against Progress candidate Frandall's 37 points."
+    ava "All in all, this election's hardly even a competition any more."
+    kay "... ... ..."
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "Are you feeling all right, captain?"
+    kay "Yeah."
+    kay "From the moment they nuked Cera City, PACT lost its claim to the moral high ground. Whatever their propaganda machine may spurt, they are a menace to the galaxy."
+    kay "We must use whatever means necessary to end Arcadius, or else he will do the same to us."
+    kay "With Ongess secured, it will be Arcadius who knows fear."
+    ava "Captain."
+    kay "... ... ..."
+    kay "That will be all, commander."
+    ava "... ... ..."
+    
+    show ava uniform armscrossed looklefttalk with dissolve
+    
+    ava "But what about you, Kayto?"
+    kay "... ... ..."
+    kay "I'm the captain. My duty is to my crew."
+    ava "... ... ..."
+    kay "Once the war is over, we will wash our hands clean and return to our civilian lives. But until then, we will show no quarter."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Understood, captain."
+    
+    jump crewdownmean
+
+label crewdownmean:
+    
+    play music "Music/Lighting_Soul.ogg" fadeout 1.5
+    
+    scene black with dissolvelong
+    scene cg_chigarateatime_happy with dissolvelong
+
+    "Shields sat with Chigara in his quarters for another round of tea."
+    kay "Did I let the crew down, Chigara?"
+    chi "What do you mean, captain?"
+    kay "He outmaneuvered me."
+    kay "This Fontana... He is a foe deadlier than anyone we've encountered so far."
+    kay "He predicted every one of my moves even before the battle began."
+    kay "We got lucky this time... But what will happen next time?"
+    chi "Next time, you'll be ready."
+    chi "He had the benefit of surprise this time. He won't ever be able to do that again now."
+    "Shields fingered his tea cup."
+    kay "Why does war turn good people into monsters?"
+    kay "Fontana... He's a good man. And Grey is no murderer either."
+    kay "And yet... When the lives of those around us are in danger... We must make decisions which we would ordinarily never make."
+    kay "Decisions to murder billions of lives. Decisions to ignore atrocities. Decisions to condemn innocents to death."
+    chi "... ... ..."
+    chi "That's what separates leaders from followers, captain."
+    chi "Whatever you decide, I know it will be for the greater good."
+    kay "... ... ..."
+    chi "You will always be my hero, captain."
+    kay "... ... ..."
+    kay "Heh, I'm sorry to disappoint."
+    chi "... ... ..."
+    chi "You never disappoint."
+    "Chigara stroked Shields' arm."
+    kay "... ... ..."
+    chi "No matter what happens, I'll always be here for you."
+    kay "Thanks Chigara..."
+    "Shields embraced Chigara and held her close."
+    "The scent of her hair was his sole comfort against the growing darkness in his heart.."
+    kay "This will be over soon."
+    kay "Once Cera is free once more, we'll put our weapons down."
+    kay "Then maybe we'll finally be able to start that bakery of yours."
+    chi "Eh-heh... You're making me blush captain..."
+    
+    stop music fadeout 2.0
+
+    window hide
+
 label credits:
 
      ###############################################################PLACE HOLDER
@@ -17757,8 +18878,145 @@ label credits:
     cre "W-Y:{p}WalkingAtlas, Warboss Curb, Wes Owens, Will Chang, Will Kenni, Will Lawrence, William Bradley, William Bryant, William Fleming, William Joseph Owens, William Laminack, William Perry, William Roberts, William Taylor, Willid, Wilson Bilkovich, Wizbang The Mighty, www.boredgamer.co.uk, Wyrtt"
     cre "X-Z:{p}Xavier Dolci, Xiao, xxzindxx, Yaka, Yohan Withington, Yuri Van Dierendonck, Yurii Furtat, Zac Binion, Zach Milosic, Zach Whitesell, Zachary Kosarik, zack wood, Zak Kalles, Zalminen, zanza, Zenelix, Zenigame, Zero Null, Zetsuna, Zikri Muzammil, Zu Long, Zythiku, アルバート　ウェークス（AJ)"
 
-    jump aftercredits5
+    jump aftercredits6
 
+label aftercredits6:
+    
+    
+    play music "Music/Prayers.ogg" fadeout 1.5
+    scene black with dissolvelong
+    
+    show kyoko dead2:
+        zoom 2.0 ypos 1.2 xpos 0.5
+    with dissolve
+
+    kyo "Kayto..."
+    
+    hide kyoko dead2
+    show maray dead:
+        zoom 2.0 ypos 1.6 xpos 0.5
+    with dissolve
+    
+    mar "You killed me..."
+    mar "You killed all of us..."
+    
+    hide maray with dissolve
+    
+    scene bg captainsoffice2_dark with dissolvelong
+    
+    "Shields jolted awake."
+    kay "... ... ..."
+    kay "(Maray...)"
+    "He stumbled out of bed and splashed himself with water."
+    kay "... ... ..."
+    kay "I didn't kill her."
+    "... ... ..."
+    "... ..."
+    "..."
+    "Shields uncapped a bottle of vodka and poured himself a shot."
+    
+    show grey with dissolve
+    
+    gre "We are the greatest force of freedom in the history of the galaxy."
+    gre "Sit down boy, and let me show you war."
+    
+    hide grey
+    show fontana
+    with dissolve
+    
+    fon "You will stand trial for your crimes against humanity."
+    
+    hide fontana
+    show ava uniform handonhip mad
+    with dissolve 
+    
+    ava "Your orders, captain!?"
+    
+    hide ava
+    show icari plugsuit neutral mad
+    with dissolve
+    
+    ica "Your orders!?"
+    
+    hide icari
+    show kryska uniform neutral frown
+    with dissolve
+    
+    kry "Your orders sir!?"
+    
+    hide kryska
+    show chigara plugsuit excited scared
+    with dissolve
+    
+    chi "Captain... What do we do!?"
+    
+    hide chigara with dissolve
+    
+    kay "(...I don't know.)"
+    kay "... ... ..."
+    "Shields gripped his glass."
+    kay "I don't know...!!"
+
+    stop music fadeout 2.0
+
+    scene black with dissolvelong
+
+    window show
+    play music "Music/March_of_Immortals.ogg"
+
+    "NEXT TIME ON SUNRIDER..."
+    "PACT may be stopped, but it is far from defeated!"
+    "Arcadius unveils a secret plan to end the Alliance!"
+    "The Captain's past revealed!"
+    "Sunrider vs. Legion!"
+    "The mask of Arcadius will shatter!"
+    "The shocking truth!"
+    "All this and more in..."
+    "SUNRIDER: THE MASK OF ARCADIUS"
+    "...and don't forget, there'll be lots of space whales next time too!"
+
+    show dontmissit:
+        zoom 10
+        ease 0.5 zoom 1
+
+    play sound "sound/drum.ogg"
+    
+    $ renpy.pause(1.0)
+
+    stop music fadeout 1.5
+    scene white with dissolvelong
+
+    play sound "sound/drumroll.ogg"
+
+    "And now... The results of our great waifu war!"
+    "And the winner is..."
+
+    show poll5:
+        xalign 0.5 yalign 0.5
+    with dissolve
+    
+    pause
+    
+    show chigara uniform excited surpriseblush with dissolve
+    
+    chi "A-ah? I won?"
+    
+    show chigara uniform handstogether embarassedsmile with dissolve
+    
+    chi "E-eh heh, thank you everyone, for voting for me!"
+    chi "I guess this means that Chigara finally will be main girl from now!"
+    
+    show asaga uniform armscrossed gloom:
+        xpos 0.2
+    with dissolve
+    
+    asa "Uuuu... Third place?"
+    asa "They told me I'd be the main girl..."
+    "Ain't it sad, Asaga!? When will your day come!?"
+    asa "Sniffle."
+    
+    return
+    
 label aftercredits5:
     
     scene black with dissolve

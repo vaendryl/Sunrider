@@ -366,6 +366,12 @@ init -2 python:
                         BM.ships.append(revived_ship)
                         revived_ship.location = launch_location
                         set_cell_available(launch_location,True) #the optional True actually lets me set this cell /un/available 
+                        
+                        #wipe all modifiers after a res
+                        for modifier in revived_ship.modifiers:
+                            revived_ship.modifiers[modifier] = [0,0]
+                        
+                        #play the resurrect voice
                         if hasattr(revived_ship,'resurrect_voice'):
                             if len(revived_ship.resurrect_voice) > 0:
                                 renpy.music.play( 'sound/Voice/'+renpy.random.choice(revived_ship.resurrect_voice),channel=revived_ship.voice_channel )

@@ -1211,6 +1211,9 @@ init 2 python:
             self.wtype = 'Laser'
             self.name = 'AllianceCruiser_Laser'
             self.lbl = 'Battle UI/button_laser.png'
+            self.tooltip = """
+            Lasers are accurate even from long distances, but lack fire power.
+            Mitigated by enemy shields."""
 
     class AllianceCruiserMissile(Missile):
         def __init__(self):
@@ -1224,6 +1227,11 @@ init 2 python:
             self.wtype = 'Missile'
             self.name = 'AllianceCruiser_Missile'
             self.lbl = 'Battle UI/button_missile.png'
+            self.tooltip = """
+            Fires a barrage of guided missiles at the enemy. While individually weak,
+            their large numbers provide heavy fire power and great accuracy even
+            at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
+
 
     class AllianceCruiserKinetic(Kinetic):
         def __init__(self):
@@ -1235,6 +1243,10 @@ init 2 python:
             self.wtype = 'Kinetic'
             self.name = 'AllianceCruiser_Kinetic'
             self.lbl = 'Battle UI/button_kinetic.png'
+            self.tooltip = """
+            Kinetics pack a punch, but are inaccurate against distant or small foes.
+            Armor is twice as effective at mitigating kinetic weaponry."""
+
 
     class AllianceCruiserAssault(Kinetic):
         def __init__(self):
@@ -1246,6 +1258,12 @@ init 2 python:
             self.wtype = 'Assault'
             self.name = 'AllianceCruiser_Assault'
             self.lbl = 'Battle UI/button_assault.png'
+            self.tooltip = """
+            Assault guns spray explosive low caliber rounds at the enemy. Even if
+            the enemy evades one round, others may hit. Armor is twice as
+            effective against assault. Also used to shoot down incoming enemy missiles,
+            but loses effectiveness against sustained barrages."""
+
 
 ###################BLACK JACK WEAPONS
 
@@ -2358,7 +2376,7 @@ init 2 python:
             self.id = 'wishall'
             self.display_name = "SELL WISHALL"
             self.cost = -10000            
-            self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instantaneous cash infusion of 10 000 credits.'
+            self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instant cash infusion of 10 000 credits.'
             self.visibility_condition = "store.wishall"
             
         def __call__(self): #here is where you decide what this item -does-.
@@ -2372,13 +2390,13 @@ init 2 python:
             self.id = 'sunrider_shield_upgrade'
             self.display_name = "SUNRIDER SHIELD UPGRADE"
             self.cost = 1500            
-            self.tooltip = "Install an older 2nd hand shield generator into the Sunrider. It's not very powerful but it's reliable and affordable."
+            self.tooltip = "Due to the Sunrider's unexpected departure from Cera, she was never outfitted with energy shielding. While her top of the line shield generator was lost with the fall of Cera, the Union can outfit the Sunrider with a basic shield generator. The Sunrider's shields can be further upgraded in the Research Lab after it is purchased."
             self.visibility_condition = 'store.sunrider.shield_generation == 0'
 
         def __call__(self):            
-            store.sunrider.shield_generation = 25
+            store.sunrider.shield_generation = 15
             store.sunrider.shields = store.sunrider.shield_generation
-            store.sunrider.shield_range = 1
+            store.sunrider.shield_range = 0
             BM.money -= self.cost
             renpy.restart_interaction()
             
