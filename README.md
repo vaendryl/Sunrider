@@ -1,10 +1,14 @@
+patch 6.0a
+======
+* bugfixes relating to enemy curses and the new order.
+* the movement tile next to a unit capable of countering will show up red.
+
 patch 6.0
 ======
 * fixed infinite melee range exploit
 * added AI for support units
 * new item in the store: shield generator for the Sunrider (added by Endershadow)
-* 
-
+* new order: All Guard. can not be used together with Full Forward
 
 patch 5.2
 ======

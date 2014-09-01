@@ -6,7 +6,7 @@ init -1 python:
     after_ep2 = BonusItem("Background/poll1.jpg", " Beta 2 Post Credits", "aftercreditsep2", 0.205)
     after_ep3 = BonusItem("CG/popularity2.jpg", " Beta 3 Post Credits", "aftercreditsep3", 0.155)
     after_ep4 = BonusItem("CG/popularity3.jpg", " Beta 4 Post Credits", "aftercredits4", 0.165)
-    after_ep5 = BonusItem("CG/popularity4.jpg", " Beta 4 Post Credits", "aftercredits5", 0.156)
+    after_ep5 = BonusItem("CG/popularity4.jpg", " Beta 5 Post Credits", "aftercredits5", 0.156)
 
     scenes = [doki_doki_space_whale, after_ep2, after_ep3, after_ep4, after_ep5]
 
