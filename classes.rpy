@@ -651,6 +651,7 @@ init -2 python:
                 ship.flak_effectiveness = 100
             for ship in player_ships:
                 ship.en = ship.max_en * (100 + ship.modifiers['energy regen'][0] ) / 100
+                if ship.en < 0: ship.en = 0
             self.active_weapon = None
             self.selected = None
             self.selectedmode = False
@@ -812,6 +813,7 @@ init -2 python:
                 self.draggable = True
 
             self.turn_count = 1
+            self.active_strategy = [None,0]
             self.ships = []
             self.selectedmode = False
 
@@ -1599,6 +1601,8 @@ init -2 python:
             self.location = None #this makes the imagebutton of this ship not be displayed on battle_screen
             bm.moving = True
 
+            order_state = BM.order_used
+            
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
@@ -1607,6 +1611,8 @@ init -2 python:
 
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
+            
+            BM.order_used = order_state
 
             self.location = new_location
             sort_ship_list()
@@ -1832,7 +1838,8 @@ init -2 python:
             missile = self.simulate(parent,target)
             BM.missile_moving = True
 
-
+            order_state = BM.order_used
+            
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
@@ -1848,6 +1855,8 @@ init -2 python:
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
+            BM.order_used = order_state
+            
             for ship in BM.ships:
                 ship.flak_used = False
                 ship.flaksim = None

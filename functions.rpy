@@ -596,6 +596,7 @@ init -6 python:
         renpy.hide_screen('tooltips')
         BM.phase = 'Player'
         BM.turn_count = 1
+        BM.active_strategy = [None,0]
         BM.ships = []
         BM.selectedmode = False
         VNmode() #return to visual novel mode. this mostly just restores scrolling rollback
@@ -701,6 +702,24 @@ init -6 python:
                     tile_locations.append((xposition,yposition,-cell_distance,a,b))
         return tile_locations
 
+    def has_weapon(ship,wtype):
+        """check if a ship has a weapon of a given type. the weapon type is passed as a string"""
+        for weapon in ship.weapons:
+            if weapon.wtype == wtype:
+                return True
+        return False
+        
+    def get_counter_attack(location):
+        """check if a location is next to an enemy unit that has an Assault type weapon"""
+        if location == None: return False
+        for ship in enemy_ships:
+            if get_distance(ship.location,location) == 1:
+                if has_weapon(ship,'Assault'):
+                    return True
+        return False
+                    
+                
+    
     def update_modifiers():
         """
         called when the phase changes. it ticks down modifiers and removes them when expired.
@@ -723,7 +742,7 @@ init -6 python:
             for ship in player_ships:                
                 for key in ship.modifiers:
                     mod_power,duration = ship.modifiers[key]
-                    if mod_power > 0:
+                    if mod_power != 0:
                         if duration == 1:
                             if mod_power < 0:
                                 show_message('the ' +ship.name+ ' recovered from its curse to its ' +key+ '!')

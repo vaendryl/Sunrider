@@ -622,20 +622,13 @@ screen battle_screen:
                 ##DISPLAY MOVEMENT OPTIONS##
         if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode:
             for tile in BM.selected.movement_tiles:
-
-                # imagebutton:
-                    # at movebutton
-                    # idle 'Battle UI/move_tile.png'
-                    # hover 'Battle UI/move_tile.png'
-                    # xanchor 0.5
-                    # yanchor 0.5
-                    # xpos tile[0]
-                    # ypos tile[1]
-                    # action Return(['move',(tile[3],tile[4])])
-                    # alternate Return("deselect")
                     
                 $ lbl = 'Battle UI/move_tile.png'
                 $ tile_location = (tile[3],tile[4])
+                
+                if get_counter_attack(tile_location):
+                    $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
+                
                 if tile_location == BM.mouse_location:
                     $ lbl = hoverglow(lbl)  
                 add lbl:

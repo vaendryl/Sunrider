@@ -1,3 +1,11 @@
+patch 6.0
+======
+* fixed infinite melee range exploit
+* added AI for support units
+* new item in the store: shield generator for the Sunrider (added by Endershadow)
+* 
+
+
 patch 5.2
 ======
 

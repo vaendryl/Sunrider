@@ -15,7 +15,7 @@ init -1 python hide:
     ## set to False before the game is released, so the user can't
     ## cheat using developer tools.
 
-    config.developer = False
+    config.developer = True
     #config.use_cpickle = False
     #config.save_dump = True
     config.log = None
@@ -29,7 +29,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider First Arrival"
-    config.version = " Beta 6.0"
+    config.version = " Beta 6.0a"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 15
@@ -285,12 +285,12 @@ init python:
     ## The name that's used for directories and archive files. For example, if
     ## this is 'mygame-1.0', the windows distribution will be in the
     ## directory 'mygame-1.0-win', in the 'mygame-1.0-win.zip' file.
-    build.directory_name = "SunriderFirstArrival"
+    build.directory_name = "SunriderFirstArrivalB6-Steam"
 
     ## The name that's uses for executables - the program that users will run
     ## to start the game. For example, if this is 'mygame', then on Windows,
     ## users can click 'mygame.exe' to start the game.
-    build.executable_name = "SunriderFirstArrival"
+    build.executable_name = "SunriderFirstArrivalB6-Steam"
 
     ## If True, Ren'Py will include update information into packages. This
     ## allows the updater to run.

@@ -3,6 +3,8 @@ label skirmish_battle:
     python:
         store.tempmoney = BM.money
         store.tempcmd = BM.cmd
+        store.temprockets = store.sunrider.rockets
+        store.temprepair_drones = store.sunrider.repair_drones
         enemy_ships = []
         destroyed_ships = []
         BM.mission = 'skirmish'
@@ -40,6 +42,8 @@ label skirmish_battle:
     python:
         BM.cmd = store.tempcmd
         BM.money = store.tempmoney
+        store.sunrider.rockets = store.temprockets
+        store.sunrider.repair_drones = store.temprepair_drones
     jump dispatch
     return
     
