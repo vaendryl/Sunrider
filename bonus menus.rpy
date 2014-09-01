@@ -5,10 +5,10 @@ init -1 python:
     doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1", 0.09)
     after_ep2 = BonusItem("Background/poll1.jpg", " Beta 2 Post Credits", "aftercreditsep2", 0.205)
     after_ep3 = BonusItem("CG/popularity2.jpg", " Beta 3 Post Credits", "aftercreditsep3", 0.155)
-    # uncomment this before the beta 5 release
     after_ep4 = BonusItem("CG/popularity3.jpg", " Beta 4 Post Credits", "aftercredits4", 0.165)
+    after_ep5 = BonusItem("CG/popularity4.jpg", " Beta 4 Post Credits", "aftercredits5", 0.156)
 
-    scenes = [doki_doki_space_whale, after_ep2, after_ep3, after_ep4]
+    scenes = [doki_doki_space_whale, after_ep2, after_ep3, after_ep4, after_ep5]
 
 screen deleted_scenes:
 
