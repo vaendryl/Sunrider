@@ -15,7 +15,7 @@ init -1 python hide:
     ## set to False before the game is released, so the user can't
     ## cheat using developer tools.
 
-    config.developer = True
+    config.developer = False
     #config.use_cpickle = False
     #config.save_dump = True
     config.log = None
@@ -29,7 +29,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider First Arrival"
-    config.version = " Beta 6.0a"
+    config.version = " Beta 6.0b"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 15
@@ -332,12 +332,12 @@ init python:
 
     ## To archive files, classify them as 'archive'.
 
-    build.classify('game/**.png', 'archive')
-    build.classify('game/**.jpg', 'archive')
-    build.classify('game/**.ogg', 'archive')
-    build.classify('game/**.wav', 'archive')
-    build.classify('game/**.mp3', 'archive')
-    build.classify('game/**.ttf', 'archive')
+    # build.classify('game/**.png', 'archive')
+    # build.classify('game/**.jpg', 'archive')
+    # build.classify('game/**.ogg', 'archive')
+    # build.classify('game/**.wav', 'archive')
+    # build.classify('game/**.mp3', 'archive')
+    # build.classify('game/**.ttf', 'archive')
 
 
     ## Files matching documentation patterns are duplicated in a mac app

@@ -3342,12 +3342,13 @@ label attacksuccess_liberty:
 
     $ Random = renpy.random.randint(1,3)
 
+    #something went very wrong with these files
     if Random == 1:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 1.ogg"
+        play chivoice "sound/Voice/Chigara/Attack Success Line 2.ogg"
     if Random == 2:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 2.ogg"
+        play chivoice "sound/Voice/Chigara/Attack Successful Line 2.ogg"
     if Random == 3:
-        play chivoice "sound/Voice/Chigara/Successful Attack Line 3.ogg"
+        play chivoice "sound/Voice/Chigara/Attack Successful Line 3.ogg"
 
     show chigara plugsuit handonchest happy:
         xzoom -1 xpos -0.2

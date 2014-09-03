@@ -1,3 +1,10 @@
+patch 6.0b
+======
+* fixed full forward not overwriting all guard
+* worked around possible crash in unit placement
+* replaced .rpa archive with separate files. this could reduce lag in battle.
+* fixed a problem with chigara's attack voice files
+
 patch 6.0a
 ======
 * bugfixes relating to enemy curses and the new order.

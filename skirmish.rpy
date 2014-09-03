@@ -220,6 +220,10 @@ label formationphase:  #pretty much a copy of missionskirmish but I can't be bot
     python:
         result = ui.interact()
         
+        if result == True or result == False:
+            # show_message('wtf is a bool returned?') #had some trouble with this at some point. still not sure what caused it.
+            renpy.jump('missionskirmish')        
+        
         if result == 'start':
         
             #check if there are still player units that are not placed

@@ -428,7 +428,7 @@ init -2 python:
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
-                    if self.active_strategy == 'all guard':
+                    if self.active_strategy[0] == 'all guard':
                         show_message("All Guard order canceled!")
                         for ship in player_ships:
                             if ship.modifiers['flak'][0] == 10:
