@@ -3363,16 +3363,8 @@ label chap2_start:
 
     play music "Music/The_Meteor.ogg"
 
-    kay "It's been a two weeks since we took down Cosette's base in the asteroids."
-    menu:
-        "Since then, we've been chasing down minor criminals.":
-            $ captain_prince += 1
-        "We focussed our efforts on patrolling civilian spacelanes.":
-            $ captain_moralist += 1
-        "We struck behind PACT lines, aiming to secure bounties from PACT vessels. (Optional battle)":            
-            call Blue_Side_Battle1
-        "We took bribes from the local pirates, and gathered intel on PACT movements":
-            $ BM.money += 200
+    kay "Begin captain's log."
+    kay "It's been a two weeks since we took down Cosette's base in the asteroids.  Since then, we've been chasing down minor criminals and undertaking hit and run attacks on PACT supply lines."
     kay "Despite our efforts, PACT's invasion of the Neutral Rim has continued unabated."
     kay "Six more governments have voluntarily joined PACT and two more have been conquered.  PACT's war machine has been indiscriminate, slaughtering both civilians and combatants alike."
     kay "In the mere month since Cera, millions more innocents have been murdered."
