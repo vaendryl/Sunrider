@@ -667,6 +667,11 @@ init -6 python:
     def create_cover(location):
         BM.covers.append(Cover(location))
         return
+        
+    
+    def remove_order(order):
+        if order in BM.orders:
+            del BM.orders[order]
 
     def cover_mechanic(weapon,target,accuracy):
             for cover in BM.covers:
