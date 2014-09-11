@@ -1,16 +1,18 @@
+
+
+
+
+
+
 label Blue_Side_Battle1:
 
     #"Before going into battle, I reviewed the state of our research and development."
+    call startsidemissioning     
+
     python:
         #My code to visit the upgrade shop doesn't work :( 
 
-
-
-        BM.battle_bg = "Background/asteroids3.jpg"
-        BM.mission = 1 #other missions might have logic that we don't want to invoke
-        
-
-        
+           
         #This section is copied from initialize.rpy - look for the battle init labels
         zoomlevel = 1
         enemy_ships = []
@@ -42,9 +44,8 @@ label Blue_Side_Battle1:
         check2 = False
         check3 = False
         battle_check1 = False
-        
-        #this next line is absolutely essential, and requires a change to classes.rpy so that it will work
-        BM.sidemission = "BO_Side_Battle1_Loop"        
+        SideBM.storylabel = "BO_Side_Battle1_Loop"
+      
     jump battle_start
 
     
@@ -113,44 +114,10 @@ label BO_Side_Battle1_Loop:
     if BM.battlemode == True:   #whenever this is set to False battle ends.
         jump BO_Side_Battle1_Loop #loop back
     else:
-        $ BM.sidemission = ''  #REALLY IMPORTANT
+        call stopsidemissioning  #REALLY IMPORTANT, otherwise the next battle will have weird problems that you'll struggle to diagnose
         hide screen battle_screen
         hide screen commands
         return #go back to the main script
         
         
-        
-#Temporary holding space for code that hopefully never gets called
-
-
-        
-        
-        
-        
-        
-        show cosette plugsuit armscrossed angry onlayer screens:
-            xzoom -1 xpos 0.2
-        with dissolve
-
-        cos "What are you doing, you fools!  Kill them!"
-        kay "Not this time, Cosette.  We're here to end your activities in this sector."
-
-        show cosette plugsuit front evilsmile onlayer screens with dissolve
-
-        cos "Heh-heh... You're a bold one..."
-
-        show cosette plugsuit point yanderegrin onlayer screens with dissolve
-
-        cos "But naive!"
-
-        hide cosette onlayer screens with dissolve
-
-        python:
-
-
-            create_ship(PirateDestroyer(),(12,10),[PirateDestroyerLaser(),PirateDestroyerKinetic()])
-
-        play sound "sound/Voice/Ava/Ava Others 4.ogg"
-        $ PlayerTurnMusic = "music/Sora_no_Senritsu.ogg"
-        
-        
+  
