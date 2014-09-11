@@ -181,6 +181,7 @@ label after_load:
         reset = False
         if not hasattr(store,'BM'):
             BM = Battle()
+            MasterBM = BM
         if hasattr(BM,'save_version'):
             if BM.save_version != config.version:
                 reset = True

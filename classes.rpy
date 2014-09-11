@@ -15,8 +15,12 @@ init -2 python:
         ##here the Battle class gets defined. it forms the core and spine of the entire combat engine.
         ##it gets initialized into an instance called BM, short for battlemanager
     class Battle(store.object): # handles managing a list of all battle units, handles turns and manages enemy AI
+        
         def __init__(self):
             #when the first instance gets created a couple of default values get initialized.
+            self.cmd = 0              #your command point total   
+            self.money = 0            #go on, set this to 999'999'999. you know you want to.
+            self.seen_skirmish = False #if not seen skirmish before Ava explains it.
             self.save_version = config.version
             self.ships = []           #holds all ships to display on the map
             self.covers = []          #holds a list of all the cover on the map
@@ -34,12 +38,10 @@ init -2 python:
             self.active_weapon = None #similar to weaponhover, but is used after you actually click a weapon so you can target something
             self.mission = 1          #what mission are we on? decides where to loop and is important for in battle events
             self.turn_count = 1       #most important when calculating command points awarded
-            self.grid = []            #keep track of what cells in the grid are free and which are not.
-            self.cmd = 0              #your command point total
+            self.grid = []            #keep track of what cells in the grid are free and which are not.            
             self.vanguard = False     #when True the battlemap shows the vanguard cannon being fired.
             self.active_strategy = [None,0] #you can have either 'full forward' or 'all guard' active, but not both.
             self.vanguardtarget = False #creates buttons to select vanguard fire direction
-            self.money = 0            #go on, set this to 999'999'999. you know you want to.
             self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
             self.targetwarp = False   #used by the short ranged warp order.  it creates buttons on the tiles
             self.showing_orders = False #This is True when the list of orders is visible.
@@ -48,7 +50,6 @@ init -2 python:
             self.show_grid = True     #show or hide the grid. no grid is much faster!
             self.formation_range = 7  #the farthest column the player can place units during the formation phase
             self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider. [no longer used]
-            self.seen_skirmish = False #if not seen skirmish before Ava explains it.
             self.remove_mode = False  #when True the player can easily remove units in skirmish
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
             self.mouse_location = (0,0)
@@ -113,7 +114,7 @@ init -2 python:
             renpy.show_screen('battle_screen')
             
             #new formation feature (only after mission 12 for now)            
-            if type(self.mission) != str and self.mission > 12:   #apparently string>int is completely legal in python :o
+            if self.editableformations():   
                 self.phase = 'formation'
 
                 for ship in player_ships:
@@ -125,8 +126,14 @@ init -2 python:
                 renpy.show_screen('player_unit_pool')
                 renpy.jump('formationphase')
             else:
-                renpy.jump('mission{}'.format(self.mission))
+                self.jumptomission()
 
+        def jumptomission(self):
+            renpy.jump('mission{}'.format(self.mission)) 
+        
+        def editableformations(self):
+            return (type(self.mission) != str and self.mission > 12) #apparently string>int is completely legal in python :o
+        
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
             result = ui.interact()
@@ -607,24 +614,41 @@ init -2 python:
             if result == 'endturn':
                 self.end_player_turn()
 
-            if len(enemy_ships) == 0 and self.battlemode: #check if there are enemy_ships remaining.
+            self.checkforloss()
+            self.checkforwin()
+
+            return
+            
+            
+        def checkforloss(self):
+            if len(player_ships) == 0:
+                self.youlose()
+            
+
+                
+        def youlose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
+            if (self.mission != 'skirmish'):
+                renpy.jump('gameover')
+            else:
+                show_message('You were defeated! better luck next time...')
+                clean_battle_exit()
+                renpy.jump('dispatch')
+                
+        def checkforwin(self):
+            if len(enemy_ships) == 0:
+                self.youwin()
+                
+        def youwin(self):
+            self.stopAI = True
+            if self.battlemode: #Ignore calls to Youwin if we're not actually in battle mode.
                 renpy.hide_screen('commands')
                 self.battle_end()
                 renpy.hide_screen('battle_screen')
 
-            if BM.mission == 'skirmishbattle' and get_remaining_player_ships() == 0:
-                show_message('You were defeated! better luck next time...')
-                clean_battle_exit()
-                renpy.jump('dispatch')             
-            
-            if len(player_ships) == 0:  #all player units destroyed!
-                self.battlemode = False #this ends the battle loop
-                VNmode()
-                renpy.hide_screen('battle_screen')
-                renpy.hide_screen('commands')
+      
 
-            return
-
+        
+        
 #ending a turn
         def end_player_turn(self):
             renpy.hide_screen('commands')
@@ -840,7 +864,7 @@ init -2 python:
 
             #reset the entire grid to empty and BM.ships with only the player_ships list
             clean_grid()
-            BM.covers = []
+            self.covers = []
             renpy.hide_screen('battle_screen')
             renpy.hide_screen('commands')
 
@@ -1226,17 +1250,7 @@ init -2 python:
                 enemy_ships.remove(self)
             if self in player_ships:
                 player_ships.remove(self)
-                if len(player_ships) == 0 and BM.mission != 'skirmish':
-                    renpy.jump('gameover')
-                    
-            #in skirmish mode some player ships might still be in player_ships but have no location
-            #and as such do not participate in battle. if the last player ship with a location
-            #gets destroyed the skirmish should end. 
-            ## TO DO: add a defeat screen like the victory screen
-            if BM.mission == 'skirmishbattle' and get_remaining_player_ships() == 0:
-                show_message('You were defeated! better luck next time...')
-                clean_battle_exit()
-                renpy.jump('dispatch')
+
                     
             #grid maintenance
             set_cell_available(self.location)
@@ -1250,11 +1264,15 @@ init -2 python:
                 BM.mercenary_count -= 1
                 
             #killing a boss ends the battle (the rest surrenders)
-            #if this was the last enemy ship you win too
-            if self.boss or len(enemy_ships) == 0:
-                BM.stopAI = True
-                BM.battle_end()
+            #if this was the last enemy ship you win too, but that can be handled by the battle manager
+            if self.boss:
+                BM.youwin()
 
+            BM.checkforloss()
+            BM.checkforwin()
+           
+
+                
         def register_weapon(self, weapon):
             if len(self.weapons) >= self.max_weapons:
                 raise IndexError('ERROR: too many weapons assigned to the {}'.format(self.name))
@@ -2453,6 +2471,7 @@ init -2 python:
 
             add_new_vars() #this actually should cover most of what you need...
             store.BM = Battle()
+            store.MasterBM = store.BM
             store.BM.money = self.startMoney
             store.BM.cmd = self.lastMission * 1000
             if store.BM.cmd > 4000: store.BM.cmd = 4000  #you gain a lot over the course of the game but you typically spend a lot too.
