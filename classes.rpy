@@ -33,6 +33,7 @@ init -2 python:
             self.weaponhover = None   #the weapon you are hovering over. used for chance to hit target window and tooltips
             self.active_weapon = None #similar to weaponhover, but is used after you actually click a weapon so you can target something
             self.mission = 1          #what mission are we on? decides where to loop and is important for in battle events
+            self.sidemission = ''     #Blue - Allows for battles outside the main plot
             self.turn_count = 1       #most important when calculating command points awarded
             self.grid = []            #keep track of what cells in the grid are free and which are not.
             self.cmd = 0              #your command point total
@@ -125,7 +126,11 @@ init -2 python:
                 renpy.show_screen('player_unit_pool')
                 renpy.jump('formationphase')
             else:
-                renpy.jump('mission{}'.format(self.mission))
+                #Blue - edited for sidemission support
+                if self.sidemission == '':
+                    renpy.jump('mission{}'.format(self.mission))
+                else:
+                    renpy.jump(self.sidemission)
 
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
