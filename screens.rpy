@@ -208,6 +208,7 @@ screen nvl:
 screen main_menu:
 
     $BM = Battle()
+    $MasterBM = BM
     $BM.phase = 'Player'
 
     imagemap:
@@ -341,6 +342,7 @@ screen load:
 
     if not hasattr(store,'BM'):
         $ BM = Battle()
+        $ MasterBM = BM
     if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
@@ -421,6 +423,7 @@ screen save:
 
     if not hasattr(store,"BM"):
         $ BM = Battle()
+        #No need to update the MasterBM if there is no battle manager to begin with.  Besides, the MasterBM and the BM might not be the same
     if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not save during the enemy \n turn.':
             xalign 0.5

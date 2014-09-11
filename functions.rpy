@@ -630,7 +630,7 @@ init -6 python:
     def get_shot_hit(accuracy,shotcount,faction):
         #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
         #for now no fudging for AI.
-        if faction == 'Player' and store.Difficulty <=2 and shotcount == 1:
+        if faction == 'Player' and store.Difficulty <=2 and shotcount == 1 and accuracy >50:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 <= int(accuracy)
         elif faction == 'Player' and store.Difficulty == 3 and accuracy < 50 and shotcount == 1: #muhahaha
