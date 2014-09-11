@@ -89,6 +89,7 @@ init -5:
 label initialize:
     python:
         BM = Battle() #create an instance of the battle manager which keeps track of lots of things
+        MasterBM = BM #Keep the main battle manager in a variable of its own, in case some modder goes switching out the battle manager.
         player_ships = []
         enemy_ships = []
         sunrider = None
