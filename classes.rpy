@@ -284,7 +284,10 @@ init -2 python:
         def skirmish_phase(self):
             while True:
                 self.result = ui.interact()
-                skirmish_dispatcher[self.result[0]]()
+                try:
+                    skirmish_dispatcher[self.result[0]]()
+                except:
+                    skirmish_dispatcher[self.result]()
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -362,7 +365,10 @@ init -2 python:
         def formation_phase(self):
             while True:
                 self.result = ui.interact()
-                formation_dispatcher[self.result[0]]()
+                try:
+                    formation_dispatcher[self.result[0]]()
+                except:
+                    formation_dispatcher[self.result]()
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
