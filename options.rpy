@@ -15,7 +15,7 @@ init -1 python hide:
     ## set to False before the game is released, so the user can't
     ## cheat using developer tools.
 
-    config.developer = False
+    config.developer = True
     #config.use_cpickle = False
     #config.save_dump = True
     config.log = None

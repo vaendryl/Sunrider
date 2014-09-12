@@ -82,11 +82,12 @@ init -2 python:
             for a in range(GRID_SIZE[0]):
                 self.grid.append([False]*GRID_SIZE[1])
             self.battle_bg = "Background/space{!s}.jpg".format(renpy.random.randint(1,9))
+            self.result = None #store result of ui.interact()
 
         #return None if an attribute does not exist:
         # def __getattr__(self,X):
             # return None        
-        
+
         #here we start defining a few methods part of the battlemanager
         def select_ship(self,ship,play_voice = True):
             self.selected = ship
@@ -107,6 +108,264 @@ init -2 python:
             self.targetingmode = False
             if ship != None:
                 ship.movement_tiles = []
+        ########################################################
+        ## Common dispatcher
+        ########################################################
+        def common_none(self):
+            pass
+
+        def common_bool(self):
+            pass
+
+        def common_zoom(self):
+            zoom_handling(self.result, self)
+
+        def common_next_ship(self):
+            templist = []
+            for ship in player_ships:
+                if ship.location == None:
+                    templist.append(ship)
+
+            if self.selected == None:
+                if len(templist) > 0:
+                    self.select_ship(templist[0])
+            else:
+                if self.selected.location != None:
+                    set_cell_available(self.selected.location)
+                index = templist.index(self.selected)
+                if index == (len(templist)-1):
+                    index = 0
+                else:
+                    index += 1
+                self.select_ship(templist[index])
+
+            if self.selected != None:
+                self.targetwarp = True
+                renpy.show_screen('mousefollow')
+
+        def common_deselect(self):
+            #if you picked up an enemy unit that was already put down right clicking should delete it entirely
+            #player ships automatically return to the blue pool to be placed again later.
+            if self.selected != None:
+                if self.selected in enemy_ships:
+                    self.ships.remove(self.selected)
+                    enemy_ships.remove(self.selected)
+            self.targetwarp = False
+            renpy.hide_screen('mousefollow') 
+            self.unselect_ship(self.selected)
+        ########################################################
+        ## Common dispatcher end
+        ########################################################
+        #------------------------------------------------------#
+        ########################################################
+        ## Skirmish dispatcher
+        ########################################################
+        #similar to formation. Should be merged?
+        def skirmish_start(self):
+            if len(enemy_ships) == 0:
+                show_message('Please add at least 1 enemy ship')
+                renpy.jump('mission_skirmish')
+            player_ship_present = False
+
+            for ship in player_ships:
+                if ship.location != None:
+                    player_ship_present = True
+            if not player_ship_present:
+                 show_message('Please add at least 1 player ship')
+                 renpy.jump('mission_skirmish')
+
+            renpy.hide_screen('player_unit_pool_collapsed')
+            renpy.hide_screen('enemy_unit_pool_collapsed')
+            renpy.hide_screen('player_unit_pool')
+            renpy.hide_screen('enemy_unit_pool')
+            renpy.hide_screen('mousefollow')
+            renpy.hide_screen('battle_screen')
+            renpy.hide_screen('store_union') #seems like it has trouble staying closed?
+            self.battlemode = False
+
+        def skirmish_quit(self):
+            renpy.hide_screen('player_unit_pool_collapsed')
+            renpy.hide_screen('enemy_unit_pool_collapsed')
+            renpy.hide_screen('player_unit_pool')
+            renpy.hide_screen('enemy_unit_pool')
+            renpy.hide_screen('mousefollow')
+            renpy.hide_screen('battle_screen')
+            renpy.hide_screen('store_union') #seems like it has trouble staying closed?
+            self.battlemode = False
+            clean_battle_exit()
+            renpy.jump('dispatch')
+
+        def skirmish_remove(self):
+            if self.remove_mode:
+                self.remove_mode = False
+            else:
+                self.remove_mode = True
+
+        def skirmish_playermusic(self):
+            PlayerTurnMusic = self.result[1]
+            show_message('Player music was changed')
+
+        def skirmish_enemymusic(self):
+            EnemyTurnMusic = self.result[1]
+
+        def skirmish_selection(self):
+            # this result can be from one of the imagebuttons in the pool screens or returned from
+            # MouseTracker because a hex with a unit in it was clicked.
+            selected_ship = self.result[1]
+
+            if self.remove_mode:
+                if selected_ship.location != None:
+                    if selected_ship.faction != 'Player':
+                        if selected_ship in enemy_ships:
+                            self.ships.remove(selected_ship)
+                            enemy_ships.remove(selected_ship)
+                            set_cell_available(selected_ship.location)
+                    else:
+                        set_cell_available(selected_ship.location)
+                        selected_ship.location = None
+
+            else:
+                self.targetwarp = True
+                renpy.show_screen('mousefollow')
+
+                if selected_ship.faction == 'Player':
+                    self.select_ship(selected_ship)
+                else:
+                    if selected_ship.location != None:
+                        self.select_ship(selected_ship)
+                        if selected_ship in enemy_ships:
+                            self.ships.remove(self.selected)
+                            enemy_ships.remove(self.selected)
+                        else:
+                            self.selected = deepcopy(selected_ship) #breaks alias
+                            self.selected.weapons = self.selected.default_weapon_list
+            if self.selected != None:
+                if self.selected.location != None:
+                    set_cell_available(self.selected.location)
+                self.selected.location = None
+
+            def skirmish_warptarget(self):
+                # returned from MouseTracker if you click on an empty hex when BM.warptarget == True.
+                if self.selected != None:
+                    new_location = self.result[1]
+                    set_cell_available(new_location,True)
+
+                    if self.selected.faction != 'Player':
+                        enemy_ships.append(self.selected)
+                        self.ships.append(self.selected)
+
+                    self.selected.location = new_location
+
+                    if self.selected.faction != 'Player' and pygame.key.get_mods() != 0:
+                        self.selected = deepcopy(self.selected) #breaks alias
+                    else:
+                        self.targetwarp = False
+                        renpy.hide_screen('mousefollow')
+                        self.unselect_ship(self.selected)
+
+                sort_ship_list()
+
+            skirmish_dispatcher = { None : common_none,
+                                    True : common_bool,
+                                    False : common_bool,
+                                    'start' : skirmish_start,
+                                    'quit' : skirmish_quit,
+                                    'remove' : skirmish_remove,
+                                    'playermusic' : skirmish_playermusic,
+                                    'enemymusic' : skirmish_enemymusic,
+                                    "zoom" : common_zoom,
+                                    "next ship" : common_next_ship,
+                                    "deselect" : common_deselect,
+                                    "selection" : skirmish_selection,
+                                    "warptarget" : skirmish_warptarget, }
+        ########################################################
+        ## Skirmish dispatcher end
+        ########################################################
+        def skirmish_phase(self):
+            while True:
+                self.result = ui.interact()
+                skirmish_dispatcher[self.result[0]]()
+
+                if self.battlemode == False: #whenever this is set to False battle ends.
+                    break
+        #------------------------------------------------------#
+        ########################################################
+        ## Formation dispatcher
+        ########################################################
+        def formation_start(self):
+            #check if there are still player units that are not placed
+            unplaced_units = False
+            for ship in player_ships:
+                if ship.location == None:
+                    unplaced_units = True
+            if unplaced_units:
+                show_message('there are still ships you have not placed!')
+            else:
+                renpy.hide_screen('player_unit_pool_collapsed')
+                renpy.hide_screen('enemy_unit_pool_collapsed')
+                renpy.hide_screen('player_unit_pool')
+                renpy.hide_screen('enemy_unit_pool')
+                renpy.hide_screen('mousefollow')
+                self.phase = 'Player'
+                renpy.jump('mission{}'.format(self.mission))
+
+        def formation_selection(self):
+            # this result can be from one of the imagebuttons in the pool screens or returned from
+            # MouseTracker because a hex with a unit in it was clicked.
+            selected_ship = self.result[1]
+
+            if selected_ship.faction == 'Player':
+                self.targetwarp = True
+                renpy.show_screen('mousefollow')
+                self.select_ship(selected_ship)
+
+                if self.selected.location != None:
+                    set_cell_available(self.selected.location)
+                self.selected.location = None
+
+        def formation_warptarget(self):
+            # returned from MouseTracker if you click on an empty hex when self.warptarget == True.
+            if self.selected != None:
+                new_location = self.result[1]
+
+                #when setting up before a mission you can't put your ships farther to the right than column 7
+                if new_location[0] > self.formation_range:
+                    show_message('too far infield')
+                else:
+                    set_cell_available(new_location,True) #passing True actually sets it unavailable
+
+                    if self.selected.faction != 'Player':
+                        enemy_ships.append(self.selected)
+                        self.ships.append(self.selected)
+
+                    self.selected.location = new_location
+
+                    if self.selected.faction != 'Player' and pygame.key.get_mods() != 0:
+                        self.selected = deepcopy(self.selected) #breaks alias
+                    else:
+                        self.targetwarp = False
+                        renpy.hide_screen('mousefollow')
+                        self.unselect_ship(self.selected)
+
+        formation_dispatcher = { None : common_none,
+                                True : common_bool,
+                                False : common_bool,
+                                "start" : formation_start,
+                                "zoom" : common_zoom,
+                                "next ship" : common_next_ship,
+                                "deselect" : common_deselect,
+                                "selection" : formation_selection,
+                                "warptarget" : formation_warptarget, }
+        ########################################################
+        ## Formation dispatcher end
+        ########################################################
+        def formation_phase(self):
+            while True:
+                self.result = ui.interact()
+                formation_dispatcher[self.result[0]]()
+
+                if self.battlemode == False: #whenever this is set to False battle ends.
+                    break
 
         def start(self):
             battlemode() #stop scrollback and set BM.battlemode = True
@@ -124,7 +383,7 @@ init -2 python:
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')
-                renpy.jump('formationphase')
+                self.formation_phase()
             else:
                 self.jumptomission()
 
@@ -163,7 +422,7 @@ init -2 python:
                         BM.ships.remove(ship)
 
             #only used for debug
-            if result == 'anime':
+            if result[0] == 'anime':
                 if not hasattr(store,'damage'):
                     store.damage = 50
                 if not hasattr(BM,'attacker'):
@@ -181,15 +440,15 @@ init -2 python:
                 except:
                     show_message('animation label does not exist!')
 
-            if result == 'cheat':
+            if result[0] == 'cheat':
                 BM.cmd = 99999
                 for ship in player_ships:
                     ship.en = 9999
 
-            if result == 'I WIN':
+            if result[0] == 'I WIN':
                 instant_win()
 
-            if result == 'deselect':
+            if result[0] == 'deselect':
                 if self.active_weapon != None:
                     self.active_weapon = None
                     self.targetingmode = False
@@ -199,7 +458,7 @@ init -2 python:
                 else:
                     pass
                     
-            if result == "next ship":
+            if result[0] == "next ship":
                 if self.selected == None:
                     self.select_ship(sunrider)
                     return
@@ -216,7 +475,7 @@ init -2 python:
                                 looping = False
                         self.select_ship(player_ships[index])
 
-            if result == "previous ship":
+            if result[0] == "previous ship":
                 if self.selected != None and len(player_ships) > 1:
                     if self.selected.faction == 'Player':
                         index = player_ships.index(self.selected)
@@ -334,7 +593,7 @@ init -2 python:
                 self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
                 update_stats()
 
-            if result == 'cancel movement':
+            if result[0] == 'cancel movement':
                 ship = BM.selected
                 ship.en += get_distance(ship.location,ship.current_location)*ship.move_cost
                 a = ship.location[0]-1  #make the next line of code a little shorter
@@ -349,14 +608,14 @@ init -2 python:
 
                 ship.movement_tiles = get_movement_tiles(ship)
 
-            if result == 'RESURRECTION':
+            if result[0] == 'RESURRECTION':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
                     renpy.show_screen('ryderlist')
                     result = ui.interact()
                     
-                    if result == 'deselect':
+                    if result[0] == 'deselect':
                         self.cmd += self.orders['RESURRECTION'][0]
                         renpy.hide_screen('ryderlist')
                         BM.order_used = False
@@ -386,7 +645,7 @@ init -2 python:
                     BM.order_used = False
               
                     
-            if result == 'ALL GUARD':
+            if result[0] == 'ALL GUARD':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
@@ -431,7 +690,7 @@ init -2 python:
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
                     BM.order_used = False
             
-            if result == 'FULL FORWARD':
+            if result[0] == 'FULL FORWARD':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     
@@ -474,7 +733,7 @@ init -2 python:
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
                     BM.order_used = False
 
-            if result == 'REPAIR DRONES':
+            if result[0] == 'REPAIR DRONES':
                 if self.cmd >= self.orders[result][0]:
                     if sunrider.repair_drones != None:
                         if sunrider.repair_drones <= 0:
@@ -501,7 +760,7 @@ init -2 python:
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
                     BM.order_used = False
 
-            if result == 'SHORT RANGE WARP':
+            if result[0] == 'SHORT RANGE WARP':
                 if self.cmd >= self.orders[result][0]:
                     self.cmd -= self.orders[result][0]
                     if BM.selected != None:
@@ -541,7 +800,7 @@ init -2 python:
                         if result[0] == "zoom":
                             zoom_handling(result,self)
                             
-                        if result == 'deselect':
+                        if result[0] == 'deselect':
                             self.cmd += self.orders['SHORT RANGE WARP'][0]
                             looping = False
                             renpy.hide_screen('mousefollow')
@@ -551,11 +810,11 @@ init -2 python:
                     BM.order_used = False
                     renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
 
-            if result == 'RETREAT':
+            if result[0] == 'RETREAT':
                 clean_battle_exit()
                 renpy.jump('retreat')
             
-            if result == 'VANGUARD CANNON':
+            if result[0] == 'VANGUARD CANNON':
                 inrange = False
                 templist = enemy_ships[:]
                 for ship in templist:
@@ -598,7 +857,7 @@ init -2 python:
                                     renpy.hide_screen('battle_screen')
                                     renpy.show_screen('battle_screen')
                                     
-                            if result == 'deselect':
+                            if result[0] == 'deselect':
                                 self.cmd += self.orders['VANGUARD CANNON'][0]
                                 looping = False
                                 BM.vanguardtarget = False
@@ -611,7 +870,7 @@ init -2 python:
                     renpy.say('Ava','It\'s hopeless, captain!')
                     BM.order_used = False
 
-            if result == 'endturn':
+            if result[0] == 'endturn':
                 self.end_player_turn()
 
             self.checkforloss()
@@ -2272,7 +2531,7 @@ init -2 python:
                     looping = False
                 
                 # player clicked the right mouse button
-                if result == 'deselect':
+                if result[0] == 'deselect':
                     cancel = True
                     looping = False
 

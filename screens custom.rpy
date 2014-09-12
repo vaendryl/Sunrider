@@ -104,11 +104,11 @@ screen battle_screen:
     key "K_PAGEUP" action Return(["zoom", "in"])
     key "K_PAGEDOWN" action Return(["zoom", "out"])
     if 'mouseup_2' not in config.keymap['hide_windows']:
-        key "mousedown_2" action Return("next ship")
+        key "mousedown_2" action Return(["next ship"])
     if 'mouseup_3' not in config.keymap['game_menu']:
-        key "mousedown_3" action Return("deselect")
-    key "]" action Return("next ship")
-    key "[" action Return("previous ship")
+        key "mousedown_3" action Return(["deselect"])
+    key "]" action Return(["next ship"])
+    key "[" action Return(["previous ship"])
 
     ##messing with the player for fun and profit
     if BM.battlemode:
@@ -117,9 +117,9 @@ screen battle_screen:
     add MouseTracker() #relates drags and clicks to the viewport and the BM
 
     if config.developer: #a release version should have set this to False
-        key "Q" action Jump('quit')  ##DEBUG FAST QUIT##
-        key "A" action Return('anime')
-        key "P" action Return('I WIN')
+        key "Q" action Jump(['quit'])  ##DEBUG FAST QUIT##
+        key "A" action Return(['anime'])
+        key "P" action Return(['I WIN'])
 
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
     $childy = round(3006*zoomlevel+300) #extra 300 is so that the status window doesn't occlude ships in the far right bottom corner
@@ -677,7 +677,7 @@ screen battle_screen:
                         #xpos xposition
                         #ypos yposition
                         #action Return(['vanguardtarget',(ship.location[0],ship.location[1])])
-                        #alternate Return("deselect")
+                        #alternate Return(["deselect"])
 
                     #text (str(ship.location[0]) + ',' + str(ship.location[1])): #printed the x,y coordiantes for debugging purposes
                        # xpos xposition
@@ -753,7 +753,7 @@ screen battle_screen:
         vbox:
             ypos 100
             xalign 1.0
-            textbutton "Debug Cheats" action Return('cheat')
+            textbutton "Debug Cheats" action Return(['cheat'])
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
             if BM.debugoverlay:
                 textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
@@ -783,7 +783,7 @@ screen battle_screen:
             ypos 70
             text_size 50
             text_color 'fff'
-            action Return('cancel movement')
+            action Return(['cancel movement'])
 
     if not BM.showing_orders and not BM.order_used and not BM.missile_moving and not BM.moving and BM.phase == "Player":
         imagebutton:
@@ -812,7 +812,7 @@ screen battle_screen:
             yalign 1.0
             idle endturnbutton_idle
             hover hoverglow(endturnbutton_idle)
-            action Return('endturn')
+            action Return(['endturn'])
             
             
     if BM.phase == 'formation':
@@ -821,7 +821,7 @@ screen battle_screen:
             yalign 1.0
             idle 'Skirmish/start.png'
             hover hoverglow('Skirmish/start.png')
-            action [ If( BM.selected==None , Return('start') ) ]
+            action [ If( BM.selected==None , Return(['start']) ) ]
             
         if BM.mission == 'skirmish':
             imagebutton:
@@ -829,7 +829,7 @@ screen battle_screen:
                 ypos 690
                 idle 'Skirmish/return.png'
                 hover hoverglow('Skirmish/return.png')
-                action Return('quit')
+                action Return(['quit'])
         
             $ idl = 'Skirmish/remove.png'
             if BM.remove_mode:
@@ -840,7 +840,7 @@ screen battle_screen:
                 ypos 759
                 idle idl
                 hover hoverglow('Skirmish/remove.png')
-                action Return('remove')
+                action Return(['remove'])
                 
             imagebutton:
                 xpos 328
@@ -1766,7 +1766,7 @@ screen ryderlist:
     zorder 3
     modal True
     
-    key "mousedown_3" action Return("deselect")
+    key "mousedown_3" action Return(["deselect"])
     
     text 'Choose which Ryder to repair':
             xalign 0.5
