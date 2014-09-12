@@ -62,7 +62,7 @@ init -6 python:
         while active:
             result = ui.interact()
 
-            if result == 'quit':
+            if result[0] == 'quit':
                 renpy.hide_screen('upgrade')
                 
                 voicelist = [
@@ -80,7 +80,7 @@ init -6 python:
                 active = False
                 return
 
-            elif result == 'reset':
+            elif result[0] == 'reset':
                 reset_upgrades(BM.selected)
 
             elif result != None:
