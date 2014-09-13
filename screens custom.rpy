@@ -509,16 +509,16 @@ screen battle_screen:
                     if BM.weaponhover == None:
                         $BM.weaponhover = BM.active_weapon
                     if BM.weaponhover.wtype == 'Support' and (ship.faction != 'Player' or BM.weaponhover.self_buff == True):
-                        $continue
+                        pass
                     elif BM.weaponhover.wtype != 'Support' and ship.faction == 'Player' and BM.weaponhover.wtype != 'Special':
                         # wtype:'Special' is a support type that's neither a curse nor a buff but can be used on enemies and player units both
-                        $continue
+                        pass
                     elif BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
-                        $continue
+                        pass
                     
                     #the gravity gun is a little... special
                     if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
-                        $continue
+                        pass
 
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
