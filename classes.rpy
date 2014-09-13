@@ -286,6 +286,8 @@ init -2 python:
                 self.result = ui.interact()
                 try:
                     skirmish_dispatcher[self.result[0]]()
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
                     skirmish_dispatcher[self.result]()
 
@@ -367,6 +369,8 @@ init -2 python:
                 self.result = ui.interact()
                 try:
                     formation_dispatcher[self.result[0]]()
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
                     formation_dispatcher[self.result]()
 
@@ -531,7 +535,7 @@ init -2 python:
             self.target.receive_damage(result,self.selected,weapon.wtype)
             if self.selected != None:
                 self.selected.movement_tiles = get_movement_tiles(self.selected)
-            update_stats()
+#            update_stats() - updated in receive_damage()
             self.active_weapon = None
             self.weaponhover = None
 #            renpy.hide_screen('battle_screen')
@@ -540,7 +544,7 @@ init -2 python:
 
         def battle_move(self): #this means you clicked on one of the blue squares indicating you want to move somewhere
             self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
-            update_stats()
+            self.update_stats()
 
         def battle_cancel_movement(self):
             ship = self.selected
@@ -630,8 +634,7 @@ init -2 python:
                     for ship in player_ships:
                         ship.getting_buff = False
                     renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                
+                    renpy.show_screen('battle_screen')     
                 update_stats()
 
             else:
@@ -900,6 +903,8 @@ init -2 python:
 
             try:
                 battle_dispatcher[self.result[0]]()
+            except KeyError:
+                renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
             except:
                 battle_dispatcher[self.result]()
 
@@ -1411,7 +1416,53 @@ init -2 python:
         #return None if an attribute does not exist
         # def __getattr__(self,X):
             # return None        
-        
+
+        def update_armor(self):
+            self.armor = (self.base_armor + self.modifiers['armor'][0]) * self.hp / self.max_hp
+            self.armor_color = '000'
+            if self.armor < self.base_armor: self.armor_color = '700'
+
+        def update_stats(self):
+            try:
+                if self.modifiers['energy regen'][0] == -100:
+                    self.en = 0
+            except:
+                self.modifiers['energy regen'] = (0,0)
+
+            self.shields = 0
+            #update shield generation
+            if self in player_ships:
+                for ship in player_ships:
+                    if get_ship_distance(self, ship) <= ship.shield_range:
+                        actual_generation = ship.shield_generation
+                        try:
+                            mod,duration = ship.modifiers['shield_generation']
+                        except:
+                            ship.modifiers['shield_generation'] = [0,0]
+                            mod,duration = (0,0)
+                        if mod != 0: actual_generation += mod
+                        if actual_generation < 0: actual_generation = 0
+                        self.shields += actual_generation
+            elif self in enemy_ships:
+                for ship in enemy_ships:
+                    if ship.shield_generation > 0:
+                        if get_ship_distance(self, ship) <= ship.shield_range:
+                            actual_generation = ship.shield_generation
+                            try:
+                                mod,duration = ship.modifiers['shield_generation']
+                            except:
+                                ship.modifiers['shield_generation'] = [0,0]
+                                mod,duration = ship.modifiers['shield_generation']
+                            if mod != 0:
+                                actual_generation += mod
+                            if actual_generation < 0:
+                                actual_generation = 0
+                            self.shields += actual_generation
+            if self.shields > 100: self.shields = 100
+            self.shield_color = '000'
+            if self.shields > self.shield_generation: self.shield_color = '070'
+            self.update_armor()
+
         def receive_damage(self,damage,attacker,wtype):
             BM.attacker = attacker
 
@@ -1509,6 +1560,9 @@ init -2 python:
 
                 if self.hp <= 0:
                     self.destroy(attacker)
+                    update_stats()
+                else:
+                    self.update_stats()
 
         def destroy(self,attacker,no_animation = False):
               #first take care of some AI data tracking stuff
@@ -1659,7 +1713,7 @@ init -2 python:
             damage = weapon.fire(self,pship)
             if weapon.wtype != 'Curse':
                 pship.receive_damage(damage,self,weapon.wtype)
-            update_stats()
+#            update_stats() - updated in receive_damage()
 
 #basic loop
         def AI_basic_loop(self):
@@ -1955,7 +2009,7 @@ init -2 python:
                                 EN = ship.en
                                 ship.en = 200
                                 show_message('COUNTER ATTACK!')
-                                update_stats()
+                                self.update_stats()
                                 try:
                                     renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
                                 except:
@@ -2001,7 +2055,7 @@ init -2 python:
             self.lbl = 'Battle UI/button_laser.png'
 
         def fire(self, parent, target): #firing lasers!
-            update_armor(target)
+            target.update_armor()
             energy_cost = int(self.energy_use * parent.energy_cost)
             if parent.en < energy_cost:  #energy handling
                 return 'no energy'
@@ -2057,7 +2111,7 @@ init -2 python:
             self.lbl = 'Battle UI/button_kinetic.png'
 
         def fire(self, parent, target): #firing gunz!
-            update_armor(target)
+            target.update_armor()
 
             energy_cost = int(self.energy_use * parent.kinetic_cost)
             if parent.en < energy_cost:  #energy handling
@@ -2114,7 +2168,7 @@ init -2 python:
             self.flaklist = []
 
         def fire(self, parent, target):
-            update_armor(target)
+            target.update_armor()
             BM.missiles = []
 
             energy_cost = int(self.energy_use * parent.missile_cost)
@@ -2302,7 +2356,7 @@ init -2 python:
             self.lbl = 'Battle UI/button_melee.png'
 
         def fire(self, parent, target):
-            update_armor(target)
+            target.update_armor()
 
             #don't really want to fix this yet :D
             # if target.stype != 'Ryder':
@@ -2430,7 +2484,6 @@ init -2 python:
             
             #if it's a buff
             else:
-
                 successful = False
                 if hasattr(self.modifies,"__iter__"):  #this checks is the var is an iterable (like a list). if it's not it should be a string.
                     for modifier in self.modifies:
