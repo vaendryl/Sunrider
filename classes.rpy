@@ -265,19 +265,19 @@ init -2 python:
 
                 sort_ship_list()
 
-            skirmish_dispatcher = { None : common_none,
-                                    True : common_bool,
-                                    False : common_bool,
-                                    'start' : skirmish_start,
-                                    'quit' : skirmish_quit,
-                                    'remove' : skirmish_remove,
-                                    'playermusic' : skirmish_playermusic,
-                                    'enemymusic' : skirmish_enemymusic,
-                                    "zoom" : common_zoom,
-                                    "next ship" : common_next_ship,
-                                    "deselect" : common_deselect,
-                                    "selection" : skirmish_selection,
-                                    "warptarget" : skirmish_warptarget, }
+            skirmish_dispatcher = { None            : common_none,
+                                    True            : common_bool,
+                                    False           : common_bool,
+                                    'start'         : skirmish_start,
+                                    'quit'          : skirmish_quit,
+                                    'remove'        : skirmish_remove,
+                                    'playermusic'   : skirmish_playermusic,
+                                    'enemymusic'    : skirmish_enemymusic,
+                                    "zoom"          : common_zoom,
+                                    "next ship"     : common_next_ship,
+                                    "deselect"      : common_deselect,
+                                    "selection"     : skirmish_selection,
+                                    "warptarget"    : skirmish_warptarget, }
         ########################################################
         ## Skirmish dispatcher end
         ########################################################
@@ -350,15 +350,15 @@ init -2 python:
                         renpy.hide_screen('mousefollow')
                         self.unselect_ship(self.selected)
 
-        formation_dispatcher = { None : common_none,
-                                True : common_bool,
-                                False : common_bool,
-                                "start" : formation_start,
-                                "zoom" : common_zoom,
-                                "next ship" : common_next_ship,
-                                "deselect" : common_deselect,
-                                "selection" : formation_selection,
-                                "warptarget" : formation_warptarget, }
+        formation_dispatcher = { None           : common_none,
+                                 True           : common_bool,
+                                 False          : common_bool,
+                                 "start"        : formation_start,
+                                 "zoom"         : common_zoom,
+                                 "next ship"    : common_next_ship,
+                                 "deselect"     : common_deselect,
+                                 "selection"    : formation_selection,
+                                 "warptarget"   : formation_warptarget, }
         ########################################################
         ## Formation dispatcher end
         ########################################################
@@ -372,7 +372,479 @@ init -2 python:
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
+        #------------------------------------------------------#
+        ########################################################
+        ## Battle dispatcher
+        ########################################################
+        def battle_anime(self):
+            if not hasattr(store,'damage'):
+                store.damage = 50
+            if not hasattr(self,'attacker'):
+                self.attacker = sunrider
+            if not hasattr(store,'hit_count'):
+                store.hit_count = 1
+            if not hasattr(store,'total_armor_negation'):
+                store.total_armor_negation = 10
+            if not hasattr(store,'total_shield_negation'):
+                store.total_shield_negation = 10
+            if self.target == None:
+                self.target = sunrider
+            try:
+                renpy.call_in_new_context('atkanim_pactasdfelite_laser')
+            except:
+                show_message('animation label does not exist!')
 
+        def battle_cheat(self):
+            self.cmd = 99999
+            for ship in player_ships:
+                ship.en = 9999
+
+        def battle_inst_win(self):
+            instant_win()
+
+        def battle_deselect(self):
+            if self.active_weapon != None:
+                self.active_weapon = None
+                self.targetingmode = False
+                self.weaponhover = None
+            elif self.selected != None:
+                self.unselect_ship(self.selected)
+            else:
+                pass
+
+        def battle_next_ship(self):
+            if self.selected == None:
+                self.select_ship(sunrider)
+                return
+
+            if self.selected != None and len(player_ships) > 1:
+                if self.selected.faction == 'Player':
+                    index = player_ships.index(self.selected)
+                    looping = True
+                    while looping:
+                        if index == (len(player_ships)-1):
+                            index = 0
+                        else:
+                            index += 1
+                        if player_ships[index].location != None:
+                            looping = False
+                    self.select_ship(player_ships[index])
+
+        def battle_previous_ship(self):
+            if self.selected != None and len(player_ships) > 1:
+                if self.selected.faction == 'Player':
+                    index = player_ships.index(self.selected)
+                    looping = True
+                    while looping:
+                        if index == 0:
+                            index = len(player_ships)-1
+                        else:
+                            index -= 1
+                        if player_ships[index].location != None:
+                            looping = False
+                    self.select_ship(player_ships[index])
+
+        #def battle_mousefollow_click(self):
+        #    pass
+
+        def battle_zoom(self):
+            zoom_handling(self.result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
+            if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
+            # self.just_moved = True #zooming doesn't have to reset this button
+
+        def battle_selection(self):
+            self.target = self.result[1]
+            self.hovered = None
+
+            #if no ship is currently selected select the ship that was just clicked on.
+            if self.selected == None:
+                self.select_ship(self.target)
+                return
+
+            #you do not have a weapon active.
+            if not self.targetingmode:
+                #did you select the active ship?
+                if self.target == self.selected:
+                    self.unselect_ship(self.selected)
+                else:
+                    self.select_ship(self.target)
+                return
+            #you do have a weapon active.
+            else:
+                weapon = self.active_weapon                    
+                #is this a valid target?
+                if weapon.wtype == 'Melee':
+                    if get_ship_distance(self.selected,self.target) > 1 or self.target.stype != 'Ryder':
+                        return
+                self.targetingmode = False
+
+                #did you click the currently selected ship?
+                if self.target == self.selected:
+                    if weapon.wtype == 'Support':
+                        pass  #you clicked your selected ship with a support weapon active. do not end the method.
+                    else:
+                        self.unselect_ship(self.result[1])
+                        return #do end the method. this is important.
+                #did you click an ally?
+                elif self.target.faction == 'Player':
+                    if weapon.wtype == 'Support' or weapon.wtype == 'Special':
+                        if self.target.cth <= 0:
+                            self.draggable = False
+                            renpy.say('Ava','It\'s hopeless, captain!')
+                            self.draggable = True
+                            self.targetingmode = True #try again
+                            return #do end the method, this is important.
+                        else:
+                            #you clicked an ally unit with a support weapon active. do not end the method.
+                            pass
+                    else:
+                        self.select_ship(self.target)
+                        return
+
+                #you clicked an enemy with an active weapon.
+                else:
+                    #check if you can hit the target. if not, let the player know he's stupid.
+                    if self.target.cth <= 0:
+                        self.draggable = False
+                        renpy.say('Ava','It\'s hopeless, captain!')
+                        self.draggable = True
+                        return #do end the method, this is important.
+                    else:
+                        self.attacker = self.selected
+                        if self.active_weapon.wtype == 'Curse' or self.active_weapon.wtype == 'Special':
+                            weapon.fire(self.selected,self.target)
+                            self.active_weapon = None
+                            self.weaponhover = None
+                            if self.selected != None:
+                                self.selected.movement_tiles = get_movement_tiles(self.selected)
+                            return
+
+                        if self.active_weapon.wtype == 'Melee':
+                            pass #do not show the atkanim, because there aren't any for melee.
+                        else:
+                            try:
+                                renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+                            except:
+                                show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
+            #up till now nothing ended the method meaning it's okay to fire the weapon at the target - be it support or not.
+            result = weapon.fire(self.selected,self.target)
+            self.target.receive_damage(result,self.selected,weapon.wtype)
+            if self.selected != None:
+                self.selected.movement_tiles = get_movement_tiles(self.selected)
+            update_stats()
+            self.active_weapon = None
+            self.weaponhover = None
+#            renpy.hide_screen('battle_screen')
+#            renpy.show_screen('battle_screen')
+            return #battle_selection end
+
+        def battle_move(self): #this means you clicked on one of the blue squares indicating you want to move somewhere
+            self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
+            update_stats()
+
+        def battle_cancel_movement(self):
+            ship = self.selected
+            ship.en += get_distance(ship.location,ship.current_location)*ship.move_cost
+            a = ship.location[0]-1  #make the next line of code a little shorter
+            b = ship.location[1]-1
+            self.grid[a][b] = False #tell the BM that the old cell is now free again
+
+            ship.location = ship.current_location
+
+            a = ship.location[0]-1  #make the next line of code a little shorter
+            b = ship.location[1]-1
+            self.grid[a][b] = True #tell the BM that the old cell is now free again
+
+            ship.movement_tiles = get_movement_tiles(ship)
+
+        def battle_order_resurrection(self):
+            if self.cmd >= self.orders[self.result][0]:
+                self.cmd -= self.orders[self.result][0]
+                
+                renpy.show_screen('ryderlist')
+                result = ui.interact()
+                
+                if result[0] == 'deselect':
+                    self.cmd += self.orders['RESURRECTION'][0]
+                    renpy.hide_screen('ryderlist')
+                    self.order_used = False
+                    return
+                
+                elif result[0] == 'selection':
+                    revived_ship = result[1]
+                    renpy.hide_screen('ryderlist')
+                    launch_location = get_free_spot_near(sunrider.location) #so useful
+                    revived_ship.en = 0   #not sure about this
+                    revived_ship.hp = revived_ship.max_hp
+                    destroyed_ships.remove(revived_ship)
+                    player_ships.append(revived_ship)
+                    self.ships.append(revived_ship)
+                    revived_ship.location = launch_location
+                    set_cell_available(launch_location, True) #the optional True actually lets me set this cell /un/available 
+                    
+                    #wipe all modifiers after a res
+                    for modifier in revived_ship.modifiers:
+                        revived_ship.modifiers[modifier] = [0,0]
+                    
+                    #play the resurrect voice
+                    if hasattr(revived_ship,'resurrect_voice'):
+                        if len(revived_ship.resurrect_voice) > 0:
+                            renpy.music.play( 'sound/Voice/'+renpy.random.choice(revived_ship.resurrect_voice),channel=revived_ship.voice_channel )
+            else:
+                self.order_used = False
+
+        def battle_order_all_guard(self):
+            if self.cmd >= self.orders[self.result][0]:
+                self.cmd -= self.orders[self.result][0]
+                
+                if self.active_strategy[0] == 'full forward':                        
+                    show_message("Full Forward order canceled!")
+                    for ship in player_ships:
+                        if ship.modifiers['accuracy'][0] == 15:
+                            ship.modifiers['accuracy'] = [0,0]
+                        if ship.modifiers['damage'][0] == 20:
+                            ship.modifiers['damage'] = [0,0]
+
+                self.active_strategy = ['all guard',5]                    
+                
+                succesful = False
+                for ship in player_ships:
+                    if apply_modifier(ship,'flak',10,5): succesful = True
+                    if ship.shield_generation > 0:
+                        if apply_modifier(ship,'shield_generation',10,5): succesful = True
+                    if apply_modifier(ship,'evasion',10,5): succesful = True
+                if not succesful:
+                    show_message('already active!')
+                    self.order_used = False
+                    self.cmd += self.orders[self.result][0]
+                else:
+                    store.show_message('all ships gained improved flak, shielding and evasion!')
+                    random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
+                    random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
+                    renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                    for ship in player_ships:
+                        ship.getting_buff = True
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
+                    renpy.pause(1)
+                    for ship in player_ships:
+                        ship.getting_buff = False
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
+                
+                update_stats()
+
+            else:
+                renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                self.order_used = False
+
+        def battle_order_full_forward(self):
+            if self.cmd >= self.orders[self.result][0]:
+                self.cmd -= self.orders[self.result][0]
+                
+                if self.active_strategy[0] == 'all guard':
+                    show_message("All Guard order canceled!")
+                    for ship in player_ships:
+                        if ship.modifiers['flak'][0] == 10:
+                            ship.modifiers['flak'] = [0,0]
+                        if ship.modifiers['shield_generation'][0] == 10:
+                            ship.modifiers['shield_generation'] = [0,0]
+                        if ship.modifiers['evasion'][0] == 10:
+                            ship.modifiers['evasion'] = [0,0]
+                                
+                self.active_strategy = ['full forward',5]
+                
+                succesful = False
+                for ship in player_ships:
+                    if apply_modifier(ship,'accuracy',15,5): succesful = True
+                    if apply_modifier(ship,'damage',20,5): succesful = True
+                if not succesful:
+                    show_message('already active!')
+                    self.order_used = False
+                    self.cmd += self.orders[self.result][0]
+                else:
+                    store.show_message('All ships gain 20% damage and 15% accuracy!')
+                    random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
+                    random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
+                    renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                    for ship in player_ships:
+                        ship.getting_buff = True
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
+                    renpy.pause(1)
+                    for ship in player_ships:
+                        ship.getting_buff = False
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
+
+            else:
+                renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                self.order_used = False
+
+        def battle_order_repair_drones(self):
+            if self.cmd >= self.orders[self.result][0]:
+                if sunrider.repair_drones != None:
+                    if sunrider.repair_drones <= 0:
+                        show_message('No available repair droids in storage!')
+                        self.order_used = False
+                        return
+                    else:
+                        sunrider.repair_drones -= 1
+                self.cmd -= self.orders[self.result][0]
+                show_message('The Sunrider restored 50% of her hull integrity!')
+                sunrider.hp += int(sunrider.max_hp * 0.5)
+                if sunrider.hp > sunrider.max_hp: sunrider.hp = sunrider.max_hp
+                sunrider.getting_buff = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                a = renpy.random.randint(0,len(sunrider.buffed_voice)-1)
+                renpy.music.play('sound/Voice/{}'.format(sunrider.buffed_voice[a]),channel = sunrider.voice_channel)
+                del a
+                renpy.pause(1)
+                sunrider.getting_buff = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+            else:
+                renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                self.order_used = False
+
+        def battle_short_range_warp(self):
+            if self.cmd >= self.orders[self.result][0]:
+                self.cmd -= self.orders[self.result][0]
+                if self.selected != None:
+                    self.unselect_ship(self.selected)
+                self.selected = sunrider #show the sunrider's label
+                self.phase = None #disables the end turn button
+                self.order_used = False #debug
+                self.targetwarp = True
+                renpy.hide_screen('commands')
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                renpy.show_screen('mousefollow')
+                looping = True
+                while looping:
+                    result = ui.interact()
+                    if result[0] == "warptarget":
+                        new_location = result[1]
+                        store.flash_locations = [ sunrider.location,new_location ]
+                        self.warping = True
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
+                        renpy.hide_screen('mousefollow')
+                        renpy.music.play('sound/large_warpout.ogg', channel = 'sound5')
+                        renpy.pause(1.0, hard=True) #hard means unskippable
+                        self.warping = False
+                        x,y = self.selected.location
+                        self.grid[x-1][y-1] = False
+                        self.selected.location = new_location
+                        x,y = self.selected.location
+                        self.grid[x-1][y-1] = True
+                        looping = False
+                        self.phase = 'Player'
+                        self.targetwarp = False
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
+                        
+                    if result[0] == "zoom":
+                        zoom_handling(result,self)
+                        
+                    if result[0] == 'deselect':
+                        self.cmd += self.orders['SHORT RANGE WARP'][0]
+                        looping = False
+                        renpy.hide_screen('mousefollow')
+                        self.phase = 'Player'
+                        self.targetwarp = False
+            else:
+                self.order_used = False
+                renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+
+        def battle_retreat(self):
+            clean_battle_exit()
+            renpy.jump('retreat')
+
+        def battle_order_vanguard_cannon(self):
+            inrange = False
+            templist = enemy_ships[:]
+            for ship in templist:
+                if get_distance(sunrider.location,ship.location) <= 7:
+                    inrange = True
+            if inrange:
+                if self.cmd >= self.orders[self.result][0]:
+                    self.cmd -= self.orders[self.result][0]
+                    self.vanguardtarget = True
+                    looping = True
+                    while looping:
+                        result = ui.interact()
+                        if result[0] == "selection":
+                            if result[1].faction != 'Player':
+                                loc1 = sunrider.location
+                                loc2 = result[1].location
+                                listlocs = interpolate_hex(loc1, loc2)
+                                renpy.music.play('Music/March_of_Immortals.ogg')
+                                renpy.call_in_new_context('atkanim_sunrider_vanguard')
+                                renpy.hide_screen('battle_screen')
+                                renpy.show_screen('battle_screen')
+                                renpy.pause(1)
+                                store.damage = 800
+                                store.hit_count = 1
+                                store.total_armor_negation = 0
+                                store.total_shield_negation = 0
+                                templist = enemy_ships[:]
+                                for ship in templist:
+                                    for tile in listlocs:
+                                        if ship.location != None and self.battlemode: #failsaves. it's now legal for a location to be None
+                                            if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
+                                            #if ship.location[1] == sunrider.location[1]:
+                                            #    if ship.location[0]-sunrider.location[0] >=0:
+                                            #        if ship.location[0]-sunrider.location[0] <=7:
+                                                if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
+                                                    self.target = ship
+                                                    ship.receive_damage(800,sunrider,'Vanguard')
+                                looping = False
+                                self.vanguardtarget = False
+                                renpy.hide_screen('battle_screen')
+                                renpy.show_screen('battle_screen')
+                                
+                        if result[0] == 'deselect':
+                            self.cmd += self.orders['VANGUARD CANNON'][0]
+                            looping = False
+                            self.vanguardtarget = False
+                            self.order_used = False
+
+                else:
+                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
+                    self.order_used = False
+            else:
+                renpy.say('Ava','It\'s hopeless, captain!')
+                self.order_used = False
+
+        def battle_end_turn(self):
+            self.end_player_turn()
+
+        battle_dispatcher = { None               : common_none,
+                              True               : common_bool,
+                              False              : common_bool,
+                              "anime"            : battle_anime,
+                              "cheat"            : battle_cheat,
+                              "I WIN"            : battle_inst_win,
+                              "deselect"         : battle_deselect,
+                              "next ship"        : battle_next_ship,
+                              "previous ship"    : battle_previous_ship,
+                              "zoom"             : battle_zoom,
+                              "selection"        : battle_selection,
+                              "move"             : battle_move,
+                              "cancel movement"  : battle_cancel_movement,
+                              "RESURRECTION"     : battle_order_resurrection,
+                              "ALL GUARD"        : battle_order_all_guard,
+                              "FULL FORWARD"     : battle_order_full_forward,
+                              "REPAIR DRONES"    : battle_order_repair_drones,
+                              "SHORT RANGE WARP" : battle_short_range_warp,
+                              "RETREAT"          : battle_retreat,
+                              "VANGUARD CANNON"  : battle_order_vanguard_cannon,
+                              "endturn"          : battle_end_turn,   }
+        ########################################################
+        ## Battle dispatcher end
+        ########################################################
         def start(self):
             battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
@@ -401,7 +873,7 @@ init -2 python:
         
         def battle(self):
             #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
-            result = ui.interact()
+            self.result = ui.interact()
             if store.Difficulty < self.lowest_difficulty:
                 self.lowest_difficulty = store.Difficulty
             
@@ -415,473 +887,24 @@ init -2 python:
                     if mochi.hp < 0 and mochi in player_ships:
                         renpy.jump('sunrider_destroyed')
 
-
             #sanity check
-            for ship in BM.ships:
+            for ship in self.ships:
                 if ship.hp <= 0:
                     destroyed_ships.append(ship)
                     if ship in player_ships:
                         player_ships.remove(ship)
                     if ship in enemy_ships:
                         enemy_ships.remove(ship)
-                    if ship in BM.ships:
-                        BM.ships.remove(ship)
+                    if ship in self.ships:
+                        self.ships.remove(ship)
 
-            #only used for debug
-            if result[0] == 'anime':
-                if not hasattr(store,'damage'):
-                    store.damage = 50
-                if not hasattr(BM,'attacker'):
-                    BM.attacker = sunrider
-                if not hasattr(store,'hit_count'):
-                    store.hit_count = 1
-                if not hasattr(store,'total_armor_negation'):
-                    store.total_armor_negation = 10
-                if not hasattr(store,'total_shield_negation'):
-                    store.total_shield_negation = 10
-                if BM.target == None:
-                    BM.target = sunrider
-                try:
-                    renpy.call_in_new_context('atkanim_pactasdfelite_laser')
-                except:
-                    show_message('animation label does not exist!')
-
-            if result[0] == 'cheat':
-                BM.cmd = 99999
-                for ship in player_ships:
-                    ship.en = 9999
-
-            if result[0] == 'I WIN':
-                instant_win()
-
-            if result[0] == 'deselect':
-                if self.active_weapon != None:
-                    self.active_weapon = None
-                    self.targetingmode = False
-                    self.weaponhover = None
-                elif self.selected != None:
-                    self.unselect_ship(self.selected)
-                else:
-                    pass
-                    
-            if result[0] == "next ship":
-                if self.selected == None:
-                    self.select_ship(sunrider)
-                    return
-                if self.selected != None and len(player_ships) > 1:
-                    if self.selected.faction == 'Player':
-                        index = player_ships.index(self.selected)
-                        looping = True
-                        while looping:
-                            if index == (len(player_ships)-1):
-                                index = 0
-                            else:
-                                index += 1
-                            if player_ships[index].location != None:
-                                looping = False
-                        self.select_ship(player_ships[index])
-
-            if result[0] == "previous ship":
-                if self.selected != None and len(player_ships) > 1:
-                    if self.selected.faction == 'Player':
-                        index = player_ships.index(self.selected)
-                        looping = True
-                        while looping:
-                            if index == 0:
-                                index = len(player_ships)-1
-                            else:
-                                index -= 1
-                            if player_ships[index].location != None:
-                                looping = False
-                        self.select_ship(player_ships[index])
-
-            # if result[0] == 'mousefollow_click':
-
-            if result[0] == "zoom":
-                zoom_handling(result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
-                if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
-                # self.just_moved = True #zooming doesn't have to reset this button
-
-            if result[0] == 'selection':  #this means you clicked on a ship, which could mean various things depending on circumstance.
-                self.target = result[1]
-                self.hovered = None
-
-                #if no ship is currently selected select the ship that was just clicked on.
-                if self.selected == None:
-                    self.select_ship(self.target)
-                    return
-
-                #you do not have a weapon active.
-                if not self.targetingmode:
-
-                    #did you select the active ship?
-                    if self.target == self.selected:
-                        self.unselect_ship(self.selected)
-                    else:
-                        self.select_ship(self.target)
-                    return
-
-                #you do have a weapon active.
-                else:
-                    weapon = self.active_weapon                    
-                    
-                    #is this a valid target?
-                    if weapon.wtype == 'Melee':
-                        if get_ship_distance(self.selected,self.target) > 1 or self.target.stype != 'Ryder':
-                            return
-                    
-                    self.targetingmode = False
-
-                    #did you click the currently selected ship?
-                    if self.target == self.selected:
-                        if weapon.wtype == 'Support':
-                            pass  #you clicked your selected ship with a support weapon active. do not end the method.
-                        else:
-                            self.unselect_ship(result[1])
-                            return #do end the method. this is important.
-
-                    #did you click an ally?
-                    elif self.target.faction == 'Player':
-                        if weapon.wtype == 'Support' or weapon.wtype == 'Special':
-                            if self.target.cth <= 0:
-                                self.draggable = False
-                                renpy.say('Ava','It\'s hopeless, captain!')
-                                self.draggable = True
-                                self.targetingmode = True #try again
-                                return #do end the method, this is important.
-                            else:
-                                #you clicked an ally unit with a support weapon active. do not end the method.
-                                pass
-                        else:
-                            self.select_ship(self.target)
-                            return
-
-                    #you clicked an enemy with an active weapon.
-                    else:
-
-                        #check if you can hit the target. if not, let the player know he's stupid.
-                        if self.target.cth <= 0:
-                            self.draggable = False
-                            renpy.say('Ava','It\'s hopeless, captain!')
-                            self.draggable = True
-                            return #do end the method, this is important.
-                        else:
-                            BM.attacker = BM.selected
-                            if self.active_weapon.wtype == 'Curse' or self.active_weapon.wtype == 'Special':
-                                weapon.fire(self.selected,self.target)
-                                self.active_weapon = None
-                                self.weaponhover = None
-                                if BM.selected != None:
-                                    self.selected.movement_tiles = get_movement_tiles(self.selected)
-                                return
-
-                            if self.active_weapon.wtype == 'Melee':
-                                pass #do not show the atkanim, because there aren't any for melee.
-                            else:
-                                try:
-                                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-                                except:
-                                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.selected.animation_name,self.active_weapon.wtype.lower()))
-
-                #up till now nothing ended the method meaning it's okay to fire the weapon at the target - be it support or not.
-                result = weapon.fire(self.selected,self.target)
-                self.target.receive_damage(result,self.selected,weapon.wtype)
-                if BM.selected != None:
-                    self.selected.movement_tiles = get_movement_tiles(self.selected)
-                update_stats()
-                self.active_weapon = None
-                self.weaponhover = None
-#                renpy.hide_screen('battle_screen')
-#                renpy.show_screen('battle_screen')
-                return
-
-            if result[0] == 'move': #this means you clicked on one of the blue squares indicating you want to move somewhere
-                self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
-                update_stats()
-
-            if result[0] == 'cancel movement':
-                ship = BM.selected
-                ship.en += get_distance(ship.location,ship.current_location)*ship.move_cost
-                a = ship.location[0]-1  #make the next line of code a little shorter
-                b = ship.location[1]-1
-                self.grid[a][b] = False #tell the BM that the old cell is now free again
-
-                ship.location = ship.current_location
-
-                a = ship.location[0]-1  #make the next line of code a little shorter
-                b = ship.location[1]-1
-                self.grid[a][b] = True #tell the BM that the old cell is now free again
-
-                ship.movement_tiles = get_movement_tiles(ship)
-
-            if result[0] == 'RESURRECTION':
-                if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
-                    
-                    renpy.show_screen('ryderlist')
-                    result = ui.interact()
-                    
-                    if result[0] == 'deselect':
-                        self.cmd += self.orders['RESURRECTION'][0]
-                        renpy.hide_screen('ryderlist')
-                        BM.order_used = False
-                        return
-                    
-                    elif result[0] == 'selection':
-                        revived_ship = result[1]
-                        renpy.hide_screen('ryderlist')
-                        launch_location = get_free_spot_near(sunrider.location) #so useful
-                        revived_ship.en = 0   #not sure about this
-                        revived_ship.hp = revived_ship.max_hp
-                        destroyed_ships.remove(revived_ship)
-                        player_ships.append(revived_ship)
-                        BM.ships.append(revived_ship)
-                        revived_ship.location = launch_location
-                        set_cell_available(launch_location,True) #the optional True actually lets me set this cell /un/available 
-                        
-                        #wipe all modifiers after a res
-                        for modifier in revived_ship.modifiers:
-                            revived_ship.modifiers[modifier] = [0,0]
-                        
-                        #play the resurrect voice
-                        if hasattr(revived_ship,'resurrect_voice'):
-                            if len(revived_ship.resurrect_voice) > 0:
-                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(revived_ship.resurrect_voice),channel=revived_ship.voice_channel )
-                else:
-                    BM.order_used = False
-              
-                    
-            if result[0] == 'ALL GUARD':
-                if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
-                    
-                    if self.active_strategy[0] == 'full forward':                        
-                        show_message("Full Forward order canceled!")
-                        for ship in player_ships:
-                            if ship.modifiers['accuracy'][0] == 15:
-                                ship.modifiers['accuracy'] = [0,0]
-                            if ship.modifiers['damage'][0] == 20:
-                                ship.modifiers['damage'] = [0,0]
-
-                    self.active_strategy = ['all guard',5]                    
-                    
-                    succesful = False
-                    for ship in player_ships:
-                        if apply_modifier(ship,'flak',10,5): succesful = True
-                        if ship.shield_generation > 0:
-                            if apply_modifier(ship,'shield_generation',10,5): succesful = True
-                        if apply_modifier(ship,'evasion',10,5): succesful = True
-                    if not succesful:
-                        show_message('already active!')
-                        BM.order_used = False
-                        BM.cmd += self.orders[result][0]
-                    else:
-                        store.show_message('all ships gained improved flak, shielding and evasion!')
-                        random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
-                        random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
-                        renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
-                        for ship in player_ships:
-                            ship.getting_buff = True
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-                        renpy.pause(1)
-                        for ship in player_ships:
-                            ship.getting_buff = False
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-                    
-                    update_stats()
-
-                else:
-                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
-                    BM.order_used = False
-            
-            if result[0] == 'FULL FORWARD':
-                if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
-                    
-                    if self.active_strategy[0] == 'all guard':
-                        show_message("All Guard order canceled!")
-                        for ship in player_ships:
-                            if ship.modifiers['flak'][0] == 10:
-                                ship.modifiers['flak'] = [0,0]
-                            if ship.modifiers['shield_generation'][0] == 10:
-                                ship.modifiers['shield_generation'] = [0,0]
-                            if ship.modifiers['evasion'][0] == 10:
-                                ship.modifiers['evasion'] = [0,0]
-                                    
-                    self.active_strategy = ['full forward',5]
-                    
-                    succesful = False
-                    for ship in player_ships:
-                        if apply_modifier(ship,'accuracy',15,5): succesful = True
-                        if apply_modifier(ship,'damage',20,5): succesful = True
-                    if not succesful:
-                        show_message('already active!')
-                        BM.order_used = False
-                        BM.cmd += self.orders[result][0]
-                    else:
-                        store.show_message('All ships gain 20% damage and 15% accuracy!')
-                        random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
-                        random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
-                        renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
-                        for ship in player_ships:
-                            ship.getting_buff = True
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-                        renpy.pause(1)
-                        for ship in player_ships:
-                            ship.getting_buff = False
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-
-                else:
-                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
-                    BM.order_used = False
-
-            if result[0] == 'REPAIR DRONES':
-                if self.cmd >= self.orders[result][0]:
-                    if sunrider.repair_drones != None:
-                        if sunrider.repair_drones <= 0:
-                            show_message('No available repair droids in storage!')
-                            BM.order_used = False
-                            return
-                        else:
-                            sunrider.repair_drones -= 1
-                    self.cmd -= self.orders[result][0]
-                    show_message('The Sunrider restored 50% of her hull integrity!')
-                    sunrider.hp += int(sunrider.max_hp * 0.5)
-                    if sunrider.hp > sunrider.max_hp: sunrider.hp = sunrider.max_hp
-                    sunrider.getting_buff = True
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    a = renpy.random.randint(0,len(sunrider.buffed_voice)-1)
-                    renpy.music.play('sound/Voice/{}'.format(sunrider.buffed_voice[a]),channel = sunrider.voice_channel)
-                    del a
-                    renpy.pause(1)
-                    sunrider.getting_buff = False
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                else:
-                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
-                    BM.order_used = False
-
-            if result[0] == 'SHORT RANGE WARP':
-                if self.cmd >= self.orders[result][0]:
-                    self.cmd -= self.orders[result][0]
-                    if BM.selected != None:
-                        BM.unselect_ship(BM.selected)
-                    BM.selected = sunrider #show the sunrider's label
-                    BM.phase = None #disables the end turn button
-                    BM.order_used = False #debug
-                    BM.targetwarp = True
-                    renpy.hide_screen('commands')
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    renpy.show_screen('mousefollow')
-                    looping = True
-                    while looping:
-                        result = ui.interact()
-                        if result[0] == "warptarget":
-                            new_location = result[1]
-                            store.flash_locations = [ sunrider.location,new_location ]
-                            BM.warping = True
-                            renpy.hide_screen('battle_screen')
-                            renpy.show_screen('battle_screen')
-                            renpy.hide_screen('mousefollow')
-                            renpy.music.play('sound/large_warpout.ogg', channel = 'sound5')
-                            renpy.pause(1.0, hard=True) #hard means unskippable
-                            BM.warping = False
-                            x,y = BM.selected.location
-                            BM.grid[x-1][y-1] = False
-                            BM.selected.location = new_location
-                            x,y = BM.selected.location
-                            BM.grid[x-1][y-1] = True
-                            looping = False
-                            BM.phase = 'Player'
-                            BM.targetwarp = False
-                            renpy.hide_screen('battle_screen')
-                            renpy.show_screen('battle_screen')
-                            
-                        if result[0] == "zoom":
-                            zoom_handling(result,self)
-                            
-                        if result[0] == 'deselect':
-                            self.cmd += self.orders['SHORT RANGE WARP'][0]
-                            looping = False
-                            renpy.hide_screen('mousefollow')
-                            BM.phase = 'Player'
-                            BM.targetwarp = False
-                else:
-                    BM.order_used = False
-                    renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
-
-            if result[0] == 'RETREAT':
-                clean_battle_exit()
-                renpy.jump('retreat')
-            
-            if result[0] == 'VANGUARD CANNON':
-                inrange = False
-                templist = enemy_ships[:]
-                for ship in templist:
-                    if get_distance(sunrider.location,ship.location) <= 7:
-                        inrange = True
-                if inrange:
-                    if self.cmd >= self.orders[result][0]:
-                        self.cmd -= self.orders[result][0]
-                        BM.vanguardtarget = True
-                        looping = True
-                        while looping:
-                            result = ui.interact()
-                            if result[0] == "selection":
-                                if result[1].faction != 'Player':
-                                    loc1 = sunrider.location
-                                    loc2 = result[1].location
-                                    listlocs = interpolate_hex(loc1, loc2)
-                                    renpy.music.play('Music/March_of_Immortals.ogg')
-                                    renpy.call_in_new_context('atkanim_sunrider_vanguard')
-                                    renpy.hide_screen('battle_screen')
-                                    renpy.show_screen('battle_screen')
-                                    renpy.pause(1)
-                                    store.damage = 800
-                                    store.hit_count = 1
-                                    store.total_armor_negation = 0
-                                    store.total_shield_negation = 0
-                                    templist = enemy_ships[:]
-                                    for ship in templist:
-                                        for tile in listlocs:
-                                            if ship.location != None and self.battlemode: #failsaves. it's now legal for a location to be None
-                                                if ship.location[0] == tile[0] and ship.location[1] == tile[1]:
-                                                #if ship.location[1] == sunrider.location[1]:
-                                                #    if ship.location[0]-sunrider.location[0] >=0:
-                                                #        if ship.location[0]-sunrider.location[0] <=7:
-                                                    if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
-                                                        BM.target = ship
-                                                        ship.receive_damage(800,sunrider,'Vanguard')
-                                    looping = False
-                                    BM.vanguardtarget = False
-                                    renpy.hide_screen('battle_screen')
-                                    renpy.show_screen('battle_screen')
-                                    
-                            if result[0] == 'deselect':
-                                self.cmd += self.orders['VANGUARD CANNON'][0]
-                                looping = False
-                                BM.vanguardtarget = False
-                                BM.order_used = False
-
-                    else:
-                        renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
-                        BM.order_used = False
-                else:
-                    renpy.say('Ava','It\'s hopeless, captain!')
-                    BM.order_used = False
-
-            if result[0] == 'endturn':
-                self.end_player_turn()
+            try:
+                battle_dispatcher[self.result[0]]()
+            except:
+                battle_dispatcher[self.result]()
 
             self.checkforloss()
             self.checkforwin()
-
             return
             
             
