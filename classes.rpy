@@ -902,11 +902,11 @@ init -2 python:
                         self.ships.remove(ship)
 
             try:
-                battle_dispatcher[self.result[0]]()
+                self.battle_dispatcher[self.result[0]](BM)
             except KeyError:
                 renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
             except:
-                battle_dispatcher[self.result]()
+                self.battle_dispatcher[self.result](BM)
 
             self.checkforloss()
             self.checkforwin()
