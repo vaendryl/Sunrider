@@ -11,7 +11,7 @@ init 2 python:
 
     class Sunrider(Battleship): # your ship!
         def __init__(self):
-            Battleship.__init__(self)
+            super(Sunrider, self).__init__() # proper inheritance requires super()
             self.stype = 'Cruiser'
             self.name = 'Sunrider'
             self.animation_name = 'sunrider'
@@ -70,7 +70,7 @@ init 2 python:
 
     class BlackJack(Battleship): # defining the Blackjack
         def __init__(self):
-            Battleship.__init__(self)
+            super(BlackJack, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Black Jack'
             self.animation_name = 'blackjack'
@@ -114,7 +114,7 @@ init 2 python:
 
     class Liberty(Battleship):  #you can use any existing blueprint as a base, which makes things really easy.
         def __init__(self):
-            Battleship.__init__(self)
+            super(Liberty, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Liberty'
             self.animation_name = 'liberty'
@@ -155,7 +155,7 @@ init 2 python:
 
     class Phoenix(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Phoenix, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Phoenix'
             self.animation_name = 'phoenix'
@@ -199,7 +199,7 @@ init 2 python:
 
     class Bianca(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Bianca, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Bianca'
             self.animation_name = 'bianca'
@@ -239,7 +239,7 @@ init 2 python:
 
     class Seraphim(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Seraphim, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Seraphim'
             self.animation_name = 'seraphim'
@@ -279,7 +279,7 @@ init 2 python:
 
     class Paladin(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Paladin, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Paladin'
             self.animation_name = 'paladin'
@@ -320,7 +320,7 @@ init 2 python:
 
     class AllianceCruiser(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(AllianceCruiser, self).__init__()
             self.stype = 'Cruiser'
             self.name = 'Alliance Cruiser'
             self.animation_name = 'alliancecruiser'
@@ -356,7 +356,7 @@ init 2 python:
 
     class UnionFrigate(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(UnionFrigate, self).__init__()
             self.stype = 'Frigate'
             self.name = 'Mining Union Frigate'
             self.animation_name = 'unionfrigate'
@@ -395,7 +395,7 @@ init 2 python:
 
     class Agamemnon(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Agamemnon, self).__init__()
             self.stype = 'Ship'
             self.name = 'Agamemnon'
             self.animation_name = 'agamemnon'
@@ -439,7 +439,7 @@ init 2 python:
 
     class PhoenixBoaster(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PhoenixBoaster, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Unknown Hostile'
             self.animation_name = 'phoenixboaster'
@@ -464,7 +464,7 @@ init 2 python:
 
     class PactBomber(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactBomber, self).__init__()
             self.stype = 'Ryder' #subtype bomber
             self.name = 'PACT Bomber'
             self.animation_name = 'pactbomber'
@@ -493,7 +493,7 @@ init 2 python:
 
     class SeraphimEnemy(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(SeraphimEnemy, self).__init__()
             self.stype = 'Ryder' #subtype bomber
             self.name = 'Ryuvian Ryder'
             self.animation_name = 'seraphimenemy'
@@ -523,7 +523,7 @@ init 2 python:
 
     class Mochi(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Mochi, self).__init__()
             self.stype = 'Ship'
             self.name = 'Mochi'
             self.animation_name = 'mochi'
@@ -569,7 +569,7 @@ init 2 python:
 
     class MissileFrigate(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(MissileFrigate, self).__init__()
             self.stype = 'Frigate'
             self.name = 'PACT Missile Frigate'
             self.animation_name = 'pactmissilefrigate'
@@ -591,7 +591,7 @@ init 2 python:
 
     class PactMook(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactMook, self).__init__()
             self.stype = 'Ryder'
             self.name = 'PACT Mook'
             self.animation_name = 'pactmook'
@@ -616,7 +616,7 @@ init 2 python:
 
     class PhoenixEnemy(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PhoenixEnemy, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Phoenix'
             self.animation_name = 'phoenixenemy'
@@ -646,7 +646,7 @@ init 2 python:
 
     class Nightmare(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Nightmare, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Nightmare'
             self.animation_name = 'nightmare'
@@ -679,7 +679,7 @@ init 2 python:
 
     class PactElite(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactElite, self).__init__()
             self.stype = 'Ryder'
             self.name = 'PACT Elite'
             self.animation_name = 'pactelite'
@@ -712,7 +712,7 @@ init 2 python:
 
     class PactSupport(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactSupport, self).__init__()
             self.stype = 'Ryder'
             self.name = 'PACT Support'
             self.support = True  #signifies to the AI this unit uses support skills
@@ -745,7 +745,7 @@ init 2 python:
 
     class PactCruiser(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactCruiser, self).__init__()
             self.stype = 'Cruiser'
             self.name = 'PACT Cruiser'
             self.faction = 'PACT'
@@ -774,7 +774,7 @@ init 2 python:
 
     class RyuvianCruiser(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(RyuvianCruiser, self).__init__()
             self.stype = 'Cruiser'
             self.name = 'Ryuvian Cruiser'
             self.faction = 'PACT'
@@ -803,7 +803,7 @@ init 2 python:
 
     class PactOutpost(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactOutpost, self).__init__()
             self.stype = 'Station'
             self.name = 'PACT Outpost'
             self.faction = 'PACT'
@@ -833,7 +833,7 @@ init 2 python:
 
     class PactBattleship(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactBattleship, self).__init__()
             self.stype = 'Battleship'
             self.name = 'PACT Battleship'
             self.faction = 'PACT'
@@ -862,7 +862,7 @@ init 2 python:
 
     class PactCarrier(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactCarrier, self).__init__()
             self.stype = 'Carrier'
             self.name = 'PACT Carrier'
             #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
@@ -896,7 +896,7 @@ init 2 python:
 
     class PactAssaultCarrier(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PactAssaultCarrier, self).__init__()
             self.stype = 'Assault Carrier'
             self.name = 'PACT Assault Carrier'
             #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
@@ -932,7 +932,7 @@ init 2 python:
 
     class PirateBomber(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PirateBomber, self).__init__()
             self.stype = 'Ryder' #subtype bomber
             self.name = 'Pirate Bomber'
             self.animation_name = 'piratebomber'
@@ -961,7 +961,7 @@ init 2 python:
 
     class Havoc(PirateBomber):
         def __init__(self):
-            Battleship.__init__(self)
+            super(Havoc, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Havoc'
             self.animation_name = 'havoc'
@@ -998,7 +998,7 @@ init 2 python:
 
     class PirateGrunt(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PirateGrunt, self).__init__()
             self.stype = 'Ryder'
             self.name = 'Pirate Grunt'
             self.animation_name = 'pirategrunt'
@@ -1025,7 +1025,7 @@ init 2 python:
 
     class PirateDestroyer(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PirateDestroyer, self).__init__()
             self.stype = 'Destroyer'
             self.name = 'Pirate Destroyer'
             self.animation_name = 'piratedestroyer'
@@ -1045,7 +1045,7 @@ init 2 python:
 
     class PirateBase(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PirateBase, self).__init__()
             self.stype = 'Station'
             self.name = 'Pirate Base'
             self.faction = 'Pirate'
@@ -1075,7 +1075,7 @@ init 2 python:
 
     class PirateIronhog(Battleship):
         def __init__(self):
-            Battleship.__init__(self)
+            super(PirateIronhog, self).__init__()
             self.stype = 'Destroyer'
             self.name = 'Pirate Ironhog'
             self.faction = 'Pirate'
