@@ -285,11 +285,11 @@ init -2 python:
             while True:
                 self.result = ui.interact()
                 try:
-                    skirmish_dispatcher[self.result[0]]()
+                    self.skirmish_dispatcher[self.result[0]](self)
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
-                    skirmish_dispatcher[self.result]()
+                    self.skirmish_dispatcher[self.result](self)
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -368,11 +368,11 @@ init -2 python:
             while True:
                 self.result = ui.interact()
                 try:
-                    formation_dispatcher[self.result[0]]()
+                    self.formation_dispatcher[self.result[0]](self)
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
-                    formation_dispatcher[self.result]()
+                    self.formation_dispatcher[self.result](self)
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -902,11 +902,11 @@ init -2 python:
                         self.ships.remove(ship)
 
             try:
-                self.battle_dispatcher[self.result[0]](BM)
+                self.battle_dispatcher[self.result[0]](self)
             except KeyError:
                 renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
             except:
-                self.battle_dispatcher[self.result](BM)
+                self.battle_dispatcher[self.result](self)
 
             self.checkforloss()
             self.checkforwin()
