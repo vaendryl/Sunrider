@@ -77,7 +77,51 @@ init -2 python:
             #disabled when text is showing on screen otherwise mouseclicks get eaten by the viewport and do not advance text
             #DEFUNCT!
             self.draggable = True
-
+            #dispatchers
+            self.skirmish_dispatcher = { None            : self.common_none,
+                                         True            : self.common_bool,
+                                         False           : self.common_bool,
+                                         'start'         : self.skirmish_start,
+                                         'quit'          : self.skirmish_quit,
+                                         'remove'        : self.skirmish_remove,
+                                         'playermusic'   : self.skirmish_playermusic,
+                                         'enemymusic'    : self.skirmish_enemymusic,
+                                         "zoom"          : self.common_zoom,
+                                         "next ship"     : self.common_next_ship,
+                                         "deselect"      : self.common_deselect,
+                                         "selection"     : self.skirmish_selection,
+                                         "warptarget"    : self.skirmish_warptarget }
+            self.formation_dispatcher = { None           : self.common_none,
+                                          True           : self.common_bool,
+                                          False          : self.common_bool,
+                                          "start"        : self.formation_start,
+                                          "zoom"         : self.common_zoom,
+                                          "next ship"    : self.common_next_ship,
+                                          "deselect"     : self.common_deselect,
+                                          "selection"    : self.formation_selection,
+                                          "warptarget"   : self.formation_warptarget }
+            self.battle_dispatcher = { None               : self.common_none,
+                                       True               : self.common_bool,
+                                       False              : self.common_bool,
+                                       "anime"            : self.battle_anime,
+                                       "cheat"            : self.battle_cheat,
+                                       "I WIN"            : self.battle_inst_win,
+                                       "deselect"         : self.battle_deselect,
+                                       "next ship"        : self.battle_next_ship,
+                                       "previous ship"    : self.battle_previous_ship,
+                                       "zoom"             : self.battle_zoom,
+                                       "selection"        : self.battle_selection,
+                                       "move"             : self.battle_move,
+                                       "cancel movement"  : self.battle_cancel_movement,
+                                       "RESURRECTION"     : self.battle_order_resurrection,
+                                       "ALL GUARD"        : self.battle_order_all_guard,
+                                       "FULL FORWARD"     : self.battle_order_full_forward,
+                                       "REPAIR DRONES"    : self.battle_order_repair_drones,
+                                       "SHORT RANGE WARP" : self.battle_short_range_warp,
+                                       "RETREAT"          : self.battle_retreat,
+                                       "VANGUARD CANNON"  : self.battle_order_vanguard_cannon,
+                                       "endturn"          : self.battle_end_turn   }
+            
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
             for a in range(GRID_SIZE[0]):
                 self.grid.append([False]*GRID_SIZE[1])
@@ -244,40 +288,26 @@ init -2 python:
                     set_cell_available(self.selected.location)
                 self.selected.location = None
 
-            def skirmish_warptarget(self):
-                # returned from MouseTracker if you click on an empty hex when BM.warptarget == True.
-                if self.selected != None:
-                    new_location = self.result[1]
-                    set_cell_available(new_location,True)
+        def skirmish_warptarget(self):
+            # returned from MouseTracker if you click on an empty hex when BM.warptarget == True.
+            if self.selected != None:
+                new_location = self.result[1]
+                set_cell_available(new_location,True)
 
-                    if self.selected.faction != 'Player':
-                        enemy_ships.append(self.selected)
-                        self.ships.append(self.selected)
+                if self.selected.faction != 'Player':
+                    enemy_ships.append(self.selected)
+                    self.ships.append(self.selected)
 
-                    self.selected.location = new_location
+                self.selected.location = new_location
 
-                    if self.selected.faction != 'Player' and pygame.key.get_mods() != 0:
-                        self.selected = deepcopy(self.selected) #breaks alias
-                    else:
-                        self.targetwarp = False
-                        renpy.hide_screen('mousefollow')
-                        self.unselect_ship(self.selected)
+                if self.selected.faction != 'Player' and pygame.key.get_mods() != 0:
+                    self.selected = deepcopy(self.selected) #breaks alias
+                else:
+                    self.targetwarp = False
+                    renpy.hide_screen('mousefollow')
+                    self.unselect_ship(self.selected)
 
-                sort_ship_list()
-
-            skirmish_dispatcher = { None            : common_none,
-                                    True            : common_bool,
-                                    False           : common_bool,
-                                    'start'         : skirmish_start,
-                                    'quit'          : skirmish_quit,
-                                    'remove'        : skirmish_remove,
-                                    'playermusic'   : skirmish_playermusic,
-                                    'enemymusic'    : skirmish_enemymusic,
-                                    "zoom"          : common_zoom,
-                                    "next ship"     : common_next_ship,
-                                    "deselect"      : common_deselect,
-                                    "selection"     : skirmish_selection,
-                                    "warptarget"    : skirmish_warptarget, }
+            sort_ship_list()
         ########################################################
         ## Skirmish dispatcher end
         ########################################################
@@ -285,11 +315,11 @@ init -2 python:
             while True:
                 self.result = ui.interact()
                 try:
-                    skirmish_dispatcher[self.result[0]]()
+                    self.skirmish_dispatcher[self.result[0]]()
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
-                    skirmish_dispatcher[self.result]()
+                    self.skirmish_dispatcher[self.result]()
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -351,16 +381,6 @@ init -2 python:
                         self.targetwarp = False
                         renpy.hide_screen('mousefollow')
                         self.unselect_ship(self.selected)
-
-        formation_dispatcher = { None           : common_none,
-                                 True           : common_bool,
-                                 False          : common_bool,
-                                 "start"        : formation_start,
-                                 "zoom"         : common_zoom,
-                                 "next ship"    : common_next_ship,
-                                 "deselect"     : common_deselect,
-                                 "selection"    : formation_selection,
-                                 "warptarget"   : formation_warptarget, }
         ########################################################
         ## Formation dispatcher end
         ########################################################
@@ -368,11 +388,11 @@ init -2 python:
             while True:
                 self.result = ui.interact()
                 try:
-                    formation_dispatcher[self.result[0]]()
+                    self.formation_dispatcher[self.result[0]]()
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except:
-                    formation_dispatcher[self.result]()
+                    self.formation_dispatcher[self.result]()
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -823,28 +843,6 @@ init -2 python:
 
         def battle_end_turn(self):
             self.end_player_turn()
-
-        battle_dispatcher = { None               : common_none,
-                              True               : common_bool,
-                              False              : common_bool,
-                              "anime"            : battle_anime,
-                              "cheat"            : battle_cheat,
-                              "I WIN"            : battle_inst_win,
-                              "deselect"         : battle_deselect,
-                              "next ship"        : battle_next_ship,
-                              "previous ship"    : battle_previous_ship,
-                              "zoom"             : battle_zoom,
-                              "selection"        : battle_selection,
-                              "move"             : battle_move,
-                              "cancel movement"  : battle_cancel_movement,
-                              "RESURRECTION"     : battle_order_resurrection,
-                              "ALL GUARD"        : battle_order_all_guard,
-                              "FULL FORWARD"     : battle_order_full_forward,
-                              "REPAIR DRONES"    : battle_order_repair_drones,
-                              "SHORT RANGE WARP" : battle_short_range_warp,
-                              "RETREAT"          : battle_retreat,
-                              "VANGUARD CANNON"  : battle_order_vanguard_cannon,
-                              "endturn"          : battle_end_turn,   }
         ########################################################
         ## Battle dispatcher end
         ########################################################
@@ -902,11 +900,11 @@ init -2 python:
                         self.ships.remove(ship)
 
             try:
-                self.battle_dispatcher[self.result[0]](BM)
+                self.battle_dispatcher[self.result[0]]()
             except KeyError:
                 renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
             except:
-                self.battle_dispatcher[self.result](BM)
+                self.battle_dispatcher[self.result]()
 
             self.checkforloss()
             self.checkforwin()
