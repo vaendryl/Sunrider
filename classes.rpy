@@ -318,9 +318,11 @@ init -2 python:
                     self.skirmish_dispatcher[self.result[0]]()
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except:
-                    self.skirmish_dispatcher[self.result]()
-
+                except TypeError:
+                    if type(self.result) is list:
+                        raise
+                    else:
+                        self.skirmish_dispatcher[self.result]()
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
         #------------------------------------------------------#
@@ -391,8 +393,11 @@ init -2 python:
                     self.formation_dispatcher[self.result[0]]()
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except:
-                    self.formation_dispatcher[self.result]()
+                except TypeError:
+                    if type(self.result) is list:
+                        raise
+                    else:
+                        self.formation_dispatcher[self.result]()
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -563,7 +568,7 @@ init -2 python:
             return #battle_selection end
 
         def battle_move(self): #this means you clicked on one of the blue squares indicating you want to move somewhere
-            self.selected.move_ship(result[1],self) #result[1] is the new location to move towards
+            self.selected.move_ship(self.result[1],self) #result[1] is the new location to move towards
             self.update_stats()
 
         def battle_cancel_movement(self):
@@ -903,8 +908,11 @@ init -2 python:
                 self.battle_dispatcher[self.result[0]]()
             except KeyError:
                 renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-            except:
-                self.battle_dispatcher[self.result]()
+            except TypeError:
+                if type(self.result) is list:
+                    raise
+                else:
+                    self.battle_dispatcher[self.result]()
 
             self.checkforloss()
             self.checkforwin()
