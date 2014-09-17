@@ -569,7 +569,7 @@ init -2 python:
 
         def battle_move(self): #this means you clicked on one of the blue squares indicating you want to move somewhere
             self.selected.move_ship(self.result[1],self) #result[1] is the new location to move towards
-            self.update_stats()
+            update_stats()
 
         def battle_cancel_movement(self):
             ship = self.selected
@@ -587,8 +587,8 @@ init -2 python:
             ship.movement_tiles = get_movement_tiles(ship)
 
         def battle_order_resurrection(self):
-            if self.cmd >= self.orders[self.result][0]:
-                self.cmd -= self.orders[self.result][0]
+            if self.cmd >= self.orders[self.result[0]][0]:
+                self.cmd -= self.orders[self.result[0]][0]
                 
                 renpy.show_screen('ryderlist')
                 result = ui.interact()
@@ -623,8 +623,8 @@ init -2 python:
                 self.order_used = False
 
         def battle_order_all_guard(self):
-            if self.cmd >= self.orders[self.result][0]:
-                self.cmd -= self.orders[self.result][0]
+            if self.cmd >= self.orders[self.result[0]][0]:
+                self.cmd -= self.orders[self.result[0]][0]
                 
                 if self.active_strategy[0] == 'full forward':                        
                     show_message("Full Forward order canceled!")
@@ -645,7 +645,7 @@ init -2 python:
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
-                    self.cmd += self.orders[self.result][0]
+                    self.cmd += self.orders[self.result[0]][0]
                 else:
                     store.show_message('all ships gained improved flak, shielding and evasion!')
                     random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
@@ -667,8 +667,8 @@ init -2 python:
                 self.order_used = False
 
         def battle_order_full_forward(self):
-            if self.cmd >= self.orders[self.result][0]:
-                self.cmd -= self.orders[self.result][0]
+            if self.cmd >= self.orders[self.result[0]][0]:
+                self.cmd -= self.orders[self.result[0]][0]
                 
                 if self.active_strategy[0] == 'all guard':
                     show_message("All Guard order canceled!")
@@ -689,7 +689,7 @@ init -2 python:
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
-                    self.cmd += self.orders[self.result][0]
+                    self.cmd += self.orders[self.result[0]][0]
                 else:
                     store.show_message('All ships gain 20% damage and 15% accuracy!')
                     random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
@@ -710,7 +710,7 @@ init -2 python:
                 self.order_used = False
 
         def battle_order_repair_drones(self):
-            if self.cmd >= self.orders[self.result][0]:
+            if self.cmd >= self.orders[self.result[0]][0]:
                 if sunrider.repair_drones != None:
                     if sunrider.repair_drones <= 0:
                         show_message('No available repair droids in storage!')
@@ -718,7 +718,7 @@ init -2 python:
                         return
                     else:
                         sunrider.repair_drones -= 1
-                self.cmd -= self.orders[self.result][0]
+                self.cmd -= self.orders[self.result[0]][0]
                 show_message('The Sunrider restored 50% of her hull integrity!')
                 sunrider.hp += int(sunrider.max_hp * 0.5)
                 if sunrider.hp > sunrider.max_hp: sunrider.hp = sunrider.max_hp
@@ -737,8 +737,8 @@ init -2 python:
                 self.order_used = False
 
         def battle_short_range_warp(self):
-            if self.cmd >= self.orders[self.result][0]:
-                self.cmd -= self.orders[self.result][0]
+            if self.cmd >= self.orders[self.result[0]][0]:
+                self.cmd -= self.orders[self.result[0]][0]
                 if self.selected != None:
                     self.unselect_ship(self.selected)
                 self.selected = sunrider #show the sunrider's label
@@ -797,8 +797,8 @@ init -2 python:
                 if get_distance(sunrider.location,ship.location) <= 7:
                     inrange = True
             if inrange:
-                if self.cmd >= self.orders[self.result][0]:
-                    self.cmd -= self.orders[self.result][0]
+                if self.cmd >= self.orders[self.result[0]][0]:
+                    self.cmd -= self.orders[self.result[0]][0]
                     self.vanguardtarget = True
                     looping = True
                     while looping:
@@ -917,14 +917,11 @@ init -2 python:
             self.checkforloss()
             self.checkforwin()
             return
-            
-            
+
         def checkforloss(self):
             if len(player_ships) == 0:
                 self.youlose()
-            
 
-                
         def youlose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
             if (self.mission != 'skirmish'):
                 renpy.jump('gameover')
@@ -944,10 +941,6 @@ init -2 python:
                 self.battle_end()
                 renpy.hide_screen('battle_screen')
 
-      
-
-        
-        
 #ending a turn
         def end_player_turn(self):
             renpy.hide_screen('commands')
