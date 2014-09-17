@@ -741,8 +741,10 @@ screen battle_screen:
         vbox:
             ypos 100
             xalign 1.0
-            textbutton "Debug Cheats" action Return(['cheat'])
+            textbutton "Battle Log" action Show('battle_log')
+            textbutton "Debug Cheats" xalign 1.0 action Return(['cheat'])
             textbutton "Fast Quit" xalign 1.0 action Jump('quit')
+
             if BM.debugoverlay:
                 textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
             else:
@@ -1841,8 +1843,35 @@ screen skirmishhelp:
             textbutton "PROCEED":
                 xalign 0.5
                 action Hide('skirmishhelp')
-        
-        
+
+screen battle_log:
+    drag:
+        xalign 0.5
+        ypos 0.2
+        frame:
+            xpadding 10
+            ypadding 10
+            xalign 0.5
+            ypos 0.2
+            xminimum 800
+            yminimum 100
+            ymaximum 400
+            background Solid((0,0,0,200))
+            vbox:
+                textbutton "X":
+                    yalign 0.0
+                    xalign 1.0
+                    action Hide('battle_log')
+
+                viewport:
+                    xmaximum 800
+                    mousewheel True
+                    scrollbars "vertical"
+
+                    vbox:
+                        for log in BM.battle_log:
+                            text log
+
 transform gameovergimmick(x,y,t):
     # These control the position.
     xpos x ypos y
