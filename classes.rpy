@@ -901,12 +901,12 @@ init -2 python:
                     if ship in self.ships:
                         self.ships.remove(ship)
 
-            try:
-                battle_dispatcher[self.result[0]]()
-            except KeyError:
-                renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-            except:
-                battle_dispatcher[self.result]()
+            # try:
+            self.battle_dispatcher[self.result[0]](BM)
+            # except KeyError:
+                # renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
+            # except:
+                # self.battle_dispatcher[self.result]()
 
             self.checkforloss()
             self.checkforwin()
