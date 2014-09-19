@@ -15562,7 +15562,8 @@ label mission14_end:
     
     $ farport_losttech = False
     $ mission14_complete = True
-    $ del BM.orders['RETREAT'] 
+    if check1 == True:
+        $ del BM.orders['RETREAT'] 
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
