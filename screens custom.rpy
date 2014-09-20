@@ -445,6 +445,8 @@ screen battle_screen:
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
                     $ wait = ship.flaksim[0]
                     $ intercept_count = ship.flaksim[1]
+                    if intercept_count:
+                        $ BM.battle_log_insert(['attack', 'missile'], "{0} intercepted {1} missiles! Effectiveness: {2}%".format(ship.name, intercept_count, int(ship.flak_effectiveness)))
 
                     add 'Battle UI/warning icon.png':
                         xanchor 0.5
@@ -1844,7 +1846,21 @@ screen skirmishhelp:
                 xalign 0.5
                 action Hide('skirmishhelp')
 
-screen battle_log:
+screen battle_log():
+    default filter_all      = True
+    default filter_system   = True
+    default filter_order    = True
+    default filter_attack   = True
+    default filter_kinetic  = True
+    default filter_laser    = True
+    default filter_missile  = True
+    default filter_melee    = True
+    default filter_details  = True
+    default filter_support  = True
+    default filter_heal     = True
+    default filer_buff      = True
+    default filter_debuff   = True
+    default log_tags        = set(['all', 'system', 'player', 'enemy', 'order', 'attack', 'detailed', 'laser', 'kinetic', 'missile', 'melee', 'support', 'heal', 'buff', 'debuff'])
     drag:
         xalign 0.5
         ypos 0.2
@@ -1854,23 +1870,169 @@ screen battle_log:
             xalign 0.5
             ypos 0.2
             xminimum 800
+            xmaximum 900
             yminimum 100
             ymaximum 400
             background Solid((0,0,0,200))
             vbox:
-                textbutton "X":
-                    yalign 0.0
-                    xalign 1.0
-                    action Hide('battle_log')
+                hbox:
+                    xfill True
+                    hbox:
+                        # re-evaluation should update filter_all in case if all other are enabled
+                        if filter_system and filter_attack and filter_details and filter_support and filter_order:
+                            $filter_all = True
+                        else:
+                            $filter_all = False
+                        label "Filters:":
+                            right_padding 10
+                        textbutton "all":
+                            action If(filter_all, true=[ToggleScreenVariable("filter_all"),
+                                                        SetScreenVariable("filter_system", False),
+                                                        SetScreenVariable("filter_attack", False),
+                                                        SetScreenVariable("filter_laser", False),
+                                                        SetScreenVariable("filter_kinetic", False),
+                                                        SetScreenVariable("filter_missile", False),
+                                                        SetScreenVariable("filter_melee", False),
+                                                        SetScreenVariable("filter_details", False),
+                                                        SetScreenVariable("filter_support", False),
+                                                        SetScreenVariable("filter_heal", False),
+                                                        SetScreenVariable("filter_buff", False),
+                                                        SetScreenVariable("filter_debuff", False),
+                                                        SetScreenVariable("filter_order", False),
+                                                        SelectedIf(filter_all)],
+                                                 false=[ToggleScreenVariable("filter_all"),
+                                                        SetScreenVariable("filter_system", True),
+                                                        SetScreenVariable("filter_attack", True),
+                                                        SetScreenVariable("filter_laser", True),
+                                                        SetScreenVariable("filter_kinetic", True),
+                                                        SetScreenVariable("filter_missile", True),
+                                                        SetScreenVariable("filter_melee", True),
+                                                        SetScreenVariable("filter_details", True),
+                                                        SetScreenVariable("filter_support", True),
+                                                        SetScreenVariable("filter_heal", True),
+                                                        SetScreenVariable("filter_buff", True),
+                                                        SetScreenVariable("filter_debuff", True),
+                                                        SetScreenVariable("filter_order", True),
+                                                        SelectedIf(filter_all)])
+                        textbutton "system":
+                            action [ToggleScreenVariable("filter_system")]
+                        textbutton "order":
+                            action [ToggleScreenVariable("filter_order")]
+                        if filter_attack:
+                            textbutton "attack":
+                                action [ToggleScreenVariable("filter_attack"),
+                                        SetScreenVariable("filter_laser", True),
+                                        SetScreenVariable("filter_kinetic", False),
+                                        SetScreenVariable("filter_missile", False),
+                                        SetScreenVariable("filter_melee", False),
+                                        SelectedIf(filter_attack)]
+                        elif filter_laser:
+                            textbutton "laser":
+                                action [ToggleScreenVariable("filter_laser"), ToggleScreenVariable("filter_kinetic"), SelectedIf(filter_laser)]
+                        elif filter_kinetic:
+                            textbutton "kinetic":
+                                action [ToggleScreenVariable("filter_kinetic"), ToggleScreenVariable("filter_missile"), SelectedIf(filter_kinetic)]
+                        elif filter_missile:
+                            textbutton "missile":
+                                action [ToggleScreenVariable("filter_missile"), ToggleScreenVariable("filter_melee"), SelectedIf(filter_missile)]
+                        elif filter_melee:
+                            textbutton "melee":
+                                    action [ToggleScreenVariable("filter_melee")]
+                        else: #means attack is not selected
+                            textbutton "attack":
+                                action [ToggleScreenVariable("filter_attack"),
+                                        SetScreenVariable("filter_laser", True),
+                                        SetScreenVariable("filter_kinetic", True),
+                                        SetScreenVariable("filter_missile", True),
+                                        SetScreenVariable("filter_melee", True),
+                                        SelectedIf(filter_attack)]
+                        if filter_support:
+                            textbutton "support":
+                                action [ToggleScreenVariable("filter_support"),
+                                        SetScreenVariable("filter_heal", True),
+                                        SetScreenVariable("filter_buff", False),
+                                        SetScreenVariable("filter_debuff", False),
+                                        SelectedIf(filter_support)]
+                        elif filter_heal:
+                            textbutton "heal":
+                                action [ToggleScreenVariable("filter_heal"), ToggleScreenVariable("filter_buff"), SelectedIf(filter_heal)]
+                        elif filter_buff:
+                            textbutton "buff":
+                                action [ToggleScreenVariable("filter_buff"), ToggleScreenVariable("filter_debuff"), SelectedIf(filter_buff)]
+                        elif filter_debuff:
+                            textbutton "debuff":
+                                    action [ToggleScreenVariable("filter_debuff")]
+                        else: #means that support is not selected
+                            textbutton "support":
+                                action [ToggleScreenVariable("filter_support"),
+                                        SetScreenVariable("filter_heal", True),
+                                        SetScreenVariable("filter_buff", True),
+                                        SetScreenVariable("filter_debuff", True),
+                                        SelectedIf(filter_support)]
+                        textbutton "details":
+                            action [ToggleScreenVariable("filter_details")]
+                            
+                    textbutton "X":
+                        xalign 1.0
+                        action Hide('battle_log')
 
-                viewport:
-                    xmaximum 800
-                    mousewheel True
-                    scrollbars "vertical"
+                side "c r":
+                    viewport:
+                        id 'battle log'
+                        xmaximum 900
+                        yinitial 1.0
+                        yadjustment BM.battle_log_yadj
+                        mousewheel True
 
-                    vbox:
-                        for log in BM.battle_log:
-                            text log
+                        vbox:
+                            #if flag all is true then all tags are enabled
+                            if filter_all:
+                                $log_tags = set(['all', 'system', 'player', 'enemy', 'order', 'attack', 'detailed', 'laser', 'kinetic', 'missile', 'melee', 'support', 'heal', 'buff', 'debuff'])
+                            else:
+                                #otherwise we check which tags should be enabled
+                                $log_tags = set([])
+                                if filter_system:
+                                    $log_tags.add('system')
+                                if filter_order:
+                                    $log_tags.add('order')
+                                if filter_attack:
+                                    $log_tags.update(set(['attack', 'laser', 'kinetic', 'missile', 'melee']))
+                                else:
+                                    if filter_laser:
+                                        $log_tags.add('attack')
+                                        $log_tags.add('laser')
+                                    if filter_kinetic:
+                                        $log_tags.add('attack')
+                                        $log_tags.add('kinetic')
+                                    if filter_missile:
+                                        $log_tags.add('attack')
+                                        $log_tags.add('missile')
+                                    if filter_melee:
+                                        $log_tags.add('attack')
+                                        $log_tags.add('melee')
+                                if filter_details:
+                                    $log_tags.add('detailed')
+                                if filter_support:
+                                    $log_tags.update(set(['support', 'heal', 'buff', 'debuff']))
+                                else:
+                                    if filter_heal:
+                                        $log_tags.add('support')
+                                        $log_tags.add('heal')
+                                    if filter_buff:
+                                        $log_tags.add('support')
+                                        $log_tags.add('buff')
+                                    if filter_debuff:
+                                        $log_tags.add('support')
+                                        $log_tags.add('debuff')
+                            for type, entry in BM.battle_log:
+                                #To be printed log's tags should contain tags which are stored in filter
+                                if log_tags.issuperset(set(type)):
+                                    text entry
+                                    
+                    vbar:
+                        value YScrollValue('battle log')
+                        hovered SetField(BM, 'draggable', False)
+                        unhovered SetField(BM, 'draggable', True)
 
 transform gameovergimmick(x,y,t):
     # These control the position.

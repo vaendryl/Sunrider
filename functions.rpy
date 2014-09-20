@@ -731,8 +731,9 @@ init -6 python:
             strat,duration = BM.active_strategy
             if strat != None:
                 if duration <= 1:
-                    BM.battle_log.append("{} has expired!".format(strat))
-                    show_message(BM.battle_log[-1])
+                    message = "{} has expired!".format(strat)
+                    BM.battle_log_insert(['order'], message)
+                    show_message(message)
                     order_expired = True
                     BM.active_strategy = [None,0]
                 else:
@@ -745,12 +746,14 @@ init -6 python:
                     if mod_power != 0:
                         if duration == 1:
                             if mod_power < 0:
-                                BM.battle_log.append("{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' ')))
-                                show_message(BM.battle_log[-1])
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
                             else:
                                 if not order_expired:
-                                    BM.battle_log.append("{0} lost buff to its {1}".format(ship.name, key.replace('_', ' ')))
-                                    show_message(BM.battle_log[-1])
+                                    message = "{0} lost buff to its {1}".format(ship.name, key.replace('_', ' '))
+                                    BM.battle_log_insert(['support', 'buff'], message)
+                                    show_message(message)
                             ship.modifiers[key] = [0,0]
                             renpy.pause(0.5)
                         else:
@@ -761,11 +764,13 @@ init -6 python:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
                             if ship.modifiers[key][0] < 0:
-                                BM.battle_log.append("{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' ')))
-                                show_message(BM.battle_log[-1])
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
                             else:
-                                BM.battle_log.append("{0} lost buff to its {1}".format(ship.name, key.replace('_', ' ')))
-                                show_message(BM.battle_log[-1])
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
                             ship.modifiers[key] = [0,0]
                             renpy.pause(0.5)
                         else:
