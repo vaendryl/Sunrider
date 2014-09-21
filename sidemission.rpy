@@ -62,6 +62,14 @@ init python:
         #    show_message('You were defeated! I hope that the modder added a label for myprisonstoryline...')
         #    clean_battle_exit()
         #    renpy.jump('myprisonstoryline')
+        
+        #Uncomment this if you want to do something funky when a boss ship dies, as opposed to going straight to a victory condition
+        #def bossdied(self, deadboss):
+        #   if deadboss == Havoc:
+        #       show_message('Cosette is taken out of the battle.  It turns out that her threat about a bomb on the Sunrider was true!')
+        #       Sunrider.takedamage(400)
+        #   else:
+        #       self.youwin()
 
         #Uncomment this if you want to do a special check for your custom victory condition.  Note that if a boss ship is destroyed, it will call youwin()
         #def checkforwin(self):

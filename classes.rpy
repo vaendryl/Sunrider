@@ -893,6 +893,10 @@ init -2 python:
                 clean_battle_exit()
                 renpy.jump('dispatch')
                 
+        def bossdied(self, deadboss):
+            if (self.mission != 'skirmish'):
+                youwin(self)
+               
         def checkforwin(self):
             if len(enemy_ships) == 0:
                 self.youwin()
@@ -1525,7 +1529,7 @@ init -2 python:
             #killing a boss ends the battle (the rest surrenders)
             #if this was the last enemy ship you win too, but that can be handled by the battle manager
             if self.boss:
-                BM.youwin()
+                BM.bossdied(self)
 
             BM.checkforloss()
             BM.checkforwin()
