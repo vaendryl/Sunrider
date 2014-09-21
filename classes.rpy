@@ -895,7 +895,7 @@ init -2 python:
                 
         def bossdied(self, deadboss):
             if (self.mission != 'skirmish'):
-                youwin(self)
+                self.youwin()
                
         def checkforwin(self):
             if len(enemy_ships) == 0:
