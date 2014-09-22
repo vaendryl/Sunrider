@@ -803,7 +803,7 @@ init -6 python:
         z = location[2]
         q = x
         r = z + (x + (x%2)) / 2
-        return [r, q]
+        return (r, q)
 
     def cubic_distance(location1, location2):  #calculates the distances between two cubic coordiantes
         x1 = location1[0]
@@ -848,7 +848,7 @@ init -6 python:
 
         if disN != 0:
             N = (1.0)/disN
-            for i in range(0, 6 + 1):
+            for i in range(0, disN+1):
                 x = cube1[0] + (cube2[0] - cube1[0])*i*N
                 y = cube1[1] + (cube2[1] - cube1[1])*i*N
                 z = cube1[2] + (cube2[2] - cube1[2])*i*N

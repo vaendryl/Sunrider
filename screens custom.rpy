@@ -481,7 +481,7 @@ screen battle_screen:
                     $next_xposition = dispx(missile.target.location[0],missile.target.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
                     $next_yposition = dispy(missile.target.location[0],missile.target.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
 
-                    $ travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED
+                    $ travel_time = get_ship_distance(missile.parent,missile.target)*MISSILE_SPEED*1.5
                     add missile.lbl:
                         at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
                         xanchor 0.5
@@ -663,29 +663,6 @@ screen battle_screen:
 
          #selecting target for vanguard cannon
         if BM.vanguardtarget:   #creates buttons over enemy ships
-            #for ship in BM.ships:
-                #if get_distance(sunrider.location,ship.location) <= 6 and ship.faction != 'Player':
-                    #$xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
-                    #$yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
-
-                    #imagebutton:
-                       # at movebutton
-                        #idle 'Battle UI/move_tile.png'
-                        #hover 'Battle UI/move_tile.png'
-                        #xanchor 0.5
-                        #yanchor 0.5
-                        #xpos xposition
-                        #ypos yposition
-                        #action Return(['vanguardtarget',(ship.location[0],ship.location[1])])
-                        #alternate Return(["deselect"])
-
-                    #text (str(ship.location[0]) + ',' + str(ship.location[1])): #printed the x,y coordiantes for debugging purposes
-                       # xpos xposition
-                       # ypos yposition
-                       # xanchor 0.5
-                       # yanchor 0.5
-                       # size (20 * zoomlevel)
-                       # outlines [(2,'000',0,0)]
 
             if not BM.hovered == None:     #displayes red tiles on location affected by vanguard
                 $ hovered_ship = BM.hovered
@@ -707,7 +684,18 @@ screen battle_screen:
                                 size (xsize,ysize)
                                 alpha 0.7
 
-
+        if BM.enemy_vanguard_path is not None:
+            for hex in BM.enemy_vanguard_path:
+                $xposition = dispx(hex[0],hex[1],zoomlevel)
+                $yposition = dispy(hex[0],hex[1],zoomlevel)
+                $xsize = int((HEXW + 4) * zoomlevel)
+                $ysize = int((HEXH + 4) * zoomlevel)
+                add "Battle UI/vanguard hex.png":
+                    xpos xposition
+                    ypos yposition
+                    size (xsize,ysize)
+                    alpha 0.7
+                                
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:

@@ -24,6 +24,7 @@ init -2 python:
             self.save_version = config.version
             self.ships = []           #holds all ships to display on the map
             self.covers = []          #holds a list of all the cover on the map
+            self.enemy_vanguard_path = []#stores the hexes that the enemy's vanguard will go through.
             self.missiles = []        #all the missiles on screen. right now all missiles are fired one by one
             self.selected = None      #current selection
             self.hovered = None       #what unit are you hovering over
@@ -1490,6 +1491,14 @@ init -2 python:
                         show_message('missing animation. "miss_{}" does\'t seem to exist'.format(self.animation_name))
             else:
 
+                if self.faction == 'Player' and wtype == 'Vanguard':
+                    try:
+                        renpy.call_in_new_context('hitlegion_{}'.format(self.animation_name)) #you just got pwnd, son.
+                    except:
+                        show_message('missing animation. "hitlegion_{}" does\'t seem to exist'.format(self.animation_name))
+                    show_message( 'the {} was obliterated. Game Over.'.format(self.name) )
+                    BM.you_lose()
+                
                 #handle healing
                 if wtype == 'Support':
                     self.hp += int(damage)
@@ -1663,7 +1672,7 @@ init -2 python:
                             estimation = 0
                         else:
                             estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
-                            estimation = estimation * (100 - pship.flak) / 100.0
+                            estimation = estimation * estimate_flak(self,pship)
                               #arbitrary compensation for not calculating flak defense perfectly
                               #also, missiles cost ammo and probably shouldn't be spammed.
                             priority = estimation * (pship.hate/100.0)/50.0
@@ -1894,6 +1903,13 @@ init -2 python:
                 spawn_ryders(self)
                 return
                 
+            if self.name == 'Legion':
+                #let's bring the pain
+                if BM.enemy_vanguard_path != []:                    
+                    fire_legion_vanguard(self)
+                    self.en = 0
+                    
+                    
             #################################### HOLD MY BEER, I'M DOING THIS
             
             if self.stype == 'Assault Carrier' and self.location != None:
@@ -1927,6 +1943,11 @@ init -2 python:
                 self.AI_basic_loop()
                 if starting_en == self.en:
                       ##no (more) engine power was (/could be) used so we quit the AI
+                    
+                    if self.name == 'Legion' and BM.enemy_vanguard_path == []:
+                        result = get_vanguard_feasible(self)
+                        if result != False:
+                            BM.enemy_vanguard_path = interpolate_hex(self.location,result.location)
                     self.AI_running = False
                     return
 
@@ -2208,7 +2229,7 @@ init -2 python:
             if missile.shot_down != None:
                 remaining_wait = missile.shot_down
             else:
-                remaining_wait = get_ship_distance(parent,target)*(MISSILE_SPEED)*10 # - target_wait
+                remaining_wait = get_ship_distance(parent,target)*(MISSILE_SPEED)*15 # - target_wait
                 remaining_wait = int(remaining_wait)/10.0  #round to 1 decimal
             renpy.pause(remaining_wait)
             BM.missile_moving = False
@@ -2261,46 +2282,40 @@ init -2 python:
 
             missile = MissileSprite(parent,target,self)
             BM.missiles.append(missile)
-            vector = calculate_vector(target.location,missile.location) #get what direction to go to
-            missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
-            missile.shot_down = None
-
-            time = 0.5 #stores how much time has passed since the missile was launched. used to time the flak icon etc
-
-            moving = True
-            while moving:
-                missile.location = missile.next_location
+            path = interpolate_hex(parent.location,target.location) #get a list of locations between parent and target
+            
+            #store how much time has passed since the missile was launched. used to time the flak icon etc
+            time = 0.5 
+            
+            for ship in BM.ships:
+                ship.flak_used = False
+            
+            for hex in path:
                 for ship in BM.ships:
-                    effective_flak = ship.flak + ship.modifiers['flak'][0]
-                    if effective_flak > 100: effective_flak = 100
-                    elif effective_flak < 0: effective_flak = 0
-
-                    if ship.faction != missile.parent.faction and effective_flak > 0:
-
-                          #pirates and PACT shouldn't shoot each other's missiles.
-                        if missile.parent.faction != 'Player' and ship.faction != 'Player':
-                            continue
-
-                        if not ship.flak_used:
-                            if get_ship_distance(missile,ship) <= (ship.flak_range+0.5):
-                                ship.flaksim = None
-                                ship.flaksim = (time,missile.flak_intercept(ship))
-                                if missile.shot_count == 0:
-                                    missile.shot_down = time + MISSILE_SPEED
-                                    moving = False
-                                    for ship in BM.ships:
-                                        ship.flak_used = False
-                                    return missile
-                if get_ship_distance(missile,target) <= 0.5:
-                    moving = False
-                    return missile
-                else:
-                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
-                    vector = calculate_vector(target.location,missile.location) #get what direction to go to
-                    missile.next_location = missile.location[0]+(vector[0]/2.0),missile.location[1]+(vector[1]/2.0)
-                    time += MISSILE_SPEED / 2.0
-
-
+                    if ship.location is not None and not ship.flak_used:
+                        if ship.faction != missile.parent.faction:
+                            if missile.parent.faction != 'Player' and ship.faction != 'Player':
+                                continue
+                            if get_distance(hex,ship.location) <= ship.flak_range:
+                                effective_flak = ship.flak + ship.modifiers['flak'][0]
+                                if effective_flak > 100: effective_flak = 100
+                                elif effective_flak < 0: effective_flak = 0
+                                
+                                if effective_flak > 0:
+                                    ship.flaksim = None
+                                    ship.flaksim = (time,missile.flak_intercept(ship))
+                                    if missile.shot_count == 0:
+                                        missile.shot_down = time + MISSILE_SPEED
+                                        for ship in BM.ships:
+                                            ship.flak_used = False
+                                        return missile
+                                        
+                time += MISSILE_SPEED
+            
+            for ship in BM.ships:
+                ship.flak_used = False
+            return missile
+            
 
           ##this class is the missile shown on screen when missiles are fired##
     class MissileSprite(store.object):
@@ -2855,7 +2870,7 @@ init -2 python:
             store.mission_pirateattack = False
             store.amissionforalliance = False
             store.missionforryuvia = False
-            store.OngessTruth == False
+            store.OngessTruth = False
 
             store.battlemusic = True
 
