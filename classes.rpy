@@ -915,15 +915,15 @@ init -2 python:
                     self.battle_dispatcher[self.result]()
 
 
-            self.checkforloss()
-            self.checkforwin()
+            self.check_for_loss()
+            self.check_for_win()
             return
 
-        def checkforloss(self):
+        def check_for_loss(self):
             if len(player_ships) == 0:
-                self.youlose()
+                self.you_lose()
 
-        def youlose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
+        def you_lose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
             if (self.mission != 'skirmish'):
                 renpy.jump('gameover')
             else:
@@ -931,17 +931,17 @@ init -2 python:
                 clean_battle_exit()
                 renpy.jump('dispatch')
                 
-        def bossdied(self, deadboss):
+        def boss_died(self, deadboss):
             if (self.mission != 'skirmish'):
-                self.youwin()
+                self.you_win()
                
-        def checkforwin(self):
+        def check_for_win(self):
             if len(enemy_ships) == 0:
-                self.youwin()
+                self.you_win()
                 
-        def youwin(self):
+        def you_win(self):
             self.stopAI = True
-            if self.battlemode: #Ignore calls to Youwin if we're not actually in battle mode.
+            if self.battlemode: #Ignore calls to you_win if we're not actually in battle mode.
                 renpy.hide_screen('commands')
                 self.battle_end()
                 renpy.hide_screen('battle_screen')
@@ -1612,10 +1612,10 @@ init -2 python:
             #killing a boss ends the battle (the rest surrenders)
             #if this was the last enemy ship you win too, but that can be handled by the battle manager
             if self.boss:
-                BM.bossdied(self)
+                BM.boss_died(self)
 
-            BM.checkforloss()
-            BM.checkforwin()
+            BM.check_for_loss()
+            BM.check_for_win()
            
 
                 
