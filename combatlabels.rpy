@@ -42,8 +42,9 @@ label test_battle:
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
-        enemy_ships[-1].hp = 1
-        create_ship(PactSupport(),(14,5))
+        enemy_ships[-1].name = 'Legion'
+        # enemy_ships[-1].hp = 1
+        # create_ship(PactSupport(),(14,5))
         # create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         # create_ship(PirateGrunt(),(13,6),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         # create_ship(PirateGrunt(),(13,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])

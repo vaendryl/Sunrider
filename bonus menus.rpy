@@ -75,8 +75,9 @@ init -1 python:
     chapter3 = Chapter("CG/avateatime.jpg", " Chapter 3", "ep3_start", 0.09, 11870, 8)
     chapter4 = Chapter("CG/asagakidnap_legion.jpg", " Chapter 4", "chap4_start", 0.09, 15710, 10)
     chapter5 = Chapter("cg/sola_beach.jpg"," Chapter 5", "beachepisode", 0.09, 20000, 12)
+    chapter6 = Chapter("cg/ongess_port1.jpg"," Chapter 6", "afterrescue", 0.09, 25000, 15)
 
-    chapters = [chapter0, chapter1, chapter2, chapter3, chapter4, chapter5]
+    chapters = [chapter0, chapter1, chapter2, chapter3, chapter4, chapter5, chapter6]
 
 screen chapter_select:
 

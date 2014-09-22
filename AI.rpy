@@ -221,6 +221,107 @@ init python:
             return True
         else:
             return False #wasn't able to do anything.
+            
+    def get_vanguard_feasible(self):
+        """find out if firing the legion's vanguard is a good idea and what its target should be"""
+        #boilerplate
+        if self is None: return False
+        if self.location is None: return False
+            
+        #are there any player ships nearby?
+        templist = []        
+        for pship in player_ships:
+            if get_ship_distance(pship,self) <= 30:
+                templist.append(pship)
+        if len(templist) <= 1:
+            return False
+            
+        #find a good target
+        best_target = None
+        best_count = None
+        for pship in templist:
+            #get a list of hexes in between self and the possible target.
+            path = interpolate_hex(pship.location,self.location)
+            
+            #count the number of player ships in between the target and self
+            target_count = 0
+            for pship in templist:
+                if pship.location in path:
+                    target_count += 1
+            
+            #record best target
+            if target_count < 2:
+                if best_count is None or best_count < target_count:
+                    best_target = pship
+                    best_count = target_count
+                    
+        if best_target is not None:
+            return best_target
+        else:
+            return False
+            
+    def fire_legion_vanguard(self):
+        """fire the legion's vanguard at a target"""
+        #boilerplate
+        if self is None: return
+        if self.location is None: return
+    
+        # renpy.music.play('Music/March_of_Immortals.ogg') #not sure if this will be used
+        try:
+            renpy.call_in_new_context('atkanim_legion_vanguard') #TEST THIS
+        except:
+            show_message('missing legion vanguard animation')
+            
+        renpy.hide_screen('battle_screen')
+        renpy.show_screen('battle_screen')
+        renpy.pause(1)
+        store.damage = 10000  #yeah, I know.
+        store.hit_count = 1
+        store.total_armor_negation = 0
+        store.total_shield_negation = 0
+        templist = player_ships[:]
+        for ship in templist:
+            if ship.location in BM.enemy_vanguard_path and BM.battlemode: #failsaves
+                if ship in player_ships: #it's possible the ship was already deleted because of the boss being killed
+                    BM.target = ship
+                    ship.receive_damage(store.damage,self,'Vanguard') #TEST THIS
+        renpy.hide_screen('battle_screen')
+        renpy.show_screen('battle_screen')
+        BM.enemy_vanguard_path = []
+        return
+        
+    def estimate_flak(self,target):
+        if self is None or target is None: return 100
+        if self.location is None or target.location is None: return 100
+        
+        path = interpolate_hex(self.location,target.location) #get a list of locations between parent and target
+        
+        flak_strength = 1.0  #the lower this number the stronger, actually.
+        for hex in path:
+            for ship in player_ships:
+                if ship.location is not None and not ship.flak_used:
+                    if get_distance(ship.location,hex) <= ship.flak_range:
+                        effective_flak = ship.flak + ship.modifiers['flak'][0]
+                        if effective_flak > 100: effective_flak = 100
+                        elif effective_flak < 0: effective_flak = 0
+                        flak_strength = (100-effective_flak)/100.0 * flak_strength
+                        ship.flak_used = True
+                        
+        
+        for ship in player_ships:
+            ship.flak_used = False
+        
+        return flak_strength
+                        
+            
+                    
+                
+            
+            
+        
+            
+        
+        
     
     
     
