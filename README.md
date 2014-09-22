@@ -1,3 +1,7 @@
+patch 6.1
+======
+* renpy 6.18 is now officially released and the game now only runs on this version of ren'py.
+
 patch 6.0b
 ======
 * fixed full forward not overwriting all guard
