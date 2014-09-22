@@ -177,7 +177,7 @@ init -6 python:
             accuracy += attacker.modifiers['accuracy'][0]
 
         #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
-        accuracy += 50 - (weapon.acc_degradation * (max(get_ship_distance(attacker,target) - range_reduction),1))
+        accuracy += 50 - (weapon.acc_degradation * (max(get_ship_distance(attacker,target) - range_reduction,1)))
 
         #environmental effects are added
         accuracy *= BM.environment['accuracy'] / 100.0

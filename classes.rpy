@@ -2053,6 +2053,8 @@ init -2 python:
             self.shot_count = 1
             self.accuracy = 100
             self.tooltip = ''
+           
+
         
         #return None when attribute does not exist.
         # def __getattr__(self,X):
@@ -2069,14 +2071,16 @@ init -2 python:
             self.wtype = 'Laser'
             self.name = 'Basic Laser'
             self.lbl = 'Battle UI/button_laser.png'
-
+        
+        def energy_cost(self):
+            return int(self.energy_use * parent.energy_cost)
+            
         def fire(self, parent, target): #firing lasers!
             target.update_armor()
-            energy_cost = int(self.energy_use * parent.energy_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost
             accuracy = get_acc(self, parent, target)
 
                 ## actual damage calculation
@@ -2126,14 +2130,16 @@ init -2 python:
             self.name = 'Basic Guns'
             self.lbl = 'Battle UI/button_kinetic.png'
 
+        def energy_cost(self):
+            return int(self.energy_use * parent.kinetic_cost)
+            
         def fire(self, parent, target): #firing gunz!
             target.update_armor()
 
-            energy_cost = int(self.energy_use * parent.kinetic_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost
 
             accuracy = get_acc(self, parent, target)
             if accuracy == 0: return 'miss'
@@ -2182,16 +2188,18 @@ init -2 python:
             self.eccm = 0
             self.lbl = 'Battle UI/button_missile.png'
             self.flaklist = []
+            
+        def energy_cost(self):
+            return int(self.energy_use * parent.missile_cost)
 
         def fire(self, parent, target):
             target.update_armor()
             BM.missiles = []
 
-            energy_cost = int(self.energy_use * parent.missile_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost:  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost
 
             if self.uses_missiles:
                 if self.ammo_use > parent.missiles:
