@@ -1817,21 +1817,9 @@ init -2 python:
 
             elif best_target[3] > most_attractive_ship[1]:
                 #renpy.log('attacking the {} because of its high priority of {!s}'.format(best_target[0].name,best_target[3]))
-                #we are plannning to attack this ship, but let's first work out if we should close in on it.
-                if self.en < self.move_cost + best_target[1].energy_cost: #not enough energy to attack and move
-                    ##attack ship
-                    self.AI_attack_target(best_target[0],best_target[1])
-                else:
-                    max_move_distance = (self.en - best_target[1].energy_cost) / self.move_cost
-                    self.AI_estimate_damage(best_target[0], max_move_distance)
-                    if self.en >= best_target[1].energy_cost * 2:
-                        closing_factor = 1.6 
-                    else:
-                        closing_factor = 1.1
-                    if best_target[3] > best_target[0].damage_estimation[2] * closing_factor: # if we can't do much more damage by closing in
-                        self.AI_attack_target(best_target[0], best_target[1])
-                    else:
-                        self.AI_move_towards(best_target[0], False, max_move_distance)
+                ##attack ship
+                BM.target = best_target[0]
+                self.AI_attack_target(best_target[0],best_target[1])
                 return
 
             elif most_attractive_ship[1] < best_target[3] and self.en >= self.move_cost:
