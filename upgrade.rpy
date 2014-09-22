@@ -12,13 +12,13 @@ screen upgrade:
 
     # imagebutton:
         # xpos 0.05 ypos 925
-        # action Return("submit")
+        # action Return(["submit"])
         # idle "Menu/submit.jpg"
         # hover "Menu/submit_hover.jpg"
 
     imagebutton:
         xpos 0.05 ypos 975
-        action Return("quit")
+        action Return(["quit"])
         idle "Menu/return.jpg"
         hover "Menu/return_hover.jpg"
 
@@ -96,7 +96,7 @@ screen upgrade:
         text_size 30
         text_color 'fff'
         text_outlines [(1,'000',0,0)]
-        action Return('reset')
+        action Return(['reset'])
 
     ## show icons of all the player ships in player_ships
     $ count = 0

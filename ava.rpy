@@ -354,17 +354,20 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True             
-        
-        
-        
-        
-        
+
+    image ava uniform handsonhips neutral:
+        "Character/Ava/ava_uniform_handonhip_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
     image ava beach altneutral mad:
         "Character/Ava/ava_beach_altneutral_mad.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
+        subpixel True
     image ava beach handsonhips angry:
         "Character/Ava/ava_beach_handsonhips_angry.png"
         yanchor 0.51 ypos 1.0

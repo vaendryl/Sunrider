@@ -172,24 +172,19 @@ label warpto_astralexpanse:
     if mission_pirateattack == True:
         if mission3_complete == False and mission4_complete == False:
             $ galaxymission1 = True
-        else:
-            $ galaxymission1 = False
-        $ galaxymission2 = False
-        $ galaxymission3 = False
-
-        if mission3_complete == False and mission4_complete == False:
             $ mission1 = "humantraffickers"
-        else:
-            $ mission1 = None
-        $ mission2 = None
-        $ mission3 = None
-        if mission3_complete == False and mission4_complete == False:
             $ mission1_name = "Side: Stop slavers"
         else:
+            $ galaxymission1 = False
             $ mission1 = None
+            $ mission1_name = None
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission2 = None
+        $ mission3 = None
         $ mission2_name = None
         $ mission3_name = None
-    if mission_pirateattack == False:
+    elif mission_pirateattack == False:
         $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
@@ -227,25 +222,19 @@ label warpto_pactstation:
     if mission_pirateattack == True:
         if mission3_complete == False and mission4_complete == False:
             $ galaxymission1 = True
-        else:
-            $ galaxymission1 = False
-        $ galaxymission2 = False
-        $ galaxymission3 = False
-
-        if mission3_complete == False and mission4_complete == False:
             $ mission1 = "pactstationattack"
-        else:
-            $ mission1 = None
-        $ mission2 = None
-        $ mission3 = None
-        if mission3_complete == False and mission4_complete == False:
             $ mission1_name = "Side: Destroy PACT outpost"
         else:
+            $ galaxymission1 = False
+            $ mission1 = None
             $ mission1_name = None
+        $ galaxymission2 = False
+        $ galaxymission3 = False
+        $ mission2 = None
+        $ mission3 = None
         $ mission2_name = None
         $ mission3_name = None
-
-    if mission_pirateattack == False:
+    elif mission_pirateattack == False:
         $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
@@ -303,7 +292,6 @@ label warpto_versta:
         $ mission3_name = None
 
     else:
-
         $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
@@ -350,7 +338,6 @@ label warpto_nomodorn:
         $ mission3_name = None
 
     else:
-
         $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False
@@ -466,7 +453,6 @@ label warpto_ongess:
     $ map_back = "ongess_back"
 
     if greytour == True:
-
         $ galaxymission1 = True
         $ galaxymission2 = False
         $ galaxymission3 = False
@@ -478,7 +464,6 @@ label warpto_ongess:
         $ mission3_name = None
 
     else:
-
         $ galaxymission1 = False
         $ galaxymission2 = False
         $ galaxymission3 = False

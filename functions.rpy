@@ -62,7 +62,7 @@ init -6 python:
         while active:
             result = ui.interact()
 
-            if result == 'quit':
+            if result[0] == 'quit':
                 renpy.hide_screen('upgrade')
                 
                 voicelist = [
@@ -80,7 +80,7 @@ init -6 python:
                 active = False
                 return
 
-            elif result == 'reset':
+            elif result[0] == 'reset':
                 reset_upgrades(BM.selected)
 
             elif result != None:
@@ -255,9 +255,6 @@ init -6 python:
         result = cubic_distance(cubic1, cubic2)
         return result
 
-    def update_armor(parent):
-        parent.armor = (parent.base_armor + parent.modifiers['armor'][0]) * parent.hp / parent.max_hp
-
     def real_damage(weapon,parent):
         if weapon == None or parent == None:
             return 0
@@ -303,9 +300,7 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.update_armor()
         for ship1 in enemy_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -330,9 +325,7 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.update_armor()
 
     def weapon_type(weapon):
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
@@ -667,6 +660,11 @@ init -6 python:
     def create_cover(location):
         BM.covers.append(Cover(location))
         return
+        
+    
+    def remove_order(order):
+        if order in BM.orders:
+            del BM.orders[order]
 
     def cover_mechanic(weapon,target,accuracy):
             for cover in BM.covers:
