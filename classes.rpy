@@ -963,7 +963,7 @@ init -2 python:
 
         def you_lose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
             if (self.mission != 'skirmish'):
-                renpy.jump('gameover')
+                renpy.jump('sunrider_destroyed')
             else:
                 show_message('You were defeated! better luck next time...')
                 clean_battle_exit()

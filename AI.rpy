@@ -231,7 +231,7 @@ init python:
         #are there any player ships nearby?
         templist = []        
         for pship in player_ships:
-            if get_ship_distance(pship,self) <= 7:
+            if get_ship_distance(pship,self) <= 30:
                 templist.append(pship)
         if len(templist) <= 1:
             return False
