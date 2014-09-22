@@ -520,7 +520,7 @@ screen battle_screen:
                     
                     #the gravity gun is a little... special
                     if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
-                        $pass
+                        pass
 
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
