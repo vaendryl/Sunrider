@@ -29,7 +29,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider First Arrival"
-    config.version = " Beta 6.0b"
+    config.version = " Beta 6.1"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 15

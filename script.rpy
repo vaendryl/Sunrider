@@ -18408,7 +18408,7 @@ label aftermission17:
     fon "So the great Grey of the Emerald Fleet finally speaks. Have you come to discuss terms of surrender?"
     gre "You little punk."
     gre "Don't think you're the first commander to dare raise sword against me. But you're still young."
-    gre "Sit down boy, and let me show you {i}war.{i}"
+    gre "Sit down boy, and let me show you {i}war.{/i}"
     ava "Captain, I'm detecting radiation charges coming from the Combined Fleet!"
     gre "I've just ordered every Alliance ship to arm their nuclear torpedoes at Ongess."
     gre "These are my terms. Tell your little pirate friend to turn around and scurry back to the rat hole she crawled out of."
