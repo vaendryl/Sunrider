@@ -4,13 +4,13 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image sola face awakened:
         "Character/Sola/sola_face_awakened.png"
         yanchor 935
         xanchor 0.5
         subpixel True
-    
+
     image sola plugsuit neutral madglow:
         "Character/Sola/sola_plugsuit_neutral_madglow.png"
         yanchor 0.51 ypos 1.0
@@ -45,24 +45,24 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image sola plugsuit handonchest sad:
         "Character/Sola/sola_plugsuit_handonchest_sad.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-            
+
     image sola plugsuit handonchest sadblush:
         "Character/Sola/sola_plugsuit_handonchest_sadblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-            
-            
-            
-    
+
+
+
+
 ###################UNIFORM
 
     image sola uniform backturn neutral:
@@ -71,7 +71,7 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-    
+
     image sola uniform altneutral neutral:
         "Character/Sola/sola_uniform_altneutral_neutral.png"
         yanchor 0.51 ypos 1.0

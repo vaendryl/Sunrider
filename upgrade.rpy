@@ -87,9 +87,9 @@ screen upgrade:
         $ upgrade_list.append(ship.upgrades['repair'])
 
     ## Upgrade backgrounds moved to their individual classes in the library
-    
+
     add ship.upgrade_menu
-    
+
     textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
         ypos 0.0
@@ -173,16 +173,16 @@ screen upgrade:
                             text str(level):
                                 color '000'
                                 min_width 75
-                                
+
                             if level > 1:
                                 $cost_width = 100
                             else:
                                 $cost_width = 200
-                            
+
                             text str(cost):
                                 color '000'
                                 min_width cost_width
-                                
+
                             if level > 1:
                                 text "({})".format( int(round(cost/multiplier)*0.8) ) :
                                     color '900'
@@ -207,7 +207,7 @@ screen upgrade:
                                     action Return(['-', attribute])
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
-                                    
+
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:

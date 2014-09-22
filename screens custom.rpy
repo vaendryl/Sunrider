@@ -113,7 +113,7 @@ screen battle_screen:
     ##messing with the player for fun and profit
     if BM.battlemode:
         timer 900 repeat False action Show('game_over_gimmick')
-    
+
     add MouseTracker() #relates drags and clicks to the viewport and the BM
 
     if config.developer: #a release version should have set this to False
@@ -310,10 +310,10 @@ screen battle_screen:
                         zoom (zoomlevel/2.0)
                         at cursedown(yposition-(190)*zoomlevel)
 
-                
+
             ## as of the new UI interact code (with MouseTracker) most of the following is defunct.
             ## only the parts that affect lbl do anything anymore.
-            
+
                 #default values
                 $mode = '' #default
                 # $act = Return(['selection',ship])
@@ -368,14 +368,14 @@ screen battle_screen:
                     if BM.hovered == ship:
                         if mode != 'offline':
                             $ lbl = hoverglow(ship.lbl)
-                
+
                 add lbl:
                     xanchor 0.5
                     yanchor 0.5
                     xpos xposition
                     ypos yposition
                     zoom (zoomlevel/2.5)
-                
+
                 if ship.getting_buff:
                     add 'Battle UI/buff_front.png':
                         xpos int(xposition-96*zoomlevel)
@@ -407,7 +407,7 @@ screen battle_screen:
                         ypos yposition
                         zoom (zoomlevel/2.5)
                         crop (0,0,energy_size,79)
-                        
+
                     text str(ship.hp):
                         xanchor 0.5
                         yanchor 0.5
@@ -415,7 +415,7 @@ screen battle_screen:
                         ypos int(yposition+27*zoomlevel)
                         size int(16*zoomlevel)
                         font "Font/sui generis rg.ttf"
-                        outlines [(2,'000',0,0)]                        
+                        outlines [(2,'000',0,0)]
 
                 else:    #enemies
 
@@ -517,7 +517,7 @@ screen battle_screen:
                         pass
                     elif BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
                         pass
-                    
+
                     #the gravity gun is a little... special
                     if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
                         pass
@@ -624,15 +624,15 @@ screen battle_screen:
                 ##DISPLAY MOVEMENT OPTIONS##
         if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode:
             for tile in BM.selected.movement_tiles:
-                    
+
                 $ lbl = 'Battle UI/move_tile.png'
                 $ tile_location = (tile[3],tile[4])
-                
+
                 if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
                     $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
-                
+
                 if tile_location == BM.mouse_location:
-                    $ lbl = hoverglow(lbl)  
+                    $ lbl = hoverglow(lbl)
                 add lbl:
                     zoom (0.2 * zoomlevel)
                     alpha 0.5
@@ -697,7 +697,7 @@ screen battle_screen:
                     ypos yposition
                     size (xsize,ysize)
                     alpha 0.7
-                                
+
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:
@@ -754,7 +754,7 @@ screen battle_screen:
             if BM.show_grid:
                 textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',False)
             else:
-                textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)    
+                textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)
 
 
     if BM.phase != 'formation':
@@ -798,15 +798,15 @@ screen battle_screen:
         for ship in player_ships:
             if ship.en >= ship.max_en:
                 $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
-    
+
         imagebutton:
             xpos 90
             yalign 1.0
             idle endturnbutton_idle
             hover hoverglow(endturnbutton_idle)
             action Return(['endturn'])
-            
-            
+
+
     if BM.phase == 'formation':
         imagebutton:
             xpos 170
@@ -814,7 +814,7 @@ screen battle_screen:
             idle 'Skirmish/start.png'
             hover hoverglow('Skirmish/start.png')
             action [ If( BM.selected==None , Return(['start']) ) ]
-            
+
         if BM.mission == 'skirmish':
             imagebutton:
                 xpos 88
@@ -822,18 +822,18 @@ screen battle_screen:
                 idle 'Skirmish/return.png'
                 hover hoverglow('Skirmish/return.png')
                 action Return(['quit'])
-        
+
             $ idl = 'Skirmish/remove.png'
             if BM.remove_mode:
                 $ idl = hoverglow(im.MatrixColor('Skirmish/remove.png',im.matrix.tint(1.0, 1.0, 0)))
-            
+
             imagebutton:
                 xpos 208
                 ypos 759
                 idle idl
                 hover hoverglow('Skirmish/remove.png')
                 action Return(['remove'])
-                
+
             imagebutton:
                 xpos 328
                 ypos 828
@@ -846,8 +846,8 @@ screen battle_screen:
                 ypos 897
                 idle 'Skirmish/playermusic.png'
                 hover hoverglow('Skirmish/playermusic.png')
-                action Show('player_music')                 
-    
+                action Show('player_music')
+
 transform move_down(ystart,yend,xx=0):
     xpos xx
     ypos ystart
@@ -919,7 +919,7 @@ screen orders:
                                     size 18
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
-                        
+
                         if order == 'ALL GUARD' and BM.show_tooltips == True:
                             frame:
                                 background Solid((0,0,0,200))
@@ -931,7 +931,7 @@ screen orders:
                                     ypos 0
                                     size 18
                                     font "Font/sui generis rg.ttf"
-                                    outlines [(1,'000',0,0)]                                    
+                                    outlines [(1,'000',0,0)]
 
                         if order == 'REPAIR DRONES' and BM.show_tooltips == True:
                             frame:
@@ -951,7 +951,7 @@ screen orders:
                                 background Solid((0,0,0,200))
                                 xpos 150
                                 ycenter 20
-                                
+
                                 $ damage = 800
                                 if store.Difficulty == 0:
                                     $ damage *= 4
@@ -1172,9 +1172,9 @@ screen commands: ##show the weapon buttons etc##
                         outlines [(1,'000',0,0)]
 
                 $count += 1
-                
 
-                
+
+
 transform move_vertical(xstart,xend,xx=0):
     #used by skirmish windows
     xpos xstart
@@ -1183,15 +1183,15 @@ transform move_vertical(xstart,xend,xx=0):
         linear 0.5 xpos xstart
           #not sure why this is needed. I'm calling bug in renpy
         time 2
-        alpha 0                
+        alpha 0
 
 screen player_unit_pool_collapsed:
     #this just shows the 'add player units' text and puts a button over it
     zorder 2
-    
+
     add 'Skirmish/addplayer.png':
         xpos -152
-    
+
     button:
         background None
         xpos 0
@@ -1201,20 +1201,20 @@ screen player_unit_pool_collapsed:
         xminimum 40
         xmaximum 40
         action Show('player_unit_pool')
-    
+
 screen player_unit_pool:
     zorder 3
-    
+
     if BM.mission == 'skirmish':
         $ frame_background = 'Skirmish/addplayer.png'
     else:
         $ frame_background = 'Skirmish/addplayer_nocmd.png'
-    
+
     frame:
         background frame_background
         xmaximum 182
         at move_vertical(-152,0)
-        
+
         vbox:
             for ship in player_ships:
                 if ship.location == None and ship != BM.selected:
@@ -1222,8 +1222,8 @@ screen player_unit_pool:
                         at zoom_button(0.2)
                         idle ship.lbl
                         hover hoverglow(ship.lbl)
-                        action Return(['selection',ship]) 
-        
+                        action Return(['selection',ship])
+
     button:
         background None  # Solid((0,0,0,255)) #for testing
         xpos 152
@@ -1233,9 +1233,9 @@ screen player_unit_pool:
         xminimum 40
         xmaximum 40
         action Hide('player_unit_pool')
-        
+
     if BM.mission == 'skirmish':
-        
+
         text str(BM.cmd):
             xalign 0.5
             xpos 75
@@ -1248,9 +1248,9 @@ screen player_unit_pool:
             ypos 1038
             idle 'skirmish/increase_cmd.png'
             hover hoverglow('skirmish/increase_cmd.png')
-            action SetField( BM , 'cmd' , (BM.cmd + 100) ) 
+            action SetField( BM , 'cmd' , (BM.cmd + 100) )
             alternate SetField( BM , 'cmd' , (BM.cmd + 1000) )
-            
+
         imagebutton:
             xpos 80
             ypos 1038
@@ -1258,14 +1258,14 @@ screen player_unit_pool:
             hover hoverglow('skirmish/decrease_cmd.png')
             action If( BM.cmd <= 100 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 100)) )
             alternate If( BM.cmd <= 1000 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 1000)) )
-        
+
 
 screen enemy_unit_pool_collapsed:
     zorder 2
-    
+
     add 'Skirmish/addenemy.png':
         xpos 1890
-    
+
     button:
         background None
         xpos 1890
@@ -1278,7 +1278,7 @@ screen enemy_unit_pool_collapsed:
 
 screen enemy_unit_pool:
     zorder 3
-    
+
     #I will want to put this in a BM field and add new stuff when they get encountered.
     #I think I'll modify the create_ship function to add it automatically if it's not there yet
     $ all_enemies = [
@@ -1290,29 +1290,29 @@ screen enemy_unit_pool:
         PirateGrunt(), PirateDestroyer(),
         PirateBase()
         ]
-    
+
     frame:
         background 'Skirmish/addenemy.png'
         # xalign 1.0
         xmaximum 176
         at move_vertical(1890,1744)
-        
+
         viewport:
             xpos 20
             ypos 20
             mousewheel True #luckily this viewport eats scrolls above it, so the main one doesn't return it.
             scrollbars "vertical"
-            
+
             vbox:
                 spacing 20
-                
+
                 for ship in all_enemies:
                     imagebutton:
                         at zoom_button(0.15)
                         idle ship.lbl
                         hover hoverglow(ship.lbl)
                         action Return(['selection',ship])
-                        
+
     button:
         background None
         xpos 1738
@@ -1321,11 +1321,11 @@ screen enemy_unit_pool:
         ymaximum 250
         xminimum 40
         xmaximum 40
-        action Hide('enemy_unit_pool')                        
+        action Hide('enemy_unit_pool')
 
 screen player_music:
     modal True
-    
+
     #maybe this list should be defined in the inits
     python:
         music_list = {
@@ -1335,22 +1335,22 @@ screen player_music:
             "Riding With The Wind": 'Music/Riding_With_the_Wind.ogg',
             "Titan": 'Music/Titan.ogg'
             }
-            
+
     add "Skirmish/playermusic_back.png"
-    
+
     vbox:
         xalign 0.4
         yalign 0.4
         spacing 20
-        
-        for song in music_list: 
+
+        for song in music_list:
 
             button:
                 xpos 0
                 idle_background "Skirmish/song_button.png"
                 hover_background hoverglow("Skirmish/song_button.png")
                 action [ Hide('player_music'), Return( ["playermusic",music_list[song]] ) ]
-                
+
                 text song:
                     min_width 544   #length of the background. needed for hover
                     xalign 0.5
@@ -1359,7 +1359,7 @@ screen player_music:
 
 screen enemy_music:
     modal True
-    
+
     python:
         music_list = {
             "Battle Against Time": 'Music/Battle_Against_Time.ogg',
@@ -1369,35 +1369,35 @@ screen enemy_music:
             "Posthumus Regium": 'Music/Posthumus_Regium.ogg',
             "Sui Generis": 'Music/Sui_Generis.ogg'
             }
-             
+
     add "Skirmish/enemymusic_back.png"
-    
+
     vbox:
         xalign 0.4
         yalign 0.4
         spacing 20
-        
-        for song in music_list: 
+
+        for song in music_list:
 
             button:
                 xpos 0
                 idle_background "Skirmish/song_button.png"
                 hover_background hoverglow("Skirmish/song_button.png")
                 action [ Hide('enemy_music'), Return( ["enemymusic",music_list[song]] ) ]
-                
+
                 text song:
                     min_width 544   #length of the background. needed for hover
                     xalign 0.5
                     color '000'
-                    size 28                    
-                    
-            
-        
-        
-        
-        
-        
-        
+                    size 28
+
+
+
+
+
+
+
+
 screen tooltips:
     zorder 9
 
@@ -1680,11 +1680,11 @@ screen victory2:
         at delay_text(wait)
 
     $wait += 0.1
-    
+
     $ difficulty_penalty = store.Difficulty - 1
-    if difficulty_penalty < 0: 
+    if difficulty_penalty < 0:
         $ difficulty_penalty = 0
-                
+
     text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+difficulty_penalty) ) ):
         xanchor 1.0
         xpos 0.8
@@ -1692,36 +1692,36 @@ screen victory2:
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)
-        
-    if store.Difficulty == 0:    
+
+    if store.Difficulty == 0:
         $ diff_text = "Current difficulty: VNmode"
-    if store.Difficulty == 1:    
+    if store.Difficulty == 1:
         $ diff_text =  "Current difficulty: Easy"
-    if store.Difficulty == 2:    
+    if store.Difficulty == 2:
         $ diff_text =  "Current difficulty: Normal"
-    if store.Difficulty == 3:    
+    if store.Difficulty == 3:
         $ diff_text =  "Current difficulty: Hard"
-        
-    if BM.lowest_difficulty == 0:    
+
+    if BM.lowest_difficulty == 0:
         $ low_diff_text = "lowest difficulty: VNmode"
-    if BM.lowest_difficulty == 1:    
+    if BM.lowest_difficulty == 1:
         $ low_diff_text = "lowest difficulty: Easy"
-    if BM.lowest_difficulty == 2:    
+    if BM.lowest_difficulty == 2:
         $ low_diff_text = "lowest difficulty: Normal"
-    if BM.lowest_difficulty == 3:    
-        $ low_diff_text = "lowest difficulty: Hard" 
-    
+    if BM.lowest_difficulty == 3:
+        $ low_diff_text = "lowest difficulty: Hard"
+
     vbox:
         xalign 1.0
         yalign 1.0
-        
+
         text diff_text:
             size 12
             xalign 1.0
         text low_diff_text:
             size 12
             xalign 1.0
-        
+
 
 transform message_transform(x,y):
     # These control the position.
@@ -1757,16 +1757,16 @@ screen mousefollow:
 screen ryderlist:
     zorder 3
     modal True
-    
+
     key "mousedown_3" action Return(["deselect"])
-    
+
     text 'Choose which Ryder to repair':
             xalign 0.5
             yalign 0.1
             size 40
             outlines [(2,'000',0,0)]
-            
-    
+
+
     frame:
         xalign 0.5
         ypos 0.2
@@ -1775,7 +1775,7 @@ screen ryderlist:
         yminimum 300
         ymaximum 800
         background Solid((0,0,0,200))
-        
+
         $ count = 0
         for iconship in destroyed_ships:
             if iconship.faction == 'Player' and not iconship.mercenary and iconship.stype == 'Ryder':
@@ -1821,9 +1821,9 @@ screen ryderlist:
                     focus_mask True
 
                 $ count += 1
-        
+
 screen skirmishhelp:
-    
+
     frame:
         xalign 0.5
         ypos 0.2
@@ -1832,7 +1832,7 @@ screen skirmishhelp:
         yminimum 300
         ymaximum 800
         background Solid((0,0,0,200))
-        
+
         vbox:
             text "Welcome to skirmish mode! Here, you will be able to refine your strategies by fighting custom battles."
             text "Click on ADD PLAYER SHIPS and click and drop your units to the map. Do the same to add enemy units."
@@ -1841,7 +1841,7 @@ screen skirmishhelp:
             text "To remove placed units, simply press the REMOVE button, then click on the unit you wish to remove."
             text "You may set the amount of usable command points during the battle using the buttons on the player pool bar."
             text "However, you will not earn any money or command points in Skirmish Mode."
-            
+
             textbutton "PROCEED":
                 xalign 0.5
                 action Hide('skirmishhelp')
@@ -1971,7 +1971,7 @@ screen battle_log():
                                         SelectedIf(filter_support)]
                         textbutton "details":
                             action [ToggleScreenVariable("filter_details")]
-                            
+
                     textbutton "X":
                         xalign 1.0
                         action Hide('battle_log')
@@ -2028,7 +2028,7 @@ screen battle_log():
                                 #To be printed log's tags should contain tags which are stored in filter
                                 if log_tags.issuperset(set(type)):
                                     text entry
-                                    
+
                     vbar:
                         value YScrollValue('battle log')
                         hovered SetField(BM, 'draggable', False)

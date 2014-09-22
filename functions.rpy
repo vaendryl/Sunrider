@@ -42,7 +42,7 @@ init -6 python:
             BM.active_upgrade = ship.upgrades[upgrade]
         else:
             renpy.music.play('sound/Voice/Chigara/Others Line 4.ogg',channel = 'chivoice')
-        
+
 
     def reverse_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
@@ -58,21 +58,21 @@ init -6 python:
         renpy.show_screen('upgrade')
         active = True
         renpy.music.play('sound/Voice/Chigara/Others Line 1.ogg',channel = 'chivoice')
-        
+
         while active:
             result = ui.interact()
 
             if result[0] == 'quit':
                 renpy.hide_screen('upgrade')
-                
+
                 voicelist = [
                     'sound/Voice/Chigara/Others Line 2.ogg',
                     'sound/Voice/Chigara/Others Line 3.ogg'
                     ]
                 renpy.music.play(renpy.random.choice(voicelist),channel = 'chivoice')
-                
-                
-                
+
+
+
                 for ship in player_ships:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
@@ -86,11 +86,11 @@ init -6 python:
             elif result != None:
                 if result[0] == '+':
                     process_upgrade(BM.selected, result[1])
-                    
+
                 elif result[0] == '-':
                     reverse_upgrade(BM.selected, result[1])
                     renpy.music.play('sound/upgrade_sell.ogg',channel = 'sound2')
-                
+
 
     def battlemode():
         BM.battlemode = True
@@ -113,14 +113,14 @@ init -6 python:
             return False
         if not hasattr(target,'modifiers'):
             return False
-        
+
         if cumulative:
             current_magnitude, current_duration = target.modifiers[modifier]
             magnitude += current_magnitude
             duration += current_duration  #not sure if this is wanted
             target.modifiers[modifier] = [magnitude,duration]
             return True
-        
+
         if magnitude > 0:  #I may have to make a better check at some point
             #buffs
             if modifier in target.modifiers:
@@ -203,8 +203,8 @@ init -6 python:
                 return False #out of bounds is not available
         else:
             return False #None location is not free. failsafes.
-            
-            
+
+
     def set_cell_available(location, available=False):
         #False means available(empty/nil), True means occupied
         if location != None:
@@ -224,7 +224,7 @@ init -6 python:
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
         try:
-            renpy.pause(MESSAGE_PAUSE)            
+            renpy.pause(MESSAGE_PAUSE)
         except:
             pass
         renpy.hide_screen('message')
@@ -344,8 +344,8 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
-                
-    
+
+
 
     def reset_classes():
         """experimental save file compatibility keeper
@@ -526,26 +526,26 @@ init -6 python:
                 return
             else:
                 #indicate that the cell on the grid is occupied
-                BM.grid[location[0]-1][location[1]-1]= True 
-        
+                BM.grid[location[0]-1][location[1]-1]= True
+
         #set the location
         ship.location = location
-        
+
         #confirm the weapon list
         if weapons == None or weapons == []:
             weapons = ship.default_weapon_list
-        
+
         #register the weapons
         for weapon in weapons:
             ship.register_weapon(weapon)
-        
+
         #register the ship
         if ship.faction == 'Player':
             store.player_ships.append(ship)
         else:
             store.enemy_ships.append(ship)
         store.BM.ships.append(ship)
-        
+
         #retun the a player ship for easy aliasing
         if ship.faction == 'Player':
             return ship
@@ -558,7 +558,7 @@ init -6 python:
         while radius < GRID_SIZE[0] or radius < GRID_SIZE[1]:
             # get the locations in the ring at radius 'radius'
             locations = get_in_ring(location, radius)
-            
+
             # return the first available location in the list
             for loc in locations:
                 if get_cell_available(loc):
@@ -566,20 +566,20 @@ init -6 python:
             # increment radius
             radius += 1
         return location
-        
+
     def short_pause():
         #very useful combined with renpy.invoke_in_new_context
         renpy.show_screen('battle_screen')
         renpy.pause(1)
-        
-        
+
+
     def get_remaining_player_ships():
         count = 0
         for ship in player_ships:
             if ship.location != None:
                 count += 1
         return count
-    
+
     def clean_battle_exit():
         BM.battle_log = []
         BM.battlemode = False #this ends the battle loop
@@ -620,7 +620,7 @@ init -6 python:
         renpy.hide_screen('commands')
         renpy.block_rollback()
         renpy.music.play("Music/Mission_Briefing.ogg") #else battle theme keeps playing after battle
-        
+
     def get_shot_hit(accuracy,shotcount,faction):
         #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
         #for now no fudging for AI.
@@ -631,22 +631,22 @@ init -6 python:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 <= int(accuracy)
         else:
-            return renpy.random.randint(1,100) <= accuracy  
+            return renpy.random.randint(1,100) <= accuracy
 
     def test_RNG(accuracy):
         #you can use this to see the difference between the 2 ways of calculating a hit.
         hits1RN = 0
         hits2RN = 0
-        
+
         for i in range(1000):
             if (renpy.random.randint(1,50) + renpy.random.randint(0,50)) < accuracy:
                 hits2RN += 1
             if renpy.random.randint(1,100) < accuracy:
                 hits1RN += 1
-        
+
         return (hits1RN,hits2RN)
-            
-    
+
+
     def get_shipcount_in_list(shipname,list):
         #count number of times a ship is in a list. useful for merc counting
         if len(list) == 0: return 0
@@ -661,8 +661,8 @@ init -6 python:
     def create_cover(location):
         BM.covers.append(Cover(location))
         return
-        
-    
+
+
     def remove_order(order):
         if order in BM.orders:
             del BM.orders[order]
@@ -684,7 +684,7 @@ init -6 python:
     def get_movement_tiles(ship, move_range = None):
         if ship == None: return []
         if ship.location == None: return []
-        
+
         if move_range == None:
             move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
@@ -707,7 +707,7 @@ init -6 python:
             if weapon.wtype == wtype:
                 return True
         return False
-        
+
     def get_counter_attack(location):
         """check if a location is next to an enemy unit that has an Assault type weapon"""
         if location == None: return False
@@ -716,16 +716,16 @@ init -6 python:
                 if has_weapon(ship,'Assault'):
                     return True
         return False
-                    
-                
-    
+
+
+
     def update_modifiers():
         """
         called when the phase changes. it ticks down modifiers and removes them when expired.
         """
 
         if BM.phase == 'Player':
-        
+
             #order management
             order_expired = False
             strat,duration = BM.active_strategy
@@ -738,9 +738,9 @@ init -6 python:
                     BM.active_strategy = [None,0]
                 else:
                     BM.active_strategy = [strat,duration -1]
-        
+
             #handle the actual modifiers
-            for ship in player_ships:                
+            for ship in player_ships:
                 for key in ship.modifiers:
                     mod_power,duration = ship.modifiers[key]
                     if mod_power != 0:
@@ -1000,7 +1000,7 @@ init -6 python:
         # remove all locations in the inner ring from the outer ring
         for x in inner:
             outer.remove(x)
-        return outer   
+        return outer
 
     def clean_locations(locations):
         """
@@ -1008,13 +1008,13 @@ init -6 python:
         """
         if locations == None: return []
         if locations == []: return []
-        
+
         result = []
         x,y = GRID_SIZE
-        
+
         for location in locations:
             a,b = location
             if a > 0 and a <= x and b > 0 and b <= y:
                 result.append(location)
-        
-        return result        
+
+        return result

@@ -6,21 +6,21 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image claude plugsuit fingerup laugh:
         "Character/Claude/claude_plugsuit_fingerup_laugh.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image claude plugsuit excited happy:
         "Character/Claude/claude_plugsuit_excited_happy.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image claude plugsuit oops teehee:
         "Character/Claude/claude_plugsuit_oops_teehee.png"
         yanchor 0.51 ypos 1.0
@@ -125,21 +125,21 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
     image claude plugsuit excited determined:
         "Character/Claude/claude_plugsuit_excited_determined.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True        
-        
+        subpixel True
+
     image claude plugsuit altneutral surprise:
         "Character/Claude/claude_plugsuit_altneutral_surprise.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
         subpixel True
-        
+
         ########################################### UNIFORM
 
     image claude uniform handstogether closedeyeshappy:
@@ -371,30 +371,30 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True   
+        subpixel True
     image claude uniform fingerup closedeyessmile:
         "Character/Claude/claude_uniform_fingerup_closedeyessmile.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
+        subpixel True
     image claude uniform altneutral disappoint:
         "Character/Claude/claude_uniform_altneutral_disappoint.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
+        subpixel True
     image claude uniform oops teehee:
         "Character/Claude/claude_uniform_oops_teehee.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
-       
-       
-       
-       
-        
+        subpixel True
+
+
+
+
+
     image claude beach armstogether smilehappy:
         "Character/Claude/claude_beach_armstogether_smilehappy.png"
         yanchor 0.51 ypos 1.0
