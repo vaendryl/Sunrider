@@ -465,68 +465,68 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True        
+        subpixel True
     image chigara uniform excited surpriseblush:
         "Character/Chigara/chigara_uniform_excited_surpriseblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True           
+        subpixel True
     image chigara uniform handonchest scaredblush:
         "Character/Chigara/chigara_uniform_handonchest_scaredblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True               
+        subpixel True
     image chigara uniform handstogether closedeyessmileblush:
         "Character/Chigara/chigara_uniform_handstogether_closedeyessmileblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True           
+        subpixel True
     image chigara uniform handstogether sadderpblush:
         "Character/Chigara/chigara_uniform_handstogether_sadderpblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True           
+        subpixel True
     image chigara uniform excited shoutblush:
         "Character/Chigara/chigara_uniform_excited_shoutblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True                
+        subpixel True
     image chigara uniform handonchest dazedblush:
         "Character/Chigara/chigara_uniform_handonchest_dazedblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
+        subpixel True
     image chigara uniform handonchest happyblush:
         "Character/Chigara/chigara_uniform_handonchest_happyblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True             
+        subpixel True
     image chigara uniform handstogether sadsmileblush:
         "Character/Chigara/chigara_uniform_handstogether_sadsmileblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True            
+        subpixel True
     image chigara uniform altneutral sadsmileblush:
         "Character/Chigara/chigara_uniform_altneutral_sadsmileblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
-        
-        
-        
-        
-        
-        
-        
+        subpixel True
+
+
+
+
+
+
+
     image chigara beach twiddlefingers forcedsmile:
         "Character/Chigara/chigara_beach_twiddlefingers_forcedsmile.png"
         yanchor 0.51 ypos 1.0

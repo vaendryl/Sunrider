@@ -7,7 +7,7 @@ init:
 label testpause:
     python:
         renpy.pause(1)
-        
+
     return
 
 transform shake(time=0.5,repeats=20): #defunct?
@@ -25,7 +25,7 @@ label test_battle:
         enemy_ships = []
         destroyed_ships = []
         BM.mission = 'test'
-        
+
         BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
 
         #create the sunrider. you only have to create a player ship once:
@@ -76,10 +76,10 @@ label missiontest:
 
     # jump dispatch
     return
-    
-  
-  
-  
+
+
+
+
 label endofturn:
     show screen battle_screen
     $update_stats()
@@ -114,7 +114,7 @@ label endofturn:
 
     return
 
-    
+
 label battle_start:
     play music PlayerTurnMusic
     python:
@@ -192,35 +192,35 @@ label after_load:
             reset = True
 
         if reset:
-            
+
             #replace old union frigates with new ones
             for ship in player_ships[:]:
                 if ship.name == 'Mining Union Frigate':
                     if len(ship.weapons) == 1:
                         create_ship(UnionFrigate(),ship.location)
                         player_ships.remove(ship)
-        
+
             #temporary fix
             rocketdamage = 800
             chi_repair = 300
-            
+
             if hasattr(store,'sunrider_rocket'):
                 rocketdamage = store.sunrider_rocket.damage
             if hasattr(store,'chigara_repair'):
                 chi_repair = store.liberty.weapons[1].damage
-                
+
             reset_classes()
-            
+
             if sunrider != None:
                 store.sunrider.weapons[3].damage = rocketdamage
             if liberty != None:
-                store.liberty.weapons[1].damage = chi_repair                
-            
+                store.liberty.weapons[1].damage = chi_repair
+
             BM.save_version = config.version
-            
+
             if store.mission2_complete:
                 res_location = "lab"
-                res_event = "allocatefunds"             
+                res_event = "allocatefunds"
 
         #cleanup
         if hasattr(BM,'ships') and hasattr(store,'player_ships') and hasattr(store,'enemy_ships'):

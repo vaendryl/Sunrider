@@ -43,7 +43,7 @@ label firstvariables:
     $ mission12_complete = False
     $ mission13_complete = False
     $ mission14_complete = False
-    $ mission15_complete = False    
+    $ mission15_complete = False
 
     $ asa_location = None
     $ chi_location = None
@@ -72,12 +72,12 @@ label firstvariables:
     $ supportedasagacards = False
     $ paladin = None
     $ wishall = False
-    
+
     $ versta_ambush = False
     $ farport_losttech = False
     $ tydaria_morepirates = False
-    
-    
+
+
     #$ sunrider = 0
     #$ blackjack = 0
     #$ liberty = 0
@@ -176,7 +176,7 @@ init python:
             self.paradigm = None
             self.havoc = None
             self.paladin = None
-            
+
             self.versta_ambush = False
             self.farport_losttech = False
             self.tydaria_morepirates = False

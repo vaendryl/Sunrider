@@ -1,4 +1,4 @@
-label initStore:  
+label initStore:
     python:
         store_items = []
 
@@ -8,10 +8,10 @@ label initStore:
         store_items.append(SunriderShieldUpgrade())
         store_items.append(ContractAllianceCruiser())
         store_items.append(ContractUnionFrigate())
-        store_items.append(SellWishallArtifact())  
-        store_items.append(RepairUpgrade())  
-        
-        
+        store_items.append(SellWishallArtifact())
+        store_items.append(RepairUpgrade())
+
+
     return
 
 screen store_union:
@@ -32,7 +32,7 @@ screen store_union:
             draggable True
             mousewheel True
             scrollbars "vertical"
-            child_size (1050,2000) 
+            child_size (1050,2000)
 
             frame:
                 xmaximum 800
@@ -75,7 +75,7 @@ screen store_info:
         background None
         xpos 0.5
         ypos 0.2
-        
+
         for item in store_items:
             if BM.hovered == item.id:
                 text item.display_name xpos 50 ypos 50 size 35 font "Font/sui generis rg.ttf" color '000'

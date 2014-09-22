@@ -1,4 +1,4 @@
-  
+
 label skirmish_battle:
     python:
         store.tempmoney = BM.money
@@ -9,7 +9,7 @@ label skirmish_battle:
         destroyed_ships = []
         BM.mission = 'skirmish'
         BM.xadj.value = 872
-        BM.yadj.value = 370 
+        BM.yadj.value = 370
         store.zoomlevel = 0.65
         BM.phase = 'formation'
         BM.show_grid = False
@@ -20,25 +20,25 @@ label skirmish_battle:
 
     $ PlayerTurnMusic = "music/Titan.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
-    
+
     hide screen deck0
     show screen battle_screen
     show screen player_unit_pool_collapsed
     show screen enemy_unit_pool_collapsed
-    
+
     if not BM.seen_skirmish:
         show screen skirmishhelp
         $ BM.seen_skirmish = True
-    
-    call mission_skirmish       
-    
+
+    call mission_skirmish
+
     python:
         BM.phase = 'Player'
         BM.mission = 'skirmishbattle'
         update_stats()
-    
+
     call battle_start
-    
+
     python:
         BM.cmd = store.tempcmd
         BM.money = store.tempmoney
@@ -46,7 +46,7 @@ label skirmish_battle:
         store.sunrider.repair_drones = store.temprepair_drones
     jump dispatch
     return
-    
+
 label mission_skirmishbattle:
 
     $BM.battle()  #continue the battle
@@ -57,8 +57,8 @@ label mission_skirmishbattle:
         pass #continue down
 
     # jump dispatch
-    return    
-    
+    return
+
 label mission_skirmish:
     python:
         BM.skirmish_phase()

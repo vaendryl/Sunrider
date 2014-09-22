@@ -39,12 +39,12 @@ init 2 python:
             self.armor = self.base_armor
             self.test = 'test1234'
             self.test2 = 'test2'
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_sunrider.png'
             self.icon = 'Menu/upgrade_sunrider_button.png'
             self.hovericon = 'Menu/upgrade_sunrider_button_hover.png'
-            
+
             ####################VOICES
             self.voice_channel = "avavoice"
             self.selection_voice = ['Ava/Ava Selection 1.ogg','Ava/Ava Selection 2.ogg','Ava/Ava Selection 3.ogg','Ava/Ava Selection 4.ogg','Ava/Ava Selection 5.ogg','Ava/Ava Selection 6.ogg','Ava/Ava Selection 7.ogg']
@@ -94,12 +94,12 @@ init 2 python:
                 'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
                 }
             self.flak = 35
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_blackjack.png'
             self.icon = 'Menu/upgrade_blackjack_button.png'
             self.hovericon = 'Menu/upgrade_blackjack_button_hover.png'
-            
+
             ####################VOICES
             self.voice_channel = "asavoice"
             self.attack_voice = ["sound/Voice/Asaga/Asaga Melee 1.ogg","sound/Voice/Asaga/Asaga Melee 2.ogg","sound/Voice/Asaga/Asaga Melee 3.ogg","sound/Voice/Asaga/Asaga Melee 4.ogg"]
@@ -136,7 +136,7 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_liberty.png'
             self.icon = 'Menu/upgrade_liberty_button.png'
@@ -180,7 +180,7 @@ init 2 python:
                 }
             self.flak = 20
             self.upgrades['max_hp'] = ['Hull Plating',1,100,100,2.0]
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_phoenix.png'
             self.icon = 'Menu/upgrade_phoenix_button.png'
@@ -221,7 +221,7 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_bianca.png'
             self.icon = 'Menu/upgrade_bianca_button.png'
@@ -261,7 +261,7 @@ init 2 python:
                 'standard':'gameplay/Animations/Seraphim/side.png',
                 }
             self.flak = 0
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_seraphim.png'
             self.icon = 'Menu/upgrade_seraphim_button.png'
@@ -302,7 +302,7 @@ init 2 python:
                 'character':"Character/Kryska/kryska_plugsuit_handonhip_focussmile.png"
                 }
             self.flak = 18
-            
+
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_paladin.png'
             self.icon = 'Menu/upgrade_paladin_button.png'
@@ -512,7 +512,7 @@ init 2 python:
             self.evasion = 20
             self.move_cost = 30
             self.default_weapon_list = [SeraphimEnemyKinetic()]
-            
+
             self.blbl = 'Battle UI/label_seraphimenemy.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
@@ -762,7 +762,7 @@ init 2 python:
             self.evasion = -25  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_pactcruiser.png'  #this is the battle avatar
             self.lbl = self.blbl
-            self.default_weapon_list = [PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()]            
+            self.default_weapon_list = [PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()]
             self.flak = 30
             self.flak_range = 2
             self.shield_generation = 25
@@ -990,7 +990,7 @@ init 2 python:
             self.flak = 20
             self.flak_range = 2
             self.default_weapon_list = [HavocMelee(),HavocAssault(),HavocMissile(),HavocRocket()]
-            
+
             ##voices##
             self.voice_channel = "cosvoice"
             self.attack_voice = ["sound/Voice/Cosette/Cosette Melee Attack 1.ogg","sound/Voice/Cosette/Cosette Melee Attack 2.ogg","sound/Voice/Cosette/Cosette Melee Attack 3.ogg","sound/Voice/Cosette/Cosette Melee Attack 4.ogg"]
@@ -1297,7 +1297,7 @@ init 2 python:
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
-            at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles. 
+            at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles.
             """
 
     class BlackjackPulse(Laser):
@@ -1384,7 +1384,7 @@ init 2 python:
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
             at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
-            
+
     class PaladinAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
@@ -1816,7 +1816,7 @@ init 2 python:
                 self.energy_use = 60
                 self.name = 'Repair I'
                 self.shot_count = 1
-                
+
     class DisableLite(Curse): #halves available EN
             def __init__(self):
                 Curse.__init__(self)
@@ -1824,9 +1824,9 @@ init 2 python:
                 self.accuracy = 9999
                 self.modifies = 'energy regen'
                 self.buff_strength = -50
-                self.buff_duration = 2 
+                self.buff_duration = 2
                 self.name = 'Disable Lite'
-                
+
     class PactRestore(Support):
             def __init__(self):
                 Support.__init__(self)
@@ -1847,7 +1847,7 @@ init 2 python:
                 self.buff_duration = 2
                 self.name = 'Flak Off'
 
-    class PactShutOff(Curse):  
+    class PactShutOff(Curse):
         def __init__(self):
             Curse.__init__(self)
             self.energy_use = 40
@@ -1857,8 +1857,8 @@ init 2 python:
             self.buff_strength = -100
             self.buff_duration = 2
             self.name = 'Shield Down'
-            
-            
+
+
 ############################################## PIRATE BASE
 
     class PirateBaseKinetic(Kinetic):
@@ -2172,17 +2172,17 @@ init 2 python:
 
 
  ###########################################PHOENIX ENEMY
- 
+
     class PhoenixEnemyMelee(Melee):
         def __init__(self):
             Weapon.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
-            self.accuracy = 160 
+            self.accuracy = 160
             self.acc_degradation = 100  #this is needed for AI melee weapons or else range is infinite.
             self.wtype = 'Melee'
-            self.name = 'Zantetsuken' 
+            self.name = 'Zantetsuken'
             self.type = 'Melee'
             self.shot_count = 2
             self.lbl = 'Battle UI/button_melee.png'
@@ -2214,8 +2214,8 @@ init 2 python:
             self.tooltip = """
             Provides reliable firepower, but highly inaccurate unless the target
             is nearby and large. Can also be used for blindside attacks."""
-            
-            
+
+
 ##################################################### UNION FRIGATE
 
 
@@ -2272,132 +2272,132 @@ init 2 python:
             self.shot_count = 15
             self.accuracy = 85
             self.wtype = 'Pulse'
-            
-            
+
+
     ## store items ##
     # see classes.rpy for more details on what each field does
-    
+
     class NewWarhead(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'new warhead'
             self.display_name = "WARHEAD AMMO"
-            self.cost = 300            
+            self.cost = 300
             self.tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
             self.variable_name = 'sunrider.rockets'    #this decides what is shown in the store after [owned:
             self.max_amt = 2    #you can buy no more than this number of this item. see previous field
-            
+
         def __call__(self): #here is where you decide what this item -does-.
             sunrider.rockets += 1
             BM.money -= self.cost            #boilerplate
             renpy.restart_interaction()      #boilerplate
-            
+
     class RocketUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'Rocketupgrade1'
             self.display_name = "QUANTUM TORPEDO LICENSE"
-            self.cost = 2000            
+            self.cost = 2000
             self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
             self.visibility_condition = 'sunrider_rocket.damage < 1200'
-            
-        def __call__(self):            
+
+        def __call__(self):
             store.sunrider_rocket.damage = 1200
             BM.money -= self.cost
             renpy.restart_interaction()
-            
+
     class RepairUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'RepairUpgrade1'
             self.display_name = "PORTABLE REPAIR BOOSTER"
-            self.cost = 750            
+            self.cost = 750
             self.tooltip = 'While extensive repairs require time in the dry dock, battlefield repairs are still a must for combat operations. These new portable repair drones will allow the Liberty to repair 200 more HP.'
             self.visibility_condition = 'store.chigara_repair.damage < 500'
-            
-        def __call__(self):            
+
+        def __call__(self):
             store.chigara_repair.damage = 500
             BM.money -= self.cost
             renpy.restart_interaction()
-            
+
     class NewRepairDrone(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'repair drones'
             self.display_name = "REPAIR DRONE"
-            self.cost = 400            
+            self.cost = 400
             self.tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
             self.visibility_condition = 'sunrider.repair_drones != None'
             self.variable_name = 'sunrider.repair_drones'
-            self.max_amt = 8            
-            
-        def __call__(self):            
+            self.max_amt = 8
+
+        def __call__(self):
             sunrider.repair_drones += 1
             BM.money -= self.cost
             renpy.restart_interaction()
-            
+
     class ContractAllianceCruiser(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'alliance cruiser'
             self.display_name = "ALLIANCE CRUISER"
-            self.cost = 2000            
+            self.cost = 2000
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name = "get_shipcount_in_list('Alliance Cruiser',player_ships)"
-            self.max_amt = 2            
+            self.max_amt = 2
             self.tooltip = 'With the Solar Congress\' declaration of war, countless Alliance battle cruisers have been called to the front lines. With a generous payment, the Mining Union can use its leverage in the Solar Congress to assign a fully operational Alliance battle cruiser as the Sunrider\'s escort. While slow, the Alliance battle cruiser is built like a brick and packs a punch. You can have up to {} in your fleet at any time'.format(self.max_amt)
-            
-        def __call__(self):            
+
+        def __call__(self):
             create_ship(AllianceCruiser()) #location=None, weaponlist=[] i.e. default
             BM.mercenary_count += 1
             BM.money -= self.cost
-            renpy.restart_interaction()  
+            renpy.restart_interaction()
 
     class ContractUnionFrigate(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'union frigate'
             self.display_name = "UNION FRIGATE"
-            self.cost = 750            
+            self.cost = 750
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name =  "get_shipcount_in_list('Mining Union Frigate',player_ships)"
-            self.max_amt = 4            
+            self.max_amt = 4
             self.tooltip = 'The Mining Union regularly fields a large private army to protect its shipping from pirates. With the payment of the appropriate fees, you too can have a Union security frigate watching your back. While small and lightly armed, these frigates are inexpensive and speedy. You can have up to {} in your fleet at any time'.format(self.max_amt)
-            
-        def __call__(self):            
+
+        def __call__(self):
             create_ship(UnionFrigate()) #location=None, weaponlist=[] i.e. default
             BM.mercenary_count += 1
             BM.money -= self.cost
-            renpy.restart_interaction()                 
-            
+            renpy.restart_interaction()
+
     class SellWishallArtifact(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'wishall'
             self.display_name = "SELL WISHALL"
-            self.cost = -10000            
+            self.cost = -10000
             self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instant cash infusion of 10 000 credits.'
             self.visibility_condition = "store.wishall"
-            
+
         def __call__(self): #here is where you decide what this item -does-.
             store.wishall = False
             BM.money -= self.cost            #boilerplate
-            renpy.restart_interaction()      #boilerplate            
+            renpy.restart_interaction()      #boilerplate
 
     class SunriderShieldUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'sunrider_shield_upgrade'
             self.display_name = "SUNRIDER SHIELD UPGRADE"
-            self.cost = 1500            
+            self.cost = 1500
             self.tooltip = "Due to the Sunrider's unexpected departure from Cera, she was never outfitted with energy shielding. While her top of the line shield generator was lost with the fall of Cera, the Union can outfit the Sunrider with a basic shield generator. The Sunrider's shields can be further upgraded in the Research Lab after it is purchased."
             self.visibility_condition = 'store.sunrider.shield_generation == 0'
 
-        def __call__(self):            
+        def __call__(self):
             store.sunrider.shield_generation = 15
             store.sunrider.shields = store.sunrider.shield_generation
             store.sunrider.shield_range = 0
             BM.money -= self.cost
             renpy.restart_interaction()
-            
-            
+
+

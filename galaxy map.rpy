@@ -132,7 +132,7 @@ label warpto_Tydaria:
         $ mission1_name = None
         $ mission2_name = None
         $ mission3_name = None
-        
+
     if tydaria_morepirates == True:
         $ galaxymission1 = True
         $ galaxymission2 = False
@@ -279,7 +279,7 @@ label warpto_versta:
         $ mission1_name = "Main: Rescue Diplomats"
         $ mission2_name = None
         $ mission3_name = None
-        
+
     elif versta_ambush == True:
         $ galaxymission1 = True
         $ galaxymission2 = False
@@ -405,7 +405,7 @@ label warpto_ryuvia:
 label warpto_farport:
 
     $ map_back = "farport_back"
-    
+
     if farport_losttech == True:
         $ galaxymission1 = True
         $ galaxymission2 = False
@@ -416,7 +416,7 @@ label warpto_farport:
         $ mission1_name = "Side: Investigate lost technology"
         $ mission2_name = None
         $ mission3_name = None
-        
+
     else:
         $ galaxymission1 = False
         $ galaxymission2 = False
@@ -627,7 +627,7 @@ label ryuvia_back:
             ease 1 xpos 0 ypos 0 zoom 1
     pause 1
     call screen galaxymap_buttons
-    
+
 label farport_back:
     hide map_farport_info
     scene bg black

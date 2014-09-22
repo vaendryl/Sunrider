@@ -119,7 +119,7 @@ screen deck0:
                         idle 'Menu/skirmish_button.png'
                         hover 'Menu/skirmish_button_hover.png'
                         activate_sound "Sound/click.mp3"
-                        action Jump('skirmish_battle') 
+                        action Jump('skirmish_battle')
 
 
     frame:##################################### SICKBAY
