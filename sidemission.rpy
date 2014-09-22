@@ -52,29 +52,29 @@ init python:
         #def editableformations(self):
         #    return True
         
-        #Uncomment this if you want to implement a special loss condition.  Call you_lose() if the player has lost.  If the player doesn't have any ships, it'll be hard to win...
-        #def check_for_loss(self):
+        #Uncomment this if you want to implement a special loss condition.  Call youlose() if the player has lost.  If the player doesn't have any ships, it'll be hard to win...
+        #def checkforloss(self):
         #    if len(player_ships) == 0:
-        #        self.you_lose()
+        #        self.youlose()
        
         #Uncomment this if you want to do something funky when the player loses, like jumping to a prison storyline or whatever.
-        #def you_lose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
+        #def youlose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
         #    show_message('You were defeated! I hope that the modder added a label for myprisonstoryline...')
         #    clean_battle_exit()
         #    renpy.jump('myprisonstoryline')
         
         #Uncomment this if you want to do something funky when a boss ship dies, as opposed to going straight to a victory condition
-        #def boss_died(self, deadboss):
+        #def bossdied(self, deadboss):
         #   if deadboss == Havoc:
         #       show_message('Cosette is taken out of the battle.  It turns out that her threat about a bomb on the Sunrider was true!')
         #       Sunrider.takedamage(400)
         #   else:
-        #       self.you_win()
+        #       self.youwin()
 
-        #Uncomment this if you want to do a special check for your custom victory condition.  Note that if a boss ship is destroyed, it will call you_win()
-        #def check_for_win(self):
+        #Uncomment this if you want to do a special check for your custom victory condition.  Note that if a boss ship is destroyed, it will call youwin()
+        #def checkforwin(self):
         #    if len(enemy_ships) == 0:
-        #        self.you_win()
+        #        self.youwin()
         
-        #Don't override you_win() unless you know exactly why you're doing it.
+        #Don't override youwin() unless you know exactly why you're doing it.
         

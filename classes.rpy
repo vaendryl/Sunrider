@@ -873,19 +873,19 @@ init -2 python:
             if result[0] == 'endturn':
                 self.end_player_turn()
 
-            self.check_for_loss()
-            self.check_for_win()
+            self.checkforloss()
+            self.checkforwin()
 
             return
             
             
-        def check_for_loss(self):
+        def checkforloss(self):
             if len(player_ships) == 0:
-                self.you_lose()
+                self.youlose()
             
 
                 
-        def you_lose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
+        def youlose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
             if (self.mission != 'skirmish'):
                 renpy.jump('gameover')
             else:
@@ -893,17 +893,17 @@ init -2 python:
                 clean_battle_exit()
                 renpy.jump('dispatch')
                 
-        def boss_died(self, deadboss):
+        def bossdied(self, deadboss):
             if (self.mission != 'skirmish'):
-                self.you_win()
+                self.youwin()
                
-        def check_for_win(self):
+        def checkforwin(self):
             if len(enemy_ships) == 0:
-                self.you_win()
+                self.youwin()
                 
-        def you_win(self):
+        def youwin(self):
             self.stopAI = True
-            if self.battlemode: #Ignore calls to you_win if we're not actually in battle mode.
+            if self.battlemode: #Ignore calls to Youwin if we're not actually in battle mode.
                 renpy.hide_screen('commands')
                 self.battle_end()
                 renpy.hide_screen('battle_screen')
@@ -1529,10 +1529,10 @@ init -2 python:
             #killing a boss ends the battle (the rest surrenders)
             #if this was the last enemy ship you win too, but that can be handled by the battle manager
             if self.boss:
-                BM.boss_died(self)
+                BM.bossdied(self)
 
-            BM.check_for_loss()
-            BM.check_for_win()
+            BM.checkforloss()
+            BM.checkforwin()
            
 
                 
