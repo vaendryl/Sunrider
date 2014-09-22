@@ -128,11 +128,7 @@ init -2 python:
             self.battle_bg = "Background/space{!s}.jpg".format(renpy.random.randint(1,9))
             self.result = None #store result of ui.interact()
 
-        #return None if an attribute does not exist:
-        # def __getattr__(self,X):
-            # return None        
-
-        #here we start defining a few methods part of the battlemanager
+        #here we start defining a few methods which part of the battlemanager
         def select_ship(self,ship,play_voice = True):
             self.selected = ship
             if ship.faction == 'Player' and play_voice:
@@ -482,6 +478,8 @@ init -2 python:
             # self.just_moved = True #zooming doesn't have to reset this button
 
         def battle_selection(self):
+            # if self.result == None:
+                # return
             self.target = self.result[1]
             self.hovered = None
 
@@ -638,7 +636,7 @@ init -2 python:
                 
                 succesful = False
                 for ship in player_ships:
-                    if apply_modifier(ship,'flak',10,5): succesful = True
+                    if apply_modifier(ship,'flak',30,5): succesful = True
                     if ship.shield_generation > 0:
                         if apply_modifier(ship,'shield_generation',10,5): succesful = True
                     if apply_modifier(ship,'evasion',10,5): succesful = True
@@ -673,7 +671,7 @@ init -2 python:
                 if self.active_strategy[0] == 'all guard':
                     show_message("All Guard order canceled!")
                     for ship in player_ships:
-                        if ship.modifiers['flak'][0] == 10:
+                        if ship.modifiers['flak'][0] == 30:
                             ship.modifiers['flak'] = [0,0]
                         if ship.modifiers['shield_generation'][0] == 10:
                             ship.modifiers['shield_generation'] = [0,0]
@@ -1137,7 +1135,7 @@ init -2 python:
 
             VNmode() #return to visual novel mode. this mostly just restored scrolling rollback
             for ship in destroyed_ships:
-                if ship.faction == 'Player' and not ship.mercenary:
+                if self.mission == 'skirmish' or (ship.faction == 'Player' and not ship.mercenary):
                     player_ships.append(ship)
                     self.ships.append(ship)
             for ship in player_ships:
@@ -1602,7 +1600,7 @@ init -2 python:
                 BM.ships.remove(self)
                 
             #did you lose a mercenary?   (not really used anymore)
-            if self.mercenary:
+            if self.mercenary and BM.mission != 'skirmish':
                 BM.mercenary_count -= 1
                 
             #killing a boss ends the battle (the rest surrenders)
@@ -1612,7 +1610,6 @@ init -2 python:
 
             BM.checkforloss()
             BM.checkforwin()
-           
 
                 
         def register_weapon(self, weapon):
@@ -2854,6 +2851,7 @@ init -2 python:
             store.mission_pirateattack = False
             store.amissionforalliance = False
             store.missionforryuvia = False
+            store.OngessTruth == False
 
             store.battlemusic = True
 

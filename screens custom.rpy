@@ -453,7 +453,7 @@ screen battle_screen:
                         ypos yposition
                         zoom (zoomlevel/2.5)
                         alpha 0.8
-                        at delayed_image(wait)
+                        at delayed_image(wait,'Battle UI/warning icon.png')
 
                     $ textcolor = 'f00'
                     if ship.faction == 'Player':
@@ -626,7 +626,7 @@ screen battle_screen:
                 $ lbl = 'Battle UI/move_tile.png'
                 $ tile_location = (tile[3],tile[4])
                 
-                if get_counter_attack(tile_location):
+                if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
                     $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
                 
                 if tile_location == BM.mouse_location:
@@ -934,7 +934,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
 
-                                text str('Provides +10 Flak, +10 Evasion and +10 shield generation to all ships. Will cancel Full Forward if active.'):
+                                text str('Provides +30 Flak, +10 Evasion and +10 shield generation to all ships. Will cancel Full Forward if active.'):
                                     xpos 0
                                     ypos 0
                                     size 18
