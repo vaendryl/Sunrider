@@ -133,10 +133,6 @@ init -2 python:
             self.result = None #store result of ui.interact()
 
         #here we start defining a few methods which part of the battlemanager
-        #return None if an attribute does not exist:
-        # def __getattr__(self,X):
-            # return None        
-
         ## insert entry to battle log
         # @param type The list of tags
         # @param message The formatted string
@@ -1991,6 +1987,9 @@ init -2 python:
                     if self.name == 'Legion' and BM.enemy_vanguard_path == []:
                         result = get_vanguard_feasible(self)
                         if result != False:
+                            message = "WARNING: Legion aims vanguard at {0}".format(result.name)
+                            show_message(message)
+                            BM.battle_log_insert([], message)
                             BM.enemy_vanguard_path = interpolate_hex(self.location,result.location)
                     self.AI_running = False
                     return
