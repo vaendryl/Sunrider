@@ -339,6 +339,7 @@ init -2 python:
         ########################################################
         def skirmish_phase(self):
             while True:
+                ui_action = None
                 self.result = ui.interact()
                 if type(self.result is list):
                     try:
@@ -350,7 +351,9 @@ init -2 python:
                         ui_action = self.skirmish_dispatcher[self.result]
                     except KeyError:
                         renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
-                ui_action()
+                if ui_action != None:
+                    ui_action()
+
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
         #------------------------------------------------------#
@@ -416,6 +419,7 @@ init -2 python:
         ########################################################
         def formation_phase(self):
             while True:
+                ui_action = None
                 self.result = ui.interact()            
                 if type(self.result is list):
                     try:
@@ -427,7 +431,8 @@ init -2 python:
                         ui_action = self.formation_dispatcher[self.result]
                     except KeyError:
                         renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
-                ui_action()
+                if ui_action != None:
+                    ui_action()
                 
 
 
@@ -952,6 +957,7 @@ init -2 python:
                         self.ships.remove(ship)
                         
          
+            ui_action = None
             if type(self.result is list):
                 try:
                     ui_action = self.battle_dispatcher[self.result[0]]
@@ -962,7 +968,8 @@ init -2 python:
                     ui_action = self.battle_dispatcher[self.result]
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
-            ui_action()
+            if ui_action != None:
+                ui_action()
                         
             self.check_for_loss()
             self.check_for_win()
