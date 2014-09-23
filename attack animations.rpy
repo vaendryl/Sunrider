@@ -1,6 +1,9 @@
 ############################################SUNRIDER ATTACK ANIMATIONS START
 label atkanim_sunrider_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show sunrider_side:
@@ -66,6 +69,9 @@ label atkanim_sunrider_kinetic:
 
 label atkanim_sunrider_laser:
 
+    if config.skipping:
+        return
+
 
     $renpy.show_screen('show_background',_layer='master')
     show sunrider_side:
@@ -107,6 +113,9 @@ label atkanim_sunrider_laser:
     return
 
 label atkanim_sunrider_missile:
+
+    if config.skipping:
+        return
 
     hide screen battle_screen
 
@@ -157,6 +166,9 @@ label atkanim_sunrider_missile:
     return
 
 label atkanim_sunrider_pulse:
+
+    if config.skipping:
+        return
 
     hide screen battle_screen
 
@@ -350,6 +362,9 @@ label atkanim_sunrider_pulse:
 
 label atkanim_sunrider_assault:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show sunrider_side:
         xpos 0.5 ypos 0.5
@@ -469,6 +484,9 @@ label atkanim_sunrider_assault:
 
 label atkanim_sunrider_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show sunrider_side:
         xpos 0.5 ypos 0.5
@@ -507,6 +525,9 @@ label atkanim_sunrider_rocket:
 #####################################################################SUNRIDER HIT ANIMATIONS
 
 label hitanim_sunrider_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -583,6 +604,9 @@ label hitanim_sunrider_missile:
 
 label hitanim_sunrider_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -629,6 +653,9 @@ label hitanim_sunrider_kinetic:
 
 label hitanim_sunrider_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show sunrider_side:
@@ -655,6 +682,9 @@ label hitanim_sunrider_laser:
     return
 
 label hitanim_sunrider_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -765,6 +795,9 @@ label hitanim_sunrider_pulse:
 
 label hitanim_sunrider_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -802,6 +835,9 @@ label hitanim_sunrider_rocket:
     return
 
 label hitanim_sunrider_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -930,6 +966,9 @@ label hitanim_sunrider_assault:
 
 label miss_sunrider:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $renpy.show_screen('show_background',_layer='master')
@@ -969,6 +1008,9 @@ label miss_sunrider:
 
 label attacksuccess_sunrider:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,7)
@@ -1000,6 +1042,9 @@ label attacksuccess_sunrider:
 
 label attackfail_sunrider:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,5)
@@ -1026,6 +1071,9 @@ label attackfail_sunrider:
     return
 
 label hit_sunrider:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -1059,6 +1107,9 @@ label hit_sunrider:
 
 label order_begin:
 
+    if config.skipping:
+        return
+
     scene black
 
     play sound "sound/Sword Shing 2.ogg"
@@ -1087,6 +1138,9 @@ label order_begin:
     pause
 
 label atkanim_sunrider_vanguard:
+
+    if config.skipping:
+        return
 
     scene black
 
@@ -1148,6 +1202,9 @@ label atkanim_sunrider_vanguard:
     return
 
 label die_sunrider:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -1235,6 +1292,9 @@ label die_sunrider:
 
 label atkanim_pactmissilefrigate_missile:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactmissilefrigate_side:
@@ -1281,6 +1341,9 @@ label atkanim_pactmissilefrigate_missile:
 
 label hitanim_pactmissilefrigate_kinetic:   ##############PACT MISSILE FRIGATE HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -1320,6 +1383,9 @@ label hitanim_pactmissilefrigate_kinetic:   ##############PACT MISSILE FRIGATE H
     return
 
 label hitanim_pactmissilefrigate_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp(damage_delay = 1.0)
@@ -1385,6 +1451,9 @@ label hitanim_pactmissilefrigate_missile:
 
 label hitanim_pactmissilefrigate_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactmissilefrigate_side:
@@ -1408,6 +1477,9 @@ label hitanim_pactmissilefrigate_laser:
     return
 
 label hitanim_pactmissilefrigate_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -1512,6 +1584,9 @@ label hitanim_pactmissilefrigate_pulse:
 
 label hitanim_pactmissilefrigate_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -1580,6 +1655,9 @@ label hitanim_pactmissilefrigate_rocket:
     return
 
 label hitanim_pactmissilefrigate_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -1711,6 +1789,9 @@ label hitanim_pactmissilefrigate_assault:
 
 label hitanim_pactmissilefrigate_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactmissilefrigate_side:
@@ -1762,6 +1843,9 @@ label hitanim_pactmissilefrigate_vanguard:
 
 label die_pactmissilefrigate: ###################################MISSILE FRIGATE DEATH
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactmissilefrigate_side:
@@ -1803,6 +1887,9 @@ label die_pactmissilefrigate: ###################################MISSILE FRIGATE
 
 label miss_pactmissilefrigate: #############################PACT MISSILE FRIGATE MISS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -1819,6 +1906,9 @@ label miss_pactmissilefrigate: #############################PACT MISSILE FRIGATE
     return
 
 label atkanim_blackjack_assault: ########################BLACK JACK ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -1876,6 +1966,9 @@ label atkanim_blackjack_assault: ########################BLACK JACK ATTACK ANIMA
     return
 
 label atkanim_blackjack_laser:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -1940,6 +2033,9 @@ label atkanim_blackjack_laser:
     return
 
 label atkanim_blackjack_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -2011,6 +2107,9 @@ label atkanim_blackjack_missile:
     return
 
 label atkanim_blackjack_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -2203,6 +2302,9 @@ label atkanim_blackjack_pulse:
 
 label atkanim_blackjack_melee:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     $ Random = renpy.random.randint(1,4)
@@ -2245,6 +2347,9 @@ label atkanim_blackjack_melee:
     return
 
 label hitanim_blackjack_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -2289,6 +2394,9 @@ label hitanim_blackjack_kinetic:
     return
 
 label hitanim_blackjack_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -2356,6 +2464,9 @@ label hitanim_blackjack_missile:
 
 label hitanim_blackjack_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show blackjack:
@@ -2388,6 +2499,9 @@ label hitanim_blackjack_laser:
     return
 
 label hitanim_blackjack_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -2497,6 +2611,9 @@ label hitanim_blackjack_pulse:
 
 label hitanim_blackjack_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -2531,6 +2648,9 @@ label hitanim_blackjack_rocket:
     return
 
 label hitanim_blackjack_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -2646,6 +2766,9 @@ label hitanim_blackjack_assault:
 
 label hitanim_blackjack_melee:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -2700,6 +2823,9 @@ label hitanim_blackjack_melee:
 
 label miss_blackjack:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -2737,6 +2863,9 @@ label miss_blackjack:
 
 label attacksuccess_blackjack:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,6)
@@ -2766,6 +2895,9 @@ label attacksuccess_blackjack:
 
 label attackfail_blackjack:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,5)
@@ -2793,6 +2925,9 @@ label attackfail_blackjack:
 
 label hit_blackjack:
 
+    if config.skipping:
+        return
+
     show layer master
 
     if blackjack.hp >= blackjack.max_hp * 0.8:
@@ -2818,6 +2953,9 @@ label hit_blackjack:
     return
 
 label die_blackjack:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -2856,6 +2994,9 @@ label die_blackjack:
 
 
 label atkanim_liberty_laser: ########################LIBERTY ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -2901,6 +3042,9 @@ label atkanim_liberty_laser: ########################LIBERTY ATTACK ANIMATIONS
 
 label hitanim_liberty_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -2944,6 +3088,9 @@ label hitanim_liberty_kinetic:
     return
 
 label hitanim_liberty_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3011,6 +3158,9 @@ label hitanim_liberty_missile:
 
 label hitanim_liberty_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show liberty:
@@ -3043,6 +3193,9 @@ label hitanim_liberty_laser:
     return
 
 label hitanim_liberty_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3152,6 +3305,9 @@ label hitanim_liberty_pulse:
 
 label hitanim_liberty_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -3186,6 +3342,9 @@ label hitanim_liberty_rocket:
     return
 
 label hitanim_liberty_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3301,6 +3460,9 @@ label hitanim_liberty_assault:
 
 label miss_liberty:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show chigara plugsuit handonchest happy:
@@ -3338,6 +3500,9 @@ label miss_liberty:
 
 label attacksuccess_liberty:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,3)
@@ -3362,6 +3527,9 @@ label attacksuccess_liberty:
 
 label attackfail_liberty:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,3)
@@ -3384,6 +3552,9 @@ label attackfail_liberty:
     return
 
 label hit_liberty:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -3410,6 +3581,9 @@ label hit_liberty:
     return
 
 label die_liberty:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -3447,6 +3621,9 @@ label die_liberty:
     return
 
 label atkanim_seraphim_kinetic:########################SERAPHIM ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -3516,6 +3693,9 @@ label atkanim_seraphim_kinetic:########################SERAPHIM ATTACK ANIMATION
 
 label hitanim_seraphim_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -3559,6 +3739,9 @@ label hitanim_seraphim_kinetic:
     return
 
 label hitanim_seraphim_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3626,6 +3809,9 @@ label hitanim_seraphim_missile:
 
 label hitanim_seraphim_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show seraphim:
@@ -3658,6 +3844,9 @@ label hitanim_seraphim_laser:
     return
 
 label hitanim_seraphim_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3767,6 +3956,9 @@ label hitanim_seraphim_pulse:
 
 label hitanim_seraphim_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -3801,6 +3993,9 @@ label hitanim_seraphim_rocket:
     return
 
 label hitanim_seraphim_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -3916,6 +4111,9 @@ label hitanim_seraphim_assault:
 
 label miss_seraphim:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -3951,6 +4149,9 @@ label miss_seraphim:
 
 label attacksuccess_seraphim:
 
+    if config.skipping:
+        return
+
     show layer master
 
     play solvoice "sound/Voice/Sola/Hit 1.ogg"
@@ -3967,6 +4168,9 @@ label attacksuccess_seraphim:
 
 label attackfail_seraphim:
 
+    if config.skipping:
+        return
+
     show layer master
 
     play solvoice "sound/Voice/Sola/Miss 1.ogg"
@@ -3982,6 +4186,9 @@ label attackfail_seraphim:
     return
 
 label hit_seraphim:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -4008,6 +4215,9 @@ label hit_seraphim:
     return
 
 label die_seraphim:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -4046,6 +4256,9 @@ label die_seraphim:
 
 
 label atkanim_piratebomber_missile: ##########################PIRATE BOMBER ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
 
     $renpy.show_screen('show_background',_layer='master')
@@ -4109,6 +4322,9 @@ label atkanim_piratebomber_missile: ##########################PIRATE BOMBER ATTA
 
 label atkanim_piratebomber_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show piratebomber:
@@ -4138,6 +4354,9 @@ label atkanim_piratebomber_rocket:
     return
 
 label atkanim_piratebomber_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -4179,6 +4398,9 @@ label atkanim_piratebomber_assault:
 
 label hitanim_piratebomber_kinetic: ##########################PIRATE BOMBER HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -4219,6 +4441,9 @@ label hitanim_piratebomber_kinetic: ##########################PIRATE BOMBER HIT 
     return
 
 label hitanim_piratebomber_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -4284,6 +4509,9 @@ label hitanim_piratebomber_missile:
 
 label hitanim_piratebomber_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -4314,6 +4542,9 @@ label hitanim_piratebomber_laser:
     return
 
 label hitanim_piratebomber_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -4422,6 +4653,9 @@ label hitanim_piratebomber_pulse:
 
 label hitanim_piratebomber_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -4488,6 +4722,9 @@ label hitanim_piratebomber_rocket: #(damage):
     return
 
 label hitanim_piratebomber_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -4603,6 +4840,9 @@ label hitanim_piratebomber_assault:
 
 label hitanim_piratebomber_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show piratebomber:
@@ -4653,6 +4893,9 @@ label hitanim_piratebomber_vanguard:
 
 label die_piratebomber:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show piratebomber:
@@ -4693,6 +4936,9 @@ label die_piratebomber:
 
 label miss_piratebomber:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -4709,6 +4955,9 @@ label miss_piratebomber:
     return
 
 label atkanim_pactcruiser_kinetic: ################################# PACT CRUISER KINETIC
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -4766,6 +5015,9 @@ label atkanim_pactcruiser_kinetic: ################################# PACT CRUISE
     return
 
 label atkanim_pactcruiser_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pactcruiser_side:
@@ -4868,6 +5120,9 @@ label atkanim_pactcruiser_assault:
 
 label atkanim_pactcruiser_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show pactcruiser_side:
         xpos 0.5 ypos 0.5
@@ -4889,6 +5144,9 @@ label atkanim_pactcruiser_laser:
     return
 
 label hitanim_pactcruiser_kinetic:   ##############PACT CRUISER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -4931,6 +5189,9 @@ label hitanim_pactcruiser_kinetic:   ##############PACT CRUISER HIT ANIMATIONS
     return
 
 label hitanim_pactcruiser_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -4996,6 +5257,9 @@ label hitanim_pactcruiser_missile:
 
 label hitanim_pactcruiser_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactcruiser_side:
@@ -5020,6 +5284,9 @@ label hitanim_pactcruiser_laser:
     return
 
 label hitanim_pactcruiser_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -5128,6 +5395,9 @@ label hitanim_pactcruiser_pulse:
 
 label hitanim_pactcruiser_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -5196,6 +5466,9 @@ label hitanim_pactcruiser_rocket: #(damage):
     return
 
 label hitanim_pactcruiser_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -5311,6 +5584,9 @@ label hitanim_pactcruiser_assault:
 
 label hitanim_pactcruiser_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactcruiser_side:
@@ -5362,6 +5638,9 @@ label hitanim_pactcruiser_vanguard:
 
 label die_pactcruiser: ###################################PACT CRUISER DEATH
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactcruiser_side:
@@ -5405,6 +5684,9 @@ label die_pactcruiser: ###################################PACT CRUISER DEATH
 
 label miss_pactcruiser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -5421,6 +5703,9 @@ label miss_pactcruiser:
     return
 
 label atkanim_pactbattleship_kinetic: ################################# PACT BATTLESHIP BEGIN
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -5467,6 +5752,9 @@ label atkanim_pactbattleship_kinetic: ################################# PACT BAT
     return
 
 label atkanim_pactbattleship_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pactbattleship_side:
@@ -5571,6 +5859,9 @@ label atkanim_pactbattleship_assault:
 
 label atkanim_pactbattleship_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show pactbattleship_side:
         xpos 0.5 ypos 0.5
@@ -5592,6 +5883,9 @@ label atkanim_pactbattleship_laser:
     return
 
 label atkanim_pactbattleship_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -5633,6 +5927,9 @@ label atkanim_pactbattleship_missile:
 
 label atkanim_pactbattleship_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbattleship_side:
@@ -5660,6 +5957,9 @@ label atkanim_pactbattleship_rocket:
     return
 
 label hitanim_pactbattleship_kinetic:   ##############PACT CRUISER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -5702,6 +6002,9 @@ label hitanim_pactbattleship_kinetic:   ##############PACT CRUISER HIT ANIMATION
     return
 
 label hitanim_pactbattleship_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -5767,6 +6070,9 @@ label hitanim_pactbattleship_missile:
 
 label hitanim_pactbattleship_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactbattleship_side:
@@ -5791,6 +6097,9 @@ label hitanim_pactbattleship_laser:
     return
 
 label hitanim_pactbattleship_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -5899,6 +6208,9 @@ label hitanim_pactbattleship_pulse:
 
 label hitanim_pactbattleship_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -5967,6 +6279,9 @@ label hitanim_pactbattleship_rocket: #(damage):
     return
 
 label hitanim_pactbattleship_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -6082,6 +6397,9 @@ label hitanim_pactbattleship_assault:
 
 label hitanim_pactbattleship_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactbattleship_side:
@@ -6133,6 +6451,9 @@ label hitanim_pactbattleship_vanguard:
 
 label die_pactbattleship: ###################################PACT CRUISER DEATH
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbattleship_side:
@@ -6180,6 +6501,9 @@ label die_pactbattleship: ###################################PACT CRUISER DEATH
 
 label miss_pactbattleship:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -6196,6 +6520,9 @@ label miss_pactbattleship:
     return
 
 label atkanim_ryuviancruiser_kinetic: ################################# RYUVIAN CRUISER KINETIC
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -6252,6 +6579,9 @@ label atkanim_ryuviancruiser_kinetic: ################################# RYUVIAN 
 
 label atkanim_ryuviancruiser_missile:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show ryuviancruiser_side:
         xpos 0.5 ypos 0.5
@@ -6286,6 +6616,9 @@ label atkanim_ryuviancruiser_missile:
     return
 
 label hitanim_ryuviancruiser_kinetic:   ##############PACT CRUISER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -6328,6 +6661,9 @@ label hitanim_ryuviancruiser_kinetic:   ##############PACT CRUISER HIT ANIMATION
     return
 
 label hitanim_ryuviancruiser_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -6393,6 +6729,9 @@ label hitanim_ryuviancruiser_missile:
 
 label hitanim_ryuviancruiser_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show ryuviancruiser_side:
@@ -6417,6 +6756,9 @@ label hitanim_ryuviancruiser_laser:
     return
 
 label hitanim_ryuviancruiser_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -6525,6 +6867,9 @@ label hitanim_ryuviancruiser_pulse:
 
 label hitanim_ryuviancruiser_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -6593,6 +6938,9 @@ label hitanim_ryuviancruiser_rocket: #(damage):
     return
 
 label hitanim_ryuviancruiser_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -6708,6 +7056,9 @@ label hitanim_ryuviancruiser_assault:
 
 label hitanim_ryuviancruiser_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show ryuviancruiser_side:
@@ -6759,6 +7110,9 @@ label hitanim_ryuviancruiser_vanguard:
 
 label die_ryuviancruiser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show ryuviancruiser_side:
@@ -6802,6 +7156,9 @@ label die_ryuviancruiser:
 
 label miss_ryuviancruiser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -6818,6 +7175,9 @@ label miss_ryuviancruiser:
     return
 
 label atkanim_havoc_missile: ##########################HAVOC ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -6894,6 +7254,9 @@ label atkanim_havoc_missile: ##########################HAVOC ATTACK ANIMATIONS
 
 label atkanim_havoc_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show havoc:
@@ -6955,6 +7318,9 @@ label atkanim_havoc_rocket:
 
 label atkanim_havoc_assault:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show havoc:
@@ -7004,6 +7370,9 @@ label atkanim_havoc_assault:
 
 label atkanim_havoc_melee:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show havoc:
@@ -7047,6 +7416,9 @@ label atkanim_havoc_melee:
 
 label hitanim_havoc_kinetic: ##########################HAVOC HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -7086,6 +7458,9 @@ label hitanim_havoc_kinetic: ##########################HAVOC HIT ANIMATIONS
     return
 
 label hitanim_havoc_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7151,6 +7526,9 @@ label hitanim_havoc_missile:
 
 label hitanim_havoc_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show havoc:
@@ -7181,6 +7559,9 @@ label hitanim_havoc_laser:
     return
 
 label hitanim_havoc_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7287,6 +7668,9 @@ label hitanim_havoc_pulse:
 
 label hitanim_havoc_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -7353,6 +7737,9 @@ label hitanim_havoc_rocket: #(damage):
     return
 
 label hitanim_havoc_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7468,6 +7855,9 @@ label hitanim_havoc_assault:
 
 label hitanim_havoc_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show havoc:
@@ -7517,6 +7907,9 @@ label hitanim_havoc_vanguard:
     return
 
 label hitanim_havoc_melee:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7572,6 +7965,9 @@ label hitanim_havoc_melee:
 
 label miss_havoc:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -7588,6 +7984,9 @@ label miss_havoc:
     return
 
 label die_havoc:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -7651,6 +8050,9 @@ label die_havoc:
 
 label atkanim_piratedestroyer_kinetic: ################################# PIRATE DESTROYER KINETIC
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show piratedestroyer:
@@ -7691,6 +8093,9 @@ label atkanim_piratedestroyer_kinetic: ################################# PIRATE 
 
 label atkanim_piratedestroyer_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show piratedestroyer:
         xpos 0.5 ypos 0.5
@@ -7711,6 +8116,9 @@ label atkanim_piratedestroyer_laser:
     return
 
 label hitanim_piratedestroyer_kinetic:   ##############PIRATE DESTROYER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7752,6 +8160,9 @@ label hitanim_piratedestroyer_kinetic:   ##############PIRATE DESTROYER HIT ANIM
     return
 
 label hitanim_piratedestroyer_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7817,6 +8228,9 @@ label hitanim_piratedestroyer_missile:
 
 label hitanim_piratedestroyer_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show piratedestroyer:
@@ -7841,6 +8255,9 @@ label hitanim_piratedestroyer_laser:
     return
 
 label hitanim_piratedestroyer_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -7945,6 +8362,9 @@ label hitanim_piratedestroyer_pulse:
 
 label hitanim_piratedestroyer_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -8013,6 +8433,9 @@ label hitanim_piratedestroyer_rocket: #(damage):
     return
 
 label hitanim_piratedestroyer_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8128,6 +8551,9 @@ label hitanim_piratedestroyer_assault:
 
 label hitanim_piratedestroyer_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show piratedestroyer:
@@ -8178,6 +8604,9 @@ label hitanim_piratedestroyer_vanguard:
 
 label die_piratedestroyer:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show piratedestroyer:
@@ -8221,6 +8650,9 @@ label die_piratedestroyer:
 
 label miss_piratedestroyer:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -8237,6 +8669,9 @@ label miss_piratedestroyer:
     return
 
 label atkanim_pactstation_laser:  ###################################PACT STATION ATKANIM
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pactstation:
@@ -8258,6 +8693,9 @@ label atkanim_pactstation_laser:  ###################################PACT STATIO
     return
 
 label atkanim_pactstation_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -8314,6 +8752,9 @@ label atkanim_pactstation_kinetic:
 
 label hitanim_pactstation_kinetic:   ##############PACT STATION HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -8353,6 +8794,9 @@ label hitanim_pactstation_kinetic:   ##############PACT STATION HIT ANIMATIONS
     return
 
 label hitanim_pactstation_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8418,6 +8862,9 @@ label hitanim_pactstation_missile:
 
 label hitanim_pactstation_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactstation:
@@ -8441,6 +8888,9 @@ label hitanim_pactstation_laser:
     return
 
 label hitanim_pactstation_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8549,6 +8999,9 @@ label hitanim_pactstation_pulse:
 
 label hitanim_pactstation_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -8617,6 +9070,9 @@ label hitanim_pactstation_rocket: #(damage):
     return
 
 label hitanim_pactstation_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8732,6 +9188,9 @@ label hitanim_pactstation_assault:
 
 label die_pactstation: ###################################PACT CRUISER DEATH
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactstation:
@@ -8775,6 +9234,9 @@ label die_pactstation: ###################################PACT CRUISER DEATH
 
 label miss_pactstation: #############################PACT MISSILE FRIGATE MISS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -8791,6 +9253,9 @@ label miss_pactstation: #############################PACT MISSILE FRIGATE MISS
     return
 
 label hitanim_pactstation_vanguard:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8841,6 +9306,9 @@ label hitanim_pactstation_vanguard:
     return
 
 label atkanim_pactmook_missile: ##############################PACT MOOK ASSAULT
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -8895,6 +9363,9 @@ label atkanim_pactmook_missile: ##############################PACT MOOK ASSAULT
 
 label atkanim_pactmook_assault:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactmook:
@@ -8935,6 +9406,9 @@ label atkanim_pactmook_assault:
 
 label atkanim_pactmook_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactmook:
@@ -8959,6 +9433,9 @@ label atkanim_pactmook_laser:
     return
 
 label hitanim_pactmook_kinetic: ##########################PACT MOOK HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -8999,6 +9476,9 @@ label hitanim_pactmook_kinetic: ##########################PACT MOOK HIT ANIMATIO
     return
 
 label hitanim_pactmook_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9064,6 +9544,9 @@ label hitanim_pactmook_missile:
 
 label hitanim_pactmook_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactmook:
@@ -9094,6 +9577,9 @@ label hitanim_pactmook_laser:
     return
 
 label hitanim_pactmook_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9202,6 +9688,9 @@ label hitanim_pactmook_pulse:
 
 label hitanim_pactmook_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -9268,6 +9757,9 @@ label hitanim_pactmook_rocket: #(damage):
     return
 
 label hitanim_pactmook_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9384,6 +9876,9 @@ label hitanim_pactmook_assault:
 
 label hitanim_pactmook_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactmook:
@@ -9434,6 +9929,9 @@ label hitanim_pactmook_vanguard:
 
 label miss_pactmook:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -9451,6 +9949,9 @@ label miss_pactmook:
     return
 
 label die_pactmook:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -9495,6 +9996,9 @@ label die_pactmook:
 
 label atkanim_seraphimenemy_kinetic: ##############################PACT MOOK ASSAULT
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show seraphimenemy:
@@ -9531,6 +10035,9 @@ label atkanim_seraphimenemy_kinetic: ##############################PACT MOOK ASS
     return
 
 label hitanim_seraphimenemy_kinetic: ##########################PACT MOOK HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9571,6 +10078,9 @@ label hitanim_seraphimenemy_kinetic: ##########################PACT MOOK HIT ANI
     return
 
 label hitanim_seraphimenemy_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9636,6 +10146,9 @@ label hitanim_seraphimenemy_missile:
 
 label hitanim_seraphimenemy_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show seraphimenemy:
@@ -9666,6 +10179,9 @@ label hitanim_seraphimenemy_laser:
     return
 
 label hitanim_seraphimenemy_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9774,6 +10290,9 @@ label hitanim_seraphimenemy_pulse:
 
 label hitanim_seraphimenemy_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -9840,6 +10359,9 @@ label hitanim_seraphimenemy_rocket: #(damage):
     return
 
 label hitanim_seraphimenemy_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -9956,6 +10478,9 @@ label hitanim_seraphimenemy_assault:
 
 label hitanim_seraphimenemy_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show seraphimenemy:
@@ -10006,6 +10531,9 @@ label hitanim_seraphimenemy_vanguard:
 
 label miss_seraphimenemy:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -10023,6 +10551,9 @@ label miss_seraphimenemy:
     return
 
 label die_seraphimenemy:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -10066,6 +10597,9 @@ label die_seraphimenemy:
     return
 
 label atkanim_pirategrunt_missile: ##############################PIRATE GRUNT ASSAULT
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -10120,6 +10654,9 @@ label atkanim_pirategrunt_missile: ##############################PIRATE GRUNT AS
 
 label atkanim_pirategrunt_assault:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pirategrunt:
@@ -10160,6 +10697,9 @@ label atkanim_pirategrunt_assault:
 
 label atkanim_pirategrunt_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pirategrunt:
@@ -10184,6 +10724,9 @@ label atkanim_pirategrunt_laser:
     return
 
 label hitanim_pirategrunt_kinetic: ##########################PIRATE GRUNT HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -10226,6 +10769,9 @@ label hitanim_pirategrunt_kinetic: ##########################PIRATE GRUNT HIT AN
     return
 
 label hitanim_pirategrunt_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -10291,6 +10837,9 @@ label hitanim_pirategrunt_missile:
 
 label hitanim_pirategrunt_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pirategrunt:
@@ -10321,6 +10870,9 @@ label hitanim_pirategrunt_laser:
     return
 
 label hitanim_pirategrunt_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -10426,6 +10978,9 @@ label hitanim_pirategrunt_pulse:
 
 label hitanim_pirategrunt_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -10492,6 +11047,9 @@ label hitanim_pirategrunt_rocket: #(damage):
     return
 
 label hitanim_pirategrunt_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -10607,6 +11165,9 @@ label hitanim_pirategrunt_assault:
 
 label hitanim_pirategrunt_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pirategrunt:
@@ -10657,6 +11218,9 @@ label hitanim_pirategrunt_vanguard:
 
 label miss_pirategrunt:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -10674,6 +11238,9 @@ label miss_pirategrunt:
     return
 
 label die_pirategrunt:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -10718,6 +11285,9 @@ label die_pirategrunt:
 
 label atkanim_piratebase_missile:  ###################################PIRATE BASE ATKANIM
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show piratebase:
         xpos 0.5 ypos 0.5
@@ -10755,6 +11325,9 @@ label atkanim_piratebase_missile:  ###################################PIRATE BAS
     return
 
 label atkanim_piratebase_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -10826,6 +11399,9 @@ label atkanim_piratebase_kinetic:
     return
 
 label atkanim_piratebase_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show piratebase:
@@ -10928,6 +11504,9 @@ label atkanim_piratebase_assault:
 
 label hitanim_piratebase_kinetic:   ##############PACT STATION HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -10967,6 +11546,9 @@ label hitanim_piratebase_kinetic:   ##############PACT STATION HIT ANIMATIONS
     return
 
 label hitanim_piratebase_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11032,6 +11614,9 @@ label hitanim_piratebase_missile:
 
 label hitanim_piratebase_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show piratebase:
@@ -11055,6 +11640,9 @@ label hitanim_piratebase_laser:
     return
 
 label hitanim_piratebase_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11163,6 +11751,9 @@ label hitanim_piratebase_pulse:
 
 label hitanim_piratebase_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -11231,6 +11822,9 @@ label hitanim_piratebase_rocket: #(damage):
     return
 
 label hitanim_piratebase_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11346,6 +11940,9 @@ label hitanim_piratebase_assault:
 
 label die_piratebase: ###################################PACT CRUISER DEATH
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show piratebase:
@@ -11389,6 +11986,9 @@ label die_piratebase: ###################################PACT CRUISER DEATH
 
 label miss_piratebase: #############################PACT MISSILE FRIGATE MISS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -11405,6 +12005,9 @@ label miss_piratebase: #############################PACT MISSILE FRIGATE MISS
     return
 
 label hitanim_piratebase_vanguard:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11455,6 +12058,9 @@ label hitanim_piratebase_vanguard:
     return
 
 label atkanim_phoenixboaster_assault: ##########################################PHOENIX BOASTER
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -11515,6 +12121,9 @@ label atkanim_phoenixboaster_assault: ##########################################
 
 label atkanim_phoenixboaster_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show phoenixboaster:
@@ -11553,6 +12162,9 @@ label atkanim_phoenixboaster_laser:
     return
 
 label hitanim_phoenixboaster_kinetic: ##########################PHOENIX BOOSTER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11593,6 +12205,9 @@ label hitanim_phoenixboaster_kinetic: ##########################PHOENIX BOOSTER 
     return
 
 label hitanim_phoenixboaster_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11658,6 +12273,9 @@ label hitanim_phoenixboaster_missile:
 
 label hitanim_phoenixboaster_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show phoenixboaster:
@@ -11688,6 +12306,9 @@ label hitanim_phoenixboaster_laser:
     return
 
 label hitanim_phoenixboaster_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11796,6 +12417,9 @@ label hitanim_phoenixboaster_pulse:
 
 label hitanim_phoenixboaster_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -11862,6 +12486,9 @@ label hitanim_phoenixboaster_rocket: #(damage):
     return
 
 label hitanim_phoenixboaster_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -11978,6 +12605,9 @@ label hitanim_phoenixboaster_assault:
 
 label hitanim_phoenixboaster_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show phoenixboaster:
@@ -12028,6 +12658,9 @@ label hitanim_phoenixboaster_vanguard:
 
 label miss_phoenixboaster:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -12045,6 +12678,9 @@ label miss_phoenixboaster:
     return
 
 label die_phoenixboaster:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -12118,6 +12754,9 @@ label die_phoenixboaster:
 
 label atkanim_pactbomber_missile: ##########################PACT BOMBER ATTACK ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbomber:
@@ -12179,6 +12818,9 @@ label atkanim_pactbomber_missile: ##########################PACT BOMBER ATTACK A
 
 label atkanim_pactbomber_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbomber:
@@ -12209,6 +12851,9 @@ label atkanim_pactbomber_rocket:
 
 label atkanim_pactbomber_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbomber:
@@ -12234,6 +12879,9 @@ label atkanim_pactbomber_laser:
 
 
 label hitanim_pactbomber_kinetic: ##########################PIRATE BOMBER HIT ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -12275,6 +12923,9 @@ label hitanim_pactbomber_kinetic: ##########################PIRATE BOMBER HIT AN
     return
 
 label hitanim_pactbomber_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -12340,6 +12991,9 @@ label hitanim_pactbomber_missile:
 
 label hitanim_pactbomber_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -12370,6 +13024,9 @@ label hitanim_pactbomber_laser:
     return
 
 label hitanim_pactbomber_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -12478,6 +13135,9 @@ label hitanim_pactbomber_pulse:
 
 label hitanim_pactbomber_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -12544,6 +13204,9 @@ label hitanim_pactbomber_rocket: #(damage):
     return
 
 label hitanim_pactbomber_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -12659,6 +13322,9 @@ label hitanim_pactbomber_assault:
 
 label hitanim_pactbomber_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactbomber:
@@ -12709,6 +13375,9 @@ label hitanim_pactbomber_vanguard:
 
 label die_pactbomber:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactbomber:
@@ -12749,6 +13418,9 @@ label die_pactbomber:
 
 label miss_pactbomber:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -12765,6 +13437,9 @@ label miss_pactbomber:
     return
 
 label hitanim_agamemnon_missile:      ######################################AGAMEMNON
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -12841,6 +13516,9 @@ label hitanim_agamemnon_missile:      ######################################AGAM
 
 label hitanim_agamemnon_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -12885,6 +13563,9 @@ label hitanim_agamemnon_kinetic:
 
 label hitanim_agamemnon_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show agamemnon_side:
@@ -12911,6 +13592,9 @@ label hitanim_agamemnon_laser:
     return
 
 label hitanim_agamemnon_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13021,6 +13705,9 @@ label hitanim_agamemnon_pulse:
 
 label hitanim_agamemnon_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -13058,6 +13745,9 @@ label hitanim_agamemnon_rocket:
     return
 
 label hitanim_agamemnon_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13184,6 +13874,9 @@ label hitanim_agamemnon_assault:
 
 label miss_agamemnon:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $renpy.show_screen('show_background',_layer='master')
@@ -13200,6 +13893,9 @@ label miss_agamemnon:
     return
 
 label hit_agamemnon:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -13222,6 +13918,9 @@ label hit_agamemnon:
     return
 
 label die_agamemnon:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -13290,6 +13989,9 @@ label die_agamemnon:
     return
 
 label hitanim_mochi_missile:      ######################################MOCHI
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13366,6 +14068,9 @@ label hitanim_mochi_missile:      ######################################MOCHI
 
 label hitanim_mochi_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -13410,6 +14115,9 @@ label hitanim_mochi_kinetic:
 
 label hitanim_mochi_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show mochi_side:
@@ -13436,6 +14144,9 @@ label hitanim_mochi_laser:
     return
 
 label hitanim_mochi_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13546,6 +14257,9 @@ label hitanim_mochi_pulse:
 
 label hitanim_mochi_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -13583,6 +14297,9 @@ label hitanim_mochi_rocket:
     return
 
 label hitanim_mochi_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13709,6 +14426,9 @@ label hitanim_mochi_assault:
 
 label miss_mochi:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $renpy.show_screen('show_background',_layer='master')
@@ -13725,6 +14445,9 @@ label miss_mochi:
     return
 
 label hit_mochi:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -13747,6 +14470,9 @@ label hit_mochi:
     return
 
 label die_mochi:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -13813,6 +14539,9 @@ label die_mochi:
 
 label atkanim_phoenix_assault: ########################PHOENIX ATTACK ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     $ Random = renpy.random.randint(1,4)
@@ -13870,6 +14599,9 @@ label atkanim_phoenix_assault: ########################PHOENIX ATTACK ANIMATIONS
 
 label atkanim_phoenix_melee:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     $ Random = renpy.random.randint(1,4)
@@ -13912,6 +14644,9 @@ label atkanim_phoenix_melee:
     return
 
 label hitanim_phoenix_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -13956,6 +14691,9 @@ label hitanim_phoenix_kinetic:
     return
 
 label hitanim_phoenix_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14023,6 +14761,9 @@ label hitanim_phoenix_missile:
 
 label hitanim_phoenix_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show phoenix:
@@ -14055,6 +14796,9 @@ label hitanim_phoenix_laser:
     return
 
 label hitanim_phoenix_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14164,6 +14908,9 @@ label hitanim_phoenix_pulse:
 
 label hitanim_phoenix_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -14198,6 +14945,9 @@ label hitanim_phoenix_rocket:
     return
 
 label hitanim_phoenix_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14313,6 +15063,9 @@ label hitanim_phoenix_assault:
 
 label miss_phoenix:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -14353,6 +15106,9 @@ label miss_phoenix:
 
 label attacksuccess_phoenix:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,5)
@@ -14379,6 +15135,9 @@ label attacksuccess_phoenix:
     return
 
 label attackfail_phoenix:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -14407,6 +15166,9 @@ label attackfail_phoenix:
 
 label hit_phoenix:
 
+    if config.skipping:
+        return
+
     show layer master
 
     if phoenix.hp >= phoenix.max_hp * 0.8:
@@ -14432,6 +15194,9 @@ label hit_phoenix:
     return
 
 label die_phoenix:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -14470,6 +15235,9 @@ label die_phoenix:
 
 label atkanim_phoenix_assassination:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     $ Random = renpy.random.randint(1,4)
@@ -14501,6 +15269,9 @@ label atkanim_phoenix_assassination:
     return
 
 label atkanim_phoenixenemy_assault: ######################################PHOENIX ENEMY
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -14544,6 +15315,9 @@ label atkanim_phoenixenemy_assault: ######################################PHOENI
 
 label hitanim_phoenixenemy_kinetic: ##########################PACT MOOK HIT ANIMATIONS
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -14583,6 +15357,9 @@ label hitanim_phoenixenemy_kinetic: ##########################PACT MOOK HIT ANIM
     return
 
 label hitanim_phoenixenemy_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14648,6 +15425,9 @@ label hitanim_phoenixenemy_missile:
 
 label hitanim_phoenixenemy_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show phoenix:
@@ -14678,6 +15458,9 @@ label hitanim_phoenixenemy_laser:
     return
 
 label hitanim_phoenixenemy_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14786,6 +15569,9 @@ label hitanim_phoenixenemy_pulse:
 
 label hitanim_phoenixenemy_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -14852,6 +15638,9 @@ label hitanim_phoenixenemy_rocket: #(damage):
     return
 
 label hitanim_phoenixenemy_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -14968,6 +15757,9 @@ label hitanim_phoenixenemy_assault:
 
 label hitanim_phoenixenemy_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show phoenix:
@@ -15018,6 +15810,9 @@ label hitanim_phoenixenemy_vanguard:
 
 label miss_phoenixenemy:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -15036,6 +15831,9 @@ label miss_phoenixenemy:
 
 label die_phoenixenemy:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show phoenix:
@@ -15052,6 +15850,9 @@ label die_phoenixenemy:
 
 
 label atkanim_bianca_assault: ########################BIANCA ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -15093,6 +15894,9 @@ label atkanim_bianca_assault: ########################BIANCA ATTACK ANIMATIONS
     return
 
 label hitanim_bianca_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -15137,6 +15941,9 @@ label hitanim_bianca_kinetic:
     return
 
 label hitanim_bianca_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -15204,6 +16011,9 @@ label hitanim_bianca_missile:
 
 label hitanim_bianca_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show bianca:
@@ -15236,6 +16046,9 @@ label hitanim_bianca_laser:
     return
 
 label hitanim_bianca_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -15345,6 +16158,9 @@ label hitanim_bianca_pulse:
 
 label hitanim_bianca_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -15379,6 +16195,9 @@ label hitanim_bianca_rocket:
     return
 
 label hitanim_bianca_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -15494,6 +16313,9 @@ label hitanim_bianca_assault:
 
 label miss_bianca:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -15533,6 +16355,9 @@ label miss_bianca:
 
 label attacksuccess_bianca:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,3)
@@ -15555,6 +16380,9 @@ label attacksuccess_bianca:
     return
 
 label attackfail_bianca:
+
+    if config.skipping:
+        return
 
     show layer master
 
@@ -15581,6 +16409,9 @@ label attackfail_bianca:
 
 label hit_bianca:
 
+    if config.skipping:
+        return
+
     show layer master
 
     if bianca.hp >= bianca.max_hp * 0.8:
@@ -15606,6 +16437,9 @@ label hit_bianca:
     return
 
 label die_bianca:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -15644,6 +16478,9 @@ label die_bianca:
 
 ############################################ALLIANCECRUISER ATTACK ANIMATIONS START
 label atkanim_alliancecruiser_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     
@@ -15711,6 +16548,9 @@ label atkanim_alliancecruiser_kinetic:
 
 label atkanim_alliancecruiser_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show alliancecruiser_side:
         xpos 0.5 ypos 0.5
@@ -15738,6 +16578,9 @@ label atkanim_alliancecruiser_laser:
     return
 
 label atkanim_alliancecruiser_missile:
+
+    if config.skipping:
+        return
 
     hide screen battle_screen
 
@@ -15771,6 +16614,9 @@ label atkanim_alliancecruiser_missile:
     return
 
 label atkanim_alliancecruiser_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show alliancecruiser_side:
@@ -15890,6 +16736,9 @@ label atkanim_alliancecruiser_assault:
 
 label hitanim_alliancecruiser_missile:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -15963,6 +16812,9 @@ label hitanim_alliancecruiser_missile:
 
 label hitanim_alliancecruiser_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -16008,6 +16860,9 @@ label hitanim_alliancecruiser_kinetic:
 
 label hitanim_alliancecruiser_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show alliancecruiser_side:
@@ -16034,6 +16889,9 @@ label hitanim_alliancecruiser_laser:
     return
 
 label hitanim_alliancecruiser_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -16146,6 +17004,9 @@ label hitanim_alliancecruiser_pulse:
 
 label hitanim_alliancecruiser_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -16183,6 +17044,9 @@ label hitanim_alliancecruiser_rocket:
     return
 
 label hitanim_alliancecruiser_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -16311,6 +17175,9 @@ label hitanim_alliancecruiser_assault:
 
 label miss_alliancecruiser:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $renpy.show_screen('show_background',_layer='master')
@@ -16327,15 +17194,24 @@ label miss_alliancecruiser:
     return
 
 label attacksuccess_alliancecruiser:
+
+    if config.skipping:
+        return
     
     pause
     return
 
 label attackfail_alliancecruiser:
 
+    if config.skipping:
+        return
+
     return
 
 label hit_alliancecruiser:
+
+    if config.skipping:
+        return
 
     $ Random = renpy.random.randint(1,3)
 
@@ -16352,6 +17228,9 @@ label hit_alliancecruiser:
 
 
 label die_alliancecruiser:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -16417,6 +17296,9 @@ label die_alliancecruiser:
 
 
 label atkanim_pactcarrier_assault: ##########################################PACT CARRIER
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pactcarrier_side:
@@ -16526,6 +17408,9 @@ label atkanim_pactcarrier_assault: ##########################################PAC
 
 label hitanim_pactcarrier_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -16569,6 +17454,9 @@ label hitanim_pactcarrier_kinetic:
     return
 
 label hitanim_pactcarrier_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -16634,6 +17522,9 @@ label hitanim_pactcarrier_missile:
 
 label hitanim_pactcarrier_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactcarrier_side:
@@ -16658,6 +17549,9 @@ label hitanim_pactcarrier_laser:
     return
 
 label hitanim_pactcarrier_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -16768,6 +17662,9 @@ label hitanim_pactcarrier_pulse:
 
 label hitanim_pactcarrier_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -16836,6 +17733,9 @@ label hitanim_pactcarrier_rocket: #(damage):
     return
 
 label hitanim_pactcarrier_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -16951,6 +17851,9 @@ label hitanim_pactcarrier_assault:
 
 label hitanim_pactcarrier_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactcarrier_side:
@@ -17002,6 +17905,9 @@ label hitanim_pactcarrier_vanguard:
 
 label die_pactcarrier:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactcarrier_side:
@@ -17049,6 +17955,9 @@ label die_pactcarrier:
 
 label miss_pactcarrier:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -17065,6 +17974,9 @@ label miss_pactcarrier:
     return
 
 label atkanim_paladin_assault: ########################PALADIN ATTACK ANIMATIONS
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -17122,6 +18034,9 @@ label atkanim_paladin_assault: ########################PALADIN ATTACK ANIMATIONS
     return
 
 label atkanim_paladin_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -17194,6 +18109,9 @@ label atkanim_paladin_missile:
 
 label atkanim_paladin_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     $ Random = renpy.random.randint(1,4)
@@ -17256,6 +18174,9 @@ label atkanim_paladin_kinetic:
 
 label hitanim_paladin_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -17299,6 +18220,9 @@ label hitanim_paladin_kinetic:
     return
 
 label hitanim_paladin_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -17366,6 +18290,9 @@ label hitanim_paladin_missile:
 
 label hitanim_paladin_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show paladin:
@@ -17398,6 +18325,9 @@ label hitanim_paladin_laser:
     return
 
 label hitanim_paladin_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -17507,6 +18437,9 @@ label hitanim_paladin_pulse:
 
 label hitanim_paladin_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -17541,6 +18474,9 @@ label hitanim_paladin_rocket:
     return
 
 label hitanim_paladin_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -17656,6 +18592,9 @@ label hitanim_paladin_assault:
 
 label miss_paladin:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -17693,6 +18632,9 @@ label miss_paladin:
 
 label attacksuccess_paladin:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,6)
@@ -17722,6 +18664,9 @@ label attacksuccess_paladin:
 
 label attackfail_paladin:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $ Random = renpy.random.randint(1,5)
@@ -17749,6 +18694,9 @@ label attackfail_paladin:
 
 label hit_paladin:
 
+    if config.skipping:
+        return
+
     show layer master
 
     if paladin.hp >= paladin.max_hp * 0.8:
@@ -17774,6 +18722,9 @@ label hit_paladin:
     return
 
 label die_paladin:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -17811,6 +18762,9 @@ label die_paladin:
     return
 
 label atkanim_unionfrigate_laser: ################################################UNION FRIGATE
+
+    if config.skipping:
+        return
     
     $renpy.show_screen('show_background',_layer='master')
     show unionfrigate_side:
@@ -17844,6 +18798,9 @@ label atkanim_unionfrigate_laser: ##############################################
 
 
 label hitanim_unionfrigate_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -17918,6 +18875,9 @@ label hitanim_unionfrigate_missile:
 
 label hitanim_unionfrigate_kinetic:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -17963,6 +18923,9 @@ label hitanim_unionfrigate_kinetic:
 
 label hitanim_unionfrigate_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show unionfrigate_side:
@@ -17989,6 +18952,9 @@ label hitanim_unionfrigate_laser:
     return
 
 label hitanim_unionfrigate_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18101,6 +19067,9 @@ label hitanim_unionfrigate_pulse:
 
 label hitanim_unionfrigate_rocket:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -18138,6 +19107,9 @@ label hitanim_unionfrigate_rocket:
     return
 
 label hitanim_unionfrigate_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18266,6 +19238,9 @@ label hitanim_unionfrigate_assault:
 
 label miss_unionfrigate:
 
+    if config.skipping:
+        return
+
     show layer master
 
     $renpy.show_screen('show_background',_layer='master')
@@ -18282,15 +19257,24 @@ label miss_unionfrigate:
     return
 
 label attacksuccess_unionfrigate:
+
+    if config.skipping:
+        return
     
     pause
     return
 
 label attackfail_unionfrigate:
 
+    if config.skipping:
+        return
+
     return
 
 label hit_unionfrigate:
+
+    if config.skipping:
+        return
 
     $ Random = renpy.random.randint(1,3)
 
@@ -18307,6 +19291,9 @@ label hit_unionfrigate:
 
 
 label die_unionfrigate:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -18363,6 +19350,9 @@ label die_unionfrigate:
 
 label atkanim_nightmare_missile: #################################################    NIGHTMARE
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show nightmare:
@@ -18396,6 +19386,9 @@ label atkanim_nightmare_missile: ###############################################
     return
 
 label atkanim_nightmare_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -18459,6 +19452,9 @@ label atkanim_nightmare_pulse:
 
 label atkanim_nightmare_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show nightmare:
@@ -18491,6 +19487,9 @@ label atkanim_nightmare_laser:
     return
 
 label hitanim_nightmare_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18531,6 +19530,9 @@ label hitanim_nightmare_kinetic:
     return
 
 label hitanim_nightmare_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18596,6 +19598,9 @@ label hitanim_nightmare_missile:
 
 label hitanim_nightmare_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show nightmare:
@@ -18626,6 +19631,9 @@ label hitanim_nightmare_laser:
     return
 
 label hitanim_nightmare_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18734,6 +19742,9 @@ label hitanim_nightmare_pulse:
 
 label hitanim_nightmare_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -18800,6 +19811,9 @@ label hitanim_nightmare_rocket: #(damage):
     return
 
 label hitanim_nightmare_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -18916,6 +19930,9 @@ label hitanim_nightmare_assault:
 
 label hitanim_nightmare_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show nightmare:
@@ -18966,6 +19983,9 @@ label hitanim_nightmare_vanguard:
 
 label miss_nightmare:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -18983,6 +20003,9 @@ label miss_nightmare:
     return
 
 label die_nightmare:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -19027,6 +20050,9 @@ label die_nightmare:
 
 label hitanim_pactsupport_kinetic:   ####################################PACT SUPPORT
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -19066,6 +20092,9 @@ label hitanim_pactsupport_kinetic:   ####################################PACT SU
     return
 
 label hitanim_pactsupport_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19131,6 +20160,9 @@ label hitanim_pactsupport_missile:
 
 label hitanim_pactsupport_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactsupport:
@@ -19161,6 +20193,9 @@ label hitanim_pactsupport_laser:
     return
 
 label hitanim_pactsupport_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19269,6 +20304,9 @@ label hitanim_pactsupport_pulse:
 
 label hitanim_pactsupport_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -19335,6 +20373,9 @@ label hitanim_pactsupport_rocket: #(damage):
     return
 
 label hitanim_pactsupport_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19451,6 +20492,9 @@ label hitanim_pactsupport_assault:
 
 label hitanim_pactsupport_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactsupport:
@@ -19501,6 +20545,9 @@ label hitanim_pactsupport_vanguard:
 
 label miss_pactsupport:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -19518,6 +20565,9 @@ label miss_pactsupport:
     return
 
 label die_pactsupport:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -19561,6 +20611,9 @@ label die_pactsupport:
     return
 
 label atkanim_pactelite_missile: #################################################    PACT ELITE
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -19606,6 +20659,9 @@ label atkanim_pactelite_missile: ###############################################
     return
 
 label atkanim_pactelite_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -19678,6 +20734,9 @@ label atkanim_pactelite_assault:
 
 label atkanim_pactelite_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactelite:
@@ -19703,6 +20762,9 @@ label atkanim_pactelite_laser:
     return
     
 label hitanim_pactelite_kinetic:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19743,6 +20805,9 @@ label hitanim_pactelite_kinetic:
     return
 
 label hitanim_pactelite_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19808,6 +20873,9 @@ label hitanim_pactelite_missile:
 
 label hitanim_pactelite_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactelite:
@@ -19838,6 +20906,9 @@ label hitanim_pactelite_laser:
     return
 
 label hitanim_pactelite_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -19946,6 +21017,9 @@ label hitanim_pactelite_pulse:
 
 label hitanim_pactelite_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -20012,6 +21086,9 @@ label hitanim_pactelite_rocket: #(damage):
     return
 
 label hitanim_pactelite_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -20128,6 +21205,9 @@ label hitanim_pactelite_assault:
 
 label hitanim_pactelite_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactelite:
@@ -20178,6 +21258,9 @@ label hitanim_pactelite_vanguard:
 
 label miss_pactelite:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -20195,6 +21278,9 @@ label miss_pactelite:
     return
 
 label die_pactelite:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -20238,6 +21324,9 @@ label die_pactelite:
     return
 
 label atkanim_pactassaultcarrier_kinetic: ################################# PACT ASSAULT CARRIER
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -20294,6 +21383,9 @@ label atkanim_pactassaultcarrier_kinetic: ################################# PACT
     return
 
 label atkanim_pactassaultcarrier_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pactassaultcarrier_side:
@@ -20410,6 +21502,9 @@ label atkanim_pactassaultcarrier_assault:
 
 label atkanim_pactassaultcarrier_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show pactassaultcarrier_side:
         xpos 0.5 ypos 0.5
@@ -20431,6 +21526,9 @@ label atkanim_pactassaultcarrier_laser:
     return
 
 label atkanim_pactassaultcarrier_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -20471,6 +21569,9 @@ label atkanim_pactassaultcarrier_missile:
     return
 
 label hitanim_pactassaultcarrier_kinetic:  
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -20513,6 +21614,9 @@ label hitanim_pactassaultcarrier_kinetic:
     return
 
 label hitanim_pactassaultcarrier_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -20578,6 +21682,9 @@ label hitanim_pactassaultcarrier_missile:
 
 label hitanim_pactassaultcarrier_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactassaultcarrier_side:
@@ -20602,6 +21709,9 @@ label hitanim_pactassaultcarrier_laser:
     return
 
 label hitanim_pactassaultcarrier_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -20710,6 +21820,9 @@ label hitanim_pactassaultcarrier_pulse:
 
 label hitanim_pactassaultcarrier_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -20778,6 +21891,9 @@ label hitanim_pactassaultcarrier_rocket: #(damage):
     return
 
 label hitanim_pactassaultcarrier_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -20893,6 +22009,9 @@ label hitanim_pactassaultcarrier_assault:
 
 label hitanim_pactassaultcarrier_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pactassaultcarrier_side:
@@ -20944,6 +22063,9 @@ label hitanim_pactassaultcarrier_vanguard:
 
 label die_pactassaultcarrier:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pactassaultcarrier_side:
@@ -20991,6 +22113,9 @@ label die_pactassaultcarrier:
 
 label miss_pactassaultcarrier:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show miss:
@@ -21007,6 +22132,9 @@ label miss_pactassaultcarrier:
     return
 
 label atkanim_pirateironhog_rocket: ################################# PIRATE IRONHOG
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
@@ -21038,6 +22166,9 @@ label atkanim_pirateironhog_rocket: ################################# PIRATE IRO
     return
 
 label atkanim_pirateironhog_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show pirateironhog:
@@ -21148,6 +22279,9 @@ label atkanim_pirateironhog_assault:
 
 label hitanim_pirateironhog_kinetic: 
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -21188,6 +22322,9 @@ label hitanim_pirateironhog_kinetic:
     return
 
 label hitanim_pirateironhog_missile:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -21253,6 +22390,9 @@ label hitanim_pirateironhog_missile:
 
 label hitanim_pirateironhog_laser:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pirateironhog:
@@ -21277,6 +22417,9 @@ label hitanim_pirateironhog_laser:
     return
 
 label hitanim_pirateironhog_pulse:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -21381,6 +22524,9 @@ label hitanim_pirateironhog_pulse:
 
 label hitanim_pirateironhog_rocket: #(damage):
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
 
@@ -21449,6 +22595,9 @@ label hitanim_pirateironhog_rocket: #(damage):
     return
 
 label hitanim_pirateironhog_assault:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
@@ -21564,6 +22713,9 @@ label hitanim_pirateironhog_assault:
 
 label hitanim_pirateironhog_vanguard:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
     show screen animation_hp
     show pirateironhog:
@@ -21614,6 +22766,9 @@ label hitanim_pirateironhog_vanguard:
 
 label die_pirateironhog:
 
+    if config.skipping:
+        return
+
     $renpy.show_screen('show_background',_layer='master')
 
     show pirateironhog:
@@ -21656,6 +22811,9 @@ label die_pirateironhog:
     return
 
 label miss_pirateironhog:
+
+    if config.skipping:
+        return
 
     $renpy.show_screen('show_background',_layer='master')
 
