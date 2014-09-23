@@ -340,15 +340,17 @@ init -2 python:
         def skirmish_phase(self):
             while True:
                 self.result = ui.interact()
-                try:
-                    self.skirmish_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    if type(self.result) is list:
-                        raise
-                    else:
-                        self.skirmish_dispatcher[self.result]()
+                if type(self.result is list):
+                    try:
+                        ui_action = self.skirmish_dispatcher[self.result[0]]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+                else:
+                    try:
+                        ui_action = self.skirmish_dispatcher[self.result]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+                ui_action()
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
         #------------------------------------------------------#
@@ -414,16 +416,21 @@ init -2 python:
         ########################################################
         def formation_phase(self):
             while True:
-                self.result = ui.interact()
-                try:
-                    self.formation_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    if type(self.result) is list:
-                        raise
-                    else:
-                        self.formation_dispatcher[self.result]()
+                self.result = ui.interact()            
+                if type(self.result is list):
+                    try:
+                        ui_action = self.formation_dispatcher[self.result[0]]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+                else:
+                    try:
+                        ui_action = self.formation_dispatcher[self.result]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+                ui_action()
+                
+
+
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -943,8 +950,20 @@ init -2 python:
                         enemy_ships.remove(ship)
                     if ship in self.ships:
                         self.ships.remove(ship)
-
-            self.battle_dispatcher[self.result[0]]()
+                        
+         
+            if type(self.result is list):
+                try:
+                    ui_action = self.battle_dispatcher[self.result[0]]
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+            else:
+                try:
+                    ui_action = self.battle_dispatcher[self.result]
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+            ui_action()
+                        
             self.check_for_loss()
             self.check_for_win()
             return
