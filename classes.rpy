@@ -340,12 +340,12 @@ init -2 python:
 
                 #check handling of dispatcher
                 try:
-                    ui_action = self.skirmish_dispatcher[self.result[0]]()
+                    ui_action = self.skirmish_dispatcher[self.result[0]]
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except TypeError:
                     #for bool/none only
-                    ui_action = self.skirmish_dispatcher[self.result]()
+                    ui_action = self.skirmish_dispatcher[self.result]
                 #call returned function if any
                 if ui_action:
                     ui_action()
@@ -420,12 +420,12 @@ init -2 python:
 
                 #check handling of dispatcher
                 try:
-                    ui_action = self.formation_dispatcher[self.result[0]]()
+                    ui_action = self.formation_dispatcher[self.result[0]]
                 except KeyError:
                     renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
                 except TypeError:
                     #for bool/none only
-                    ui_action = self.skirmish_dispatcher[self.result]()
+                    ui_action = self.skirmish_dispatcher[self.result]
                 #call returned function if any
                 if ui_action:
                     ui_action()
@@ -952,12 +952,12 @@ init -2 python:
             ui_action = None
             #check handling of dispatcher
             try:
-                ui_action = self.battle_dispatcher[self.result[0]]()
+                ui_action = self.battle_dispatcher[self.result[0]]
             except KeyError:
                 renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
             except TypeError:
                 #for bool/none only
-                ui_action = self.battle_dispatcher[self.result]()
+                ui_action = self.battle_dispatcher[self.result]
             #call returned function if any
             if ui_action:
                 ui_action()
