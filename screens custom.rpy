@@ -739,36 +739,40 @@ screen battle_screen:
 
 
 ##not part of the viewport##
-    if config.developer and BM.phase != 'formation':
-        vbox:
-            ypos 100
-            xalign 1.0
-            textbutton "Battle Log" action Show('battle_log')
-            textbutton "Debug Cheats" xalign 1.0 action Return(['cheat'])
-            textbutton "Fast Quit" xalign 1.0 action Jump('quit')
-
-            if BM.debugoverlay:
-                textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
-            else:
-                textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',True)
-            if BM.show_grid:
-                textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',False)
-            else:
-                textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)    
-
-
     if BM.phase != 'formation':
         vbox:
             xalign 1.0
-            if BM.edgescroll == (0,0):
-                textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
-            else:
-                textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
-            if BM.show_tooltips:
-                textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
-            else:
-                textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
-            textbutton "restart turn" xalign 1.0 action Jump('restartturn')
+            vbox:
+                xalign 1.0
+                textbutton "Battle Log" xalign 1.0 action Show('battle_log')
+                if BM.edgescroll == (0,0):
+                    textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
+                else:
+                    textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
+                if BM.show_tooltips:
+                    textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
+                else:
+                    textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
+                textbutton "restart turn" xalign 1.0 action Jump('restartturn')
+    
+            if config.developer:
+                vbox:
+                    # ypos 100
+                    xalign 1.0
+                    textbutton "Debug Cheats" xalign 1.0 action Return(['cheat'])
+                    textbutton "Fast Quit" xalign 1.0 action Jump('quit')
+
+                    if BM.debugoverlay:
+                        textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',False)
+                    else:
+                        textbutton "coord overlay" xalign 1.0 action SetField(BM,'debugoverlay',True)
+                    if BM.show_grid:
+                        textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',False)
+                    else:
+                        textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)    
+
+
+
 
     if BM.just_moved:
         textbutton 'cancel movement':

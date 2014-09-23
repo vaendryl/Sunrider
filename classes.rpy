@@ -174,6 +174,28 @@ init -2 python:
             self.targetingmode = False
             if ship != None:
                 ship.movement_tiles = []
+        
+        def dispatch_handler(self,result,dispatch_type='battle'):
+            ui_action = None
+            #check handling of dispatcher
+            if result is None: return self.common_none
+            elif type(result) is bool: return self.common_bool
+            elif type(result) is list:
+                if dispatch_type == 'skirmish':
+                    ui_action = self.skirmish_dispatcher[result[0]]
+                elif dispatch_type == 'formation':
+                    ui_action = self.formation_dispatcher[result[0]]
+                elif dispatch_type == 'battle':
+                    ui_action = self.battle_dispatcher[result[0]]
+            else:
+                if dispatch_type == 'skirmish':
+                    ui_action = self.skirmish_dispatcher[result]
+                elif dispatch_type == 'formation':
+                    ui_action = self.formation_dispatcher[result]
+                elif dispatch_type == 'battle':
+                    ui_action = self.battle_dispatcher[result]
+            return ui_action
+        
         ########################################################
         ## Common dispatcher
         ########################################################
@@ -278,6 +300,7 @@ init -2 python:
             # this result can be from one of the imagebuttons in the pool screens or returned from
             # MouseTracker because a hex with a unit in it was clicked.
             selected_ship = self.result[1]
+            BM.selected = selected_ship
 
             if self.remove_mode:
                 if selected_ship.location != None:
@@ -333,25 +356,10 @@ init -2 python:
         ########################################################
         ## Skirmish dispatcher end
         ########################################################
-        def skirmish_phase(self):
-            while True:
-                ui_action = None
-                self.result = ui.interact()
+        def skirmish_phase(self):            
+            self.result = ui.interact()
+            self.dispatch_handler(self.result,'skirmish')()
 
-                #check handling of dispatcher
-                try:
-                    ui_action = self.skirmish_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    #for bool/none only
-                    ui_action = self.skirmish_dispatcher[self.result]()
-                #call returned function if any
-                if ui_action:
-                    ui_action()
-
-                if self.battlemode == False: #whenever this is set to False battle ends.
-                    break
         #------------------------------------------------------#
         ########################################################
         ## Formation dispatcher
@@ -414,24 +422,9 @@ init -2 python:
         ## Formation dispatcher end
         ########################################################
         def formation_phase(self):
-            while True:
-                ui_action = None
-                self.result = ui.interact()
+            self.result = ui.interact()
+            self.dispatch_handler(self.result,'formation')()
 
-                #check handling of dispatcher
-                try:
-                    ui_action = self.formation_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    #for bool/none only
-                    ui_action = self.skirmish_dispatcher[self.result]()
-                #call returned function if any
-                if ui_action:
-                    ui_action()
-
-                if self.battlemode == False: #whenever this is set to False battle ends.
-                    break
         #------------------------------------------------------#
         ########################################################
         ## Battle dispatcher
@@ -949,18 +942,7 @@ init -2 python:
                     if ship in self.ships:
                         self.ships.remove(ship)
 
-            ui_action = None
-            #check handling of dispatcher
-            try:
-                ui_action = self.battle_dispatcher[self.result[0]]()
-            except KeyError:
-                renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-            except TypeError:
-                #for bool/none only
-                ui_action = self.battle_dispatcher[self.result]()
-            #call returned function if any
-            if ui_action:
-                ui_action()
+            self.dispatch_handler(self.result)()            
 
             self.check_for_loss()
             self.check_for_win()

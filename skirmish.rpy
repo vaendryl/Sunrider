@@ -47,12 +47,12 @@ label skirmish_battle:
     jump dispatch
     return
     
-label mission_skirmishbattle:
+label missionskirmishbattle:
 
     $BM.battle()  #continue the battle
 
     if BM.battlemode == True:   #whenever this is set to False battle ends.
-        jump mission_skirmishbattle #loop back
+        jump missionskirmishbattle #loop back
     else:
         pass #continue down
 
@@ -60,7 +60,15 @@ label mission_skirmishbattle:
     return    
     
 label mission_skirmish:
-    python:
-        BM.skirmish_phase()
+    $ BM.skirmish_phase()
+        
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission_skirmish #loop back
+    else:
+        pass #continue down
+    # jump dispatch
+    return            
+        
+        
 
     return
