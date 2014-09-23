@@ -339,16 +339,21 @@ init -2 python:
         ########################################################
         def skirmish_phase(self):
             while True:
+                ui_action = None
                 self.result = ui.interact()
-                try:
-                    self.skirmish_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    if type(self.result) is list:
-                        raise
-                    else:
-                        self.skirmish_dispatcher[self.result]()
+                if type(self.result is list):
+                    try:
+                        ui_action = self.skirmish_dispatcher[self.result[0]]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+                else:
+                    try:
+                        ui_action = self.skirmish_dispatcher[self.result]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+                if ui_action != None:
+                    ui_action()
+
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
         #------------------------------------------------------#
@@ -414,16 +419,23 @@ init -2 python:
         ########################################################
         def formation_phase(self):
             while True:
-                self.result = ui.interact()
-                try:
-                    self.formation_dispatcher[self.result[0]]()
-                except KeyError:
-                    renpy.say('ERROR', "Unexpected result={0} of ui.interact()".format(self.result[0]))
-                except TypeError:
-                    if type(self.result) is list:
-                        raise
-                    else:
-                        self.formation_dispatcher[self.result]()
+                ui_action = None
+                self.result = ui.interact()            
+                if type(self.result is list):
+                    try:
+                        ui_action = self.formation_dispatcher[self.result[0]]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+                else:
+                    try:
+                        ui_action = self.formation_dispatcher[self.result]
+                    except KeyError:
+                        renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+                if ui_action != None:
+                    ui_action()
+                
+
+
 
                 if self.battlemode == False: #whenever this is set to False battle ends.
                     break
@@ -943,16 +955,22 @@ init -2 python:
                         enemy_ships.remove(ship)
                     if ship in self.ships:
                         self.ships.remove(ship)
-
-            try:
-                self.battle_dispatcher[self.result[0]]()
-            except TypeError:
-                if type(self.result) is list:
-                    raise
-                else:
-                    self.battle_dispatcher[self.result]()
-
-
+                        
+         
+            ui_action = None
+            if type(self.result is list):
+                try:
+                    ui_action = self.battle_dispatcher[self.result[0]]
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact() in list evaluation".format(self.result[0]))
+            else:
+                try:
+                    ui_action = self.battle_dispatcher[self.result]
+                except KeyError:
+                    renpy.say('ERROR', "Unexpected result={0} of ui.interact() (no list)".format(self.result[0]))
+            if ui_action != None:
+                ui_action()
+                        
             self.check_for_loss()
             self.check_for_win()
             return
@@ -1688,7 +1706,7 @@ init -2 python:
             self.location = (xnew,ynew)
 
 #AI estimate damage
-        def AI_estimate_damage(self,pship,en = 0):  #part of the AI
+        def AI_estimate_damage(self,pship,en = 0, range_reduction = 0):  #part of the AI
             if en == 0: en = self.en
             #renpy.log('starting estimating damage on {}'.format(pship.name))
 
@@ -1701,7 +1719,7 @@ init -2 python:
                 #renpy.log('checking the effect of {}'.format(weapon.name))
 
                 if self.en >= weapon.energy_use:
-                    accuracy = get_acc(weapon,self,pship,guess=True)
+                    accuracy = get_acc(weapon,self,pship,True, range_reduction)
                     if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
                         estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
                         priority = estimation * (pship.hate/100.0)/50.0
@@ -1868,8 +1886,21 @@ init -2 python:
             elif best_target[3] > most_attractive_ship[1]:
                 #renpy.log('attacking the {} because of its high priority of {!s}'.format(best_target[0].name,best_target[3]))
                 ##attack ship
-                BM.target = best_target[0]
-                self.AI_attack_target(best_target[0],best_target[1])
+                #we are plannning to attack this ship, but let's first work out if we should close in on it.
+                if self.en < self.move_cost + best_target[1].energy_cost(self): #not enough energy to attack and move
+                    ##attack ship
+                    self.AI_attack_target(best_target[0],best_target[1])
+                else:
+                    max_move_distance = (self.en - best_target[1].energy_cost(self)) / self.move_cost
+                    self.AI_estimate_damage(best_target[0], max_move_distance)
+                    if self.en >= best_target[1].energy_cost(self) * 2:
+                        closing_factor = 1.6 
+                    else:
+                        closing_factor = 1.1
+                    if best_target[3] > best_target[0].damage_estimation[2] * closing_factor: # if we can't do much more damage by closing in
+                        self.AI_attack_target(best_target[0], best_target[1])
+                    else:
+                        self.AI_move_towards(best_target[0], False, max_move_distance)
                 return
 
             elif most_attractive_ship[1] < best_target[3] and self.en >= self.move_cost:
@@ -1883,15 +1914,15 @@ init -2 python:
                     return
                 else:
                       #just attack whatever as it seems to be the only thing left we can do.
-                    BM.target = best_target[0]
                     self.AI_attack_target(best_target[0],best_target[1])
                     return
 
 #AI move towards
-        def AI_move_towards(self, target, melee_distance = False):
+        def AI_move_towards(self, target, melee_distance = False, max_move_distance = 0):
             old_spot = self.location
             final_spot = self.location #going to iterate over this
-            max_move_distance = self.en/self.move_cost
+            if max_move_distance == 0:
+                max_move_distance = self.en/self.move_cost
             travel_distance = get_ship_distance(self,target)
 
             if melee_distance == False:
@@ -2100,6 +2131,8 @@ init -2 python:
             self.shot_count = 1
             self.accuracy = 100
             self.tooltip = ''
+           
+
         
         #return None when attribute does not exist.
         # def __getattr__(self,X):
@@ -2116,14 +2149,16 @@ init -2 python:
             self.wtype = 'Laser'
             self.name = 'Basic Laser'
             self.lbl = 'Battle UI/button_laser.png'
-
+        
+        def energy_cost(self, parent):
+            return int(self.energy_use * parent.energy_cost)
+            
         def fire(self, parent, target): #firing lasers!
             target.update_armor()
-            energy_cost = int(self.energy_use * parent.energy_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost(parent):  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost(parent)
             accuracy = get_acc(self, parent, target)
 
             BM.battle_log_insert(['attack', 'laser'], "{0} attacks {1} with laser weapon".format(parent.name, target.name))
@@ -2179,14 +2214,16 @@ init -2 python:
             self.name = 'Basic Guns'
             self.lbl = 'Battle UI/button_kinetic.png'
 
+        def energy_cost(self, parent):
+            return int(self.energy_use * parent.kinetic_cost)
+            
         def fire(self, parent, target): #firing gunz!
             target.update_armor()
 
-            energy_cost = int(self.energy_use * parent.kinetic_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost(parent):  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost(parent)
 
             BM.battle_log_insert(['attack', 'kinetic'], "{0} attacks {1} with kinetic weapon".format(parent.name, target.name))
             accuracy = get_acc(self, parent, target)
@@ -2241,17 +2278,19 @@ init -2 python:
             self.eccm = 0
             self.lbl = 'Battle UI/button_missile.png'
             self.flaklist = []
+            
+        def energy_cost(self, parent):
+            return int(self.energy_use * parent.missile_cost)
 
         def fire(self, parent, target):
             target.update_armor()
             BM.missiles = []
             wName = "missile"
 
-            energy_cost = int(self.energy_use * parent.missile_cost)
-            if parent.en < energy_cost:  #energy handling
+            if parent.en < self.energy_cost(parent):  #energy handling
                 return 'no energy'
             else:
-                parent.en -= energy_cost
+                parent.en -= self.energy_cost(parent)
 
             if self.uses_missiles:
                 if self.ammo_use > parent.missiles:
