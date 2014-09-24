@@ -422,8 +422,9 @@ init -2 python:
         ## Formation dispatcher end
         ########################################################
         def formation_phase(self):
-            self.result = ui.interact()
-            self.dispatch_handler(self.result,'formation')()
+            while True:
+                self.result = ui.interact()
+                self.dispatch_handler(self.result,'formation')()
 
         #------------------------------------------------------#
         ########################################################
@@ -680,9 +681,13 @@ init -2 python:
                     message = "ORDER: ALL GUARD"
                     self.battle_log_insert(['order'], message)
                     store.show_message('all ships gained improved flak, shielding and evasion!')
-                    random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
-                    random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
+                    
+                    
+                    random_ship = renpy.random.choice( get_player_ships_in_battle() )
+                    random_voice = renpy.random.choice(random_ship.buffed_voice)
                     renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                    
+                    
                     for ship in player_ships:
                         ship.getting_buff = True
                     renpy.hide_screen('battle_screen')

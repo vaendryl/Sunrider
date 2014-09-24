@@ -781,7 +781,7 @@ screen battle_screen:
             text_color 'fff'
             action Return(['cancel movement'])
 
-    if not BM.showing_orders and not BM.order_used and not BM.missile_moving and not BM.moving and BM.phase == "Player":
+    if not BM.showing_orders and not BM.order_used and not BM.missile_moving and not BM.moving and BM.phase == "Player" and sunrider.location != None:
         imagebutton:
             xpos 0
             ypos 0
