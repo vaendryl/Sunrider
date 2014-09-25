@@ -3,12 +3,7 @@ screen upgrade:
 
     add "Menu/upgrade_back.jpg"
 
-    text '{!s}$'.format(BM.money):
-        size 50
-        xpos 0.15
-        ypos 0.7
-        color '090'
-        outlines [(1,'000',0,0)]
+
 
     # imagebutton:
         # xpos 0.05 ypos 925
@@ -89,6 +84,13 @@ screen upgrade:
     ## Upgrade backgrounds moved to their individual classes in the library
     
     add ship.upgrade_menu
+    
+    text '${!s}'.format(BM.money):
+        size 50
+        xpos 70
+        ypos 0.76
+        color '090'
+        outlines [(1,'000',0,0)]
     
     textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
@@ -226,7 +228,7 @@ screen upgrade:
                 $ quantifier = 'EN'
             if name.find('Flak Resistance') != -1:
                 $ type = 'eccm'
-                $ quantifier = ' Flak Resistance'
+                $ quantifier = ' FR'
 
             $ count = 0
             for weapon in ship.weapons:
@@ -259,3 +261,21 @@ screen upgrade:
                             color '000'
 
                     $ count += 1
+    
+        frame:
+            background Solid((255,255,255,255))
+            xpos 0.46
+            ypos 0.7
+            vbox:
+                label "Future costs:":
+                    right_padding 10
+                    text_color '000'
+                for i in range(1,10):
+                    hbox:
+                        text "Mark {}:".format( level+i+1 ):
+                            min_width 100
+                            color '000'
+                        text " ${}".format( int(cost*multiplier**i) ):
+                            color '000'
+                
+                    

@@ -1,6 +1,9 @@
-patch 6.1
+beta 7
 ======
 * renpy 6.18 is now officially released and the game now only runs on this version of ren'py.
+
+
+* fixed mercenaries getting permenantly destroyed upon death
 
 patch 6.0b
 ======

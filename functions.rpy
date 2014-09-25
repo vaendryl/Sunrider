@@ -204,7 +204,15 @@ init -6 python:
         else:
             return False #None location is not free. failsafes.
             
-            
+    def get_player_ships_in_battle():
+        result = []
+        for ship in player_ships:
+            if ship.location != None:
+                result.append(ship)
+        return result
+    
+    
+    
     def set_cell_available(location, available=False):
         #False means available(empty/nil), True means occupied
         if location != None:

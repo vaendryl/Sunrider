@@ -833,8 +833,8 @@ init -2 python:
 
         def battle_order_vanguard_cannon(self):
             inrange = False
-            templist = enemy_ships[:]
-            for ship in templist:
+            #check to see if any enemy units are within a 7 hex radius.
+            for ship in enemy_ships:
                 if get_distance(sunrider.location,ship.location) <= 7:
                     inrange = True
             if inrange:
@@ -1244,6 +1244,15 @@ init -2 python:
                         # if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
                         
                 mouse_location = get_mouse_location()
+                
+                #vanguard targeting
+                if BM.vanguardtarget:
+                    if BM.mouse_location != mouse_location and ev.buttons[0] != 1:
+                        if get_distance(sunrider.location,mouse_location) <=6:
+                            BM.mouse_location = mouse_location
+                            self.mouse_has_moved = True
+                            renpy.restart_interaction()
+                
                 
                 #check for hovering over movement tiles
                 if BM.selected != None:

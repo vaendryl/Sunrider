@@ -665,26 +665,20 @@ screen battle_screen:
 
          #selecting target for vanguard cannon
         if BM.vanguardtarget:   #creates buttons over enemy ships
-
-            if not BM.hovered == None:     #displayes red tiles on location affected by vanguard
-                $ hovered_ship = BM.hovered
-                if hovered_ship.location == None:
-                    $ pass
-                elif hovered_ship.faction != 'Player':
-                    $loc1 = sunrider.location
-                    $loc2 = hovered_ship.location
-                    if get_distance(loc1, loc2) <= 6:
-                        $tiles = interpolate_hex(loc1, loc2)
-                        for i in tiles:
-                            $xposition = dispx(i[0],i[1],zoomlevel)
-                            $yposition = dispy(i[0],i[1],zoomlevel)
-                            $xsize = int((HEXW + 4) * zoomlevel)
-                            $ysize = int((HEXH + 4) * zoomlevel)
-                            add "Battle UI/vanguard hex.png":
-                                xpos xposition
-                                ypos yposition
-                                size (xsize,ysize)
-                                alpha 0.7
+            $ loc1 = sunrider.location
+            $ loc2 = BM.mouse_location
+            if get_distance(loc1, loc2) <= 6:
+                $tiles = interpolate_hex(loc1, loc2)
+                for i in tiles:
+                    $xposition = dispx(i[0],i[1],zoomlevel)
+                    $yposition = dispy(i[0],i[1],zoomlevel)
+                    $xsize = int((HEXW + 4) * zoomlevel)
+                    $ysize = int((HEXH + 4) * zoomlevel)
+                    add "Battle UI/vanguard hex.png":
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
+                        alpha 0.7
 
         if BM.enemy_vanguard_path is not None:
             for hex in BM.enemy_vanguard_path:
