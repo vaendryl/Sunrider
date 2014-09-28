@@ -370,12 +370,21 @@ init -6 python:
         except:
             pass
 
+        #copy the dict from BM
         fields = deepcopy(BM.__dict__)
-        #re-init the copy. this adds new fields defined in classes.rpy
+        
+        #add missing fields to BM
         BM.__init__()
         
+        #restore the old values to the dict in BM
         for key in fields:
-            if key in BM.__dict__:
+            if type(BM.__dict__[key]) is dict:
+                dictionary = BM.__dict__[key]
+                for key2 in fields[key]:
+                    #only put missing keys in nested dicts
+                    if not key2 in dictionary:
+                        dictionary[key2] = fields[key][key2]
+            else:
                 BM.__dict__[key] = fields[key]
 
         #repeat same concept for basic variables inside firstvariables.rpy
