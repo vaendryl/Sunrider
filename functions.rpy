@@ -370,38 +370,13 @@ init -6 python:
         except:
             pass
 
-        #create a non aliased copy of BM so we can extract all the field data
-        BM_copy = deepcopy(BM)
-        #extracting field data
-        fields = deepcopy(BM_copy.__dict__)
+        fields = deepcopy(BM.__dict__)
         #re-init the copy. this adds new fields defined in classes.rpy
-        BM_copy.__init__()
-        #store all the default field data into a dict
-        fields = BM_copy.__dict__
-
-        #loop over each field stored in the new dict
+        BM.__init__()
+        
         for key in fields:
-            #check if the fielddata itself is a dictionary (like BM.orders)
-            if type(fields[key]) is dict:
-                #check if the new dict already exists. add it if it does not
-                try:
-                    dict2 = getattr(BM,key)
-                except:
-                    setattr(BM,key,fields[key])
-                    continue
-                #create temporary dicts for easy coding
-                dict1 = fields[key]
-                #loop over every key in the new field list
-                for key in dict1:
-                    #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in BM
-                    if key not in dict2:
-                        dict2[key]=dict1[key]
-            else:
-                #test if BM has this field. if it does not, add it with default value.
-                try:
-                    x = getattr(BM,key)
-                except:
-                    setattr(BM,key,fields[key])
+            if key in BM.__dict__:
+                BM.__dict__[key] = fields[key]
 
         #repeat same concept for basic variables inside firstvariables.rpy
         add_new_vars()
