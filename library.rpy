@@ -2287,10 +2287,8 @@ init 2 python:
             self.variable_name = 'sunrider.rockets'    #this decides what is shown in the store after [owned:
             self.max_amt = 2    #you can buy no more than this number of this item. see previous field
             
-        def __call__(self): #here is where you decide what this item -does-.
+        def buy(self): #here is where you decide what this item -does-.
             sunrider.rockets += 1
-            BM.money -= self.cost            #boilerplate
-            renpy.restart_interaction()      #boilerplate
             
     class RocketUpgrade(StoreItem):
         def __init__(self):
@@ -2301,10 +2299,8 @@ init 2 python:
             self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
             self.visibility_condition = 'sunrider_rocket.damage < 1200'
             
-        def __call__(self):            
+        def buy(self):            
             store.sunrider_rocket.damage = 1200
-            BM.money -= self.cost
-            renpy.restart_interaction()
             
     class RepairUpgrade(StoreItem):
         def __init__(self):
@@ -2315,10 +2311,8 @@ init 2 python:
             self.tooltip = 'While extensive repairs require time in the dry dock, battlefield repairs are still a must for combat operations. These new portable repair drones will allow the Liberty to repair 200 more HP.'
             self.visibility_condition = 'store.chigara_repair.damage < 500'
             
-        def __call__(self):            
+        def buy(self):            
             store.chigara_repair.damage = 500
-            BM.money -= self.cost
-            renpy.restart_interaction()
             
     class NewRepairDrone(StoreItem):
         def __init__(self):
@@ -2331,10 +2325,8 @@ init 2 python:
             self.variable_name = 'sunrider.repair_drones'
             self.max_amt = 8            
             
-        def __call__(self):            
+        def buy(self):            
             sunrider.repair_drones += 1
-            BM.money -= self.cost
-            renpy.restart_interaction()
             
     class ContractAllianceCruiser(StoreItem):
         def __init__(self):
@@ -2347,11 +2339,9 @@ init 2 python:
             self.max_amt = 2            
             self.tooltip = 'With the Solar Congress\' declaration of war, countless Alliance battle cruisers have been called to the front lines. With a generous payment, the Mining Union can use its leverage in the Solar Congress to assign a fully operational Alliance battle cruiser as the Sunrider\'s escort. While slow, the Alliance battle cruiser is built like a brick and packs a punch. You can have up to {} in your fleet at any time'.format(self.max_amt)
             
-        def __call__(self):            
+        def buy(self):            
             create_ship(AllianceCruiser()) #location=None, weaponlist=[] i.e. default
             BM.mercenary_count += 1
-            BM.money -= self.cost
-            renpy.restart_interaction()  
 
     class ContractUnionFrigate(StoreItem):
         def __init__(self):
@@ -2364,11 +2354,9 @@ init 2 python:
             self.max_amt = 4            
             self.tooltip = 'The Mining Union regularly fields a large private army to protect its shipping from pirates. With the payment of the appropriate fees, you too can have a Union security frigate watching your back. While small and lightly armed, these frigates are inexpensive and speedy. You can have up to {} in your fleet at any time'.format(self.max_amt)
             
-        def __call__(self):            
+        def buy(self):            
             create_ship(UnionFrigate()) #location=None, weaponlist=[] i.e. default
-            BM.mercenary_count += 1
-            BM.money -= self.cost
-            renpy.restart_interaction()                 
+            BM.mercenary_count += 1         
             
     class SellWishallArtifact(StoreItem):
         def __init__(self):
@@ -2379,10 +2367,8 @@ init 2 python:
             self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instant cash infusion of 10 000 credits.'
             self.visibility_condition = "store.wishall"
             
-        def __call__(self): #here is where you decide what this item -does-.
-            store.wishall = False
-            BM.money -= self.cost            #boilerplate
-            renpy.restart_interaction()      #boilerplate            
+        def buy(self): #here is where you decide what this item -does-.
+            store.wishall = False         
 
     class SunriderShieldUpgrade(StoreItem):
         def __init__(self):
@@ -2393,11 +2379,9 @@ init 2 python:
             self.tooltip = "Due to the Sunrider's unexpected departure from Cera, she was never outfitted with energy shielding. While her top of the line shield generator was lost with the fall of Cera, the Union can outfit the Sunrider with a basic shield generator. The Sunrider's shields can be further upgraded in the Research Lab after it is purchased."
             self.visibility_condition = 'store.sunrider.shield_generation == 0'
 
-        def __call__(self):            
+        def buy(self):            
             store.sunrider.shield_generation = 15
             store.sunrider.shields = store.sunrider.shield_generation
             store.sunrider.shield_range = 0
-            BM.money -= self.cost
-            renpy.restart_interaction()
             
             

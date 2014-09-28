@@ -3128,7 +3128,12 @@ init -2 python:
             # if self not in store_items:
                 # store_items.append(self)
 
-        def __call__(self):            
+        def __call__(self):
+            self.buy()
+            BM.money -= self.cost
+            renpy.restart_interaction()
+
+        def buy(self):
             #needs to be overwritten
             pass
 
