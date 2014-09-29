@@ -11,46 +11,48 @@ init -6 python:
     import math
     from copy import deepcopy
 
-    def get_modified_damage(damage):
+    def get_modified_damage(damage,faction):
         #implementing difficulty setting.
         Difficulty = store.Difficulty #to be safe
         
         if Difficulty == 0: #VNmode
-            if self.faction == 'Player':
+            if faction == 'Player':
                 damage = int(damage * 0.25)
             else:
                 damage = int(damage * 4)
 
         elif Difficulty == 1: #Casual mode
-            if self.faction == 'Player':
+            if faction == 'Player':
                 damage = int(damage * 0.50)
             else:
                 damage = int(damage * 2)
 
         elif Difficulty == 2: #Ensign
-            if self.faction == 'Player':
+            if faction == 'Player':
                 damage = int(damage * 0.75)
             else:
                 damage = int(damage * 1.33)
 
         elif Difficulty == 3: #Captain
             pass
-            # if self.faction == 'Player':
+            # if faction == 'Player':
                 # damage = int(damage * 1.0)
             # else:
                 # damage = int(damage * 1.0)
                 
         elif Difficulty == 4: #Hard
-            if self.faction == 'Player':
+            if faction == 'Player':
                 damage = int(damage * 1.33)
             else:
                 damage = int(damage * 0.75)
                 
         elif Difficulty == 5: #Space Whale Mode
-            if self.faction == 'Player':
-                damage = int(damage * 1.66)
+            if faction == 'Player':
+                damage = int(damage * 1.45)
             else:
-                damage = int(damage * 0.5)
+                damage = int(damage * 0.66)
+        
+        return damage
     
     def reset_upgrades(ship):
         if ship == None:
@@ -268,12 +270,12 @@ init -6 python:
                     pass  #not sure if I should raise an exception or not
 
 
-    def show_message(message,xpos=0.5,ypos=0.7):
+    def show_message(message,xpos=0.5,ypos=0.7,pause = MESSAGE_PAUSE):
         """briefly show some text on screen"""
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
         try:
-            renpy.pause(MESSAGE_PAUSE)            
+            renpy.pause(pause)            
         except:
             pass
         renpy.hide_screen('message')
@@ -657,10 +659,10 @@ init -6 python:
     def get_shot_hit(accuracy,shotcount,faction):
         #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
         #for now no fudging for AI.
-        if faction == 'Player' and store.Difficulty <=4 and shotcount == 1 and accuracy >50:
+        if faction == 'Player' and store.Difficulty <=3 and shotcount == 1 and accuracy >50:
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 <= int(accuracy)
-        elif faction == 'Player' and store.Difficulty < 4 and accuracy < 50 and shotcount == 1: #muhahaha
+        elif faction == 'Player' and store.Difficulty > 3 and accuracy < 50 and shotcount == 1: #muhahaha
             RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
             return RNG2 <= int(accuracy)
         else:

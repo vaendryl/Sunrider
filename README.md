@@ -4,6 +4,7 @@ beta 7
 * added a table of future costs to R&D screen
 * added a battle log function (by DoumanAsh)
 * skipping by holding ctrl (or toggle with tab) now skips animation completely making for faster combat. (by Endershadow)
+* AI now tries moving closer before firing its weapon (by BlueOrange)
 * enemy Legion can use a vanguard cannon on you!
 * Flak path simulation is now updated for hex code.
 * the AI now calculates flak between it and its target properly, causing a change in missile behaviour.
@@ -11,7 +12,13 @@ beta 7
 * bosses flagged as 'boss' no longer end skirmish upon death.
 * units not participating in skirmish will not have their buff voices played in reaction to full forward or all guard
 * not having the sunrider present in skirmish removes access to orders.
-* fixed mercenaries getting permenantly destroyed upon death in skirmish mode.
+* fixed mercenaries getting permanently destroyed upon death in skirmish mode.
+* added a store item that upgrades the vanguard cannon
+* all guard order now gives 20 flak instead of 30
+* flak buffs/curses modify counter-attack damage and -100 flak disables counters entirely.
+* changed difficulty names and system. there are now 6 different options.
+* the Liberty's disable ability also causes the shutoff and flakdown effect. (the Legion is immune to this ability!)
+* added 'right click to cancel' effect to a few more screens like orders and preferences
 
 
 patch 6.0b

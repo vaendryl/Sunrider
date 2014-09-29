@@ -80,6 +80,7 @@ init -2 python:
             #disabled when text is showing on screen otherwise mouseclicks get eaten by the viewport and do not advance text
             #DEFUNCT!
             self.draggable = True
+            self.debug_log = []
             #Battle log
             self.battle_log = []
             self.battle_log_yadj = ui.adjustment(adjustable=True)
@@ -548,7 +549,7 @@ init -2 python:
                     if weapon.wtype == 'Support' or weapon.wtype == 'Special':
                         if self.target.cth <= 0:
                             self.draggable = False
-                            renpy.say('Ava','It\'s hopeless, captain!')
+                            renpy.say('Ava',"No enemies in range, captain.")
                             self.draggable = True
                             self.targetingmode = True #try again
                             return #do end the method, this is important.
@@ -671,7 +672,8 @@ init -2 python:
                 
                 succesful = False
                 for ship in player_ships:
-                    if apply_modifier(ship,'flak',20,5): succesful = True
+                    if ship.flak > 0:
+                        if apply_modifier(ship,'flak',20,5): succesful = True
                     if ship.shield_generation > 0:
                         if apply_modifier(ship,'shield_generation',10,5): succesful = True
                     if apply_modifier(ship,'evasion',10,5): succesful = True
@@ -684,11 +686,9 @@ init -2 python:
                     self.battle_log_insert(['order'], message)
                     store.show_message('all ships gained improved flak, shielding and evasion!')
                     
-                    
                     random_ship = renpy.random.choice( get_player_ships_in_battle() )
                     random_voice = renpy.random.choice(random_ship.buffed_voice)
-                    renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
-                    
+                    renpy.music.play('sound/Voice/{}'.format(random_voice),channel = random_ship.voice_channel)
                     
                     for ship in player_ships:
                         ship.getting_buff = True
@@ -712,7 +712,7 @@ init -2 python:
                 if self.active_strategy[0] == 'all guard':
                     show_message("All Guard order cancelled!")
                     for ship in player_ships:
-                        if ship.modifiers['flak'][0] == 30:
+                        if ship.modifiers['flak'][0] == 20:
                             ship.modifiers['flak'] = [0,0]
                         if ship.modifiers['shield_generation'][0] == 10:
                             ship.modifiers['shield_generation'] = [0,0]
@@ -1158,6 +1158,11 @@ init -2 python:
                     store.repair_cost += int((ship.max_hp - ship.hp)*0.1)
 
                 store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
+                
+                #SPACE WHALE TAX!
+                if store.Difficulty == 5:
+                    store.net_gain *= 0.8
+                    
                 self.money += int(net_gain)
                 
                 #Captain and higher difficulties reduce the total CP you get per battle.
@@ -1579,15 +1584,16 @@ init -2 python:
                 if wtype == 'Laser' or wtype == 'Pulse':
                     attacker.total_energy_damage += damage
                     self.fear['energy'] += damage / 10
-
-                store.damage = damage #the global variant is used by the health_animation screen
+                
                 attacker.hate += damage*0.5  #damaging enemies increases how likely they are to target you
                 self.hate -= damage  #getting damaged lowers your threat back down
                 if self.hate < 100: self.hate = 100
                 BM.target = self
                 
                 #difficulty fudging
-                damage = get_modified_damage(damage) 
+                damage = get_modified_damage(damage,self.faction) 
+                
+                store.damage = damage #the global variant is used by the health_animation screen
 
                   #if the attack hits, show the hit animation of the target based on weapon type
                 BM.battle_log_insert(['attack'], "{0} inflicts {1} damage to {2}".format(attacker.name, damage, self.name))

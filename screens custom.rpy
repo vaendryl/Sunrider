@@ -441,7 +441,7 @@ screen battle_screen:
 ##show flak icon and intercept text
         if BM.missile_moving:
             for ship in BM.ships:
-                if ship.flaksim != None:
+                if ship.flaksim != None and ship.flak > 0:
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
                     $ wait = ship.flaksim[0]
@@ -955,7 +955,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
                                 
-                                $ damage = get_modified_damage(BM.vanguard_damage)
+                                $ damage = get_modified_damage(BM.vanguard_damage,'notplayer')
                                 text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'.format(damage) ):
                                     xpos 0
                                     ypos 0
@@ -1650,8 +1650,18 @@ screen victory2:
         at delay_text(wait)
     $ yposition += 0.05
 
+    if store.Difficulty == 5:
+        $wait += 0.1
+        text 'space whale tax: {}$'.format(int(store.total_money * 0.2)):
+            xpos 0.2
+            ypos yposition
+            size 40
+            outlines [(2,'000',0,0)]
+            at delay_text(wait)
+        $ yposition += 0.05
+    
     $wait += 0.1
-    text 'net gain: {}$'.format(store.net_gain):
+    text 'net gain: {}$'.format(int(store.net_gain)):
         xpos 0.2
         ypos yposition
         size 40
@@ -1837,7 +1847,7 @@ screen battle_log():
     default filter_laser    = True
     default filter_missile  = True
     default filter_melee    = True
-    default filter_details  = True
+    default filter_details  = False
     default filter_support  = True
     default filter_heal     = True
     default filer_buff      = True
@@ -2036,3 +2046,45 @@ screen game_over_gimmick:
             $randt = renpy.random.randint(100,600) / 100.0
     #        text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
             add 'Battle UI/label_pactbattleship.png' xpos randx ypos randy zoom (randint / 300.0) at gameovergimmick(randx,randy, randt)
+            
+screen debug_window:
+    zorder 100
+    modal True
+
+    drag:
+        xalign 0.5
+        ypos 0.2
+        frame:
+            xpadding 10
+            ypadding 10
+            xalign 0.5
+            ypos 0.2
+            xminimum 800
+            xmaximum 900
+            yminimum 100
+            ymaximum 400
+            background Solid((0,0,0,200))
+            
+            side "c t r":
+                viewport:
+                    id 'debug log'
+                    yinitial 1.0
+                    
+                    
+                    vbox:
+                        for entry in BM.debug_log:
+                            text str(entry)
+                    
+                                    
+                hbox:
+                    label 'debug log'
+                    textbutton "X":
+                        xalign 1.0
+                        action Hide('debug_window')
+
+                vbar:
+                    value YScrollValue('debug log')
+                    hovered SetField(BM, 'draggable', False)
+                    unhovered SetField(BM, 'draggable', True)        
+            
+        

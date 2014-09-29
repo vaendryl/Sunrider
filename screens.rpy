@@ -218,7 +218,7 @@ screen main_menu:
         hover "Menu/menu_hover.jpg"
 
         hotspot (160, 405, 133, 50) action Start()
-        hotspot (80, 472, 208, 50) action FileLoad("1", page="quick", confirm=False)
+        hotspot (80, 472, 208, 50) action FileLoad("1", page="auto", confirm=False)
         hotspot (171, 537, 118, 50) action ShowMenu('load')
         hotspot (92, 598, 200, 50) action ShowMenu('preferences')
         hotspot (138, 666, 151, 50) action ShowMenu('bonus')
@@ -582,9 +582,6 @@ screen gameprefs:
     
     key "mousedown_3" action Hide('gameprefs', transition=dissolve)
     
-    if not hasattr(store,'zoomlevel'):
-        $ store.zoomlevel = 1
-
     imagemap:
 
         ground "Menu/preferences_gameplay_base.png"
@@ -605,7 +602,7 @@ screen gameprefs:
         hotspot (785, 707, 50, 30) action SetField(BM,'show_tooltips',True)  
         hotspot (1000, 707, 80, 30) action SetField(BM,'show_tooltips',False)
 
-        hotspot (785, 780, 50, 30) action SetField(BM,'edgescroll',(100,800*zoomlevel))
+        hotspot (785, 780, 50, 30) action SetField(BM,'edgescroll',(100,800))
         hotspot (1000, 780, 80, 30) action SetField(BM,'edgescroll',(0,0)) 
 
         hotspot (785, 850, 50, 30) action Show('battle_log')
