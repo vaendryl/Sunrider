@@ -1,4 +1,6 @@
 label initStore:  
+    #kind of feeling there should probably be a more clever way to do this.
+    
     python:
         store_items = []
 
@@ -6,10 +8,11 @@ label initStore:
         store_items.append(RocketUpgrade())
         store_items.append(NewRepairDrone())
         store_items.append(SunriderShieldUpgrade())
+        store_items.append(SunriderVanguardUpgrade())
         store_items.append(ContractAllianceCruiser())
         store_items.append(ContractUnionFrigate())
         store_items.append(SellWishallArtifact())  
-        store_items.append(RepairUpgrade())  
+        store_items.append(RepairUpgrade())
         
         
     return

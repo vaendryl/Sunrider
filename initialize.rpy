@@ -26,6 +26,14 @@ init -10 python:
     MOVX = 0
 
     planets = []
+    
+    DIFFICULTY_NAMES = {
+        0 : 'Visual Novel Mode',
+        1 : 'Casual Mode',
+        2 : 'Ensign',
+        3 : 'Captain',
+        4 : 'Hard',
+        5 : 'Space Whale Mode' }
 
 init -1 python:   #create sound channels for simultanious sfx playback
     renpy.music.register_channel("sound1", "sfx", False)
@@ -766,6 +774,76 @@ label mission17_inits:
     
     $ PlayerTurnMusic = "music/Overpowered.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
+
+    return
+
+label mission18_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        
+        freighter_weapons = []
+        freighter = create_ship(Freighter(),(2,6),freighter_weapons)
+
+        create_ship(PactMook(),(12,3))
+        create_ship(PactMook(),(12,4))
+        create_ship(PactMook(),(12,8))
+        create_ship(PactMook(),(12,9))
+        
+        create_ship(PactMook(),(13,3))
+        create_ship(PactMook(),(13,4))
+        create_ship(PactBomber(),(13,8))
+        create_ship(PactBomber(),(13,9))        
+
+        create_ship(PactCruiser(),(13,4))
+        create_ship(PactCruiser(),(13,8))
+        create_ship(PactCruiser(),(13,5))
+        create_ship(PactCruiser(),(13,9))
+        create_ship(PactCruiser(),(16,5))
+        create_ship(PactCruiser(),(16,9))
+
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Driving_the_Top_Down.ogg"
+    $ EnemyTurnMusic = "music/Battle_Against_Time.ogg"
+
+    return
+
+label mission19_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        
+        create_ship(PactElite(),(12,5))
+        create_ship(PactElite(),(11,6))
+        create_ship(PactElite(),(11,10))
+        create_ship(PactElite(),(12,11))
+        create_ship(PactBattleship(),(11,7))
+        create_ship(PactBattleship(),(10,8))
+        create_ship(PactBattleship(),(11,9))
+        create_ship(PactAssaultCarrier(),(12,6))
+        create_ship(PactAssaultCarrier(),(12,10))
+        create_ship(PactSupport(),(13,7))
+        create_ship(PactSupport(),(13,9))
+        create_ship(PirateBomber(),(13,6))
+        create_ship(PirateBomber(),(13,10))
+        create_ship(PirateIronhog(),(14,5))
+        create_ship(PirateIronhog(),(14,11))
+        create_ship(PactCarrier(),(13,8))
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Powerful.ogg"
+    $ EnemyTurnMusic = "music/Intruders.ogg"
 
     return
 

@@ -3,15 +3,15 @@ beta 7
 * renpy 6.18 is now officially released and the game now only runs on this version of ren'py.
 * added a table of future costs to R&D screen
 * added a battle log function (by DoumanAsh)
-* skipping by holding ctrl (or toggle with tab) no skips animation completely making for faster combat. (by Endershadow)
+* skipping by holding ctrl (or toggle with tab) now skips animation completely making for faster combat. (by Endershadow)
 * enemy Legion can use a vanguard cannon on you!
 * Flak path simulation is now updated for hex code.
 * the AI now calculates flak between it and its target properly, causing a change in missile behaviour.
 * vanguard path overlay is now always shown
-* bosses flagged as 'boss' no longer end skirmish
+* bosses flagged as 'boss' no longer end skirmish upon death.
 * units not participating in skirmish will not have their buff voices played in reaction to full forward or all guard
 * not having the sunrider present in skirmish removes access to orders.
-* fixed mercenaries getting permenantly destroyed upon death
+* fixed mercenaries getting permenantly destroyed upon death in skirmish mode.
 
 
 patch 6.0b

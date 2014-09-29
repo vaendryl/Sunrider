@@ -119,7 +119,8 @@ screen battle_screen:
     if config.developer: #a release version should have set this to False
         key "Q" action Jump(['quit'])  ##DEBUG FAST QUIT##
         key "A" action Return(['anime'])
-        key "P" action Return(['I WIN'])
+        if BM.phase != 'formation':
+            key "P" action Return(['I WIN'])
 
     $childx = round(3840*zoomlevel) #this makes it so you can't scroll past the edge of the battlefield when zoomed out
     $childy = round(3006*zoomlevel+300) #extra 300 is so that the status window doesn't occlude ships in the far right bottom corner
@@ -852,7 +853,7 @@ transform move_down(ystart,yend,xx=0):
     linear 0.5 ypos yend
     on hide:
         linear 0.5 ypos ystart
-          #not sure why this is needed. I'm calling bug in renpy
+        #not sure why this is needed. I'm calling bug in renpy
         time 2
         alpha 0
 
@@ -861,6 +862,8 @@ transform move_down(ystart,yend,xx=0):
 screen orders:
     zorder 1
     modal True
+    
+    key "mousedown_3" action [Hide('orders'),SetField(BM,'showing_orders',False)]
 
     frame:
         background 'Battle UI/commandbar_window.png'
@@ -887,11 +890,13 @@ screen orders:
                         xpos 50
                         min_width 50
                         text_align 1.0
-#                            first_indent 150
+#                       first_indent 150
                         size 18
                         outlines [(1,'222',0,0)]
 
                     hbox:
+                        #I should rework orders to include this info :/
+                    
                         if order == 'REPAIR DRONES':
                             if sunrider.repair_drones != None:
                                 if sunrider.repair_drones == 0:
@@ -924,7 +929,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
 
-                                text str('Provides +30 Flak, +10 Evasion and +10 shield generation to all ships. Will cancel Full Forward if active.'):
+                                text str('Provides +20 Flak, +10 Evasion and +10 shield generation to all ships. Will cancel Full Forward if active.'):
                                     xpos 0
                                     ypos 0
                                     size 18
@@ -950,13 +955,7 @@ screen orders:
                                 xpos 150
                                 ycenter 20
                                 
-                                $ damage = 800
-                                if store.Difficulty == 0:
-                                    $ damage *= 4
-                                if store.Difficulty == 1:
-                                    $ damage = int(damage * 1.33)
-                                if store.Difficulty == 3:
-                                    $ damage = int(damage * 0.75)
+                                $ damage = get_modified_damage(BM.vanguard_damage)
                                 text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'.format(damage) ):
                                     xpos 0
                                     ypos 0
@@ -1691,23 +1690,8 @@ screen victory2:
         outlines [(2,'000',0,0)]
         at delay_text(wait)
         
-    if store.Difficulty == 0:    
-        $ diff_text = "Current difficulty: VNmode"
-    if store.Difficulty == 1:    
-        $ diff_text =  "Current difficulty: Easy"
-    if store.Difficulty == 2:    
-        $ diff_text =  "Current difficulty: Normal"
-    if store.Difficulty == 3:    
-        $ diff_text =  "Current difficulty: Hard"
-        
-    if BM.lowest_difficulty == 0:    
-        $ low_diff_text = "lowest difficulty: VNmode"
-    if BM.lowest_difficulty == 1:    
-        $ low_diff_text = "lowest difficulty: Easy"
-    if BM.lowest_difficulty == 2:    
-        $ low_diff_text = "lowest difficulty: Normal"
-    if BM.lowest_difficulty == 3:    
-        $ low_diff_text = "lowest difficulty: Hard" 
+    $ diff_text = "Current difficulty: {}".format( DIFFICULTY_NAMES[store.Difficulty] )
+    $ low_diff_text = "lowest difficulty: {}".format( DIFFICULTY_NAMES[BM.lowest_difficulty] )
     
     vbox:
         xalign 1.0

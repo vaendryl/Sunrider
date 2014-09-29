@@ -338,7 +338,7 @@ screen load:
     modal True
     zorder 200
 
-    key 'mouseup_3' action Hide('load')
+    key "mousedown_3" action Hide('load', transition=dissolve)
 
     if not hasattr(store,'BM'):
         $ BM = Battle()
@@ -419,7 +419,7 @@ screen save:
     modal True
     zorder 200
 
-    key 'mouseup_3' action Hide('save')
+    key "mousedown_3" action Hide('save', transition=dissolve)
 
     if not hasattr(store,"BM"):
         $ BM = Battle()
@@ -519,6 +519,8 @@ screen preferences:
     zorder 200
     modal True
 
+    key "mousedown_3" action Hide('preferences', transition=dissolve)
+    
     imagemap:
 
         ground "Menu/preferences_base.png"
@@ -528,59 +530,88 @@ screen preferences:
 
         hotspot (864, 59, 137, 44) action [ Hide('preferences'), Show('load', transition=dissolve) ]
         hotspot (726, 59, 137, 44) action [ Hide('preferences'), Show('save', transition=dissolve) ]
+        hotspot (1070, 130, 160, 50) action [ Hide('preferences'), Show('gameprefs', transition=dissolve) ]
         hotspot (1140, 59, 137, 44) action MainMenu()
-        hotspot (822, 224, 80, 15) action Preference("display", "window")
-        hotspot (1048, 224, 79, 15) action Preference("display", "fullscreen")
-        hotspot (822, 334, 112, 15) action Preference("skip", "seen")
-        hotspot (1048, 334, 78, 15) action Preference("skip", "all")
-        hotspot (822, 404, 107, 15) action Preference("after choices", "skip")
-        hotspot (1048, 404, 103, 15) action Preference("after choices", "stop")
+        hotspot (820, 235, 100, 25) action Preference("display", "window")
+        hotspot (1035, 235, 180, 25) action Preference("display", "fullscreen")
+        hotspot (820, 340, 200, 25) action Preference("skip", "seen")
+        hotspot (1040, 340, 180, 25) action Preference("skip", "all")
+        hotspot (820, 410, 190, 25) action Preference("after choices", "skip")
+        hotspot (1040, 410, 220, 25) action Preference("after choices", "stop")
         hotspot (822, 470, 146, 15) action Skip(fast=True)
-        hotspot (778, 861, 91, 15) action SetVariable("Difficulty", 0)
-        hotspot (908, 861, 34, 15) action SetVariable("Difficulty", 1)
-        hotspot (987, 861, 53, 15) action SetVariable("Difficulty", 2)
-        hotspot (1092, 861, 32, 15) action SetVariable("Difficulty", 3)
 
         hotspot (948, 926, 107, 23) action Hide('preferences', transition=dissolve)
 
-
-
         bar:
-            xpos 746
-            ypos 716
-            xmaximum 250
-            value Preference("text speed")
-        bar:
-            xpos 746
-            ypos 580
+            xpos 780
+            ypos 570
             xmaximum 250
             value Preference("music volume")
-        text 'Voice':
-            xpos 1000
-            ypos 550
-            size 18
-            color 'fff'
         bar:
-            xpos 1000
-            ypos 580
-            xmaximum 250
-            value Preference("voice volume")
-        bar:
-            xpos 746
-            ypos 645
+            xpos 780
+            ypos 650
             xmaximum 250
             value Preference("sound volume")
+        bar:
+            xpos 780
+            ypos 800
+            xmaximum 250
+            value Preference("text speed")
+
+        bar:
+            xpos 780
+            ypos 725
+            xmaximum 250
+            value Preference("voice volume")
+            
         textbutton "Test":
             xpos 1100
-            ypos 645
+            ypos 650
             action Play("sound", "Sound/explosion1.ogg")
             style "soundtest_button"
         bar:
-            xpos 746
-            ypos 794
+            xpos 780
+            ypos 880
             xmaximum 250
             value Preference("auto-forward time")
+            
+screen gameprefs:
+    
+    zorder 200
+    modal True
+    
+    key "mousedown_3" action Hide('gameprefs', transition=dissolve)
+    
+    if not hasattr(store,'zoomlevel'):
+        $ store.zoomlevel = 1
 
+    imagemap:
+
+        ground "Menu/preferences_gameplay_base.png"
+        hover "Menu/preferences_gameplay_hover.png"
+        selected_idle "Menu/preferences_gameplay_active.png"
+        selected_hover "Menu/preferences_gameplay_active.png"
+    
+        hotspot (864, 59, 137, 44) action [ Hide('gameprefs'), Show('load', transition=dissolve) ]
+        hotspot (726, 59, 137, 44) action [ Hide('gameprefs'), Show('save', transition=dissolve) ]
+        hotspot (750, 130, 160, 50) action [ Hide('gameprefs'), Show('preferences', transition=dissolve) ]
+        hotspot (750, 260, 250, 30) action SetVariable("Difficulty", 0)
+        hotspot (750, 340, 250, 30) action SetVariable("Difficulty", 1)
+        hotspot (750, 400, 250, 30) action SetVariable("Difficulty", 2)
+        hotspot (750, 460, 250, 30) action SetVariable("Difficulty", 3)        
+        hotspot (750, 540, 250, 30) action SetVariable("Difficulty", 4)        
+        hotspot (750, 600, 250, 30) action SetVariable("Difficulty", 5)
+        
+        hotspot (785, 707, 50, 30) action SetField(BM,'show_tooltips',True)  
+        hotspot (1000, 707, 80, 30) action SetField(BM,'show_tooltips',False)
+
+        hotspot (785, 780, 50, 30) action SetField(BM,'edgescroll',(100,800*zoomlevel))
+        hotspot (1000, 780, 80, 30) action SetField(BM,'edgescroll',(0,0)) 
+
+        hotspot (785, 850, 50, 30) action Show('battle_log')
+        hotspot (1000, 850, 80, 30) action Hide('battle_log')
+        
+        hotspot (948, 926, 107, 23) action Hide('gameprefs', transition=dissolve)
 
 init -2 python:
     style.bar.hover_color = "#ccc"

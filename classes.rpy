@@ -54,6 +54,8 @@ init -2 python:
             self.remove_mode = False  #when True the player can easily remove units in skirmish
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
             self.mouse_location = (0,0)
+            self.vanguard_damage = 800
+            self.vanguard_range = 6
             self.orders = {
                 'FULL FORWARD':[750,'full_forward'],
                 'ALL GUARD':[750,'all_guard'],
@@ -444,7 +446,7 @@ init -2 python:
             if self.target == None:
                 self.target = sunrider
             try:
-                renpy.call_in_new_context('atkanim_pactasdfelite_laser')
+                renpy.call_in_new_context('atkanim_legion_missile')
             except:
                 show_message('animation label does not exist!')
 
@@ -669,7 +671,7 @@ init -2 python:
                 
                 succesful = False
                 for ship in player_ships:
-                    if apply_modifier(ship,'flak',30,5): succesful = True
+                    if apply_modifier(ship,'flak',20,5): succesful = True
                     if ship.shield_generation > 0:
                         if apply_modifier(ship,'shield_generation',10,5): succesful = True
                     if apply_modifier(ship,'evasion',10,5): succesful = True
@@ -833,9 +835,9 @@ init -2 python:
 
         def battle_order_vanguard_cannon(self):
             inrange = False
-            #check to see if any enemy units are within a 7 hex radius.
+            #check to see if any enemy units are within reach of the VC
             for ship in enemy_ships:
-                if get_distance(sunrider.location,ship.location) <= 7:
+                if get_distance(sunrider.location,ship.location) <= BM.vanguard_range:
                     inrange = True
             if inrange:
                 if self.cmd >= self.orders[self.result[0]][0]:
@@ -844,8 +846,9 @@ init -2 python:
                     looping = True
                     while looping:
                         result = ui.interact()
+                        
                         if result[0] == "selection":
-                            if result[1].faction != 'Player':
+                            if result[1].faction != 'Player' and get_ship_distance(sunrider,result[1]) <= BM.vanguard_range:
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
                                 listlocs = interpolate_hex(loc1, loc2)
@@ -854,7 +857,7 @@ init -2 python:
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
                                 renpy.pause(1)
-                                store.damage = 800
+                                store.damage = BM.vanguard_damage
                                 store.hit_count = 1
                                 store.total_armor_negation = 0
                                 store.total_shield_negation = 0
@@ -869,7 +872,7 @@ init -2 python:
                                             #        if ship.location[0]-sunrider.location[0] <=7:
                                                 if ship in enemy_ships: #it's possible the ship was already deleted because of the boss being killed
                                                     self.target = ship
-                                                    ship.receive_damage(800,sunrider,'Vanguard')
+                                                    ship.receive_damage(BM.vanguard_damage,sunrider,'Vanguard')
                                 looping = False
                                 self.vanguardtarget = False
                                 renpy.hide_screen('battle_screen')
@@ -1157,8 +1160,8 @@ init -2 python:
                 store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
                 self.money += int(net_gain)
                 
-                difficulty_penalty = store.Difficulty - 1
-
+                #Captain and higher difficulties reduce the total CP you get per battle.
+                difficulty_penalty = store.Difficulty - 2
                 if difficulty_penalty < 0: difficulty_penalty = 0
                 
                 self.cmd += int((net_gain*10)/(BM.turn_count+difficulty_penalty))
@@ -1248,7 +1251,7 @@ init -2 python:
                 #vanguard targeting
                 if BM.vanguardtarget:
                     if BM.mouse_location != mouse_location and ev.buttons[0] != 1:
-                        if get_distance(sunrider.location,mouse_location) <=6:
+                        if get_distance(sunrider.location,mouse_location) <=BM.vanguard_range:
                             BM.mouse_location = mouse_location
                             self.mouse_has_moved = True
                             renpy.restart_interaction()
@@ -1539,6 +1542,7 @@ init -2 python:
                         show_message('missing animation. "miss_{}" does\'t seem to exist'.format(self.animation_name))
             else:
 
+                #getting hit with the legion's vanguard means instant game over.
                 if self.faction == 'Player' and wtype == 'Vanguard':
                     try:
                         renpy.call_in_new_context('hitlegion_{}'.format(self.animation_name)) #you just got pwnd, son.
@@ -1555,26 +1559,6 @@ init -2 python:
                         self.hp = self.max_hp
                     return
 
-                #implementing difficulty setting.
-                if Difficulty == 0: #VNmode
-                    if self.faction == 'Player':
-                        damage = int(damage * 0.25)
-                    else:
-                        damage = int(damage * 4)
-
-                if Difficulty == 1: #easy
-                    if self.faction == 'Player':
-                        damage = int(damage * 0.75)
-                    else:
-                        damage = int(damage * 1.33)
-
-                if Difficulty == 3: #hard
-                    if self.faction == 'Player':
-                        damage = int(damage * 1.33)
-                    else:
-                        damage = int(damage * 0.75)
-#                        pass
-
                 #havoc isn't allowed to die in the first turn
                 if BM.mission == 2 and self.name == 'Havoc' and BM.turn_count == 1 and damage > self.hp:
                     try:
@@ -1583,7 +1567,7 @@ init -2 python:
                         show_message('missing animation. "miss_{}" does\'t seem to exist'.format(self.animation_name))
                     return
 
-                  #collect and store data used by the AI
+                #collect and store data used by the AI
                 attacker.total_damage += damage
                 if wtype == 'Missile' or wtype == 'Rocket':
                     attacker.total_missile_damage += damage
@@ -1601,6 +1585,9 @@ init -2 python:
                 self.hate -= damage  #getting damaged lowers your threat back down
                 if self.hate < 100: self.hate = 100
                 BM.target = self
+                
+                #difficulty fudging
+                damage = get_modified_damage(damage) 
 
                   #if the attack hits, show the hit animation of the target based on weapon type
                 BM.battle_log_insert(['attack'], "{0} inflicts {1} damage to {2}".format(attacker.name, damage, self.name))
@@ -1628,6 +1615,9 @@ init -2 python:
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy morale too
             self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
+            
+            if self == BM.selected:   # useful when you suicide into a counter
+                BM.unselect_ship(self)
             
             #hate/morale management
             if not self.faction == 'Player':
@@ -1722,8 +1712,6 @@ init -2 python:
                         else:
                             estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
                             estimation = estimation * estimate_flak(self,pship)
-                              #arbitrary compensation for not calculating flak defense perfectly
-                              #also, missiles cost ammo and probably shouldn't be spammed.
                             priority = estimation * (pship.hate/100.0)/50.0
                             #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                             #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
@@ -1756,7 +1744,7 @@ init -2 python:
 #            if pship.name == 'sunrider': pship.damage_estimation[2] = pship.damage_estimation[2] * 0.75
 
 #AI attacks
-        def AI_attack_target(self,pship,weapon):
+        def AI_attack_target(self,pship,weapon,counter=False):
             update_stats()
             BM.attacker = self
             BM.target = pship
@@ -1766,10 +1754,13 @@ init -2 python:
                 pass
             else:
                 try:
-                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,weapon.wtype.lower()))
+                    animation_name = weapon.wtype.lower()
+                    if weapon.animation_name != None:
+                        animation_name = weapon.animation_name
+                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,animation_name))
                 except:
                     show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
-            damage = weapon.fire(self,pship)
+            damage = weapon.fire(self,pship,counter)
             if weapon.wtype != 'Curse':
                 pship.receive_damage(damage,self,weapon.wtype)
 #            update_stats() - updated in receive_damage()
@@ -1873,6 +1864,7 @@ init -2 python:
             elif best_target[3] > most_attractive_ship[1]:
                 #renpy.log('attacking the {} because of its high priority of {!s}'.format(best_target[0].name,best_target[3]))
                 ##attack ship
+                
                 #we are plannning to attack this ship, but let's first work out if we should close in on it.
                 if self.en < self.move_cost + best_target[1].energy_cost(self): #not enough energy to attack and move
                     ##attack ship
@@ -1967,9 +1959,17 @@ init -2 python:
                 
             if self.name == 'Legion':
                 #let's bring the pain
-                if BM.enemy_vanguard_path != []:                    
-                    fire_legion_vanguard(self)
-                    self.en = 0
+                if BM.enemy_vanguard_path != []:
+                    should_fire = False
+                    for ship in player_ships:
+                        if ship.location in BM.enemy_vanguard_path:
+                            should_fire = True
+                    
+                    if should_fire:
+                        fire_legion_vanguard(self)
+                        self.en = 0
+                    else:
+                        BM.enemy_vanguard_path = []
                     
                     
             #################################### HOLD MY BEER, I'M DOING THIS
@@ -2009,10 +2009,10 @@ init -2 python:
                     if self.name == 'Legion' and BM.enemy_vanguard_path == []:
                         result = get_vanguard_feasible(self)
                         if result != False:
-                            message = "WARNING: Legion aims vanguard at {0}".format(result.name)
-                            show_message(message)
-                            BM.battle_log_insert([], message)
-                            BM.enemy_vanguard_path = interpolate_hex(self.location,result.location)
+                            # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
+                            # show_message(message)
+                            # BM.battle_log_insert([], message)
+                            BM.enemy_vanguard_path = interpolate_hex(self.location,result)
                     self.AI_running = False
                     return
 
@@ -2072,8 +2072,11 @@ init -2 python:
 
             ## BLIND SIDE ATTACKS
             if self.faction == 'Player' and self.modifiers['stealth'][0] != 100:
-                for enemy in enemy_ships:
-                    if get_ship_distance(self,enemy) == 1 and self in player_ships: #if next to enemy and -not dead-
+                #player unit moves next to enemy unit
+                
+                for enemy in enemy_ships:                
+                    #if next to enemy, not dead and the enemy isn't cursed.
+                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'] != -100: 
                         counter = None
                         for weapon in enemy.weapons:
                             if weapon.wtype == 'Assault':
@@ -2082,9 +2085,11 @@ init -2 python:
                             enemy.en = enemy.max_en
                             show_message('COUNTER ATTACK!')
                             BM.battle_log_insert(['attack'], "{0} counter-attacks {1}".format(enemy.name, self.name))
-                            enemy.AI_attack_target(self,counter)
+                            enemy.AI_attack_target(self,counter,True)
                             BM.just_moved = False
             else:
+                #enemy moves next to player unit
+                
                 if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
                     for ship in player_ships:
                         if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
@@ -2102,7 +2107,7 @@ init -2 python:
                                     renpy.call_in_new_context('atkanim_{}_{}'.format(ship.animation_name,counter.wtype.lower()))
                                 except:
                                     show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(ship.animation_name,counter.wtype.lower()))
-                                damage = counter.fire(ship,self)
+                                damage = counter.fire(ship,self,True)
                                 self.receive_damage(damage,ship,counter.wtype)
                                 ship.en = EN
 
@@ -2118,6 +2123,7 @@ init -2 python:
             self.hp_cost = 0
             self.acc_degradation = 15
             self.wtype = ''
+            self.animation_name = None
             self.shot_count = 1
             self.accuracy = 100
             self.tooltip = ''
@@ -2143,7 +2149,7 @@ init -2 python:
         def energy_cost(self, parent):
             return int(self.energy_use * parent.energy_cost)
             
-        def fire(self, parent, target): #firing lasers!
+        def fire(self, parent, target, counter = False): #firing lasers!
             target.update_armor()
             if parent.en < self.energy_cost(parent):  #energy handling
                 return 'no energy'
@@ -2207,7 +2213,7 @@ init -2 python:
         def energy_cost(self, parent):
             return int(self.energy_use * parent.kinetic_cost)
             
-        def fire(self, parent, target): #firing gunz!
+        def fire(self, parent, target, counter = False): #firing gunz!
             target.update_armor()
 
             if parent.en < self.energy_cost(parent):  #energy handling
@@ -2234,8 +2240,11 @@ init -2 python:
                 else:
                     damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
+                    if counter:
+                        #when countering, flak buffs give an extra damage bonus.
+                        damage = damage * (100+parent.modifiers['flak'][0]) /100.0
                     if damage < target.armor *2:
-                        store.total_armor_negation += damage -1
+                        store.total_armor_negation += damage - 1
                     else:
                         store.total_armor_negation += target.armor *2
                     damage -= target.armor * 2
@@ -2272,7 +2281,7 @@ init -2 python:
         def energy_cost(self, parent):
             return int(self.energy_use * parent.missile_cost)
 
-        def fire(self, parent, target):
+        def fire(self, parent, target, counter = False):
             target.update_armor()
             BM.missiles = []
             wName = "missile"
@@ -2463,8 +2472,11 @@ init -2 python:
             self.type = 'Melee'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_melee.png'
+            
+        def energy_cost(self, parent):
+            return int(self.energy_use * parent.melee_cost)            
 
-        def fire(self, parent, target):
+        def fire(self, parent, target, counter = False):
             target.update_armor()
 
             #don't really want to fix this yet :D
@@ -2609,8 +2621,15 @@ init -2 python:
                     renpy.show_screen('battle_screen')
                     return 0
 
-            #if it's a buff
+            #if it's a buff/curse
             else:
+                
+                #I should replace this with proper immunity flagging.
+                if self.name == 'Disable' and target.name == 'Legion':
+                    show_message( "The Legion is immune!" )
+                    parent.en += self.energy_use
+                    return 0
+            
                 successful = False
                 if parent is target:
                     # let's hope that we cannot use self-debuff....
