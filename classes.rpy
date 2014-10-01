@@ -1790,10 +1790,11 @@ init -2 python:
                     return
                     
             #check if we ended up next to an enemy ryder and can melee it instead of whatever we were planning.
-            if get_can_melee(self):
-                if attempt_melee(self): #returns True if succeeds
-                    disengage(self) #flee away if there's energy left
-                    return
+            if weapon.wtype != 'Melee':
+                if get_can_melee(self):
+                    if attempt_melee(self): #returns True if succeeds
+                        disengage(self) #flee away if there's energy left
+                        return
             
             BM.attacker = self
             BM.target = pship

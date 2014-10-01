@@ -19,6 +19,10 @@ beta 7
 * changed difficulty names and system. there are now 6 different options.
 * the Liberty's disable ability also causes the shutoff and flakdown effect. (the Legion is immune to this ability!)
 * added 'right click to cancel' effect to a few more screens like orders and preferences
+* quite a few AI changes. you'll likely need to adapt your strategies.
+* added a new [REDACTED]
+* healing now draws a minor amount of hate.
+* 
 
 
 patch 6.0b
