@@ -226,6 +226,14 @@ screen main_menu:
 
     text '[config.version]' xpos 0.01 ypos 0.98 size 12
 
+    if CENSOR == False:
+
+        text ' RESTORATION PATCH DETECTED' xpos 0.01 ypos 0.958 size 15
+
+    if CENSOR == True:
+
+        text ' VANILLA EDITION' xpos 0.01 ypos 0.958 size 15
+
 
 init -2 python:
 

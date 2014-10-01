@@ -233,7 +233,7 @@ init 2 python:
             self.moveforward_voice = ['Claude/Forward 1.ogg','Claude/Forward 2.ogg','Claude/Forward 3.ogg']
             self.movebackward_voice = ['Claude/Backward 1.ogg','Claude/Backward 2.ogg','Claude/Backward 3.ogg']
             self.buffed_voice = ['Claude/Buffed 1.ogg','Claude/Buffed 2.ogg']
-            self.cursed_voice = ['Claude/Cursed 1.ogg','Claude/Cursed 2.ogg','Claude/Cursed 3.ogg','Claude/Cursed 4.ogg','Claude/Cursed 5.ogg']
+            self.cursed_voice = ['Claude/Cursed 1.ogg','Claude/Cursed 2.ogg','Claude/Cursed 4.ogg','Claude/Cursed 5.ogg']
             self.cursing_voice = ['Claude/Curse 1.ogg','Claude/Curse 2.ogg','Claude/Curse 3.ogg','Claude/Curse 4.ogg','Claude/Curse 5.ogg','Claude/Curse 6.ogg','Claude/Curse 7.ogg','Claude/Curse 8.ogg','Claude/Curse 9.ogg','Claude/Curse 10.ogg']
             self.resurrect_voice = ['Claude/Revive 1.ogg','Claude/Revive 2.ogg']
 
@@ -257,6 +257,9 @@ init 2 python:
             self.evasion = 20
             self.lbl = 'Battle UI/label_seraphim.png'  #this is the battle avatar
             self.portrait = 'Battle UI/sola_portrait.png'
+            self.upgrades['kinetic_dmg'] = ['Kinetic Damage',1,0.075,100,1.4]
+            self.upgrades['kinetic_acc'] = ['Kinetic Accuracy',1,0.075,100,1.4]
+            self.upgrades['kinetic_cost'] = ['Kinetic Energy Cost',1,-0.05,100,1.8]
             self.sprites = {
                 'standard':'gameplay/Animations/Seraphim/side.png',
                 }
@@ -356,7 +359,7 @@ init 2 python:
 
     class AllianceBattleship(Battleship):
         def __init__(self):
-            super(AllianceCruiser, self).__init__()
+            super(AllianceBattleship, self).__init__()
             self.stype = 'Battleship'
             self.name = 'Alliance Battleship'
             self.animation_name = 'alliancebattleship'
@@ -373,8 +376,8 @@ init 2 python:
             self.move_cost = 40
             self.hate = 100
             self.evasion = -25
-            self.lbl = 'Battle UI/label_alliancecruiser.png'  #this is the battle avatar
-            self.default_weapon_list = [AllianceBattleshipLaser(),AllianceBattleshipMissile(),AllianceBattleshipKinetic(),AllianceBattleshipAssault()]
+            self.lbl = 'Battle UI/label_alliancebattleship.png'  #this is the battle avatar
+            self.default_weapon_list = [AllianceBattleshipLaser(),AllianceBattleshipMissile(),AllianceBattleshipKinetic(),AllianceBattleshipCannon(),AllianceBattleshipAssault()]
             self.portrait = None
             self.flak = 30
             self.flak_range = 2
@@ -593,6 +596,7 @@ init 2 python:
             self.move_cost = 30
             self.default_weapon_list = [SeraphimEnemyKinetic()]
             
+            
             self.blbl = 'Battle UI/label_seraphimenemy.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
@@ -756,6 +760,39 @@ init 2 python:
             self.shield_generation = 100
             self.shields = self.shield_generation
             self.shield_range = 2
+
+    class Arcadius(Battleship):
+        def __init__(self):
+            super(Arcadius, self).__init__()
+            self.stype = 'Ryder'
+            self.name = 'Arcadius'
+            self.animation_name = 'nightmare'
+            self.faction = 'PACT' #for now...
+            self.max_hp = 1000
+            self.hp = self.max_hp
+            self.max_en = 100
+            self.en = self.max_en
+            self.evasion = 37
+            self.move_cost = 20
+            self.base_armor = 4
+            self.money_reward = 800
+            self.max_missiles = 1
+            self.max_rockets = 0
+            self.missiles = self.max_missiles
+            self.rockets = self.max_rockets
+            self.armor = 4
+            self.default_weapon_list = [ArcadiusLaser(),ArcadiusPulse(),ArcadiusMissile(),ArcadiusMelee()]
+            self.blbl = 'Battle UI/label_nightmare.png'  #this is the battle avatar
+            self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
+            self.sprites = {
+                'standard':'gameplay/Animations/Nightmare/side.png',
+                'melee':'gameplay/Animations/Nightmare/melee.png',
+                }
+            self.flak = 40
+            self.flak_range = 1
+            self.shield_generation = 0
+            self.shields = self.shield_generation
+            self.shield_range = 0
 
     class PactElite(Battleship):
         def __init__(self):
@@ -1010,12 +1047,12 @@ init 2 python:
 
     class Legion(Battleship):
         def __init__(self):
-            super(PactBattleship, self).__init__()
+            super(Legion, self).__init__()
             self.stype = 'Super Dreadnought'
             self.name = 'Legion'
             self.faction = 'PACT'
-            self.animation_name = 'pactbattleship'
-            self.max_hp = 30000
+            self.animation_name = 'legion'
+            self.max_hp = 26000
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
@@ -1024,8 +1061,8 @@ init 2 python:
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.evasion = -60  # cruisers are easy to hit
-            self.blbl = 'Battle UI/label_pactbattleship.png'  #this is the battle avatar
+            self.evasion = -70  # cruisers are easy to hit
+            self.blbl = 'Battle UI/label_legion.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [LegionLaser(),LegionKinetic(),LegionMissile()]
             self.flak = 100
@@ -1409,7 +1446,7 @@ init 2 python:
     class AllianceBattleshipKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 400
+            self.damage = 430
             self.energy_use = 60
             self.shot_count = 1
             self.accuracy = 65
@@ -1423,7 +1460,7 @@ init 2 python:
     class AllianceBattleshipCannon(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 1000
+            self.damage = 1100
             self.energy_use = 120
             self.shot_count = 1
             self.accuracy = 60
@@ -1560,9 +1597,9 @@ init 2 python:
     class PaladinMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 40
+            self.damage = 80
             self.energy_use = 20
-            self.shot_count = 10
+            self.shot_count = 5
             self.accuracy = 70
             self.uses_rockets = False
             self.uses_missiles = True
@@ -1578,7 +1615,7 @@ init 2 python:
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 14
-            self.energy_use = 20
+            self.energy_use = 30
             self.shot_count = 10
             self.accuracy = 70
             self.wtype = 'Assault'
@@ -2193,6 +2230,66 @@ init 2 python:
             Temporarily overcharges the Seraphim's systems, providing
             an additional 100 additional points to accuracy as well as
             doubling weapon damage for three turns."""
+            
+    class AwakenAsaga(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.self_buff = True
+            self.energy_use = 100
+            self.accuracy = 100
+            self.hp_cost = 100
+            self.acc_degradation = 100
+            self.modifies = ['damage','evasion','armor']
+            self.buff_strength = 100
+            self.buff_duration = -1
+            self.name = 'Awaken Asaga'
+            self.lbl = 'Battle UI/button_asaawaken.png'
+            self.end_of_turn_callback = self.callback
+            self.tooltip = """
+            Improves the Black Jack's damage, evasion and armor each turn, but also causes progressively more damage each turn until canceled."""
+            
+        def callback(self):
+            a,b = blackjack.modifiers['damage']
+            a = a + 50 
+            blackjack.modifiers['damage'] = [a,b]
+            a,b = blackjack.modifiers['evasion']
+            a = a + 50 
+            blackjack.modifiers['evasion'] = [a,b]
+            a,b = blackjack.modifiers['armor']
+            a = a + 50 
+            blackjack.modifiers['armor'] = [a,b]
+            # a,b = blackjack.modifiers['accuracy']
+            # a = a + 50 
+            # blackjack.modifiers['accuracy'] = [a,b]
+            blackjack.update_stats()
+            blackjack.hp -= (100 +  -b * 40 - 40)
+            if self in blackjack.weapons:
+                blackjack.weapons.remove(self)
+                blackjack.weapons.append(EndAwakenAsaga())
+            
+    class EndAwakenAsaga(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.self_buff = True
+            self.energy_use = 0
+            self.accuracy = 100
+            self.lbl = 'Battle UI/button_asaawaken.png'
+            self.tooltip = """
+            Cancels the awakening effect"""
+        
+        def fire(self,parent,target,counter = False):
+            blackjack.modifiers['damage'] = [0,0]
+            blackjack.modifiers['evasion'] = [0,0]
+            blackjack.modifiers['armor'] = [0,0]
+            # blackjack.modifiers['accuracy'] = [0,0]
+            blackjack.update_stats()
+            BM.end_turn_callbacks = []
+            blackjack.weapons.remove(self)
+            blackjack.weapons.append(AwakenAsaga())
+            
+       
+            
+            
 
 #### curse skills ####
 
@@ -2489,7 +2586,48 @@ init 2 python:
             self.shot_count = 15
             self.accuracy = 85
             self.wtype = 'Pulse'
-            
+
+###################################################### ARCADIUS
+
+    class ArcadiusMelee(Melee):
+        def __init__(self):
+            Weapon.__init__(self)
+            self.damage = 500    #multiplied by shot count
+            self.energy_use = 30
+            self.ammo_use = 0
+            self.accuracy = 160
+            self.acc_degradation = 100
+            self.wtype = 'Melee'
+            self.type = 'Melee'
+            self.shot_count = 1
+
+    class ArcadiusMissile(Missile):
+        def __init__(self):
+            Missile.__init__(self)
+            self.damage = 50
+            self.energy_use = 60
+            self.shot_count = 10
+            self.accuracy = 100
+            self.wtype = 'Missile'
+
+    class ArcadiusLaser(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 300
+            self.energy_use = 40
+            self.shot_count = 1
+            self.accuracy = 110
+
+    class ArcadiusPulse(Laser):
+        def __init__(self):
+            Laser.__init__(self)
+            self.damage = 50
+            self.energy_use = 40
+            self.shot_count = 12
+            self.accuracy = 78
+            self.wtype = 'Pulse'
+
+
             
     ## store items ##
     # see classes.rpy for more details on what each field does

@@ -212,8 +212,8 @@ init -6 python:
             accuracy *= attacker.melee_acc
 
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
-        if not weapon.wtype == 'Support' or guess:
-            accuracy -= (target.evasion + target.modifiers['evasion'][0])
+        if not weapon.wtype == 'Support' and not guess:
+            accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] ) / 100 )
 
         #an acc. buff is added as a flat bonus
         if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
@@ -395,8 +395,6 @@ init -6 python:
         for key in firstvars:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
-                
-    
 
     def reset_classes():
         """experimental save file compatibility keeper
@@ -425,6 +423,7 @@ init -6 python:
                 dictionary = BM.__dict__[key]
                 for key2 in fields[key]:
                     #only put missing keys in nested dicts
+                    #this will re-add orders that are not part of the default
                     if not key2 in dictionary:
                         dictionary[key2] = fields[key][key2]
             else:
@@ -432,6 +431,13 @@ init -6 python:
 
         #repeat same concept for basic variables inside firstvariables.rpy
         add_new_vars()
+        
+        #remake the BM.ships list
+        BM.ships = []
+        for ship in player_ships:
+            BM.ships.append(ship)
+        for ship in enemy_ships:
+            BM.ships.append(ship)
 
         #going to re-init all the ships
         for ship in BM.ships:
@@ -442,38 +448,37 @@ init -6 python:
 
             #make a copy of the ship instance
             ship_copy = deepcopy(ship)
-            #re-init the copy
-            ship_copy.__init__()
-            #copy all the fields of the copy into a dict
-            fields = ship_copy.__dict__
-
-            #loop over all the keys in the dict
-            for key in fields:
-                if type(fields[key]) is dict:
-                    #check if the new dict already exists. add it if it does not
-                    try:
-                        dict2 = getattr(ship,key)  #this will be an alias, and it needs to be.
-                    except:
-                        setattr(ship,key,fields[key])
-                        continue
-                    dict1 = fields[key]
-                    #since the dict already existed, loop over every key in the new field list and update it
-                    for key in dict1:
-                        #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in the ship too
-                        if key not in dict2:
-                            dict2[key]=dict1[key]
+            #re-init the ship
+            ship.__init__()
+            #loop over all the keys in the dict of the copy
+            for key in ship_copy.__dict__:
+                ship_value = getattr(ship_copy,key)  #= hp value or upgrades dict etc
+                #check if this key represents a nested dict
+                if type(ship_value) is dict: #such as ship.upgrades
+                    new_ship_dict = getattr(ship,key) #the default dict part of the recently reinitialized ship
+                    #loop over all the keys in the dict from the copied ship
+                    for key2 in ship_value:                        
+                        #overwrite the default values with the ones that were there originally
+                        #otherwise all upgrades would get wiped out.
+                        if key2 in new_ship_dict:
+                            new_ship_dict[key2] = ship_value[key2]
                 else:
-                    #test if BM has this field. if it does not, add it with default value.
-                    try:
-                        x = getattr(ship,key)
-                    except:
-                        setattr(ship,key,fields[key])
-
+                    # key not a dict
+                    if hasattr(ship,key):
+                        setattr(ship,key, getattr(ship_copy,key) )
+                        
             #restore the old weapon list
             ship.weapons = weapons
 
         show_message('Reinitialization complete.')
         return
+        
+    def update_mp():
+        for variable in important_variables:
+            if hasattr(store,variable):
+                if getattr(mp,variable) is None:
+                    setattr(mp,variable, getattr(store,variable) )
+        mp.save()
 
     def time_warp_easeout(t):  ##probably never got used
         return 1.0 - math.cos(t * math.pi / 2.0)
@@ -743,17 +748,19 @@ init -6 python:
                 return True
         return False
         
-    def get_counter_attack(location):
-        """check if a location is next to an enemy unit that has an Assault type weapon"""
+    def get_counter_attack(location, AI = False):
+        """check if a location is next to an (enemy) unit that has an Assault type weapon"""
         if location == None: return False
-        for ship in enemy_ships:
+        if AI:
+            shiplist = player_ships
+        else:
+            shiplist = enemy_ships
+        for ship in shiplist:
             if get_distance(ship.location,location) == 1:
                 if has_weapon(ship,'Assault') and ship.modifiers['flak'][0] != -100:
                     return True
         return False
-                    
-                
-    
+        
     def update_modifiers():
         """
         called when the phase changes. it ticks down modifiers and removes them when expired.

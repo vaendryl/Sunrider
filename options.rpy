@@ -19,6 +19,7 @@ init -1 python hide:
     #config.use_cpickle = False
     #config.save_dump = True
     config.log = None
+    config.autoreload = False
 
     ## These control the width and height of the screen.
 
@@ -28,8 +29,8 @@ init -1 python hide:
     ## This controls the title of the window, when Ren'Py is
     ## running in a window.
 
-    config.name = "Sunrider First Arrival"
-    config.version = " Beta 6.1"
+    config.name = "Sunrider Mask of Arcadius"
+    config.version = " Beta 7.0"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 15
@@ -285,12 +286,12 @@ init python:
     ## The name that's used for directories and archive files. For example, if
     ## this is 'mygame-1.0', the windows distribution will be in the
     ## directory 'mygame-1.0-win', in the 'mygame-1.0-win.zip' file.
-    build.directory_name = "SunriderFirstArrivalB6-Steam"
+    build.directory_name = "SunriderMaskofArcadius-Steam"
 
     ## The name that's uses for executables - the program that users will run
     ## to start the game. For example, if this is 'mygame', then on Windows,
     ## users can click 'mygame.exe' to start the game.
-    build.executable_name = "SunriderFirstArrivalB6-Steam"
+    build.executable_name = "SunriderMaskofArcadius-Steam"
 
     ## If True, Ren'Py will include update information into packages. This
     ## allows the updater to run.
@@ -338,6 +339,7 @@ init python:
     # build.classify('game/**.wav', 'archive')
     # build.classify('game/**.mp3', 'archive')
     # build.classify('game/**.ttf', 'archive')
+    build.classify('game/Censored/**.jpg', 'censoredcontent')
 
 
     ## Files matching documentation patterns are duplicated in a mac app
@@ -345,3 +347,5 @@ init python:
 
     build.documentation('*.html')
     build.documentation('*.txt')
+    
+    CENSOR = True

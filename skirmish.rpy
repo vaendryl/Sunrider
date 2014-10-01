@@ -12,7 +12,7 @@ label skirmish_battle:
         BM.yadj.value = 370 
         store.zoomlevel = 0.65
         BM.phase = 'formation'
-        BM.show_grid = False
+        BM.selected = None
         battlemode()
         BM.remove_mode = False #when True player can click on units and delete them quickly
         for ship in player_ships:

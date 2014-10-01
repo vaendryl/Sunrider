@@ -32,7 +32,7 @@ label test_battle:
         sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault()]
         sunrider = create_ship(Sunrider(),(8,6),sunrider_weapons)
 
-        blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+        blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse(),AwakenAsaga()]
         blackjack = create_ship(BlackJack(),(10,5),blackjack_weapons)
 
         liberty_weapons = [LibertyLaser(),Repair(),AccUp(),DamageUp(),AccDown()]
@@ -42,7 +42,9 @@ label test_battle:
         phoenix = create_ship(Phoenix(),(10,7),phoenix_weapons)
 
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
-        enemy_ships[-1].name = 'Legion'
+        enemy_ships[-1].name = 'Legion' #testing out the new cannon
+        havoc = enemy_ships[-1]
+        
         # enemy_ships[-1].hp = 1
         # create_ship(PactSupport(),(14,5))
         # create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
@@ -87,21 +89,21 @@ label endofturn:
     if not BM.phase == 'Player':
         play sound1 'sound/battle.wav'
         show sunrider_phase onlayer screens zorder 50
-        pause TURN_SPEED
+        $ renpy.pause(TURN_SPEED, hard=True)
         play sound2 'sound/drum.ogg'
         hide sunrider_phase onlayer screens zorder 50 with dissolve
         $ BM.phase = 'Player'
     elif BM.phase == 'Player' and enemy_ships[0].faction == 'PACT':
         play sound1 'sound/battle.wav'
         show PACT_phase onlayer screens zorder 50
-        pause TURN_SPEED
+        $ renpy.pause(TURN_SPEED, hard=True)
         play sound2 'sound/drum.ogg'
         hide PACT_phase onlayer screens zorder 50 with dissolve
         $ BM.phase = 'PACT'
     elif BM.phase == 'Player' and enemy_ships[0].faction == 'Pirate':
         play sound1 'sound/battle.wav'
         show Pirate_phase onlayer screens zorder 50
-        pause TURN_SPEED
+        $ renpy.pause(TURN_SPEED, hard=True)
         play sound2 'sound/drum.ogg'
         hide Pirate_phase onlayer screens zorder 50 with dissolve
         $ BM.phase = 'Pirate'
@@ -179,6 +181,27 @@ label restartturn:
 label after_load:
 
     python:
+    
+        ##debugging stuff##
+        # renpy.hide_screen('battle_screen')
+        # if not hasattr(BM,'show_tooltips'): BM.show_tooltips = True
+        # if not hasattr(BM,'debugoverlay'): BM.debugoverlay = False
+        # if not hasattr(BM,'warping'): BM.warping = False
+        # if not hasattr(BM,'enemy_vanguard_path'): BM.enemy_vanguard_path = []
+        # if not hasattr(BM,'vanguardtarget'): BM.vanguardtarget = None
+        # if not hasattr(BM,'show_grid'): BM.show_grid = True
+        
+        if not hasattr(store,'BM'): BM = Battle()
+        if not hasattr(BM,'debug_log'): BM.debug_log = []
+        
+        # return_stack = renpy.get_return_stack()
+        # for item in return_stack:
+            # BM.debug_log.append(str(item) )
+        # renpy.show_screen('debug_window')
+        # renpy.pause()
+        
+    
+    
         reset = False
         if not hasattr(store,'BM'):
             BM = Battle()
@@ -191,7 +214,10 @@ label after_load:
         else:
             reset = True
 
-        if reset:
+        if reset:      
+            
+            # #update the multipersistent object with the most critical flags.
+            # update_mp()
             
             #replace old union frigates with new ones
             for ship in player_ships[:]:
@@ -222,14 +248,25 @@ label after_load:
                 res_location = "lab"
                 res_event = "allocatefunds"             
 
-        #cleanup
-        if hasattr(BM,'ships') and hasattr(store,'player_ships') and hasattr(store,'enemy_ships'):
-            if BM.ships != []:
-                BM.ships = []
-                for ship in player_ships:
-                    BM.ships.append(ship)
-                for ship in enemy_ships:
-                    BM.ships.append(ship)
+        #attempt to supply a fail-safe label if the return label does not exist.
+        #this requires a very recent (unreleased) version of renpy to work!
+        try:
+            return_stack = renpy.get_return_stack()
+            new_stack = []
+            for item in return_stack:
+                if renpy.has_label(item):
+                    new_stack.append(item)
+                else:
+                    BM.debug_log.append('return label {} missing'.format(str(item)))
+                    fail_safe_label = 'dispatch'
+                    if BM.battlemode:
+                        fail_safe_label = 'mission{}'.format(BM.mission)
+                    new_stack.append(fail_safe_label)
+            renpy.set_return_stack(new_stack)            
+        except:
+            show_message('there was an error in the return stack code')
+            BM.debug_log.append('there was an error in the return stack code')
+                    
     return
 
 

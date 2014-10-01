@@ -62,10 +62,11 @@ screen melee_player:
 
     if BM.attacker.faction == 'Player':
         add melee_atkanim(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
+        add melee_atkanim_sprite(BM.attacker.sprites['character'])
     else:
         add melee_atkanim_enemy(BM.attacker.sprites['standard'],BM.attacker.sprites['melee'])
 
-    add melee_atkanim_sprite(BM.attacker.sprites['character'])
+        
 
 label melee_attack_player:
     python:

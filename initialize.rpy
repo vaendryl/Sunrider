@@ -15,6 +15,7 @@ init -10 python:
     SHIP_SPEED = 0.3
     ZOOM_SPEED = 0.1
     GRID_SIZE = (18,16) #(X,Y) aka (width,height)
+    AI_WAIT_TIME = 0.5  #time in between highlighting an enemy unit and executing its action
     HEXW = 192   #width of hexagon (3.0 ** .5)/2.0 * HEXH
     HEXH = 222   #height of hexagon
     HEXD = 167   #vertical distance between hexagons (3/4) * HEXH
@@ -26,6 +27,14 @@ init -10 python:
     MOVX = 0
 
     planets = []
+    
+    mp = MultiPersistent("Sunrider 1")
+    
+    important_variables = [ 
+        'captain_moralist','captain_prince','affection_ava','affection_asaga',
+        'affection_chigara','affection_icari','affection_claude','affection_tera',
+        'affection_sola','affection_cosette','wishall','Saveddiplomats',
+        'OngessTruth','legion_destroyed' ]
     
     DIFFICULTY_NAMES = {
         0 : 'Visual Novel Mode',
@@ -60,7 +69,7 @@ init -1 python:   #create sound channels for simultanious sfx playback
     #set music volume to 75%. This is seperate from the setting in preferences screen!
     renpy.music.set_volume(0.75)
 
-    Difficulty = 2
+    Difficulty = 3
 
 init python:
 
@@ -846,6 +855,91 @@ label mission19_inits:
     $ EnemyTurnMusic = "music/Intruders.ogg"
 
     return
+
+label mission20_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        
+        create_ship(PactElite(),(11,7))
+        create_ship(PactElite(),(11,9))
+        create_ship(PactElite(),(11,6))
+        create_ship(PactElite(),(11,10))
+        create_ship(PactElite(),(12,5))
+        create_ship(PactElite(),(12,11))
+        
+        create_ship(PactSupport(),(12,6))
+        create_ship(PactBomber(),(12,7))
+        create_ship(PactBomber(),(12,9))
+        create_ship(PactSupport(),(12,10))
+        
+        create_ship(PactAssaultCarrier(),(13,7))
+        create_ship(PactAssaultCarrier(),(13,9))
+
+        create_ship(PactBattleship(),(13,6))
+        create_ship(PactBattleship(),(13,10))
+        
+        
+        create_ship(Legion(),(13,8))
+        enemy_ships[-1].boss=True
+
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/Riding_With_the_Wind.ogg"
+    $ EnemyTurnMusic = "music/Posthumus_Regium.ogg"
+
+    return 
+
+label mission21_inits:
+    
+    python:
+        zoomlevel = 1
+        enemy_ships = []
+        destroyed_ships = []
+        
+        if legion_destroyed == True:
+            player_ships.remove(sunrider)
+            BM.ships.remove(sunrider)
+            
+            alliancebs1 = create_ship(AllianceBattleship(),(5,4))
+            alliancebs2 = create_ship(AllianceBattleship(),(5,4))
+            alliancebs2 = create_ship(AllianceBattleship(),(5,4))
+            alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
+            alliancecruiser2 = create_ship(AllianceCruiser(),(10,15))
+        
+        blackjack.register_weapon(AwakenAsaga())
+        BM.selected = blackjack  #just in case blackjack is still selected.
+        blackjack.weapons[-1].fire(blackjack,blackjack)
+        blackjack.en += 100
+        blackjack.hp += 100
+        
+        create_ship(PactElite(),(10,8))
+        create_ship(PactElite(),(10,10))
+        create_ship(PactElite(),(11,6))
+        create_ship(PactElite(),(11,12))
+        
+        create_ship(Arcadius(),(11,7))
+        create_ship(Arcadius(),(11,8))
+        create_ship(Arcadius(),(11,10))
+        create_ship(Arcadius(),(11,11))
+        
+        create_ship(PactAssaultCarrier(),(12,7))
+        create_ship(PactAssaultCarrier(),(13,11))
+        create_ship(PactAssaultCarrier(),(13,11))
+
+        #center the viewport on the sunrider
+        BM.xadj.value = 872
+        BM.yadj.value = 370
+
+    $ PlayerTurnMusic = "music/The_Bladed_Druid.ogg"
+    $ EnemyTurnMusic = "music/The_Flight_of_the_Crow.ogg"
+
+    return 
 
 label preview_mission:
 

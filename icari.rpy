@@ -279,6 +279,14 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari plugsuit altneutral surprise:
+        "Character/Icari/icari_plugsuit_altneutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    
+    
         
     ##########################################################UNIFORM
         
@@ -449,7 +457,8 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True          
+        subpixel True
+    
         
         
         

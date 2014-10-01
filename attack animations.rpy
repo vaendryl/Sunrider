@@ -3013,6 +3013,26 @@ label die_blackjack:
 
     return
 
+label hitlegion_blackjack:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show blackjack:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
 
 label atkanim_liberty_laser: ########################LIBERTY ATTACK ANIMATIONS
 
@@ -3640,6 +3660,28 @@ label die_liberty:
     pause
 
     return
+
+label hitlegion_liberty:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show liberty:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 
 label atkanim_seraphim_kinetic:########################SERAPHIM ATTACK ANIMATIONS
 
@@ -4272,6 +4314,27 @@ label die_seraphim:
     with dissolvequick
 
     pause
+
+    return
+
+label hitlegion_seraphim:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show seraphim:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
 
     return
 
@@ -12772,7 +12835,7 @@ label die_phoenixboaster:
     hide ava
 
     return
-
+    
 label atkanim_pactbomber_missile: ##########################PACT BOMBER ATTACK ANIMATIONS
 
     if config.skipping:
@@ -15254,6 +15317,27 @@ label die_phoenix:
 
     return
 
+label hitlegion_phoenix:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show phoenix:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 label atkanim_phoenix_assassination:
 
     if config.skipping:
@@ -16497,6 +16581,27 @@ label die_bianca:
 
     return
 
+label hitlegion_bianca:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show bianca:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 ############################################ALLIANCECRUISER ATTACK ANIMATIONS START
 label atkanim_alliancecruiser_kinetic:
 
@@ -17314,6 +17419,28 @@ label die_alliancecruiser:
     pause 1.0
 
     return
+
+label hitlegion_alliancecruiser:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show alliancecruiser_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 
 ############################################ALLIANCE BATTLESHIP ATTACK ANIMATIONS START
 
@@ -18179,6 +18306,27 @@ label die_alliancebattleship:
         ease 1.5 alpha 0
         
     pause 1.0
+
+    return
+
+label hitlegion_alliancebattleship:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show alliancebattleship_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
 
     return
 
@@ -19647,6 +19795,28 @@ label die_paladin:
     pause
 
     return
+    
+label hitlegion_paladin:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show paladin:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 
 label atkanim_unionfrigate_laser: ################################################UNION FRIGATE
 
@@ -20234,6 +20404,28 @@ label die_unionfrigate:
     pause 1.0
 
     return
+
+label hitlegion_unionfrigate:
+    
+    if config.skipping:
+        return
+
+    $renpy.show_screen('show_background',_layer='master')
+
+    show unionfrigate_side:
+        xpos 0.5 ypos 0.5
+
+    pause 0.5
+    
+    play sound1 "sound/legion_maincannon_fire.ogg"
+    show white with dissolve
+    
+    play sound "sound/explosion4.ogg"
+
+    pause 2
+
+    return
+
 
 label atkanim_nightmare_missile: #################################################    NIGHTMARE
 

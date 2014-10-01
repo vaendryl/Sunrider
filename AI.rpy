@@ -228,31 +228,25 @@ init python:
         if self is None: return False
         if self.location is None: return False
             
-        #are there any player ships nearby?
-        templist = []        
-        for pship in player_ships:
-            if get_ship_distance(pship,self) <= 30:
-                templist.append(pship)
-        if len(templist) <= 1:
-            return False
+        ring = get_in_ring(self.location,20) #ring around the battlefield
             
         #find a good target
         best_target = None
-        best_count = None
-        for pship in templist:
+        best_count = 0
+        for hex in ring:
             #get a list of hexes in between self and the possible target.
-            path = interpolate_hex(pship.location,self.location)
+            path = interpolate_hex(hex,self.location)
             
             #count the number of player ships in between the target and self
             target_count = 0
-            for pship in templist:
+            for pship in player_ships:
                 if pship.location in path:
                     target_count += 1
             
             #record best target
-            if target_count < 2:
-                if best_count is None or best_count < target_count:
-                    best_target = pship
+            if target_count > 1:
+                if best_count < target_count:
+                    best_target = hex
                     best_count = target_count
                     
         if best_target is not None:
@@ -268,13 +262,12 @@ init python:
     
         # renpy.music.play('Music/March_of_Immortals.ogg') #not sure if this will be used
         try:
-            renpy.call_in_new_context('atkanim_legion_vanguard') #TEST THIS
+            renpy.call_in_new_context('atkanim_legion_vanguard') 
         except:
             show_message('missing legion vanguard animation')
             
         renpy.hide_screen('battle_screen')
         renpy.show_screen('battle_screen')
-        renpy.pause(1)
         store.damage = 10000  #yeah, I know.
         store.hit_count = 1
         store.total_armor_negation = 0
@@ -282,15 +275,15 @@ init python:
         templist = player_ships[:]
         for ship in templist:
             if ship.location in BM.enemy_vanguard_path and BM.battlemode: #failsaves
-                if ship in player_ships: #it's possible the ship was already deleted because of the boss being killed
+                if ship in player_ships: 
                     BM.target = ship
-                    ship.receive_damage(store.damage,self,'Vanguard') #TEST THIS
+                    ship.receive_damage(store.damage,self,'Vanguard')
         renpy.hide_screen('battle_screen')
         renpy.show_screen('battle_screen')
         BM.enemy_vanguard_path = []
         return
         
-    def estimate_flak(self,target):
+    def estimate_flak(self,target,adjustment = 10,shiplist='player_ships'):
         if self is None or target is None: return 100
         if self.location is None or target.location is None: return 100
         
@@ -298,10 +291,10 @@ init python:
         
         flak_strength = 1.0  #the lower this number the stronger, actually.
         for hex in path:
-            for ship in player_ships:
+            for ship in eval(shiplist):
                 if ship.location is not None and not ship.flak_used:
                     if get_distance(ship.location,hex) <= ship.flak_range:
-                        effective_flak = ship.flak + ship.modifiers['flak'][0]
+                        effective_flak = ship.flak + ship.modifiers['flak'][0] - adjustment #final -adjustment represents both torpedoes and the AI wearing down flak with missiles
                         if effective_flak > 100: effective_flak = 100
                         elif effective_flak < 0: effective_flak = 0
                         flak_strength = (100-effective_flak)/100.0 * flak_strength
@@ -312,8 +305,98 @@ init python:
             ship.flak_used = False
         
         return flak_strength
-                        
+        
+    def get_flak_at_hex(hex,AI=True):
+        if hex == None: return 0
+        if AI:
+            ships = player_ships
+        else:
+            ships = enemy_ships
+        flak = 0
+        locationholder = store.object()
+        locationholder.location = hex
+        for ship in ships:            
+            flak += estimate_flak(ship,locationholder,adjustment=0,shiplist='enemy_ships')
+        return (100 - 100 * (flak / len(ships)))
+        
+    def get_shielding_at_hex(hex,AI=True):
+        if hex == None: return 0
+        if AI:
+            ships = enemy_ships
+        else:
+            ships = player_ships 
+        result = 0
+        for ship in ships:
+            if ship.shield_generation > 0 and get_distance(ship.location,hex) <= ship.shield_range:
+                result += ship.shield_generation + ship.modifiers['shield_generation'][0]
+        return result
             
+    def get_can_melee(self):
+        can_melee = False
+        for weapon in self.weapons:
+            if weapon.wtype == 'Melee':
+                return True
+    
+    def get_melee_weapon(self):
+        for weapon in self.weapons:
+            if weapon.wtype == 'Melee':
+                return weapon
+        return None
+    
+    def attempt_melee(self):
+        attacked = False
+        melee_weapon = get_melee_weapon(self)
+        
+        while self.en >= melee_weapon.energy_cost(self):
+            adjacent = False
+            for ship in player_ships:
+                if get_ship_distance(ship,self) == 1:
+                    if ship.stype == 'Ryder':
+                        if adjacent == False:
+                            adjacent = ship
+                        else:
+                            #let's be a dick and choose to melee the ryder with lowest hp.
+                            if adjacent.hp > ship.hp:
+                                adjacent = ship
+            if adjacent == False:
+                return attacked
+            else:
+                attacked = True
+                self.AI_attack_target(adjacent,melee_weapon)
+                
+        else:
+            #the while never ran, the ship ran out of energy to melee or there was never a valid target.
+            return attacked
+                
+    def disengage(self):
+        move_range = self.en / self.move_cost
+        if move_range <= 0:
+            return False
+        
+        move_range = get_all_in_radius(self.location,max_move_distance)
+        valid_spots = []
+        for hex in move_range:
+            if get_cell_available(hex):
+                if get_counter_attack(hex, AI = True):
+                    continue
+                valid_spots.append(hex)
+        
+        best_hex = None
+        best_average = 0
+        for hex in valid_spots:
+            distance = 0
+            for ship in player_ships:
+                distance += get_ship_distance(self,ship)
+            average = distance / len(player_ships)
+            if average > best_average:
+                best_average = average
+                best_hex = hex
+        
+        if best_hex is not None:
+            self.move_ship(best_hex,BM)
+        
+        
+        
                     
                 
             

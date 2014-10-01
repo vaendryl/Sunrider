@@ -139,6 +139,14 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+    
+    image claude plugsuit excited surprise:
+        "Character/Claude/claude_plugsuit_excited_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
         
         ########################################### UNIFORM
 
@@ -568,6 +576,55 @@
         subpixel True
     image claude nurse fingerup neutral:
         "Character/Claude/claude_nurse_fingerup_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse excited shock:
+        "Character/Claude/claude_nurse_excited_shock.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse handstogether comictearblush:
+        "Character/Claude/claude_nurse_handstogether_comictearblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse excited shoutblush:
+        "Character/Claude/claude_nurse_excited_shoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse handstogether comiccry:
+        "Character/Claude/claude_nurse_handstogether_comiccry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fingeronlip kittysmile:
+        "Character/Claude/claude_nurse_fingeronlip_kittysmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fingeronlip kittysmile:
+        "Character/Claude/claude_nurse_altneutral_bod.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+    image claude nurse altneutral bod:
+        "Character/Claude/claude_nurse_altneutral_bod.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image claude nurse fisttohead forcedsmile:
+        "Character/Claude/claude_nurse_fisttohead_forcedsmile.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255

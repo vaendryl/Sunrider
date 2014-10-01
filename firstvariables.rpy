@@ -77,7 +77,6 @@ label firstvariables:
     $ farport_losttech = False
     $ tydaria_morepirates = False
     
-    
     #$ sunrider = 0
     #$ blackjack = 0
     #$ liberty = 0

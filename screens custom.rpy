@@ -623,7 +623,7 @@ screen battle_screen:
 
 
                 ##DISPLAY MOVEMENT OPTIONS##
-        if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode:
+        if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
             for tile in BM.selected.movement_tiles:
                     
                 $ lbl = 'Battle UI/move_tile.png'
@@ -739,16 +739,18 @@ screen battle_screen:
             xalign 1.0
             vbox:
                 xalign 1.0
-                textbutton "Battle Log" xalign 1.0 action Show('battle_log')
-                if BM.edgescroll == (0,0):
-                    textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
-                else:
-                    textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
-                if BM.show_tooltips:
-                    textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
-                else:
-                    textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
-                textbutton "restart turn" xalign 1.0 action Jump('restartturn')
+                # textbutton "Battle Log" xalign 1.0 action Show('battle_log')
+                # if BM.edgescroll == (0,0):
+                    # textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
+                # else:
+                    # textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
+                # if BM.show_tooltips:
+                    # textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
+                # else:
+                    # textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
+                
+                if store.Difficulty < 3:
+                    textbutton "restart turn" xalign 1.0 action Jump('restartturn')
     
             if config.developer:
                 vbox:
@@ -764,10 +766,8 @@ screen battle_screen:
                     if BM.show_grid:
                         textbutton "new grid" xalign 1.0 action SetField(BM,'show_grid',False)
                     else:
-                        textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)    
-
-
-
+                        textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)
+                    textbutton "debug log" xalign 1.0 action Show('debug_window')
 
     if BM.just_moved:
         textbutton 'cancel movement':
@@ -1061,7 +1061,10 @@ screen commands: ##show the weapon buttons etc##
             if BM.selected.modifiers[modifier][0] != 0:
                 text modifier xpos 1217 ypos (922+count*24) size 20 outlines [(1,'000',0,0)]
                 if BM.selected.modifiers[modifier][0] > 0:
-                    $ status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                    if BM.selected.modifiers[modifier][1] > 0:
+                        $ status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                    else:
+                        $ status_effect = '+{}%'.format(BM.selected.modifiers[modifier][0])
                 else:
                     $ status_effect = '{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
                 text status_effect xanchor 1.0 xpos 1554 ypos (922+count*24) size 19 outlines [(1,'000',0,0)]
@@ -1590,6 +1593,11 @@ screen victory2:
     if store.boss_killed:
         $ total_ships += len(enemy_ships)
 
+    $ wait_time = 0.3
+    if len(destroyed_ships)> 20:
+        $ wait_taime = 0.1
+    
+    
     for ship in destroyed_ships:
         if not ship.faction == 'Player':
             add ship.blbl:
@@ -1602,7 +1610,7 @@ screen victory2:
                 outlines [(2,'000',0,0)]
                 at victory_ships(xx,wait,1)
 
-            $wait += 0.3
+            $wait += wait_time
             $xx += 1520/total_ships
 
     if store.boss_killed:
@@ -1622,7 +1630,7 @@ screen victory2:
             $xx += 1520/total_ships
 
     $wait += 0.5
-    text 'enemy destruction reward: {}$'.format(store.total_money):
+    text 'enemy destruction reward: {}$'.format(int(store.total_money)):
         xpos 0.2
         ypos 0.6
         size 40
@@ -1652,7 +1660,7 @@ screen victory2:
 
     if store.Difficulty == 5:
         $wait += 0.1
-        text 'space whale tax: {}$'.format(int(store.total_money * 0.2)):
+        text 'space whale tax: {}$'.format(int(store.net_gain * 0.25)):
             xpos 0.2
             ypos yposition
             size 40
@@ -1730,7 +1738,8 @@ screen message:
     text message:
         at message_transform(xpos,ypos)
         size 24
-        outlines [(1,'fff',0,0)]
+        color 'fff'
+        outlines [(2,'000',0,0)]
 
     timer 3.25 action Hide('message')
 
@@ -2049,7 +2058,7 @@ screen game_over_gimmick:
             
 screen debug_window:
     zorder 100
-    modal True
+    # modal True
 
     drag:
         xalign 0.5
@@ -2065,26 +2074,27 @@ screen debug_window:
             ymaximum 400
             background Solid((0,0,0,200))
             
-            side "c t r":
-                viewport:
-                    id 'debug log'
-                    yinitial 1.0
-                    
-                    
-                    vbox:
-                        for entry in BM.debug_log:
-                            text str(entry)
-                    
-                                    
+            vbox:
                 hbox:
+                    xfill True
                     label 'debug log'
+                    textbutton 'clear':
+                        xalign 1.0
+                        action SetField(BM,'debug_log',[])
                     textbutton "X":
                         xalign 1.0
-                        action Hide('debug_window')
-
-                vbar:
-                    value YScrollValue('debug log')
-                    hovered SetField(BM, 'draggable', False)
-                    unhovered SetField(BM, 'draggable', True)        
+                        action Hide('debug_window')            
+            
+                side "c r":
+                    viewport:
+                        id 'debug log'
+                        yinitial 1.0
+                        vbox:
+                            for entry in BM.debug_log:
+                                text str(entry)
+                    vbar:
+                        value YScrollValue('debug log')
+                        hovered SetField(BM, 'draggable', False)
+                        unhovered SetField(BM, 'draggable', True)        
             
         

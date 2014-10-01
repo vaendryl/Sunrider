@@ -353,10 +353,21 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True             
-
-    image ava uniform handsonhips neutral:
-        "Character/Ava/ava_uniform_handonhip_neutral.png"
+        subpixel True    
+    image ava uniform neutral angry:
+        "Character/Ava/ava_uniform_neutral_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image ava uniform point shouttear:
+        "Character/Ava/ava_uniform_point_shouttear.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image ava uniform salute smileblushtear:
+        "Character/Ava/ava_uniform_salute_sadblush.png"
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
@@ -367,7 +378,7 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True
+        subpixel True         
     image ava beach handsonhips angry:
         "Character/Ava/ava_beach_handsonhips_angry.png"
         yanchor 0.51 ypos 1.0
@@ -472,10 +483,90 @@
         subpixel True      
         
         
-        
-        
-        
-        
+    image ava hs handhair neutral:
+        "Character/Ava/ava_hs_handhair_neutral.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image ava hs armscrossed pout:
+        "Character/Ava/ava_hs_armscrossed_pout.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True  
+    image ava hs neutral neutral:
+        "Character/Ava/ava_hs_default_neutral.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True  
+    image ava hs handonhip angry:
+        "Character/Ava/ava_hs_handonhip_angry.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True  
+    image ava hs handhair blush:
+        "Character/Ava/ava_hs_handhair_blush.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True
+    image ava hs handonhip neutral:
+        "Character/Ava/ava_hs_handonhip_neutral.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True
+    image ava hs armscrossed frownclosedeyes:
+        "Character/Ava/ava_hs_armscrossed_frownclosedeyes.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True
+    image ava hs handhair sad:
+        "Character/Ava/ava_hs_handhair_sad.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True
+    image ava hs handonhip shout:
+        "Character/Ava/ava_hs_handonhip_shout.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True
+    image ava hs armscrossed angry:
+        "Character/Ava/ava_hs_armscrossed_angry.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True        
+    image ava hs armscrossed closedeyesmad:
+        "Character/Ava/ava_hs_armscrossed_closedeyesmad.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True         
+    image ava hs handonhip frown:
+        "Character/Ava/ava_hs_handonhip_frown.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True             
+    image ava hs handhair laugh:
+        "Character/Ava/ava_hs_handhair_laugh.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True            
+    image ava hs handhair blushsmile:
+        "Character/Ava/ava_hs_handhair_blushsmile.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True             
         
         
         

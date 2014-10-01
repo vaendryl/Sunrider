@@ -183,6 +183,14 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image kryska plugsuit neutral shout:
+        "Character/Kryska/kryska_plugsuit_neutral_shout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    
+    
 
     image kryska beach bothhandsonhips confidentlaugh:
         "Character/Kryska/kryska_beach_bothhandsonhips_confidentlaugh.png"
