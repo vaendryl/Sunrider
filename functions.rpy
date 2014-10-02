@@ -1008,7 +1008,7 @@ init -6 python:
         return valid
 
     def get_all_in_radius(location, radius):
-        if radius < 0:
+        if radius < 0 or location == None:
             return []
 
         locations = []
