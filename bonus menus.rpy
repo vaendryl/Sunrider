@@ -137,65 +137,65 @@ init -1 python:
                     # else:
                         # text str(bonusPage * columns * rows + i) + ". Unwritten Chapter"
 
-# init -1 python:
-    # # needs to be here or else renpy won't recognize the list
-    # addon_scenes = []
+init -1 python:
+    # needs to be here or else renpy won't recognize the list
+    addon_scenes = []
 
-# screen mod_scenes:
+screen mod_scenes:
 
-    # modal True
-    # zorder 200
+    modal True
+    zorder 200
     
-    # imagemap:
-        # ground "Menu/mod_scenes_base.png"
-        # hover "Menu/mod_scenes_hover.png"
+    imagemap:
+        ground "Menu/mod_scenes_base.png"
+        hover "Menu/mod_scenes_hover.png"
 
-        # # we need to make the screen update when the arrows are clicked
-        # hotspot (1221, 215, 30, 146) action BonusPagePrevious()
-        # hotspot (1221, 724, 30, 146) action BonusPageNext()
-        # hotspot (726, 59, 137, 44) action [ Hide('mod_scenes'), Show('save', transition=dissolve) ]
-        # hotspot (948, 926, 107, 23) action [ Hide('mod_scenes'), Show('bonus', transition=dissolve) ]
-        # hotspot (864, 59, 137, 44) action [ Hide('mod_scenes'), Show('load', transition=dissolve) ]
-        # hotspot (1002, 59, 137, 44) action [ Hide('mod_scenes'), Show('preferences', transition=dissolve) ]
-        # hotspot (1140, 59, 137, 44) action [ Hide('mod_scenes'), Show('main_menu', transition=dissolve) ]
+        # we need to make the screen update when the arrows are clicked
+        hotspot (1221, 215, 30, 146) action BonusPagePrevious()
+        hotspot (1221, 724, 30, 146) action BonusPageNext()
+        hotspot (726, 59, 137, 44) action [ Hide('mod_scenes'), Show('save', transition=dissolve) ]
+        hotspot (948, 926, 107, 23) action [ Hide('mod_scenes'), Show('bonus', transition=dissolve) ]
+        hotspot (864, 59, 137, 44) action [ Hide('mod_scenes'), Show('load', transition=dissolve) ]
+        hotspot (1002, 59, 137, 44) action [ Hide('mod_scenes'), Show('preferences', transition=dissolve) ]
+        hotspot (1140, 59, 137, 44) action [ Hide('mod_scenes'), Show('main_menu', transition=dissolve) ]
 
-        # #style "file_picker_frame"
+        #style "file_picker_frame"
 
-        # $ columns = 1
-        # $ rows = 5
+        $ columns = 1
+        $ rows = 5
 
-        # # Display a grid of file slots.
-        # grid columns rows:
-            # transpose True
-            # xfill True
-            # #style_group "file_picker"
-            # xpos 753
-            # ypos 216
+        # Display a grid of file slots.
+        grid columns rows:
+            transpose True
+            xfill True
+            #style_group "file_picker"
+            xpos 753
+            ypos 216
 
-            # if hasattr(store,"BM"):
-                # $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+            if hasattr(store,"BM"):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
-            # # Display five file slots, numbered 1 - 5.
-            # for i in range(1, columns * rows + 1):
+            # Display five file slots, numbered 1 - 5.
+            for i in range(1, columns * rows + 1):
 
-                # button:
+                button:
 
-                    # xminimum 460
-                    # yminimum 130
-                    # background None #Solid(0,0,0,255)
+                    xminimum 460
+                    yminimum 130
+                    background None #Solid(0,0,0,255)
 
-                    # has hbox
+                    has hbox
 
-                    # # Add the image and text.
-                    # if bonusPage * columns * rows + i - 1 < len(addon_scenes):
-                        # $ is_label = renpy.has_label(addon_scenes[i - 1].jumpLoc)
-                        # imagebutton:
-                            # idle (addon_scenes[i - 1].image)
-                            # hover hoverglow(addon_scenes[i - 1].image)
-                            # at zoom_button(addon_scenes[i - 1].zoom)
-                            # action If(is_label, true = [Hide('main_menu'),Start(addon_scenes[i - 1].jumpLoc)], false = [Hide('mod_scenes'),ShowMenu(addon_scenes[i - 1].jumpLoc)])
-                        # $ del is_label
-                        # text addon_scenes[i - 1].text
+                    # Add the image and text.
+                    if bonusPage * columns * rows + i - 1 < len(addon_scenes):
+                        $ is_label = renpy.has_label(addon_scenes[i - 1].jumpLoc)
+                        imagebutton:
+                            idle (addon_scenes[i - 1].image)
+                            hover hoverglow(addon_scenes[i - 1].image)
+                            at zoom_button(addon_scenes[i - 1].zoom)
+                            action If(is_label, true = [Hide('main_menu'),Start(addon_scenes[i - 1].jumpLoc)], false = [Hide('mod_scenes'),ShowMenu(addon_scenes[i - 1].jumpLoc)])
+                        $ del is_label
+                        text addon_scenes[i - 1].text
 
-                    # else:
-                        # text str(bonusPage * columns * rows + i) + ". No Scene Found"                        
+                    else:
+                        text str(bonusPage * columns * rows + i) + ". No Scene Found"                        
