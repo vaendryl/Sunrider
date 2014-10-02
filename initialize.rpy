@@ -237,7 +237,7 @@ label mission4_inits:
         liberty.set_location(5,7)
 
         create_ship(PactMook(),(12,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
-        create_ship(PactMook(),(11,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
+        create_ship(PactMook(),(12,4),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(12,8),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
 
         create_ship(MissileFrigate(),(16,4),[PactFrigateMissile()])
@@ -906,12 +906,12 @@ label mission21_inits:
             player_ships.remove(sunrider)
             BM.ships.remove(sunrider)
             
-            alliancebs1 = create_ship(AllianceBattleship(),(5,4))
-            alliancebs2 = create_ship(AllianceBattleship(),(5,4))
-            alliancebs2 = create_ship(AllianceBattleship(),(5,4))
-            alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
-            alliancecruiser2 = create_ship(AllianceCruiser(),(10,15))
-        
+            alliancebs1 = create_ship(AllianceBattleship(),(5,5))
+            alliancebs2 = create_ship(AllianceBattleship(),(5,6))
+            alliancebs2 = create_ship(AllianceBattleship(),(5,7))
+
+        alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
+
         blackjack.register_weapon(AwakenAsaga())
         BM.selected = blackjack  #just in case blackjack is still selected.
         blackjack.weapons[-1].fire(blackjack,blackjack)

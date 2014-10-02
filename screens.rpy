@@ -217,7 +217,7 @@ screen main_menu:
         insensitive "Menu/menu_inactive.jpg"
         hover "Menu/menu_hover.jpg"
 
-        hotspot (160, 405, 133, 50) action Start()
+        hotspot (160, 405, 133, 50) action Show('campaigns', transition=dissolve)
         hotspot (80, 472, 208, 50) action FileLoad("1", page="auto", confirm=False)
         hotspot (171, 537, 118, 50) action ShowMenu('load')
         hotspot (92, 598, 200, 50) action ShowMenu('preferences')
@@ -235,6 +235,18 @@ screen main_menu:
         text ' VANILLA EDITION' xpos 0.01 ypos 0.958 size 15
 
 
+screen campaigns:
+    
+    imagemap:
+        ground "Menu/mainmenu_campaign.png"
+        idle "Menu/mainmenu_campaign.png"
+        insensitive "Menu/mainmenu_campaign.png"
+        hover "Menu/mainmenu_campaign_hover.png"
+        alpha False
+        
+        hotspot (300, 385, 230, 40) action Start()
+        hotspot (300, 425, 350, 40) action Start("skiptomaskofarcadius")
+        
 init -2 python:
 
     # Make all the main menu buttons be the same size.
@@ -273,10 +285,10 @@ init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
 
     deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes", 0.09)
-    chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select", 0.09)
-    modScenes = BonusItem("CG/mochi1.jpg", " Addon Scene Select", "mod_scenes", 0.09)
+    # chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select", 0.09)
+    # modScenes = BonusItem("CG/mochi1.jpg", " Addon Scene Select", "mod_scenes", 0.09)
 
-    bonus_features = [deletedScenes, chapterSelect, modScenes]
+    bonus_features = [deletedScenes]  #, chapterSelect, modScenes]
 
 screen bonus:
 

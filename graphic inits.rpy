@@ -24,6 +24,7 @@ init -5:
     define score = Character(" ", what_font="Font/GOTHIC.TTF", what_size=35, what_xalign=0.5, what_yoffset=-500)            
     define cre = Character(" ", what_font="Font/GOTHIC.TTF", what_size=20, what_xalign=0.5, what_yoffset=-800)            
     define kyo = Character('Kyoko', who_xalign=0.05)
+    define pro = Character('Prototype', who_xalign=0.05)
 
 #####################################SIDE CHARACTERS
 
@@ -81,7 +82,7 @@ init -5:
         yanchor 0.55 ypos 1.0
         xanchor 0.5
         zoom 0.69
-        subpixel True    
+        subpixel True
     image arcadius laugh:
         "Character/Side/arcadius_laugh.png"
         yanchor 0.55 ypos 1.0
@@ -95,7 +96,50 @@ init -5:
         zoom 0.69
         subpixel True    
         
-        
+    image arcadius prototype smirk:
+        "Character/Side/arcadius_neutral_smirk.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+    image arcadius prototype shot:
+        "Character/Side/arcadius_neutral_shot.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True    
+    
+    image arcadiusneutral1:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True
+    image arcadiusneutral2:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True
+    image arcadiusneutral3:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True
+    image arcadiusneutral4:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True
+    image arcadiusneutral5:
+        "Character/Side/arcadius_neutral.png"
+        yanchor 0.55 ypos 1.0
+        xanchor 0.5
+        zoom 0.69
+        subpixel True
+
         
         
     image kyoko neutral neutral:
@@ -153,7 +197,60 @@ init -5:
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True          
+        subpixel True    
+        
+    image maray neutral neutral:
+        "Character/Maray/maray_neutral_neutral.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image maray neutral sad:
+        "Character/Maray/maray_neutral_sad.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image maray excited happy:
+        "Character/Maray/maray_excited_happy.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image maray neutral frown:
+        "Character/Maray/maray_neutral_frown.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image maray lean happy:
+        "Character/Maray/maray_lean_happy.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True   
+    image maray lean curious:
+        "Character/Maray/maray_lean_curious.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True           
+    image maray lean smile:
+        "Character/Maray/maray_lean_smile.png"
+        yanchor 0 ypos -0.1
+        xanchor 0.5
+        zoom 1.0
+        subpixel True             
+        
+        
+
+
+
+
+    image snow1 = SnowBlossom("Background/snow1.png", count=200, border=50, xspeed=(-20, 20), yspeed=(50, 80), start=40, horizontal=False)
+    image snow2 = SnowBlossom("Background/snow2.png", count=30, border=50, xspeed=(-40, 40), yspeed=(100, 130), start=30, horizontal=False)
+    image snow3 = SnowBlossom("Background/snow3.png", count=5, border=50, xspeed=(-80, 80), yspeed=(150, 180), start=10, horizontal=False)
+
 
 
 #####################################SPACE BACKGROUNDS
@@ -353,6 +450,18 @@ init -5:
     image bg captainsoffice_nolights = "Background/captainsoffice_nolights.jpg"
     image captainsoffice_nolights_overlay = "Background/captainsoffice_nolightsoverlay.png"
     image holding_cell_overlay = "Background/holdingcell_overlay.png"
+
+    image bg classroom = "Background/classroom.jpg"
+    image bg city = "Background/city.jpg"
+    image bg apartmentfront = "Background/apartmentfront.jpg"
+    image bg classroomnight = "Background/classroomnight.jpg"
+    image bg balcony = "Background/balcony.jpg"
+    image bg avaroom = "Background/avaroom.jpg"
+    
+    image bg engineroom = "Background/engineroom.jpg"
+    image bg corebridge = "Background/corebridge.jpg"
+    
+
 
 
     ###########################CGs
@@ -698,6 +807,12 @@ init -5:
         "CG/ongess_port1.jpg"
     image cg_ongessport2:
         "CG/ongess_port2.jpg"
+        
+    image cg_avaclassroom:
+        "CG/ava_classroom.jpg"
+        
+    image cg_legionfleetagain:
+        "CG/legionfleetagain.jpg"
 
 
 
@@ -816,7 +931,7 @@ init -5:
     image credits9 = Text("Lead Programmer{p}         Vaendryl", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits10 = Text("Renpy Engine Programmer{p}         Tom Rothamel", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11 = Text("Additional Programming{p}         Tom Rothamel, Sam Yang, Endershadow", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits11c = Text("Github Contributors{p}         Tom Rothamel, Quickman, Renari, KingRaptor", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits11c = Text("Github Contributors{p}         Tom Rothamel, Quickman, Renari, KingRaptor, {p}BlueOrange, DoumanAsh, LongKnight", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11b = Text("Hex Mod{p}         azureflare", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits12 = Text("Cast", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits13 = Text("Ava Crescentia:  Amber Lee Connors", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -829,6 +944,7 @@ init -5:
     image credits16e = Text("Kryska Stares:  Cayla Martin", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16f = Text("Alliance Cruiser Captain:  Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits16g = Text("Union Frigate Captain:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
+    image credits16h = Text("Alliance Battleship Captain:  Patrick Seymour", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits17 = Text("Captain Kayto Shields:  Jonathan Cooke", size=30, font="Font/GOTHIC.TTF", text_align=0.5)    
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -836,7 +952,7 @@ init -5:
     image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, Eternal Dream, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}vocals: lily-an{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun-|{p}vocals: lily-an, Maya{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss, kiddpark", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss, kiddpark, isaac200000, tommccann", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits25 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
 
     image credits26 = Text("We thank the following Kickstarter backers...", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
@@ -2751,9 +2867,224 @@ init -5:
         xanchor 64 yanchor 45
 
 
+    image item paradox_scan:
+        "CG/paradox_scan.jpg"
+        
+    image cg_paradoxcore:
+        "CG/paradoxcore.jpg"
+        
+    image cg_marayapprove:
+        "CG/marayapprove.jpg"
+            
+    image cg_sky:
+        "CG/sky.jpg"
+        
+    image cg_maraygoodbye:
+        "CG/maraygoodbye.jpg"
+        
+    image cg_helionalliancefleet:
+        "CG/helion_alliancefleet.jpg"
+        
+    image cg_legionapproach1:
+        "CG/legion_approach1.jpg"
+    image cg_legionapproach2:
+        "CG/legion_approach2.jpg"
+    image cg_legionapproachfire:
+        "CG/legion_approachfire.jpg"
+        
+        
+    image cg_shieldschigarahug:
+        "CG/shieldschigarahug.jpg"
+        
+        
+    image cg_alliancefleet_helion1:
+        "CG/alliancefleet_helion1.jpg"
+    image cg_alliancefleet_helion2:
+        "CG/alliancefleet_helion2.jpg"
+    image cg_alliancefleet_helion3:
+        "CG/alliancefleet_helion3.jpg"
+    image cg_alliancefleet_helion4:
+        "CG/alliancefleet_helion4.jpg"
+    image cg_alliancefleet_legionfire1:
+        "CG/alliancefleet_legion1.jpg"
+    image cg_alliancefleet_legionfire2:
+        "CG/alliancefleet_legion2.jpg"
+    image cg_alliancefleet_legionfire3:
+        "CG/alliancefleet_legion3.jpg"
+
+
+    image cg_sunriderdamage1:
+        "CG/sunriderdamage1.jpg"
+    image cg_sunriderdamage2:
+        "CG/sunriderdamage2.jpg"
+    image cg_sunriderdamage3:
+        "CG/sunriderdamage3.jpg"
+    image cg_sunriderdamage4:
+        "CG/sunriderdamage4.jpg"
+    image cg_sunriderdamage5:
+        "CG/sunriderdamage5.jpg"
+        
+    image cg_avaleverpull1:
+        "CG/avaleverpull1.jpg"
+    image cg_avaleverpull2:
+        "CG/avaleverpull2.jpg"
+        
+    image cg_finalstand1:
+        "CG/finalstand1.jpg"
+    image cg_finalstand2:
+        "CG/finalstand2.jpg"
+    image cg_finalstand3:
+        "CG/finalstand3.jpg"
+    image cg_finalstand4:
+        "CG/finalstand4.jpg"
+        
+    image cg_legionfallback:
+        "CG/legionfallback.jpg"
+    image cg_legionfall_legion:
+        "CG/legionfall_legion.png"
+    image legionfall_end:
+        "CG/legionfall_end.jpg"
+        
+    image cg_nightmare_enter:
+        "CG/nightmareenter.jpg"
+    image cg_nightmare_explode:
+        "CG/nightmareexplode.jpg"
+        
+    image cg_nightmares_back:
+        "CG/nightmares_back.jpg"
+    image cg_nightmares_3:
+        "CG/nightmares_3.png"
+    image cg_nightmares_2:
+        "CG/nightmares_2.png"
+    image cg_nightmares_1:
+        "CG/nightmares_1.png"
+        
+    image cg_blackjack_awaken1:
+        "CG/blackjackawaken1.jpg"
+    image cg_blackjack_awaken2:
+        "CG/blackjackawaken2.jpg"
+    image cg_asaga_awaken 1:
+        "CG/asagaawaken1.png"
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+    image cg_asaga_awaken 2:
+        "CG/asagaawaken2.png"
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+    image cg_asaga_awakenzoom 2:
+        "CG/asagaawaken2.png"
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+
+    image cg_asaga_awaken 3:
+        "CG/asagaawaken3.png"
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+    image cg_asaga_awakenzoom 3:
+        "CG/asagaawaken3.png"
+        xanchor 0.5 yanchor 0.5 xpos 0.5 ypos 0.5
+
+        
+    image cg_nightmaredefeated:
+        "CG/nightmaredefeated.jpg"
+        
+    image alliancebattleship_side:
+        "gameplay/Animations/AllianceBattleship/side.png"
+        xanchor 0.5 yanchor 0.5
+    image alliancebattleship_laser:
+        "gameplay/Animations/AllianceBattleship/laser.png"
+    image alliancebattleship_kineticflash1:
+        "gameplay/Animations/AllianceBattleship/kineticflash1.png"
+    image alliancebattleship_kineticflash2:
+        "gameplay/Animations/AllianceBattleship/kineticflash2.png"
+    image alliancebattleship_kineticflash3:
+        "gameplay/Animations/AllianceBattleship/kineticflash3.png"
+    image alliancebattleship_missiletrail:
+        "gameplay/Animations/AllianceBattleship/missiletrail.png"
+    image alliancebattleship_missileround1:
+        "gameplay/Animations/AllianceBattleship/missileround.png"
+        yanchor 46 xanchor 255
+    image alliancebattleship_missileround2:
+        "gameplay/Animations/AllianceBattleship/missileround.png"
+        yanchor 46 xanchor 255
+    image alliancebattleship_missileround3:
+        "gameplay/Animations/AllianceBattleship/missileround.png"
+        yanchor 46 xanchor 255
+    image alliancebattleship_missileround4:
+        "gameplay/Animations/AllianceBattleship/missileround.png"
+        yanchor 46 xanchor 255
+    image alliancebattleship_kineticround1:
+        "gameplay/Animations/AllianceBattleship/kineticround.png"
+        yanchor 0.5 xanchor 0.8
+    image alliancebattleship_kineticround2:
+        "gameplay/Animations/AllianceBattleship/kineticround.png"
+        yanchor 0.5 xanchor 0.8
+    image alliancebattleship_kineticround3:
+        "gameplay/Animations/AllianceBattleship/kineticround.png"
+        yanchor 0.5 xanchor 0.8
+    image alliancebattleship_side assaultflash1:
+        "gameplay/Animations/AllianceBattleship/assaultflash1.png"
+    image alliancebattleship_side assaultflash2:
+        "gameplay/Animations/AllianceBattleship/assaultflash2.png"
+    image alliancebattleship_cannonwavebig:
+        "gameplay/Animations/AllianceBattleship/cannonwave_big.png"
+        yanchor 0.5
+    image alliancebattleship_cannonwavesmall:
+        "gameplay/Animations/AllianceBattleship/cannonwave_small.png"
+        yanchor 0.5
+    image alliancebattleship_cannonwaveflash:
+        "gameplay/Animations/AllianceBattleship/cannonwave_flash.png"
+        yanchor 0.5
+
+    image legion_side:
+        "gameplay/Animations/Legion/side.png"
+        xanchor 0.5 yanchor 0.5
+    image legion_laser:
+        "gameplay/Animations/Legion/laser.png"
+    image legion_missiletrail:
+        "gameplay/Animations/Legion/missiletrail.png"
+    image legion_kineticflash1:
+        "gameplay/Animations/Legion/kineticflash1.png"
+    image legion_kineticflash2:
+        "gameplay/Animations/Legion/kineticflash2.png"
+    image legion_kineticflash3:
+        "gameplay/Animations/Legion/kineticflash3.png"
+    image legion_kineticflash4:
+        "gameplay/Animations/Legion/kineticflash4.png"
+    image legion_kineticflash5:
+        "gameplay/Animations/Legion/kineticflash5.png"
+
+    image legion_kineticround1:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround2:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround3:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround4:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround5:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround6:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround7:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround8:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround9:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
+    image legion_kineticround10:
+        "gameplay/Animations/Legion/kineticround.png"
+        yanchor 0.5 xanchor 0.3
 
 
 
+        
+        
 ########################################## JOKE
 
     image bg renpytomback:
@@ -2780,6 +3111,8 @@ init -5:
         "CG/popularity4.jpg"
     image poll5:
         "CG/popularity5.jpg"
+    image poll6:
+        "CG/popularity6.jpg"
 
 ########################
 

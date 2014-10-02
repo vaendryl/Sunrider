@@ -775,7 +775,7 @@ init 2 python:
             self.evasion = 37
             self.move_cost = 20
             self.base_armor = 4
-            self.money_reward = 800
+            self.money_reward = 300
             self.max_missiles = 1
             self.max_rockets = 0
             self.missiles = self.max_missiles

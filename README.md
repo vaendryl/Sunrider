@@ -9,9 +9,9 @@ beta 7
 * Flak path simulation is now updated for hex code.
 * the AI now calculates flak between it and its target properly, causing a change in missile behaviour.
 * vanguard path overlay is now always shown
-* bosses flagged as 'boss' no longer end skirmish upon death.
+* units flagged as a 'boss' no longer end skirmish upon death.
 * units not participating in skirmish will not have their buff voices played in reaction to full forward or all guard
-* not having the sunrider present in skirmish removes access to orders.
+* not having the sunrider present (in skirmish) removes access to orders.
 * fixed mercenaries getting permanently destroyed upon death in skirmish mode.
 * added a store item that upgrades the vanguard cannon
 * all guard order now gives 20 flak instead of 30
@@ -21,8 +21,9 @@ beta 7
 * added 'right click to cancel' effect to a few more screens like orders and preferences
 * quite a few AI changes. you'll likely need to adapt your strategies.
 * added a new [REDACTED]
-* healing now draws a minor amount of hate.
-* 
+* healing now generates a minor amount of hate.
+* Paladin's assault energy cost went from 20 to 30, and its missiles were rebalanced to be more effective against armor.
+
 
 
 patch 6.0b

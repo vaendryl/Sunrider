@@ -369,11 +369,12 @@ init python:
             return attacked
                 
     def disengage(self):
+        BM.selected = self
         move_range = self.en / self.move_cost
         if move_range <= 0:
             return False
         
-        move_range = get_all_in_radius(self.location,max_move_distance)
+        move_range = get_all_in_radius(self.location,move_range)
         valid_spots = []
         for hex in move_range:
             if get_cell_available(hex):

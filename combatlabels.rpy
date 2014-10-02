@@ -264,8 +264,9 @@ label after_load:
                     new_stack.append(fail_safe_label)
             renpy.set_return_stack(new_stack)            
         except:
-            show_message('there was an error in the return stack code')
-            BM.debug_log.append('there was an error in the return stack code')
+            pass
+            # show_message('there was an error in the return stack code')
+            # BM.debug_log.append('there was an error in the return stack code')
                     
     return
 

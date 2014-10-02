@@ -875,7 +875,7 @@ screen orders:
                     xpos 20
                     idle_background 'Battle UI/commandbar_button.png'
                     hover_background hoverglow('Battle UI/commandbar_button.png')
-                    action [Return([order]),Hide('orders'),SetField(BM,'showing_orders',False),SetField(BM,'order_used',True)]
+                    action [Return([order]),Hide('orders'),SetField(BM,'showing_orders',False)]
 
                     has hbox
 

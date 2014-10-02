@@ -652,6 +652,7 @@ init -2 python:
                     set_cell_available(launch_location, True) #the optional True actually lets me set this cell /un/available
                     message = "ORDER: {0} is resurrected".format(revived_ship.name)
                     self.battle_log_insert(['order'], message)
+                    BM.order_used = True
                     
                     #wipe all modifiers after a res
                     for modifier in revived_ship.modifiers:
@@ -692,6 +693,7 @@ init -2 python:
                 else:
                     message = "ORDER: ALL GUARD"
                     self.battle_log_insert(['order'], message)
+                    BM.order_used = True
                     store.show_message('all ships gained improved flak, shielding and evasion!')
                     
                     random_ship = renpy.random.choice( get_player_ships_in_battle() )
@@ -740,6 +742,7 @@ init -2 python:
                 else:
                     message = "ORDER: FULL FORWARD"
                     self.battle_log_insert(['order'], message)
+                    BM.order_used = True
                     store.show_message('All ships gain 20% damage and 15% accuracy!')
                     random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
                     random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
@@ -771,6 +774,7 @@ init -2 python:
                 message = "ORDER: Repair drones restore 50% of Sunrider's hull integrity"
                 self.battle_log_insert(['order'], message)
                 show_message(message)
+                BM.order_used = True
                 sunrider.hp += int(sunrider.max_hp * 0.5)
                 if sunrider.hp > sunrider.max_hp: sunrider.hp = sunrider.max_hp
                 sunrider.getting_buff = True
@@ -885,6 +889,7 @@ init -2 python:
                                 self.vanguardtarget = False
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
+                                BM.order_used = True
                                 
                         if result[0] == 'deselect':
                             self.cmd += self.orders['VANGUARD CANNON'][0]
@@ -1790,7 +1795,7 @@ init -2 python:
                     return
                     
             #check if we ended up next to an enemy ryder and can melee it instead of whatever we were planning.
-            if weapon.wtype != 'Melee':
+            if weapon.wtype != 'Melee' and not counter:
                 if get_can_melee(self):
                     if attempt_melee(self): #returns True if succeeds
                         disengage(self) #flee away if there's energy left

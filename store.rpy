@@ -14,7 +14,6 @@ label initStore:
         store_items.append(SellWishallArtifact())  
         store_items.append(RepairUpgrade())
         
-        
     return
 
 screen store_union:

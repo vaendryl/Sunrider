@@ -519,7 +519,20 @@
         yanchor 0.51 ypos 1.0
         xanchor 0.5
         zoom 0.6255
-        subpixel True         
+        subpixel True      
+    image chigara uniform excited surprisetear:
+        "Character/Chigara/chigara_uniform_excited_surprisetear.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image chigara uniform handonchest crysmile:
+        "Character/Chigara/chigara_uniform_handonchest_crysmile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+        
         
         
         

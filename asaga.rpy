@@ -757,6 +757,19 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True          
+    image asaga uniform neutral sadpout:
+        "Character/Asaga/asaga_uniform_neutral_sadpout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image asaga uniform armscrossed sadtear:
+        "Character/Asaga/asaga_uniform_armscrossed_sadtear.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True                
+        
         
         
         

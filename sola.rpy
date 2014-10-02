@@ -59,6 +59,15 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+    image sola plugsuit handonchest smileblush:
+        "Character/Sola/sola_plugsuit_handonchest_smileblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True    
+    
+    
+    
             
             
             
@@ -117,6 +126,21 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True
+    image sola uniform handonchest lookawayblush:
+        "Character/Sola/sola_uniform_handonchest_lookawayblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    image sola uniform altneutral skeptical:
+        "Character/Sola/sola_uniform_altneutral_skeptical.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+
+
+
 
 
     image sola beach back:

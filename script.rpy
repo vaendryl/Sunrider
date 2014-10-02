@@ -9,16 +9,8 @@
 label splashscreen:
     $BM = Battle()
 
-    scene black
-    pause 0.5
-    show logo 1 with dissolve
-    $ renpy.pause(2)
-    show logo 2 with dissolve
-    $ renpy.pause(2)
-    hide logo with dissolve
-    $ renpy.pause(0.5)
+    $ renpy.movie_cutscene("CG/OP.avi")
 
-    stop music fadeout 1.0
     return
 
 label quit:
@@ -33,10 +25,9 @@ label start:
     call initialize
 
     call firstvariables
-
+    
 #####################################VARIABLE SET UP
 
-    #temporary
     if config.developer:
         menu:
             "normal start":
@@ -50,10 +41,15 @@ label start:
         pause 5.0
     with Dissolve(2)
 
+    if store.Difficulty == 3:
+        $ show_message('Please select your difficulty.',0.5,0.8,2)
+        show screen gameprefs
+    
     window hide
 
     play music "Music/Tides.ogg" loop
     $ renpy.pause (0.5)
+    $ BM.lowest_difficulty = store.Difficulty
     show introtext0:
         yalign 0.12
         xalign 0.5
@@ -667,7 +663,7 @@ label mission1:
     else:
         pass #continue down to the next label
 
-label firstbattle_end:
+label after_mission1:
 
     hide screen battle_screen
     hide screen commands
@@ -1486,7 +1482,7 @@ label mission2:
     else:
         pass #continue down to the next label
 
-label secondbattle_end:
+label after_mission2:
 
     hide screen battle_screen
     hide screen commands
@@ -2704,9 +2700,9 @@ label mission3:
     else:
         pass #continue down to the next label
 
-label aftermission3cutscene:
+label after_mission3:
 
-    $ captain_moralist += 5
+    $ captain_moralist += 3
     $ affection_asaga += 3
 
     stop music fadeout 1.5
@@ -2931,7 +2927,10 @@ label mission4:
     else:
         pass #continue down to the next label
 
-label mission4_end:
+label after_mission4:
+    
+    $ captain_prince += 3
+    $ affection_ava += 1
 
     $ mission4_complete = True
 
@@ -3179,7 +3178,7 @@ label mission5:
     else:
         pass #continue down to the next label
 
-label mission5_end:
+label after_mission5:
 
     $ mission5_complete = True
     $ mission_pirateattack = False
@@ -3830,7 +3829,7 @@ label mission6:
     else:
         pass #continue down to the next label
 
-label mission6victory:
+label after_mission6:
 
     $ mission6_complete = True
 
@@ -5064,7 +5063,7 @@ label mission7:
     else:
         pass #continue down to the next label
 
-label aftermission7:
+label after_mission7:
 
     $ Saveddiplomats = False
 
@@ -5429,7 +5428,7 @@ label mission8:
     # prevents a crash when all ships are destroyed
     if BM.battlemode == True and agamemnon.location != None:
         if agamemnon.location[0] == 18:
-            $ BM.battle_end()
+            $ BM.you_win()
 
     if agamemnon.hp <= 0:
         $ renpy.jump('sunrider_destroyed')
@@ -5439,11 +5438,13 @@ label mission8:
     else:
         pass #continue down to the next label
 
-label aftermission8:
+label after_mission8:
 
     python:
-        BM.ships.remove(agamemnon)
-        player_ships.remove(agamemnon)
+        if agamemnon in BM.ships:
+            BM.ships.remove(agamemnon)
+        if agamemnon in player_ships:
+            player_ships.remove(agamemnon)
 
         phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
         phoenix = create_ship(Phoenix(),(9,5),phoenix_weapons)
@@ -5977,6 +5978,10 @@ label thankschatback:
     play music "Music/Mission_Briefing.ogg" fadeout 1.5
 
     $ captaindeck = 0
+    
+    $ava_location = None
+    $ava_event = None
+    
     $ asa_location = "messhall"
     $ asa_event = "ep3_asatalk"
 
@@ -7001,8 +7006,8 @@ label mission9:
 
         python:
             BM.grid[13][6] = False
-            BM.ships.remove(mochi)
-            player_ships.remove(mochi)
+            if mochi in BM.ships: BM.ships.remove(mochi)
+            if mochi in player_ships: player_ships.remove(mochi)
 
         ava "Captain, a ryder! Hidden inside the storage compartment in the Alliance vessel!"
 
@@ -7038,7 +7043,7 @@ label mission9:
     else:
         pass #continue down to the next label
 
-label aftermission9:
+label after_mission9:
 
     python:
         #this code will be useful if you shift-P through last battle
@@ -7943,15 +7948,17 @@ label mission10:
     else:
         pass #continue down to the next label
 
-label aftermission10:
+label after_mission10:
 
     hide screen commands
     hide screen battle_screen
 
     python:
+        #failsaves
         if not blackjack in player_ships:
-            blackjack.set_location(10,3)
             player_ships.append(blackjack)
+        if not blackjack in BM.ships:
+            BM.ships.append(blackjack)
 
         seraphim_weapons = [SeraphimKinetic(),Awaken()]
         seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
@@ -9777,7 +9784,7 @@ label operationweddingcrash:
     show arcadius neutral:
         ease 0.5 xpos 0.5
 
-    arc "Your life now belongs to me. Your body is now mine. Your soul will be crushed, until you are but an obedient dog, eagerly licking her master's boots."
+    arc "Your life now belongs to us. Your body is now ours. Your soul will be crushed, until you are but an obedient dog, eagerly licking her master's boots."
     asa "Never!"
 
     show arcadius neutral:
@@ -9795,7 +9802,7 @@ label operationweddingcrash:
     arc "Silence!"
     asa "Eah!"
     arc "How cruel is destiny, that it is we who must suffer, while a little doll like you holds a destiny greater than us."
-    arc "But in mere hours... You will be mine. And with that, the keys to a weapon which shall send a frozen shiver down the galaxy's spine will be in our hands."
+    arc "But in mere hours... You will be ours. And with that, the keys to a weapon which shall send a frozen shiver down the galaxy's spine will be in our hands."
 
     show arcadius laugh with dissolve
 
@@ -9812,7 +9819,7 @@ label operationweddingcrash:
         xpos 0.2 xzoom -1
     with dissolve
 
-    ryu "Dear our kind guests. We are gathered here to witness the marriage of the righteous Veniczar S. Arcadius to my lovely daughter, Princess Asaga di Ryuvia."
+    ryu "Dear guests. We are gathered here to witness the marriage of the righteous Veniczar S. Arcadius to my lovely daughter, Princess Asaga di Ryuvia."
     ryu "Does the honorable Veniczar S. Arcadius take Princess Asaga di Ryuvia as his lawfully wedded wife, to love unconditionally, in sickness and in health, in good times and in bad, and in joy as well in sorrow, to cherish and to hold for as long as he shall live?"
     arc "Yes."
     ryu "And does Princess Asaga di Ryuvia solemnly pledge to take Veniczar S. Arcadius as her lawfully wedded husband, to love unconditionally, in sickness and in health, in good times and in bad, and in joy as well in sorrow, to cherish and to hold for as long as she shall live?"
@@ -10422,7 +10429,7 @@ label mission11:
         pass #continue down to the next label
 
 
-label aftermission11:
+label after_mission11:
 
     hide screen commands
     hide screen battle_screen
@@ -12487,7 +12494,7 @@ label mission12:
     else:
         pass #continue down to the next label
 
-label aftermission12:
+label after_mission12:
 
     hide screen commands
     hide screen battle_screen
@@ -12788,7 +12795,9 @@ label aftermission12:
     arc "Hahahahahaha!!!"
 
     scene black with dissolve
-    play music "Music/Firn.ogg" fadeout 3.0
+    
+    play music "Music/The_Beginning_Of_The_Adventure.ogg" fadeout 1.5
+    
     scene bg hangar with dissolvelong
 
     show asaga plugsuit vpose with dissolve
@@ -15134,10 +15143,13 @@ label checkformissions:
 
 label afterbeachcarry:
     
-    $ BM.ships.remove(alliancecruiser1)
-    $ player_ships.remove(alliancecruiser1)
-    $ BM.ships.remove(alliancecruiser2)
-    $ player_ships.remove(alliancecruiser2)
+    python:
+        if alliancecruiser1 in BM.ships:
+            BM.ships.remove(alliancecruiser1)
+            player_ships.remove(alliancecruiser1)
+        if alliancecruiser2 in BM.ships:
+            BM.ships.remove(alliancecruiser2)
+            player_ships.remove(alliancecruiser2)
     $ BM.orders['RESURRECTION'] = [2000,'resurrect']
     
     $ versta_ambush = True
@@ -15295,7 +15307,7 @@ label mission13:
     else:
         pass #continue down to the next label
 
-label mission13_end:
+label after_mission13:
     
     $ tydaria_morepirates = False
     $ mission13_complete = True
@@ -15558,12 +15570,13 @@ label mission14:
     else:
         pass #continue down to the next label
     
-label mission14_end:
+label after_mission14:
     
     $ farport_losttech = False
     $ mission14_complete = True
-    $ del BM.orders['RETREAT'] 
     
+    $ remove_order('RETREAT') #using this function is safer than using del
+
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
     hide screen battle_screen
@@ -15622,7 +15635,7 @@ label mission14_end:
     
 label retreat:
     
-    $ del BM.orders['RETREAT'] 
+    $ remove_order('RETREAT')
     
     play music "Music/The_Meteor.ogg" fadeout 1.5
     
@@ -15795,7 +15808,7 @@ label mission15:
     else:
         pass #continue down to the next label
 
-label aftermission15:
+label after_mission15:
     
     $ versta_ambush = False
     $ mission15_complete = True
@@ -18134,7 +18147,7 @@ label mission16:
     else:
         pass #continue down to the next label
 
-label aftermission16:
+label after_mission16:
     
     hide screen battle_screen
     hide screen commands
@@ -18283,7 +18296,7 @@ label mission17:
         pass #continue down to the next label
 
 
-label aftermission17:
+label after_mission17:
     
     hide screen battle_screen
     hide screen commands
@@ -18408,7 +18421,7 @@ label aftermission17:
     fon "So the great Grey of the Emerald Fleet finally speaks. Have you come to discuss terms of surrender?"
     gre "You little punk."
     gre "Don't think you're the first commander to dare raise sword against me. But you're still young."
-    gre "Sit down boy, and let me show you {i}war.{/i}"
+    gre "Sit down boy, and let me show you {i}war.{i}"
     ava "Captain, I'm detecting radiation charges coming from the Combined Fleet!"
     gre "I've just ordered every Alliance ship to arm their nuclear torpedoes at Ongess."
     gre "These are my terms. Tell your little pirate friend to turn around and scurry back to the rat hole she crawled out of."
@@ -18666,7 +18679,3446 @@ label crewdownmean:
     kay "Then maybe we'll finally be able to start that bakery of yours."
     chi "Eh-heh... You're making me blush captain..."
     
-    stop music fadeout 2.0
+label betasevenstart:
+    
+    window hide
+
+    stop music fadeout 1.5
+
+    show eyecatch_top with eyecatch_wipe
+    show eyecatch_bottom with eyecatch_wiperev
+    show eyecatch_logo with dissolve
+    $ renpy.pause (2.0)
+    
+    play music "Music/Prayers.ogg" fadeout 1.5
+    scene black with dissolvelong
+    
+    show kyoko dead2:
+        zoom 2.0 ypos 1.2 xpos 0.5
+    with dissolve
+    
+    window show
+
+    kyo "Kayto..."
+    
+    hide kyoko dead2
+    show maray dead:
+        zoom 2.0 ypos 1.6 xpos 0.5
+    with dissolve
+    
+    mar "You killed me..."
+    mar "You killed all of us..."
+    
+    hide maray with dissolve
+    
+    scene bg captainsoffice2_dark with dissolvelong
+    
+    "Shields jolted awake."
+    kay "... ... ..."
+    kay "(Maray...)"
+    "He stumbled out of bed and splashed himself with water."
+    kay "... ... ..."
+    kay "I didn't kill her."
+    "... ... ..."
+    "... ..."
+    "..."
+    "Shields uncapped a bottle of vodka and poured himself a shot."
+    
+    show grey with dissolve
+    
+    gre "We are the greatest force of freedom in the history of the galaxy."
+    gre "Sit down boy, and let me show you war."
+    
+    hide grey
+    show fontana
+    with dissolve
+    
+    fon "You will stand trial for your crimes against humanity."
+    
+    hide fontana
+    show ava uniform handonhip mad
+    with dissolve 
+    
+    ava "Your orders, captain!?"
+    
+    hide ava
+    show icari plugsuit neutral mad
+    with dissolve
+    
+    ica "Your orders!?"
+    
+    hide icari
+    show kryska uniform neutral frown
+    with dissolve
+    
+    kry "Your orders sir!?"
+    
+    hide kryska
+    show chigara plugsuit excited scared
+    with dissolve
+    
+    chi "Captain... What do we do!?"
+    
+    hide chigara with dissolve
+    
+    kay "(...I don't know.)"
+    kay "... ... ..."
+    "Shields gripped his glass."
+    kay "I don't know...!!"
+
+label goodmorningsituation:
+    
+    play music "Music/Tokyo_Lights.ogg" fadeout 1.5
+    
+    scene black with horizontalwipe
+    scene bg bridge
+    show ava uniform altneutral neutral
+    with horizontalwipe
+
+    kay "Good morning. Give me the situation."
+    ava "We're holding position just outside of Ongess, investigating leads as to Cosette's current whereabouts."
+    ava "Further, we've received a new mission."
+    kay "All right."
+    ava "The Mining Union has been encountering difficulties shipping parts and equipment to the Alliance due to PACT interdiction forces."
+    ava "They request that we escort one of their transport ships out of Tydaria until it is in warp space."
+    ava "That is all, captain."
+    kay "Thanks for the report. Carry on, Ava."
+    
+    $ captaindeck = 1
+    
+    $ versta_ambush = False
+    $ farport_losttech = False
+    $ tydaria_morepirates = False
+    $ sidemissions1 = False
+    
+    $ sidemissions2 = True
+    $ tydaria_escort = True
+    
+    $ gal_location = "bridge"
+    $ pro_location = "captainsloft"
+    $ pro_event = "shieldsputpicture"
+    $ asa_location = "hangar"
+    $ asa_event = "asagafancyworry"
+    $ sol_location = "sickbay"
+    $ cla_location = "sickbay"
+    $ sol_event = "solasickbaywhisper"
+    $ cla_event = "solasickbaywhisper"
+    $ ica_location = "messhall"
+    $ ica_event = "icarimessviewstorm"
+    
+    $ chi_location = None
+    $ kry_location = None
+    
+    jump dispatch
+
+label jumptotydariaescort:
+    
+    hide screen ship_map
+    
+    $ Random = renpy.random.randint(1,9)
+
+    if Random == 1:
+        scene space back1
+    if Random == 2:
+        scene space back2
+    if Random == 3:
+        scene space back3
+    if Random == 4:
+        scene space back4
+    if Random == 5:
+        scene space back5
+    if Random == 6:
+        scene space back6
+    if Random == 7:
+        scene space back7
+    if Random == 8:
+        scene space back8
+    if Random == 9:
+        scene space back9
+
+    show sunrider_warpout_standard:
+        xpos 700 ypos 350
+    with dissolve
+
+    pause 1.0
+
+    play sound "Sound/large_warpout.ogg"
+    show sunrider_warpout_standard_flash:
+        xpos 426 ypos 0 alpha 0
+        linear 0.1 alpha 1
+        linear 0.1 alpha 0
+    show sunrider_warpout_standard out:
+        xpos 700 ypos 350
+        ease 0.2 xpos 200 ypos 300 zoom 0
+
+    pause 1.0
+
+    scene tydaria_orbit:
+        ypos 0
+        ease 1.5 ypos -120
+    with dissolve
+    pause 1
+
+    show sunrider_warpout_standard out:
+        xpos 2300 ypos 1200 zoom 2
+        ease 0.2 xpos 1000 ypos 500 zoom 0.5
+    pause 0.2
+    play sound "Sound/large_warpout.ogg"
+    show cg_legionwarpin_missilefrigate_warpflash:
+        zoom 1.5 xpos 1550 ypos 750
+    show sunrider_warpout_standard
+
+    pause 2.0
+
+    scene bg bridge with fade
+    show ava uniform alt neutral neutral with dissolve
+    
+    window show
+    
+    ava "Warp complete, captain. We are approaching our escort's position."
+    kay "All right, let's get this done. Begin operation!"
+    
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    show battlewarning:
+        xpos 0.5 ypos 0.5
+    $ renpy.pause(2)
+
+    window hide
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+
+    call mission18_inits
+    $ BM.mission = 18
+    $ check1 = False
+    $ check2 = False    
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    
+    jump battle_start
+    
+label mission18:
+    
+    $BM.battle_bg = "Background/space4.jpg"
+    
+    if check1 == False:
+        
+        show ava uniform altneutral angry onlayer screens with dissolve
+        
+        ava "Warp signatures detected! PACT forces are on an intercept course!"
+        kay "Here they come..."
+        
+        hide ava onlayer screens
+        
+        $ check1 = True
+
+    if check2 == False and BM.turn_count == 2:
+                
+        show ava uniform altneutral angry onlayer screens with dissolve
+        
+        ava "More PACT reinforcements, captain!"
+        kay "Damn... it must be a really slow day for the PACT fleet... I can't believe they're putting this much effort into stopping a cargo freighter!"
+        
+        show ava uniform facepalm onlayer screens with dissolve
+        
+        ava "Captain... Please remain focused on the mission..."
+        
+        hide ava onlayer screens
+        
+        $ check2 = True
+
+        python:
+            create_ship(PactCruiser(),(10,3))
+            create_ship(PactCruiser(),(9,3))
+            create_ship(PactCruiser(),(10,14))
+            create_ship(PactCruiser(),(9,14))
+            
+            create_ship(MissileFrigate(),(10,2))
+            create_ship(MissileFrigate(),(11,2))
+            create_ship(MissileFrigate(),(10,15))
+            create_ship(MissileFrigate(),(11,15))
+            
+    if check3 == False and BM.turn_count == 3:
+        
+        show ava uniform altneutral angry onlayer screens with dissolve
+        
+        ava "More PACT forces have warped in!"
+        kay "A battleship squad!? The hell's going on!?"
+        
+        if Saveddiplomats == True:
+        
+            hide ava onlayer screens with dissolve
+        
+            show asaga plugsuit handsonhips frown onlayer screens with dissolve
+        
+            asa "G-geez... T-this is just like Versta all over again..."
+            
+            show chigara plugsuit altneutral sad onlayer screens:
+                xpos 0.3
+            with dissolve
+            
+            chi "P-please don't bring that up, Asaga... I still have reoccurring nightmares..."
+            asa "At least this time, a certain someone isn't shooting at us!"
+            
+            show icari plugsuit point angry onlayer screens:
+                xpos 0.7
+            with dissolve
+            
+            ica "H-hey---!"
+            
+            hide asaga onlayer screens
+            hide chigara onlayer screens
+            hide icari onlayer screens
+            
+        python:
+            create_ship(PactBattleship(),(14,7))
+            create_ship(PactBattleship(),(14,8))
+            create_ship(PactBattleship(),(14,9))
+            
+            create_ship(PactCarrier(),(17,7))
+            create_ship(PactCarrier(),(17,9))
+            
+            create_ship(PactElite(),(13,6))
+            create_ship(PactElite(),(13,7))
+            create_ship(PactElite(),(13,8))
+            create_ship(PactElite(),(13,9))
+            create_ship(PactElite(),(13,10))
+            
+            create_ship(PactSupport(),(15,7))
+            create_ship(PactSupport(),(15,9))
+            
+        $ check3 = True
+            
+    if check4 == False and BM.turn_count == 4:
+        
+        show ava uniform altneutral angry onlayer screens with dissolve
+        
+        ava "Assault carriers!"
+        kay "Are you kidding me!? Are they seriously going to send half the entire PACT fleet to take down a trade ship!?"
+        kay "Just what's that ship carrying!? They sent less ships at us when we crashed Arcadius' wedding!"
+        
+        hide ava onlayer screens with dissolve
+        
+        if Saveddiplomats == True:
+        
+            show asaga plugsuit excited surprise onlayer screens:
+                xpos 0.3
+            with dissolve
+            
+            asa "Ya see, Chigara!? It's like deja vu!"
+            
+            show chigara plugsuit handonchest sad onlayer screens:
+                xpos 0.7
+            with dissolve 
+            
+            chi "Uuu..."
+            
+            hide asaga onlayer screens
+            hide chigara onlayer screens
+            
+        python:
+            create_ship(PactAssaultCarrier(),(17,6))
+            create_ship(PactAssaultCarrier(),(17,8))
+            create_ship(PactAssaultCarrier(),(17,10))
+                        
+        $ check4 = True
+            
+    if check5 == False and BM.turn_count == 7:
+        
+        show ava uniform facepalm onlayer screens with dissolve
+        
+        ava "Captain... Shouldn't we be done with this mission by now?"
+        kay "Hang on... I can get a couple more units..."
+        ava "Please take this more seriously! This is not a game!"
+        
+        hide ava onlayer screens
+        
+        python:
+            create_ship(PactAssaultCarrier(),(17,2))
+            create_ship(PactAssaultCarrier(),(17,16))
+            
+            create_ship(PactCruiser(),(15,2))
+            create_ship(PactCruiser(),(16,2))
+            create_ship(PactCruiser(),(15,16))
+            create_ship(PactCruiser(),(16,16))
+            
+            create_ship(PactElite(),(15,4))
+            create_ship(PactElite(),(16,4))
+            create_ship(PactElite(),(15,12))
+            create_ship(PactElite(),(16,12))
+            create_ship(PactSupport(),(17,4))
+            create_ship(PactSupport(),(17,12))
+        
+        $ check5 = True
+    
+    if BM.battlemode == True and freighter.location != None:
+        if freighter.location[0] == 18:
+            $ BM.you_win()
+            
+    if freighter.hp <= 0:
+        $ renpy.jump('sunrider_destroyed')
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission18 #loop back
+    else:
+        pass #continue down to the next label
+
+label after_mission18:
+    
+    python:
+        BM.ships.remove(freighter)
+        player_ships.remove(freighter)
+    
+    hide screen commands
+    hide screen battle_screen
+
+    play music "Music/The_Beginning_Of_The_Adventure.ogg"
+    
+    scene bg bridgered
+    show ava uniform altneutral frown
+    with dissolve
+    
+    window show
+    
+    kay "Well... uh... that was harder than expected."
+    
+    show sophita:
+        xpos 0.75
+    with wipeup
+    
+    sop "You have my thanks captain. Had you not been there, the freighter would have been lost."
+    kay "Uh, no problem. Now, are you going to tell us what exactly we were escorting?"
+    sop "I'm afraid that's sensitive client information, captain."
+    sop "Let it merely be said that the galaxy holds many precious items."
+    
+    menu:
+        "That's that I guess.":
+            jump thatsthatIguess
+            
+        "No, really, what was in that cargo freighter?":
+            jump reallywhatcargo
+            
+label thatsthatIguess:
+    
+    sop "As usual, the Union appreciates your assistance. Good bye, captain."
+    
+    hide sophita with wipedown
+    
+    jump pehgoodnearly
+    
+label reallywhatcargo:
+    
+    sop "Let me just say..."
+
+    play sound "sound/swordhit.ogg"
+    "Sophita pushed her glasses up, causing them to flash."    
+    
+    sop "Some things are better not known."
+    jump thatsthatIguess
+    
+label pehgoodnearly:
+    
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "Peh! Good riddance! She nearly got us killed and won't even explain why."
+    ava "I say we refuse to take any more escort missions after this!"
+    
+    show asaga plugsuit armscrossed annoyed:
+        xpos 0.12
+    with dissolve
+    
+    asa "Hear, hear! I'm getting tired of them!"
+    
+    show chigara plugsuit handonchest sad:
+        xpos 0.32
+    with dissolve
+    
+    chi "Uuu... T-there's always so many reinforcements..."
+    
+    show icari plugsuit armscrossed seriously:
+        xpos 0.7
+    with dissolve
+    
+    ica "S-seriously... They're such a pain..."
+    
+    if Saveddiplomats == True:
+    
+        show asaga plugsuit handsonhips mad with dissolve
+        
+        asa "L-like you have any right to complain!"
+        
+    kay "It's not my fault they always end up like this..."
+
+    $ tydaria_escort = False
+    
+    jump dispatch
+
+label shieldsputpicture:
+    
+    play music "Music/Tokyo_Lights.ogg" fadeout 1.5
+
+    hide screen ship_map
+    scene bg captainsoffice2
+    with dissolve
+    
+    window show
+    
+    "... ... ...."
+
+    play sound "sound/doorbell.ogg"
+
+    "(Doorbell)"
+    "Shields put the picture frame of Maray back down."
+    kay "Come in."
+    
+    show ava uniform armscrossed neutral with dissolve
+    
+    ava "Am I interrupting something?"
+    kay "No. What do you have?"
+    ava "The latest battle reports from the Alliance."
+    kay "Thanks."
+    ava "The Alliance has made further gains against PACT since the Second Battle of Ongess. Latest intel suggests Arcadius is gathering his forces at Cera for a final stand before the Alliance enters PACT territory."
+    kay "So Cera will be the decisive battle of this war..."
+    kay "If Cera is liberated, the Alliance will be poised to launch strikes into PACT's worlds. That's a situation which not even Arcadius will take lightly."
+    kay "He'll have to realize the Alliance cannot be defeated once that happens. His only options would be to either sue for peace, or risk total annihilation."
+    ava "The Alliance has never fought a war beyond the Neutral Rim in its entire history. It seems inconceivable they plan to conquer all of PACT space."
+    kay "Grey doesn't fight a war unless he intends to win."
+    ava "... ... ..."
+    "Ava looked at the picture frame."
+    
+    show ava uniform altneutral neutral with dissolve
+    
+    ava "It's been a long fight. But it seems like the end is in sight."
+    kay "... ... ..."
+    kay "I would have preferred to celebrate her birthday on Cera."
+    kay "Doesn't look like we'll make it on time."
+    ava "... ... ..."
+    
+    show ava uniform altneutral neutral:
+        zoom 1.0
+        ease 0.5 zoom 1.5 xpos 0.5 ypos 1.35
+    
+    "Ava put her hand on Shields' shoulder."
+    kay "Ava?"
+    ava "... ... ..."
+    ava "These shoulders have carried much."
+    
+    show ava uniform neutral looklefttalk with dissolve
+    
+    ava "Isn't it time to let some things go?"
+    kay "... ... ..."
+    kay "Not yet. Not while a crimson flag flies over our home."
+    kay "Not yet."
+    
+    show ava uniform neutral neutral with dissolve
+    show ava uniform neutral neutral:
+        ease 0.5 zoom 1.0 ypos 1.0
+    
+    ava "... ... ..."
+    ava "I have nothing further."
+    kay "See you."
+    
+    hide ava with dissolve
+    
+    kay "... ... ..."
+    "... ... ..."
+    "... ..."
+    "..."
+    
+    stop music fadeout 1.5
+    scene black with dissolvelong
+
+    "11 Years Ago"
+    
+    play music "Music/boukyou.ogg" fadeout 1.5
+    
+    scene bg classroom with dissolvelong
+    
+    "Kayto sat with Ava in an empty classroom. The curtains fluttered in the breeze as the twilight poured in through the window."
+    
+    show ava hs handhair neutral with dissolve
+    
+    ava "... ... ..."
+    ava "Hey Kayto."
+    kay "Mmm?"
+    ava "It's late. Everyone else's already left."
+    kay "Yeah."
+    kay "But you still have that stack of paperwork to do, right? 'Sides, the graduation ceremony's coming up. We've got a lot of work to do."
+    ava "... ... ..."
+    ava "Nobody else seems to think so."
+    kay "Because you never ask for help. You always try to handle everything by yourself."
+    kay "You know, that just makes you look stuck up. You should stop."
+    ava "Heh."
+    kay "Oh yeah. But deep down, I know you want me to stay here."
+    kay "\'Cause there's nothing Ava Crescentia likes less than having to fill out paperwork by her lonesome."
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "Idiot."
+    
+    scene black with horizontalwipe
+    scene bg classroom
+    show ava hs neutral neutral
+    with horizontalwipe
+    
+    "... ... ..."
+    "... ..."
+    "..."
+    
+    kay "And there we go. I'd say that's good enough for today."
+    "Ava stared at the stack of paperwork."
+    kay "Don't worry. I'm sure you filled them all out properly."
+    
+    show ava hs handonhip angry with dissolve
+    
+    ava "... ... ..."
+    kay "Come on, let's go. I have to pick Maray up from her lessons."
+    ava "... ... ..."
+    kay "Come on!"
+    "Kayto grabbed Ava by the arm and pulled her away."
+    ava "But I should double check--"
+    kay "It's fine!"
+
+    scene bg city zorder -2 with dissolve
+    show ava hs neutral neutral with dissolve
+
+    "The two walked through the winter chill."
+    kay "Here, take this."
+    "Kayto handed Ava a scarf."
+    
+    show ava hs handhair neutral with dissolve
+    
+    ava "Don't need it."
+    kay "I can see your breath in the air."
+    "He wrapped it around her neck."
+    kay "It's already winter, damn it."
+    kay "Everything's gonna be buried in snow again soon."
+    
+    show ava hs handhair blush with dissolve
+    
+    ava "... ... ..."
+    ava "Thanks."
+    kay "Yeah."
+    kay "... ... ..."
+    kay "You figure out what you're gonna do after graduation?"
+    
+    show ava hs handonhip neutral with dissolve
+    
+    ava "Not really."
+    kay "Tell me once everything's decided."
+    ava "Mm."
+    kay "It's gonna be tough without you, pres."
+    kay "The school's gonna miss you."
+    ava "... ... ..."
+    
+    show ava hs armscrossed frownclosedeyes with dissolve
+    
+    ava "Hardly."
+    "The two arrived at the concert hall."
+    
+    show ava hs handonhip neutral with dissolve
+    
+    ava "Your sister still plays music?"
+    kay "Yeah. She's gotten quite good."
+    kay "I should take you to one of her concerts."
+    ava "Mm."
+    
+    show ava hs handonhip neutral:
+        ease 0.5 xpos 0.3 zoom 0.8 ypos 0.0
+    
+    pause 0.1
+        
+    show maray neutral neutral:
+        xpos 0.7 zoom 0.8 ypos 0.0
+    with dissolve
+    
+    mar "Kayto."
+    kay "Ready?"
+    mar "Uh huh."
+    "The three of them walked home."
+    
+    show maray neutral sad with dissolve
+    
+    mar "The maestro scolded me again for dazing off."
+    kay "Really? I thought he liked you."
+    mar "I don't think so..."
+    mar "He's always saying I slow down too much."
+    mar "But I think the song sounds better that way."
+    kay "Hahaha."
+    "A snow flake fell from the sky."
+    
+    show snow1 zorder -1
+    show snow2 zorder -1
+    show snow3 zorder 1
+
+    show maray excited happy with dissolve
+    
+    mar "O-oh! Look Kayto!"
+    mar "It's snow!"
+    kay "So it is..."
+    kay "The next thing I know, I won't even be able to go to school any more because our door will be frozen closed."
+    
+    show maray neutral frown with dissolve
+    
+    mar "Muu... You're so weak against the cold, Kayto."
+    
+    show maray lean happy with dissolve
+    
+    mar "We can build snow forts and have snow ball fights!"
+    kay "...I can't believe we haven't figured out how to build a dome over Cera City in this day and age..."
+    mar "That would be no fun!"
+    kay "Brr..."
+    
+    show maray neutral frown with dissolve
+    
+    mar "Meanie."
+    kay "I'll take a hot beach over the cold any day. Too bad we don't have much of that here."
+    
+    show maray lean happy with dissolve
+    
+    mar "I bet Ava likes the snow more than you! Don't you, Ava?"
+    
+    show ava hs handonhip neutral
+    
+    ava "Mm."
+    ava "It's not bad."
+    mar "See~!?"
+    kay "(You traitor!)"
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "(Idiot.)"
+    
+    scene bg apartmentfront with dissolve
+    
+    show ava hs handonhip neutral:
+         xpos 0.3 zoom 0.8 ypos 0.0
+    with dissolve
+    show maray neutral neutral:
+         xpos 0.7 zoom 0.8 ypos 0.0
+    with dissolve
+
+    "The trio arrived at their apartment."
+    kay "Your dad's out on deployment again, isn't he?"
+    kay "Come on. My mom wants you over for dinner."
+    
+    show ava hs handhair sad with dissolve
+    
+    ava "I shouldn't intrude."
+    kay "No choice. It's a direct order from mom."
+    
+    show maray excited happy with dissolve
+    
+    mar "I want Ava over too!"
+    ava "... ... ..."
+    kay "Your dad wanted this too."
+    
+    show ava hs handhair blush with dissolve
+    
+    ava "Then I guess I have no choice."
+    ava "Thanks."
+    kay "Don't worry about it."
+    
+    stop music fadeout 1.5
+    scene white with dissolve
+    scene bg captainsoffice2 with dissolve
+
+    "The comm woke Shields from his memories."
+    "Ava on Comm" "Captain, you're needed on the bridge."
+
+    kay "I'll be right there."
+
+label prioritymessagelegion:
+
+    play music "Music/Mission_Briefing.ogg"
+    
+    scene bg bridge with dissolve
+    
+    show ava uniform altneutral frown with dissolve
+
+    kay "Report."
+    ava "I've just received a priority one message from the Alliance."
+    ava "One of their spy drones just returned a sighting of the Legion in the Helion system."
+    kay "Helion? That's quite detached from the theater of war..."
+    kay "What's it doing so far from the action?"
+    ava "Unknown."
+    kay "Whatever it's doing, it's not charity work. Is the Alliance already taking action?"
+    ava "Admiral Grey has rushed four fleets to its last known position. We have been contracted to scout the situation before the Alliance ships arrive."
+    kay "Set a course."
+    ava "Aye captain."
+
+    play music "Music/The_Flight_of_the_Crow.ogg" fadeout 1.5
+
+    scene bg black2 with dissolve
+    scene cg_asagakidnap_legion with dissolve
+    
+    pause 1.0
+    
+    scene bg legionwindows with dissolve
+    
+    show fontana:
+        xpos 0.25
+    with dissolve
+    
+    show arcadius altneutral:
+        xpos 0.7 ypos 1.1
+    with dissolve
+
+    fon "My apologies, my leader. Admiral Grey turned out a far more treacherous villain than I could have imagined. Had it not been for his vile guile, we could have liberated Ongess, rescued the princess, and sank the entire Combined Fleet in one stroke."
+    arc "Fontana. You are still but a boy."
+    arc "You do not know what evil lies in the hearts of the Imperialists. They are but a maelstrom of greed and perversion bubbling inside faces which only resemble men."
+    fon "Forgive me. I shall not fail again."
+    arc "Very well. Your idealism is a virtue to our cause. We will forgive any mistake which arose out of a desire to see our creed fulfilled."
+    fon "You are too kind, my Veniczar."
+    arc "There is a project we have been working on. You will accompany us to oversee its completion."
+    fon "You will leave New Eden?"
+    arc "We have already left four days ago."
+    arc "Tell us, do you know of the Paradox Project?"
+    fon "Of course. A failed lab experiment which crushed Diode inside a black hole."
+    arc "A failure? Nay."
+    arc "They say that the greatest scientific discoveries are those found by accident."
+    arc "Come with us."
+    arc "Soon, we will unveil a new weapon against the Alliance. One that will allow us to turn the tide of this war and strike terror into the hearts of every Imperialist from Solaris to Far Port."
+
+    stop music fadeout 1.5
+    
+    scene bg black2 with dissolvelong
+    
+    play music "Music/hinokageri.ogg" fadeout 1.5
+    
+    scene cg_avaclassroom with dissolvelong
+
+    ava "Hey Kayto."
+    kay "Yeah?"
+    ava "Do you like me?"
+    kay "W-whaa!?"
+    kay "The hell kinda question is that all of a sudden!?"
+    ava "... ... ..."
+    ava "I wonder..."
+    ava "Love's just a chemical reaction."
+    ava "When certain conditions are met, chemicals are released into our bloodstream which simulates the sensation of love."
+    kay "Huh..."
+    ava "Are we any different than robots than?"
+    ava "Running on chemicals which simulate our existence?"
+    kay "You're not making any sense, Ava..."
+    ava "Your eyes are transmitting electronic information of what you see to your brain."
+    ava "But how do you know any of it's true?"
+    ava "Our reality is just a simulation of what really exists."
+    kay "(\'Cause it hurts my head to think otherwise!)"
+    "Ava sat on the desk and looked out the window."
+    ava "There are multiple trillions of us, living in more worlds than we can count."
+    ava "In the scheme of things, each one of us is insignificant."
+    ava "And yet, why do we believe we each have our own destiny?"
+    kay "Because we're all free people, that's why."
+    ava "... ... ..."
+    kay "You always have to make simple things so complicated."
+    ava "Oh?"
+    kay "Of course I like you. You're reliable."
+    kay "I get the feeling that you can accomplish anything."
+    ava "... ... ..."
+    ava "Idiot."
+    ava "I wasn't asking that."
+    kay "Wha...?"
+    ava "I merely enjoy talking about things which go over your head."
+    kay "What!? Why you listen here-!"
+    ava "... ... ..."
+    "Ava gave Kayto an icy stare."
+    kay "(This is why you don't have any friends!)"
+    ava "... ... ..."
+    ava "Dummy."
+
+    play music "Music/Mission_Briefing.ogg" fadeout 1.5
+
+    scene black with dissolvelong
+    scene bg bridge with dissolvelong
+    
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Captain, we've arrived at the Legion's last known coordinates."
+    kay "Power down all non-essential systems. Give us a low profile. As of now, we're engaged in shadow operations."
+    ava "Aye captain."
+    kay "I want long range scans around the clock. If you see anything suspicious, relay it to my office immediately."
+    
+    show kryska uniform altneutral focustalk:
+        xpos 0.75
+    with dissolve
+    
+    kry "Captain, Admiral Grey informs me that Alliance reinforcements are 45 hours out. In the meantime, he bids you good hunting."
+    kay "Give him our regards, lieutenant."
+    
+    show kryska uniform salute neutral with dissolve
+    
+    kry "Sir."
+    
+    hide ava with dissolve
+    hide kryska with dissolve
+    
+    kay "All hands, this is the captain speaking."
+    kay "As of now, we are engaged in shadow ops. Our prey is the PACT Super Dreadnought Legion."
+    kay "The enemy's firepower far outclasses our own. We cannot afford another close call like Ongess."
+    kay "That ship reduced Cera City into a flaming crater in the blink of an eye. And it will do the same to us if we are not careful."
+    kay "Whatever it is that PACT is plotting out here, we will get to the bottom of and unravel."
+    kay "Shields out."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Captain."
+    kay "Begin the operation. I'll be in my office."
+    ava "Understood."
+
+    $ captaindeck = 1
+    
+    $ pro_location = "captainsloft"
+    $ pro_event = "shieldseyefile"
+    
+    $ gal_location = None
+    
+    jump dispatch
+    
+label asagafancyworry:
+    
+    hide screen ship_map
+    scene bg hangar
+    with dissolve
+    
+    show asaga uniform neutral surprise with dissolve
+    
+    window show
+
+    asa "O-oh! Fancy seeing you here, capt'n! Need something?"
+    kay "Just making sure everything's all right."
+    
+    show asaga uniform excited happy with dissolve
+    
+    asa "Uwah-hahaha! No need to worry about me! Everything's in tip top shape!"
+    asa "Don't worry! We'll smash up that Legion just like we smashed up Porkchops back at Far Port!"
+    kay "Chigara tells me that you've been acting differently."
+    
+    show asaga uniform altneutral sad with dissolve
+    
+    asa "O-oh, did Chigara tell you that?"
+    asa "Eh-heh... Well, I just realized."
+    asa "Maybe I haven't been taking things seriously enough, you know. I'm not just a random girl any more."
+    asa "There're a lot of people counting on me. I know it's far away, but one day, we're gonna liberate Ryuvia Prime from PACT. And then I'll have to lead everyone, just like my father and mother before me."
+    
+    show asaga uniform excited forcedlaughblush with dissolve
+    
+    asa "I know I'm not exactly cut out for that kinda stuff, but I still gotta try my best!"
+    kay "Wow, really? I'm impressed, Asaga."
+    "Shields laughed and patted Asaga on the head."
+    
+    show asaga uniform neutral sadpout with dissolve
+    
+    asa "U-urk..."
+    kay "You've really come a long way."
+    
+    show asaga uniform armscrossed sadtear with dissolve
+    
+    asa "Stop it captain... If you do that, I'll..."
+    kay "Huh?"
+    asa "... ... ..."
+    asa "... ..."
+    asa "..."
+    
+    show asaga uniform handsonhips closedeyesgrin with dissolve
+    
+    asa "Eaahh, nuthin'! I'm the Queen of Ryuvia ya know!"
+    asa "I'll let you know that normally, patting the Queen of Ryuvia on the head is a capital offense, even for a starship capt'n! But since you're my captain, I'll just let ya off with a warning!"
+    kay "Your liege, I'm grateful for your generosity!"
+    asa "Uwaahh-hahahaha!"
+    
+    $ captaindeck = 2
+    $ asa_location = None
+    jump dispatch
+
+label solasickbaywhisper:
+    
+    hide screen ship_map
+    scene bg sickbay
+    with dissolve
+    
+    show sola uniform altneutral neutral with dissolve
+    
+    window show
+
+    sol "Ah."
+    kay "S-Sola! What are you doing here!?"
+    
+    show sola uniform altneutral neutral:
+        zoom 1.0
+        ease 0.5 zoom 1.5 ypos 1.4
+    
+    "Shields grabbed Sola away and whispered to her."
+    kay "Uhh... Claude wouldn't have done anything weird to you by any chance, would she?"
+    sol "Weird?"
+    kay "You know... Like poke you in embarrassing places... Or touch you for no apparent reason..."
+    
+    show sola uniform handonchest lookawayblush with dissolve
+    
+    sol "... ... ..."
+    sol "C-captain..."
+    kay "(Ah crap... That totally came out wrong...)"
+    
+    play music "Music/As_I_Figure.ogg" fadeout 1.5
+    
+    show claude nurse excited shock:
+        xpos 0.75
+    with dissolve
+    
+    cla "C-captain! Sssshock!"
+    cla "I was merely giving Sola the finest medical attention this ship has to offer... And yet you feel the need to lob these scandalous accusations at a hardworking professional like myself..."
+    kay "(Just what part of that outfit you're wearing is professional!)"
+    "Sola eyed the captain with unease."
+    kay "W-wait Sola, I didn't mean it like that. Claude here's been arrested for medical malpractice more times than you can count! I was just making sure-"
+    
+    show claude nurse handstogether comictearblush with dissolve
+    
+    cla "Oh captain! I still remember the day when I came onboard your ship..."
+    cla "You led me to this sickbay, then forced me to do this and that, as payment for saving me from those pirates!"
+    
+    show claude nurse excited shoutblush with dissolve
+    
+    cla "I became a shamed woman that day! I will never forget it!"
+    
+    show sola uniform altneutral skeptical with dissolve
+    
+    "Sola zeroed in on Claude with skeptical eyes."
+    kay "See Claude?"
+    
+    show claude nurse handstogether comiccry with dissolve
+    
+    cla "Uuuu... B-betrayed by my own comrade in arms..."
+    cla "I-I'll just... go sulk in a corner now."
+    kay "Anyways, what were you doing with Sola?"
+    
+    show sola uniform altneutral skeptical:
+        ease 0.5 zoom 1.0 ypos 1.0
+        
+    show sola uniform neutral neutral with dissolve
+    
+    sol "I wished to investigate more how I came to awake in this time. While the easiest explanation would be that I was in cold sleep for two millennia, I have always harbored doubts as to whether such a feat would be possible even with the technology of my time."
+    sol "Therefore, I had the doctor perform some tests to determine the exact duration of time I was in cold sleep."
+    sol "Based on most recent set of tests, the doctor believes I was frozen for merely three months."
+    kay "Three months!?"
+    sol "The findings have baffled me as well."
+    sol "The circumstances around my survival have been inexplicable. My body should have been vaporized the instant the Final Tear was activated."
+    sol "The mere fact I was put to cold sleep is an anomaly in of itself. The duration of my sleep only further complicates the mystery."
+
+    menu:
+        
+        "Uh, are you sure you're from 2000 years ago?":
+            jump uhyoureyears
+            
+        "Whatever it is, it doesn't change the fact you're with us now.":
+            jump whateverchangefact
+            
+            
+label uhyoureyears:
+    
+    show sola uniform handsbehindback sad with dissolve
+    
+    sol "... ... ..."
+    
+    show claude nurse excited shock with dissolve
+    
+    cla "C-captain! You hurt Sola's feelings!"
+    kay "Sorry, I was just making sure!"
+
+    jump remembertimeforeign
+    
+label whateverchangefact:
+    
+    $ affection_sola += 1
+    
+    show sola uniform handonchest lookawayblush with dissolve
+    
+    sol "... ... ..."
+    
+    show claude nurse fingeronlip kittysmile with dissolve
+    
+    cla "Eeehhh... You better stop that, capt'n... Or else you'll have an entire squadron of jealous girls after you..."
+    kay "Only you're interested in that, you dork."
+    
+    jump remembertimeforeign
+
+    
+label remembertimeforeign:
+    
+    show sola uniform handonchest sad with dissolve
+   
+    sol "I remember my timeline as clear as day. Further, this world is as foreign to me as my time would be to you."
+    sol "Yet, I have no recollection of how I was put into cold sleep mere months ago, or how I even entered your timeline in the first place."
+    kay "The Lost Technology we've seen so far have had seemingly magical properties. Maybe it had something to do with it."
+    sol "That seems possible. However, I will continue my research before forming any conclusions."
+    kay "All right. Tell me what you find. I'm curious too now."
+    sol "I will, captain."
+    
+    play music "Music/Mission_Briefing.ogg"
+    
+    $ captaindeck = 0
+    $ sol_location = None
+    $ cla_location = None
+    
+    jump dispatch
+    
+label icarimessviewstorm:
+    
+    hide screen ship_map
+    
+    scene bg messhallwindows
+
+    show icari uniform handonhip snide
+    with dissolve
+    
+    window show
+
+    ica "Hey capt'n."
+    kay "How's it going."
+    ica "Just enjoying the view before the storm hits."
+    ica "Rumor has it that you're cooking up a plan to sink the beast once and for all."
+    kay "Easier said than done, I'm afraid."
+    
+    ica "Hey, here's a tip from someone who knows. Don't be so twisted up all the time."
+    kay "Mm?"
+    
+    show icari uniform armscrossed neutral with dissolve
+    
+    ica "Look, you pretend to be all smiles with the crew. But we all see those dark clouds gathering over your head."
+    ica "Honestly, it's starting to make me uneasy too."
+    kay "... ... ..."
+    kay "I won't let it affect my judgment."
+    ica "You know, when it happened to me, I was just twelve years old."
+    ica "The Alliance helped me out a bit. Let me survive. But after I turned sixteen, I was out of the system."
+    
+    show icari uniform armscrossed sad with dissolve
+    
+    ica "It messes you up."
+    ica "I turned to crime. Experimented with some stuff I shouldn't have."
+    ica "Killed a man for my eighteenth birthday. Figured out I had a talent for it."
+    ica "Started running with this boy and his band of pirates. Was fun for a while. Made some quick bucks."
+    ica "Last I saw of him, he rammed his flaming orbital skiff into an Alliance cruiser. Didn't even dent the armor. Heh."
+    ica "... ... ..."
+    kay "You regret all of that?"
+    ica "Regret, huh..."
+    ica "... ... ..."
+    ica "Yeah."
+    ica "Always feels like the only thing that makes you happy is killing the bastards responsible for it all."
+    ica "But at the bottom of it, there's not a goddamn thing in the world which is going to bring them back."
+    kay "... ... ..."
+    "Shields slapped Icari on the back."
+    kay "Well, don't be too down. We've got more reds to kill."
+    
+    show icari uniform handonhip grin with dissolve
+    
+    ica "Were you even listening, captain?"
+    kay "Heh."
+    
+    show icari uniform armscrossed tsun with dissolve
+    
+    ica "You're hopeless..."
+    
+    $ ica_location = None
+    $ captaindeck = 0
+    
+    jump dispatch
+
+label shieldseyefile:
+
+    play music "Music/One_Day_In_August.ogg" fadeout 1.5
+
+    hide screen ship_map
+    scene bg captainsoffice2
+    with dissolve
+    
+    window show
+
+    "Shields eyed a file on his computer."
+    "Maray_Concert4-12-498.mus"
+    "He hovered his curser over it."
+    
+    play sound "sound/doorbell.ogg"
+    
+    "(Doorbell)"
+    "He promptly closed the folder."
+    kay "Come in."
+    
+    show ava uniform alt neutral neutral with dissolve
+    
+    ava "We detected something on long range scanners."
+    ava "Take a look at this."
+    
+    show item paradox_scan:
+        xpos 0.65
+        ypos 0.3
+    with dissolve
+    
+    kay "A space station of some kind?"
+    ava "Definitely PACT. But the design doesn't match any blue prints that we're aware of."
+    ava "There's too much electronic interference due to the station's orbit around Helion."
+    ava "We do know there is a sizable combined PACT and pirate fleet protecting it though."
+    kay "PACT wouldn't have deployed the Legion along with a fleet that huge unless that thing's worth protecting."
+    kay "Set course for it."
+    kay "Mask our approach using the star they're building the station around."
+    kay "They're using the interference to hide their activities, but we can use it to our advantage as well. We'll keep monitoring the situation until the Alliance fleet arrives."
+    ava "Understood, captain."
+    
+    scene black with dissolvelong
+    scene white with dissolvelong
+    
+    play music "Music/harunokagayaki.ogg" fadeout 1.5
+    scene bg city with dissolvelong
+    
+    show maray lean curious:
+        zoom 0.7 ypos 0.0 xpos 0.5
+    with dissolve
+
+    mar "Why's Ava come over so much, Kayto?"
+    kay "Her dad's usually starside. He's a pretty important person, so he's rarely home."
+    mar "Eehh..."
+    
+    show maray lean smile with dissolve
+    
+    mar "Are you sure you don't just invite her over because you like her?"
+    kay "W-wha-? Maray!"
+    "Maray held up Kayto's Holopad."
+    
+    show maray excited happy with dissolve
+    
+    mar "Ah. I knew it. You have a holo of her set as your background."
+    kay "T-that's just a photo from our training trip!"
+    mar "Eeehhh... So you've even gone to the beach with her..."
+    kay "I was with four other people!"
+    mar "Oh well. Hurry up and just get married already."
+    mar "That way, we can all live together under one roof!"
+    kay "(I sure liked you better when you were six!)"
+    "Maray started flipping through Kayto's text messages."
+    kay "Stop that!"
+    mar "Stop what?"
+    kay "Looking through my messages! There's nothing interesting there anyways!"
+    mar "Then what's the matter if I look?"
+    kay "Arrghh!!!"
+    
+    show maray lean smile with dissolve
+    
+    "Kayto leapt for the pad. Maray ducked out of the way."
+    
+    show maray lean smile:
+        zoom 0.7 ypos 0.0
+        ease 0.2 xpos 0.6
+        ease 0.5 xpos -0.3
+    
+    mar "See ya!"
+    "She ran away."
+    
+    hide maray
+    
+    kay "Hold it right there!!"
+    "Kayto gave chase through the sidewalk."
+    
+    show ava hs handonhip neutral with dissolve
+    
+    "Suddenly, a familiar figure appeared out of a shop right in front of him."
+    kay "W-woooaah!!!"
+    
+    show ava hs handonhip shout:
+        ease 0.05 xpos 0.48
+        ease 0.1 xpos 0.52
+        ease 0.05 xpos 0.5
+        repeat 4
+    
+    ava "E-eh!?"
+    "Kayto twisted his body as he hurtled towards Ava."
+    
+    play sound "sound/hit.ogg"
+    show layer master at shake1
+    
+    hide ava with dissolve
+    
+    "... ... ..."
+    "He groaned as he laid crumpled on the pavement."
+    kay "(If this were an anime, I would have fallen right on top of her chest in this kind of situation...)"
+    kay "(And yet...)"
+    
+    show ava hs armscrossed angry with dissolve
+    
+    "Ava looked down on him with pitiless eyes."
+    ava "Oy. Are you an idiot?"
+    kay "... ... ..."
+    ava "What were you doing, running like that?"
+    kay "Chasing after a nefarious imp."
+    
+    show ava hs armscrossed closedeyesmad with dissolve
+    
+    ava "Ah..."
+    kay "I don't suppose you're going to help me up?"
+    "She reluctantly gave him a hand."
+    "He dusted himself off."
+    
+    show ava hs handonhip frown with dissolve
+    
+    ava "Come on, let's go."
+    "The two started walking back home."
+    kay "(Once I get home... She's gonna get it!!)"
+    kay "(Should I put a Devorak bug in her bag?)"
+    kay "(Install the anti-gravity device in her skirt?)"
+    kay "(Upload her BL to the holo?)"
+    
+    
+    ava "Oy."
+    kay "Yeah?"
+    ava "Your face. You look like a serial offender."
+    kay "Yeah..."
+    "Ava shook her head."
+    ava "Idiot."
+
+    stop music fadeout 1.5
+
+    scene black with dissolvelong
+    scene bg bridge with dissolvelong
+    
+    show ava uniform altneutral neutral with dissolve
+
+    ava "Captain, we are within visual range of the PACT structure."
+    kay "On screen."
+    
+    play music "Music/Dusty_Universe.ogg"
+    scene cg_paradoxcore with dissolve
+    
+    kay "Any ideas what the hell that thing is?"
+    ava "I'm comparing the latest data with all known designs in the Alliance's database."
+    ava "I'm not getting any hits on any known PACT designs."
+    ava "Wait. A hit. From our own database."
+    ava "... ... ..."
+    kay "What is it?"
+    ava "Get the chief engineer up here."
+    kay "Chigara, you heard the commander."
+    chi "U-understood."
+
+    play music "Music/Tides.ogg" fadeout 1.5
+
+    scene bg captainsoffice2 with dissolve
+    show ava uniform alt neutral neutral:
+        xpos 0.3
+    with dissolve
+    show chigara uniform pad neutral:
+        xpos 0.7
+    with dissolve
+
+    chi "There's no mistaking it. The PACT structure appears to be a replica of the Paradox Core we built at Diode."
+    chi "However, it has been recreated on a far larger scale. While the one we built only had the capacity to destroy a single planet, PACT's recreation has the power to open a black hole stable enough to extinguish an entire star."
+    
+    show ava uniform handonhip mad with dissolve
+    
+    ava "PACT is creating a doomsday weapon. One which will not destroy just cities or fleets, but entire systems."
+    ava "If PACT were ever to obtain a weapon of this magnitude, all of our victories in the war would be moot."
+    kay "Forget that. War itself would change. There wouldn't even be any point in having fleets with a weapon of that magnitude."
+    kay "We cannot allow PACT to finish construction on the Paradox Core. It's no exaggeration to say that the fate of humanity rests on it."
+    
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "How could PACT even gain the knowledge to build such a weapon?"
+    
+    show chigara uniform altneutral sad with dissolve
+    
+    chi "I... can't say. Everyone who had any knowledge of the Paradox Project was killed in the Diode Catastrophe."
+    chi "I had always believed that the knowhow to construct such a thing had died with my people."
+    kay "One mystery after another..."
+    kay "Chigara, help Ava draft the battle plan."
+    kay "The Alliance fleet is still 20 hours out. As soon as the fleet arrives, we're going to hit that Core with everything we have while it's still under construction."
+    ava "How do you know it's not already operational?"
+    kay "The Legion and the combined PACT-Pirate fleet are still nearby, guarding the Core."
+    kay "Detonating the Core would mean the loss of the Legion, PACT's flagship. On top of that, if Arcadius is on board the Legion, then he wouldn't be able to detonate the Core without also getting caught in the black hole."
+    kay "And if there's anything we know about Arcadius, it's that he's not big on heroic sacrifices."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Understood, captain. We will ready the plans."
+    kay "Dismissed."
+
+    play music "Music/The_Flight_of_the_Crow.ogg" fadeout 1.5
+
+    scene black with dissolvelong
+    scene bg corebridge with dissolvelong
+
+    show fontana:
+        xpos 0.3
+    with dissolve
+
+    fon "My leader. Welcome to the Core."
+    fon "I have been informed construction is progressing as planned. Soon, you will have a weapon rivaling the power of the ancient Ryuvian Emperors."
+    
+    show arcadius altneutral:
+        xpos 0.6 zoom 0.94 ypos 1.05
+    with dissolve
+    
+    arc "Rise, Fontana."
+    arc "It bids us pleasure to finally see our creation with our own eyes."
+    arc "When we first saw its light when it was born on Diode, we witnessed the beginning of a new era in the saga of human progress."
+    arc "A weapon so terrifying it will end all wars. As brothers and sisters, we will all be united in our fear of the Core."
+    arc "Yet, our victory is not yet assured."
+    fon "My leader?"
+    arc "The Sunrider seeks to foil our plans."
+    arc "It awaits nearby."
+    fon "My leader? But our scanners have not-"
+    
+    show arcadius neutral with dissolve
+    
+    arc "We grow weary of repeating ourselves."
+    arc "Find it. And bring the princess to us."
+    fon "A-as you command! I will not fail you again!"
+    
+    show arcadius fist with dissolve
+    
+    arc "Soon, we will have all the keys to unite the galaxy under our cause."
+    arc "Do this, and your place at my side as the successor of PACT will be assured."
+    fon "Understood! I will depart at once!"
+
+    scene black with dissolvelong
+    
+    play music "Music/hinokageri.ogg" fadeout 1.5
+    
+    scene bg classroom with dissolvelong
+    show ava hs handhair neutral with dissolve
+
+    "Kayto and Ava had sat at their tables in silence for over three hours sorting through documents when she suddenly spoke."
+    ava "Hey Kayto. I enlisted."
+    kay "W-wha?"
+    ava "For the Space Force."
+    kay "Y-you did!?"
+    kay "(That came completely from the blue!)"
+    ava "What do you think about it?"
+    kay "W-what do I think?"
+    kay "Uhh..."
+    kay "Well, I'm happy for you. Isn't that what your dad does?"
+    kay "You're following in his footsteps. I'm sure your family will be proud to have another Crescentia serve Cera."
+    ava "I wonder."
+    ava "... ... ..."
+    "Ava went back to filling out more forms."
+    kay "... ... ..."
+    kay "So when are you leaving?"
+    ava "I'll be flying out right after graduation."
+    kay "That's quick."
+    kay "I'm going to miss you."
+    ava "Mm."
+    ava "... ... ..."
+    "Kayto pretended to continue working."
+    kay "(Why does she always have to be so nonchalant about everything!?)"
+    "A storm of conflicting emotions raged inside him."
+    kay "Will you be back?"
+    
+    show ava hs handonhip neutral with dissolve
+    
+    ava "Unlikely."
+    ava "It's not like I have anything to come back to here."
+    kay "O-oh. I see."
+    ava "... ... ..."
+    kay "... ... ..."
+    kay "I always knew you'd so something amazing."
+    ava "Huh?"
+    kay "So you're gonna be in space, huh..."
+    kay "Sailing through the stars on a mighty big space ship."
+    ava "Hm."
+    kay "Sounds like a dream."
+    ava "It's not anything special."
+    ava "Did you know that on Solaris, there are so many space ships coming and going from the planet that if you stare up at the night sky, you can see lines of moving lights? Like hundreds of glowing ant trails in the sky."
+    kay "I saw a documentary on the holo once."
+    kay "Who knows. Maybe you might even see it in person one day."
+    ava "... ... ..."
+
+    stop music fadeout 1.5
+
+    scene black with dissolve
+    scene bg captainsoffice2 with dissolve
+
+    "Ava on Comm" "Captain, we have a situation."
+    "Shields awoke from his memories."
+    kay "I'll be right down."
+
+label bogiespiratefind:
+    
+    play music "Music/Honor.ogg" fadeout 1.5
+    
+    scene bg bridge with dissolve
+    show ava uniform altneutral neutral with dissolve
+
+    kay "Report."
+    ava "Bogies detected. Both pirate and PACT."
+    kay "Did they find us?"
+    
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "We don't know yet."
+    kay "Did anything happen to break our cover? Electronic failures? Gas ruptures?"
+    ava "Negative, captain. I already had Engineering run a comprehensive diagnostic on our systems."
+    kay "Shut off all of our non-essential systems. Reduce our power signature to nothing."
+    ava "Understood, captain. Going dark."
+    kay "Now we wait..."
+    
+    show ava uniform handonhip mad with dissolve
+    
+    ava "Course change in the enemy fleet's heading. They are turning towards us."
+    kay "Hold steady."
+    ava "Distance to enemy: 60 000 kilometers."
+    ava "They are slowing to intercept."
+    kay "Hold."
+    ava "Distance: 50 000 kilometers."
+    kay "Fire the maneuvering thrusters. Adjust our course point niner, five, three."
+    ava "Firing thrusters."
+    ava "No change detected in the enemy's course."
+    kay "... ... ..."
+    
+    show ava uniform altneutral angry with dissolve
+    
+    ava "The enemy has just adjusted their course to compensate. They are still on an intercept vector. Distance: 40 000 kilometers."
+    kay "Tsch. Red alert! Activate all systems! Scramble all ryders and prepare calculations for emergency warp out!"
+    
+    play sound "sound/redalert.ogg"
+    
+    scene bg bridgered
+    show ava uniform altneutral angry
+    with dissolve
+    
+    ava "Aye captain! All hands, battle stations! The enemy has found us!"
+    kay "How did they realize we were here? Luck!?"
+    ava "We are being hailed!"
+    
+    show cosette plugsuit point evilsmile:
+        xpos 0.7
+    with wipeup
+    
+    cos "Heeheehee. I've ffooouuunnnddd you--"
+    kay "Cosette!"
+    
+    show cosette plugsuit armscrossed happy with dissolve
+    
+    cos "You look surprised. Maybe you thought that we hadn't realized you were here?"
+    cos "Heh. More slip ups. You've been losing your edge lately..."
+    kay "You're fighting for the wrong side, Cosette."
+    kay "That Paradox Core PACT's building isn't going to be used for world peace. It's a weapon of terror."
+    
+    show cosette plugsuit point evilsmile with dissolve
+    
+    cos "I was about to tell you the same!"
+    cos "But enough talk! This is the end, captain!"
+    
+    hide cosette with wipedown
+    
+    kay "How much longer until we can warp, Ava?"
+    
+    show ava uniform armscrossed angry with dissolve
+    
+    ava "The electronic interference from the star will complicate things. At least 15 minutes."
+    kay "Looks like we'll have to hold them off for that long."
+    kay "All units, launch!"
+    
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    show battlewarning:
+        xpos 0.5 ypos 0.5
+    $ renpy.pause(2)
+
+    window hide
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+
+    call mission19_inits
+    $ BM.mission = 19
+    $ check1 = False
+    $ check2 = False    
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    $ check6 = False
+    
+    jump battle_start
+
+label mission19:
+    
+    $BM.battle_bg = "Background/space4.jpg"
+
+    if check1 == False and BM.turn_count == 1:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "We must hold out for six turns before we can warp!"
+        
+        hide ava onlayer screens with dissolve
+        
+        play sound "sound/objectives.ogg"
+        
+        "Mission objective: Survive for six turns"
+        
+        $ check1 = True
+        
+    if check2 == False and BM.turn_count == 2:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Five turns remaining until we are ready to warp!"
+        
+        hide ava onlayer screens with dissolve
+            
+        $ check2 = True
+
+        python:
+            create_ship(PactElite(),(14,4))
+            create_ship(PactElite(),(13,15))
+            create_ship(PactBattleship(),(15,9))
+
+    if check3 == False and BM.turn_count == 3:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Four turns remaining!"
+        
+        hide ava onlayer screens with dissolve
+            
+        $ check3 = True
+
+        python:            
+            create_ship(PirateBomber(),(15,4))
+            create_ship(PirateBomber(),(15,15))
+
+            create_ship(PactCruiser(),(13,6))
+            create_ship(PactCruiser(),(13,7))
+            create_ship(PactCruiser(),(13,8))
+            create_ship(PactCruiser(),(13,9))
+
+    if check4 == False and BM.turn_count == 4:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Three turns remaining!"
+        
+        hide ava onlayer screens with dissolve
+            
+        $ check4 = True
+
+        python:
+            create_ship(PactBattleship(),(14,9))
+            create_ship(PactBattleship(),(14,14))
+
+    if check5 == False and BM.turn_count == 5:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Two more turns remaining!"
+        
+        hide ava onlayer screens with dissolve
+            
+        $ check5 = True
+
+        python:
+            create_ship(PactAssaultCarrier(),(14,3))
+            create_ship(PactAssaultCarrier(),(14,15))
+
+    if check6 == False and BM.turn_count == 6:
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Just one more turn until the warp calculations are complete!"
+        
+        hide ava onlayer screens with dissolve
+            
+        $ check6 = True
+
+        python:
+            create_ship(PactAssaultCarrier(),(14,3))
+            create_ship(PactBattleship(),(11,9))
+            create_ship(PactElite(),(14,4))
+            
+            create_ship(PactCruiser(),(13,7))
+            create_ship(PactCruiser(),(13,8))
+            create_ship(PactCruiser(),(13,9))
+            
+            create_ship(PactElite(),(13,15))
+            create_ship(PactBattleship(),(14,14))
+            create_ship(PactAssaultCarrier(),(14,15))
+            
+    if BM.turn_count >= 7:
+        
+        python:
+        
+            BM.you_win()
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission19 #loop back
+    else:
+        pass #continue down to the next label
+
+label after_mission19:
+
+    hide screen commands
+    hide screen battle_screen
+
+    scene bg bridgered
+    show ava uniform neutral angrytalk
+    with dissolve
+
+    window show
+
+    ava "The enemy fleet has been diverted! But more PACT reinforcements are inbound!"
+    kay "Engage warp on my mark!"
+
+    play music "Music/Posthumus_Regium.ogg"
+    scene cg_legionfleetagain with dissolve    
+    
+    ava "Warning! I-It's-"
+    kay "Not again!"
+
+    scene bg bridgered
+    show ava uniform neutral surpriseangry
+    with dissolve    
+    
+    ava "HARD TO PORT!!"
+    
+    play sound "sound/explosion2.ogg"
+    show layer master at shake2(repeats=10)
+    
+    "Consoles exploded and conduits sparked as the Sunrider took a direct hit. Crewmen were flung from their stations."
+    "Shields fell to the floor as the bridge rattled like it was splitting in half."
+    ava "EAH!!!"
+    kay "U-UGGGH--!"
+    kay "R-report!"
+    "Ava picked herself off the ground."
+    
+    show ava uniform altneutral surpriseshout with dissolve
+    
+    ava "Our warp drive is no longer functional! Fires reported in engineering!"
+    ava "Loss of pressure in cabins 32 to 41. 20 crewmen are reported injured. Three missing."
+    kay "Return fire! Prioritize restoring our warp drive!"
+    ava "Captain, another power surge has been detected from the Legion!"
+    kay "Brace for---"
+
+    stop music fadeout 1.5
+    play sound "sound/explosion4.ogg"
+    scene white with dissolve
+
+    "... ... ..."
+    "..."
+        
+    scene bg classroomnight with dissolvelong
+
+    "Kayto shivered as he looked out the window."
+    
+    play music "Music/hinokageri.ogg" fadein 3.0
+    
+    "The snow fell from the night sky in huge globs. He could hardly make out the light posts in the school field against the whiteout."
+    kay "Ugh... We're in trouble now..."
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "Idiot. Shut up and work."
+    kay "This is a huge problem! There's no way we're gonna be able to get home at this rate!"
+    ava "That's the least of our problems."
+    kay "Are you kidding me!? This blizzard's gonna go all night!"
+    "Ava sighed."
+    
+    show ava hs handonhip frown with dissolve
+    
+    ava "We still have so much more work to do. And graduation's just two days away now. It's natural we'd have to work late."
+    "Kayto looked at the stack of remaining paperwork to complete for the graduation ceremony."
+    "The stack was nearly half of Ava's height. The more he looked at it, the deeper he drowned in despair."
+    kay "This wouldn't even have happened if you hadn't told everyone else to leave."
+    ava "They were fooling off."
+    kay "They were going to graduate this week! Of course they're not going to be able to focus!"
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "... ... ..."
+    ava "The duty of the student council is to the students. If they're not going to take their duties seriously, then I have no need for them."
+    kay "L-look here!"
+    kay "You're a smart person, but we've got to do something about that personality of yours!"
+    kay "Do you seriously want no friends for the rest of your life!?"
+    "Ava sighed."
+    ava "I don't particularly care."
+    kay "Argh..."
+    kay "You're always like this..."
+    kay "You know-"
+    "Ava stood from her seat."
+    kay "Where are you going?"
+    ava "The vending machine."
+    ava "I need a break."
+    kay "I..."
+    kay "Sigh. All right."
+    kay "I'll be here."
+    kay "Trying to sort this mess out..."
+    
+    scene black with horizontalwipe
+    scene bg classroomnight with horizontalwipe
+    
+    "... ... ..."
+    "... ..."
+    "..."
+    "Kayto burrowed his frow as he filled out the 60th equipment request form of the evening."
+    "Finally, he threw away his pen."
+    kay "Argh, there's no way we're gonna be able to finish all this!"
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "... ... ..."
+    kay "I'm sorry madam pres. But I am offering in my letter of resignation!"
+    kay "It has been a good year, and we have tried our darnest, but this is the end!"
+    
+    show ava hs armscrossed closedeyesmad with dissolve
+    
+    ava "Pfffftt."
+    "In his delirium, Kayto saluted."
+    kay "Before I fall on this battlefield, let me just say this:"
+    kay "Death to all paperwork! Let it be known that I, Kayto Shields has just declared paperwork to be his mortal enemy! I shall make it my life goal to never touch another piece of paperwork in my life!"
+    
+    show ava hs handhair laugh with dissolve
+    
+    ava "Haahahahahaha..."
+    ava "Hahahahahaha!!!"
+    "Ava stood."
+    
+    show layer master at shake1
+    play sound "sound/hit.ogg"
+    
+    "She kicked the entire stack of paperwork over, sending forms flying across the classroom."
+    "Kayto stared at her, his jaw dropped."
+    
+    show ava hs handhair neutral with dissolve
+    
+    ava "... ... ..."
+    ava "Ahem."
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "It's not like we were going to be able to finish it anyways."
+    kay "Yeah... But..."
+    
+    show ava hs handonhip neutral with dissolve
+    
+    ava "Hey Kayto. There's a space heater in the top cabinet."
+    ava "Go get it."
+    "Kayto got on top of a chair and took the space heater out."
+    kay "You should have told me this earlier. I was freezing my butt off."
+    "He turned the heater on and sat in front of it."
+    "Ava took a seat next to him."
+    kay "... ... ..."
+    ava "... ... ..."
+    kay "And so our glorious adventures end."
+    kay "Well... uhh..."
+    kay "It was good while it lasted."
+    
+    show ava hs handhair laugh with dissolve
+    
+    ava "Hah. Good?"
+    ava "It was a disaster! Everyone hated me."
+    
+    show ava hs armscrossed closedeyesmad with dissolve
+    
+    ava "And what good did any of it do. It's not like any of the school officials listened to anything I had to say anyways."
+    ava "The student council's just a means for the adults to dump paperwork they don't want to do themselves on unsuspecting kids!"
+    ava "Valuable leadership experience? Good for your resume?"
+    ava "Hah!"
+    kay "... ... ..."
+    kay "Well, at least one of us thought it was rewarding."
+    ava "Idiot. You're hopeless."
+    kay "Thank you very much. I'm grateful for your service too."
+    ava "... ... ..."
+    kay "Sigh..."
+    kay "Well, that's that then."
+    kay "Whatever destiny awaits you, I hope you can find what you're looking for in space."
+    
+    show ava hs handhair sad with dissolve
+    
+    ava "... ... ..."
+    ava "Destiny, huh..."
+    ava "What a bunch of crap."
+    kay "... ... ..."
+    ava "I'm only doing that because of my dad."
+    
+    show ava hs armscrossed frownclosedeyes with dissolve
+    
+    ava "Listen 'ere Kayto."
+    ava "When there's a trillion of us, each one of us doesn't matter much."
+    ava "Remember that, when you're sitting in the President's chair next year."
+    kay "Pres..."
+    ava "... ... ..."
+    
+    show ava hs handhair laugh with dissolve
+    
+    ava "Heh..."
+    ava "Heheh..."
+    ava "Ahahahahaha...!!!"
+    ava "... ... ..."
+    ava "Hey Kayto, you wanna kiss...?"
+    kay "W-wha!? And where did that suddenly come from!?"
+    ava "... ... ..."
+    kay "O-oh."
+    kay "I get it."
+    kay "\"Let's mess with Kayto's head more by talking about destiny and crap. Let's see if I can play him one last time before I leave.\" That's what you're thinking, isn't it?"
+    kay "Well unfortunately pres, I already have you all figured out! There's absolutely no way you'd ever-"
+    kay "... ... ..."
+    
+    play music "Music/hinokageri_orchestra.ogg" fadeout 1.5
+    scene white with dissolve
+    
+    "A soft, faraway sensation, despite being nose to nose. That was the feeling of their first kiss."
+    "Their hearts pounded. A lock of her hair tickled his neck."
+    
+    scene bg classroomnight
+    show ava hs handhair blush
+    with dissolve
+    
+    kay "... ... ..."
+    ava "Idiot."
+    "She hid her face, nervousness now biting away at her cool exterior."
+    ava "... ... ..."
+    ava "Look."
+    ava "The snow's stopped."
+    "Kayto stood and looked out the window."
+    kay "And so it did."
+    ava "... ... ..."
+    ava "Let's go home."
+    kay "Yeah..."
+
+    scene bg city with dissolve 
+    show ava hs handonhip neutral with dissolve
+
+    "The two walked through the snow covered street."
+    kay "I can't believe they make us wear these uniforms in this cold..."
+    kay "Damn this!! I hear some private schools even have uniforms made of thermaweave now."
+    kay "Why can we never get any of the good stuff!"
+    ava "Isn't that the reason why you joined the student council in the first place?"
+    kay "Shit, I already forgot why I even joined in the first place!!"
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "Idiot."
+    "Ava grabbed his hand."
+    
+    show ava hs handhair blush with dissolve
+    
+    ava "My hand's not any warmer."
+    kay "... ... ..."
+    kay "Screw winter!!! Eaaahh!!!"
+    
+    show ava hs handhair neutral with dissolve
+    
+    ava "Men who complain too much aren't popular, you know."
+    kay "... ... ..."
+    kay "I mildly condemn the below nominal temperature of this season."
+    ava "... ... ..."
+    ava "Unbelievable..."
+    
+    scene bg apartmentfront with dissolve
+    show ava hs handhair neutral with dissolve
+
+    "They arrived at their apartment."
+    kay "Well, uh..."
+    kay "The janitor's gonna have quite a shock when he sees all the forms scattered about tomorrow morning."
+    ava "You think they might withhold my diploma for that?"
+    kay "Ooh, then looks like we'll be together again for next year too."
+    kay "Heh. Like that would ever happen."
+    kay "See ya."
+    "Kayto turned to leave, when Ava grabbed onto the tail of his coat."
+    
+    show ava hs handhair blush with dissolve
+    
+    ava "... ... ..."
+    ava "Idiot. Don't leave."
+    kay "What?"
+    ava "It's quiet in my place."
+    ava "It's silent. All the time."
+    kay "... ... ..."
+    
+    scene bg balcony with dissolve
+    show maray neutral neutral with dissolve
+
+    "Maray was sitting on the front balcony when she saw Kayto entering Ava's apartment."
+    
+    show maray excited happy with dissolve
+    
+    mar "O-oohh!!"
+    "Mom" "Maray! Is Kayto home yet?"
+    mar "Heh-heh..."
+    mar "Yeah mom! He just walked through the door now!"
+    mar "Says he's tired! Gonna go do homework in his room then sleep!"
+    "Mom" "Really?"
+    mar "Yeah!"
+    "Mom" "All right..."
+    mar "Hehe..."
+    
+    play sound "sound/tada.ogg"
+    scene cg_marayapprove with dissolve
+    
+    mar "Good luck, Kayto!"
+
+    if CENSOR == False:
+        jump censorscene1
+    
+label goodbyemaray:
+    
+    scene black with dissolvelong
+
+    "12 Years Later."
+    
+    scene cg_sky with dissolvelong
+    
+    "Captain Kayto Shields opened up his holo and checked his unread messages."
+    mar "Sorry Kayto. I don't think I'll be able to make it into Cera City in time to see you off."
+    mar "We're all proud of you. Good bye and good luck. Have a safe journey. -Maray"
+    "Shields closed the holo."
+    kay "(Ah well, that's that.)"
+    "He got into his orbital shuttle."
+    pi "Texting your girl good bye, sir?"
+    kay "Nah. Just family."
+    pi "Do you need to wait?"
+    kay "No need. Let's get this show on the road."
+    pi "Yes sir."
+    "Shields closed the shuttle's gate."
+    "The shuttle came to life. The engines hummed as it hovered over the ground."
+    "Shields took a final look at Cera City."
+    "It would be a while before he would return. It was the place of many memories."
+    "-Mostly happy ones of friendship and family, only punctuated with brief moments of sadness."
+    
+    scene cg_maraygoodbye with dissolve
+    
+    "Just as the shuttle was about to leave, he saw Maray exit a sky cab."
+    "She ran out into the sidewalk and waved him off."
+    mar "Bye Kayto!!"
+    mar "You're the hero now! Make us all proud!"
+    "Even if he did not hear a word of her farewell, he understood what she had said."
+    "He grinned and waved good bye."
+    kay "(Good bye...)"
+    "He looked at her as the shuttle fly away. Maray disappeared into the distance, until she was no more than a speckle amongst the skyscrapers."
+    "She was his beloved sister, and closest friend."
+    "He would miss her with all his heart."
+    kay "(Good bye...)"
+    mar "Good bye..."
+    
+    play music "Music/March_to_Glory.ogg" fadeout 1.5
+    scene black with dissolvelong
+    
+    scene legion_cerafire1 with dissolvelong
+    play sound "Sound/legion_maincannon.ogg"
+    scene legion_cerafire2 with dissolvelong
+    pause 1.0
+    scene legion_cerafire3 with dissolvemedium
+    $ renpy.pause(1)
+    scene legion_cerafire4 with dissolve
+    show legion_cerafire5 with horizontalwipereversefast
+    hide legion_cerafire5 with horizontalwipereversefast
+
+    play sound1 "Sound/explosion5.ogg"
+    scene legion_cerafire6 with dissolve    
+    scene cg_maraygoodbye with dissolve
+    scene white with dissolvelong
+    
+    play sound1 "Sound/explosion5.ogg"
+    scene cg_avaclassroom with dissolve
+    scene white with dissolvelong
+    
+    play sound1 "Sound/explosion5.ogg"
+    scene bg classroom
+    show ava hs handhair blush
+    with dissolve
+    scene white with dissolvelong
+    
+    stop music fadeout 1.5
+    
+    scene bg sickbay with dissolvelong
+    show chigara uniform excited surprisetear:
+        xpos 0.5 zoom 1.5 ypos 1.35
+    with dissolve
+
+    chi "CAPTAIN!!"
+    "Shields jolted awake. He gasped for air."
+    "Chigara sobbed into his chest."
+        
+    show chigara uniform handonchest crysmile with dissolve
+    
+    chi "You're alive..."
+    
+    show claude nurse altneutral bod behind chigara:
+        xpos 0.7
+    with dissolve
+    
+    "Beside her, Claude looked pale as a ghost."
+    
+    show icari uniform altneutral smile behind claude:
+        xpos 0.82
+    with dissolve
+    
+    "Icari put her hand on her shoulder."
+    ica "You did it."
+    
+    show claude nurse fisttohead forcedsmile with dissolve
+    
+    cla "H-heh..."
+    kay "U-ugh..."
+    kay "W-where's Ava? Is she okay?"
+    
+    hide icari with dissolve
+    
+    "... ... ..."
+    
+    hide claude with dissolve
+    
+    "... ..."
+    
+    hide chigara with dissolve
+    
+    "..."
+    
+    show ava uniform armscrossed frown:
+        zoom 1.4 xpos 0.5 ypos 1.3
+    with dissolve
+
+    "The commander came into view."
+    ava "Massive damage reported from all sectors, captain."
+    ava "I honestly thought they had us. But we somehow managed to get our warp drive operational again and escape."
+    ava "All together, we count 23 injured, and six dead."
+    ava "Fortunately, it appears you are not amongst them."
+    "Shields closed his eyes."
+    kay "Thanks for the report."
+    kay "Carry on..."
+    
+    $ pro_location = "captainsloft"
+    $ pro_event = "shieldsfallenfloor"
+    $ gal_location = None
+    
+    jump dispatch
+    
+label shieldsfallenfloor:
+    
+    hide screen ship_map
+
+    play music "Music/el_prendimiento.ogg" fadeout 1.5
+    scene black with dissolvemedium
+    scene bg captainsoffice2 with dissolvemedium
+    
+    window show
+
+    "Shields picked up the fallen debris from the floor."
+    "His office was a mess, with books, paperwork, and models strewn all over the floor. It would be a while before he could get it all organized again."
+    "He gave up and collapsed onto his chair."
+    "Pain shot through his temple. Was it because of his wounds?"
+    
+    play sound "sound/doorbell.ogg"
+    
+    "(Doorbell)"
+    kay "Come in."
+    
+    show ava uniform handonhip neutral:
+        zoom 1.3 ypos 1.2 xpos 0.5
+    with dissolve
+    
+    ava "Captain. I have prepared the full damage report."
+    "Shields looked through the report."
+    kay "Seaman Lynu dead... Ericridge wounded... Arturia dead... Von amputated..."
+    "He clenched his teeth."
+    kay "Overwork all our repair drones. I want the crew working around the clock. Get this ship operational again."
+    kay "Once the Alliance fleet gets here, we'll hit the Legion with everything we have."
+    kay "We're going to end it this time. Once and for all."
+    
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "Captain. You cannot mean to take the Sunrider into battle again."
+    ava "This ship is no condition to fight."
+    ava "We can sit this one out. Let the Alliance handle it."
+    "Shields stood from his chair."
+    "He nearly stumbled when pain shot through his leg."
+    kay "No."
+    kay "We sink that ship."
+    
+    show ava uniform altneutral annoyed with dissolve
+    
+    ava "Captain."
+    kay "I am ordering you, commander. We. Sink. That. Ship."
+    kay "I want it done."
+    ava "What's come over you, Kayto?"
+    ava "This isn't like you."
+    "Shields felt his blood boil."
+    kay "Every time."
+    kay "When it appeared on Cera, we retreated."
+    kay "When it appeared on Ryuvia Prime, we retreated."
+    kay "When it appeared on Far Port, we let it go."
+    kay "I... I have had it."
+    kay "We will not retreat this time!"
+    kay "That ship... Killed millions of our people!!"
+    kay "Sank our entire fleet!"
+    kay "Destroyed our world!!"
+    kay "NO MORE."
+    kay "Even if it costs our lives, we WILL SINK IT!"
+    kay "It has taken everything from me! And I will not let it take any more!!"
+    
+    show ava uniform neutral angry with dissolve
+    
+    ava "KAYTO!"
+    kay "... ... ..."
+    "Shields crumpled into his seat."
+    "He breathed for air, his hands trembling."
+    kay "... ... ..."
+    
+    play music "Music/Love_Theme.ogg" fadeout 1.5
+    show ava uniform armscrossed frown with dissolve
+    
+    ava "... ... ..."
+    "The two stared at each other."
+    "Shields took a deep breath and calmed himself."
+    kay "... ... ..."
+    kay "I'm sorry."
+    kay "I was wrong."
+    kay "It has not taken everything."
+    ava "... ... ..."
+    kay "Because... I still have you..."
+    kay "Don't I?"
+    ava "... ... ..."
+    kay "Heh. I remembered the real reason why I never left our old student council."
+    kay "It wasn't because of something stupid like wanting to help the student body or for better uniforms..."
+    kay "It was... because I couldn't stand the thought of being away from you."
+    
+    show ava uniform neutral lookleft with dissolve
+    
+    ava "I know, Kayto. I knew the whole time."
+    kay "And here we are again. Side by side. Once again fighting for a good for nothing cause to nowhere."
+    kay "You are the only family I have left."
+    
+    show ava uniform armscrossed lookawaymad with dissolve
+    
+    ava "Stop it..."
+    ava "You're the captain of this ship! You can't afford to let your emotions control you!"
+    ava "We have a duty! The preservation of this ship!"
+    ava "This isn't the time!"
+    kay "It's... you who I've always loved, Ava."
+    
+    show ava uniform armscrossed tearsadblush with dissolve
+    
+    ava "I..."
+    ava "... ... ..."
+    ava "I'm sorry, captain."
+    kay "What?"
+    ava "I cannot."
+    kay "... ... ..."
+    kay "What?"
+    kay "But... our promise..."
+    ava "... ... ..."
+    ava "I have no recollection of what you may be referring to, captain."
+    kay "I see."
+    kay "I see..."
+    "Shields stared blankly at Ava."
+    kay "Very well commander."
+    kay "Ready the battle plans. We strike the Legion."
+    ava "Kay...-"
+    ava "... ... ..."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Understood, captain."
+    
+    $ pro_location = "captainsloft"
+    $ pro_event = "satalonestaring"
+    $ gal_location = None
+    
+    jump dispatch
+
+label satalonestaring:
+    
+    hide screen ship_map
+
+    scene bg captainsloft with dissolve
+
+    window show
+
+    "Shields sat alone, staring into the ceiling, as Maray\'s last concert played in the background."
+
+    show chigara uniform handstogether sadsmileblush:
+        zoom 1.3 ypos 1.2 xpos 0.5
+    with dissolve
+    
+    chi "...Captain? Are you here?"
+    kay "... ... ..."
+    chi "Are... you all right?"
+    kay "Yeah."
+    kay "Come on in."
+    kay "I'm sorry about the mess."
+    "Shields stood and instinctively went to his tea set."
+    "He opened the cabinet."
+    "The tea set was smashed into a million shards."
+    "He stared at what remained."
+    kay "... ... ..."
+    "His face burned with humiliation as tears filled his eyes."
+    "He crumpled to the floor."
+    kay "No....!!!!!"
+    "He pounded his fist into the floor."
+    kay "NO!!!"
+    
+    scene cg_shieldschigarahug with dissolve
+    
+    chi "C-Captain!?"
+    "Chigara held onto him."
+    chi "What's the matter?"
+    kay "It's taken everything...!!"
+    kay "Absolutely everything...!!"
+    chi "Shhh..."
+    kay "Nothing is left!"
+    chi "Everything's all right, captain..."
+    chi "Chigara's here..."
+    kay "No..."
+    kay "I... abandoned her..."
+    kay "I saw it kill her before my very eyes... And I ran...!"
+    kay "I fled!"
+    kay "It's my fault... It was I who failed her...!"
+    chi "Shhh..."
+    chi "Your order that day saved the lives of everyone on board this ship..."
+    chi "It was the best order you could have gave."
+    kay "Now... I have nothing left..."
+    kay "No home to return to... No family..."
+    kay "All the places of the past... turned to ash...!"
+    chi "Shh... You have me, captain."
+    chi "You have your ship. Your crew."
+    chi "We're your family."
+    kay "... ... ..."
+    chi "You... never cried when your sister died..."
+    kay "... ... ..."
+    chi "It's all right captain... Your secret will be safe with me."
+    "Shields held onto Chigara and sobbed."
+    kay "Chigara..."
+    chi "I know I'll never be able to replace everything you lost..."
+    chi "But... I'll always be here for you."
+    kay "... ... ..."
+    chi "It's a promise."
+    kay "Chigara...!!"
+    kay "I'm sorry..."
+    kay "I failed her... I... failed her..."
+    chi "Captain..."
+
+    play music "Music/Daydream_Reprise.ogg" fadeout 3.0
+    scene black with dissolve
+    scene bg bridgered with dissolve
+
+    "Shields walked into the bridge."
+    kay "Report, commander."
+    
+    show ava uniform handonhip neutral with dissolve
+    
+    ava "Repairs to our hull and the vanguard are complete, captain. We are once again green for combat operations."
+    ava "The Alliance Fleet has arrived. The operation will commence as planned."
+    kay "Review the battle plan one last time."
+    ava "Aye captain."
+    ava "The Chief Engineer has examined all of the combat data we have gathered of the Legion to date. She believes she has discovered a weakness."
+    ava "While the Legion is plated with enough heavy armor to nullify all conventional weapons, we may be able to use it to our advantage."
+    ava "A vanguard directly down its primary laser shaft will destroy its primary power generator deep inside the Legion's belly. The ensuing chain reaction should be sufficient to destroy the entire ship from the inside out."
+    kay "So in other words, the only way to kill that thing is to fly right in front of its primary weapon and shove a Vanguard down its maw, huh."
+    kay "Absolutely insane. The plan is approved."
+    
+    show ava uniform salute neutral with dissolve
+    
+    ava "Sir."
+    
+    hide ava with dissolve
+    
+    "Shields activated the PA."
+    
+    scene cg_helionalliancefleet:
+        xanchor 1.0 xpos 1.0 subpixel True
+        linear 60 xpos 1.278
+    with dissolve
+    
+    kay "All hands, this is your captain speaking."
+    kay "Momentarily, we will engage the PACT super dreadnought Legion and the Paradox Core."
+    kay "The coming battle will not be easy."
+    kay "I will not mince words with you. We all lost people close to us because of that ship."
+    kay "In just a flash, it took away our homes. Our families."
+    kay "I know this mission has not been easy. It has not been easy for me. It has not been easy for any of you."
+    kay "But there is one thing the Legion will never take away from us." 
+    kay "Our hope." 
+    kay "Our hope that we will rebuild everything which was destroyed."
+    kay "That we will continue to live and to love each other. That we will rise from the ashes of war, stronger than ever before!"
+    kay "We will not give into despair!"
+    kay "PACT may destroy our cities and terrorize us with weapons the galaxy has never known, but we will rebuild all that we have lost!"
+    kay "We will win this battle for Cera. For all the memories we hold dear of our home, for all those who have lost their lives just so we could make it this far!"
+    kay "Together, we will end the Legion's reign of terror! It may have spawned from the deepest depths hell, but we will send it crashing back to the hellfire it came from!"
+    kay "So that the galaxy will see a new day. A day when we live free of the terror of madmen and tyrants! A day when we can all go back home!"
+    kay "A day as bright as our memories of Cera!"
+    
+    scene bg bridgered with dissolve
+    
+    "The bridge crew stood and applauded."
+    "Cheer filled the PA and echoed through the halls of the Sunrider."
+
+    scene bg hangar with dissolve
+    show asaga plugsuit excited happy:
+        xpos 0.55
+    with dissolve
+    
+    asa "That's our captain!"
+    
+    show chigara plugsuit handonchest happy:
+        xpos 0.4
+    with dissolve
+    
+    chi "Eh-heh..."
+    
+    show icari plugsuit handonhip snide:
+        xpos 0.7
+    with dissolve
+    
+    ica "Heh. He hasn't lost it yet."
+    
+    show kryska plugsuit salute smile:
+        xpos 0.85
+    with dissolve
+    
+    kry "ATTENHUT!"
+    
+    show claude plugsuit excited happy:
+        xpos 0.25
+    with dissolve
+    
+    cla "Captain!!"
+    
+    show sola plugsuit handonchest smileblush:
+        xpos 0.1
+    with dissolve
+    
+    sol "...Captain..."
+
+    scene bg bridgered with dissolve
+    show ava uniform neutral angry with dissolve
+
+    "Shields steeled himself for the coming battle."
+    ava "The Alliance fleet is commencing with the attack."
+    kay "All ahead full!"
+    kay "Engage!"
+
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    show battlewarning:
+        xpos 0.5 ypos 0.5
+    $ renpy.pause(2)
+
+    window hide
+    hide bg bridgered
+    hide ava
+    hide battlewarning
+
+    call mission20_inits
+    $ BM.mission = 20
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+    
+    jump battle_start
+
+label mission20:
+    
+    $BM.battle_bg = "Background/paradoxback.jpg"
+
+    if check1 == False:
+            
+        $ check1 = True
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        
+        ava "Warning! The Legion is dead ahead!"
+        
+        hide ava onlayer screens
+        show claude plugsuit excited surprise onlayer screens
+        with dissolve
+        
+        cla "Uw-wwaahh!!! L-look at the size of that!"
+        
+        hide claude onlayer screens
+        show icari plugsuit altneutral surprise onlayer screens
+        with dissolve
+        
+        ica "W-what a monstrosity..."
+        
+        hide icari onlayer screens
+        show asaga plugsuit handsonhips mad onlayer screens
+        with dissolve
+        
+        asa "C'mon everyone! Stick together and we can sink it just like any other ship!"
+        
+        hide asaga onlayer screens
+        show ava uniform point angry onlayer screens
+        
+        ava "Don't let any unit get hit by the Legion's main cannon! Nothing can survive that!"
+        
+        hide ava onlayer screens with dissolve
+        
+        play sound "sound/objectives.ogg"
+        "Mission Objective: Sink the Legion"
+        "Mission Objective 2: The Sunrider and her ryders cannot be hit by the Legion's main cannon."
+        
+        $ check1 = True
+        
+    if check2 == False and BM.turn_count == 2:
+            
+        $ check2 = True
+        
+        show icari plugsuit neutral mad onlayer screens with dissolve
+        
+        ica "T-this is impossible! All our weapons are just bouncing off the Legion's armor!"
+        
+        hide icari onlayer screens
+        show kryska plugsuit neutral shout onlayer screens
+        with dissolve
+        
+        kry "The Alliance has retrofitted a group of Machiavelli class battleships with a spinal rail gun which should be capable of penetrating the Legion's armor."
+        kry "The Admiral has authorized a squad to join your command. Use them wisely, captain!"
+        
+        hide kryska onlayer screens with dissolve
+        
+        $ alliancebs1 = create_ship(AllianceBattleship(),(5,4))
+        $ alliancebs2 = create_ship(AllianceBattleship(),(5,6))
+        $ alliancebs3 = create_ship(AllianceBattleship(),(5,8))
+            
+    if check3 == False and BM.turn_count == 4:
+        
+        $ check3 = True
+        
+        show ava uniform neutral angry onlayer screens with dissolve
+        ava "Allied forces are engaged in a firefight near our position!"
+        ava "Shall we divert our forces to assist, captain?"
+        
+        hide ava onlayer screens with dissolve
+        
+        play sound "sound/objectives.ogg"
+        "Optional Objective: Rescue the Alliance fleet to use them against the Legion."
+        
+        $ alliancebs4 = create_ship(AllianceBattleship(),(9,14))
+        $ alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
+        $ alliancecruiser2 = create_ship(AllianceCruiser(),(10,15))
+        
+        python:
+            create_ship(PirateIronhog(),(13,12))
+            create_ship(PirateIronhog(),(13,16))
+            create_ship(PactElite(),(12,13))
+            create_ship(PactElite(),(12,15))
+            create_ship(PactBattleship(),(13,13))
+            create_ship(PactBattleship(),(13,15))
+            create_ship(PactAssaultCarrier(),(13,14))
+            create_ship(PactCruiser(),(14,13))
+            create_ship(PactCruiser(),(14,15))
+            
+    if check4 == False and BM.turn_count == 6:
+        
+        $ check4 = True
+        
+        play sound "sound/Voice/Ava/Ava Others 6.ogg"
+                
+        python:
+            create_ship(PirateIronhog(),(17,7))
+            create_ship(PirateIronhog(),(17,9))
+            
+            create_ship(PactBattleship(),(16,7))
+            create_ship(PactBattleship(),(16,8))
+            create_ship(PactBattleship(),(16,9))
+            
+            create_ship(PactElite(),(14,6))
+            create_ship(PactElite(),(14,7))
+            create_ship(PactElite(),(14,8))
+            create_ship(PactElite(),(14,9))
+            create_ship(PactElite(),(14,10))
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission20 #loop back
+    else:
+        pass #continue down to the next label
+
+label after_mission20:
+    
+    play music "Music/Posthumus_Regium.ogg"
+    
+    scene bg bridgered with dissolve
+    show ava uniform neutral angry with dissolve
+    
+    ava "We have weakened the Legion's systems! However, the Alliance fleet has taken heavy losses as well!"
+    kay "This ends now. Plot an intercept course."
+    ava "Aye captain! Beginning our approach!"
+    
+    window hide
+    
+    scene cg_legionfleetagain with dissolve
+    pause 1.0
+    
+    play sound "sound/legion_laser.ogg"
+    scene cg_legionapproachfire with horizontalwipereverse
+    
+    scene cg_legionapproach1 with dissolve
+    pause 0.5
+    
+    play sound "sound/explosion4.ogg"
+    
+    scene cg_legionapproach2:
+        ease 0.02 xpos -0.01
+        ease 0.04 xpos 0.01
+        ease 0.02 xpos 0.0
+        repeat 8
+    with dissolve
+    
+    pause 2.0
+    
+    scene bg bridgered with dissolve
+    show ava uniform neutral surpriseangry with dissolve
+    
+    window show
+
+    ava "A-argh!!"
+    kay "Steady as she goes!"
+    ava "We are on our approach! Distance: 1000!"
+    kay "Begin to charge the Vanguard!"
+    ava "We're taking massive damage!"
+    
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2
+    
+    ava "Hull breaches, reported in all C sections!"
+    kay "Hold course!"
+    ava "Distance: 6000!"
+    
+    play sound "sound/legion_laser.ogg"
+    scene cg_legionapproachfire with dissolve
+    
+    pause 2.0
+    
+    scene bg bridgered
+    show ava uniform neutral surpriseangry
+    with dissolve
+    
+    play sound "sound/explosion1.ogg"
+    show layer master at shake2
+    
+    ava "Eaahh!!"
+    "The bridge rattled and conduits burst, spraying sparks everywhere."
+    kay "Hold steady!!"
+    ava "Distance: 3000!"
+    kay "Prepare to fire!!"
+    
+    play sound "sound/explosion4.ogg"
+    show layer master at shake2
+    
+    "A console exploded, sending the helmsman flying from his station."
+    "Steel groaned as if the Sunrider herself was dying."
+    ava "Distance: 1000!"
+    ava "800!"
+    ava "400!"
+    kay "FIRE!!"
+    "... ... ..."
+    "Shields' order had no effect."
+    kay "I said, fire!"
+    
+    show ava uniform altneutral angry with dissolve
+    
+    ava "The Vanguard is not responding captain!"
+    kay "Goddamnit!"
+    "Shields punched his armrest."
+    ava "Our Vanguard controls are offline! It cannot be remotely fired from the bridge!"
+    kay "Break off our attack!"
+    kay "Relay a message to Machivelli Actual. We need them to take the shot!"
+    ava "Negative captain! The Machiavellis are not nimble enough to make the approach! Only we can take the shot!"
+    ava "Warning! The Legion is powering it's main cannon!"
+    
+    window hide
+    
+    scene cg_alliancefleet_legionfire1 with dissolve
+    pause 1.0
+    
+    play sound "sound/legion_maincannon.ogg"
+    scene cg_alliancefleet_legionfire2 with dissolve
+    pause 1.5
+    
+    scene cg_alliancefleet_legionfire3 with dissolve
+    
+    pause 2.0
+    
+    scene cg_alliancefleet_helion1 with dissolve
+    
+    pause 1.0
+    
+    scene cg_alliancefleet_helion2 with dissolve
+    
+    play sound "sound/explosion4.ogg"
+    scene cg_alliancefleet_helion3:
+        ease 0.02 xpos -0.01
+        ease 0.04 xpos 0.01
+        ease 0.02 xpos 0.0
+        repeat 8
+        xpos 0.0
+    with dissolve
+        
+    scene cg_alliancefleet_helion4:
+        xpos 0.0
+    with dissolvelong
+    pause 1.0
+    
+    scene bg bridgered
+    show ava uniform altneutral angry
+    with dissolve
+    
+    window show
+
+    ava "The Alliance line is falling apart! At this rate-"
+    kay "It's going to be a bloody massacre..."
+    kay "Get me the Vanguards. Now."
+    ava "The manual override at auxiliary control station C still appear to be functional!"
+    kay "Didn't you just say that all C sections were damaged!?"
+    ava "Aye captain!"
+    kay "Get a repair crew down there now!"
+    ava "All hands are currently occupied!"
+    ava "I'm going down there myself! The manual control's the only shot we have at destroying the Legion!"
+
+    if captain_moralist > captain_prince:
+        
+        if wishall == True:
+            menu:
+                "WISHALL: Get down there and get the Vanguard online!":
+                    jump WISHgetvanguardthe
+                
+                "CMD DECISION: Get down there and get the Vanguard online! (3000 CMD/[BM.cmd] Available)":
+                    jump CMDgetvanguardthe
+
+                "Are you crazy, commander!? It's too dangerous!":
+                    jump crazycommandertoo
+
+        if wishall == False:
+            menu:
+                "CMD DECISION: Get down there and get the Vanguard online! (3000 CMD/[BM.cmd] Available)":
+                    jump CMDgetvanguardthe
+
+                "Are you crazy, commander!? It's too dangerous!":
+                    jump crazycommandertoo
+
+    if captain_prince > captain_moralist:
+        
+        if wishall == True:
+        
+            menu:
+                "Get down there and get the Vanguard online!":
+                    jump getvanguardthe
+
+                "CMD DECISION: Are you crazy, commander!? It's too dangerous! (3000 CMD/[BM.cmd] Available)":
+                    jump CMDcrazycommandertoo
+                    
+                "WISHALL: Are you crazy, commander!? It's too dangerous!":
+                    jump WISHcrazycommandertoo
+                    
+        if wishall == False:
+        
+            menu:
+                "Get down there and get the Vanguard online!":
+                    jump getvanguardthe
+
+                "CMD DECISION: Are you crazy, commander!? It's too dangerous! (3000 CMD/[BM.cmd] Available)":
+                    jump CMDcrazycommandertoo
+
+        
+    if captain_prince == captain_moralist:
+        
+        menu:
+            "Get down there and get the Vanguard online!":
+                jump getvanguardthe
+
+            "Are you crazy, commander!? It's too dangerous!":
+                jump crazycommandertoo
+
+
+label WISHgetvanguardthe:
+    
+    play sound "sound/swordhit.ogg"
+    show item_wishall:
+        xpos -0.5 ypos 0.4 zoom 0.5
+        ease 0.5 xpos 0.48
+    
+    pause 1.5
+    
+    show white:
+        alpha 0
+        ease 0.5 alpha 1
+        ease 1.0 alpha 0
+    
+    hide item_wishall with dissolve
+    
+    $ wishall = False
+    
+    jump getvanguardthe
+    
+label WISHcrazycommandertoo:
+    
+    play sound "sound/swordhit.ogg"
+    show item_wishall:
+        xpos -0.5 ypos 0.4 zoom 0.5
+        ease 0.5 xpos 0.48
+    
+    pause 1.5
+    
+    show white:
+        alpha 0
+        ease 0.5 alpha 1
+        ease 1.0 alpha 0
+    
+    hide item_wishall with dissolve
+    
+    $ wishall = False
+    
+    jump crazycommandertoo
+
+label CMDgetvanguardthe:
+    
+    if BM.cmd >= 3000:
+        play sound "sound/swordhit.ogg"
+        show captainflash:
+            xpos 1.1 ypos 0.2
+            ease 0.7 xpos 0.35
+            pause 0.5
+            ease 0.8 alpha 0
+
+        $ BM.cmd -= 3000
+        jump getvanguardthe
+        
+    if BM.cmd < 3000:
+        
+        "Insufficient command points"
+        kay "Are you crazy, commander!? It's too dangerous!"
+        jump crazycommandertoo
+
+label CMDcrazycommandertoo:
+    
+    if BM.cmd >= 3000:
+        play sound "sound/swordhit.ogg"
+        show captainflash:
+            xpos 1.1 ypos 0.2
+            ease 0.7 xpos 0.35
+            pause 0.5
+            ease 0.8 alpha 0
+
+        $ BM.cmd -= 3000        
+        jump crazycommandertoo
+        
+    if BM.cmd < 3000:
+        
+        "Insufficient command points"
+        kay "Get down there and get the Vanguard online!"
+        jump getvanguardthe
+    
+
+label getvanguardthe:
+            
+    $ legion_destroyed = True
+    $ captain_prince += 5
+            
+    ava "I'll be right back!"
+    
+    scene bg engineroom with dissolve
+    show ava uniform altneutral angry:
+        zoom 1.3 ypos 1.25 xpos 0.5
+    with dissolve
+
+    ava "There is substantial damage to the auxiliary control station! However, the manual controls still appear intact!"
+    kay "We've begun our approach! Distance: 6000!"
+        
+    scene cg_legionfleetagain with dissolve
+    
+    ica "Watch it! The Legion's firing!"
+    
+    play sound "sound/legion_laser.ogg"
+    scene cg_legionapproachfire with horizontalwipereverse
+    
+    scene bg engineroom
+    show ava uniform altneutral angry:
+        zoom 1.3 ypos 1.25 xpos 0.5
+    with dissolve
+    
+    play sound "sound/explosion4.ogg"
+    show layer master at shake2
+    
+    ava "Eaahh!!!"
+    "The Sunrider howled as her frame bent and twisted."
+    "Steel beams snapped overhead and fell around Ava. They skewered the floor."
+    "Conduits burst, spraying fire and sparks."
+    
+    window hide
+    
+    scene cg_sunriderdamage1 with dissolve
+    pause 0.75
+    
+    play sound "sound/legion_laser.ogg"
+    pause 0.2
+    play sound1 "sound/explosion1.ogg"
+    
+    scene cg_sunriderdamage2 at shake2(repeats=10) with dissolve
+    pause 0.5
+    
+    scene cg_sunriderdamage3 with dissolve
+    pause 2.0
+    
+    window show
+    
+    scene bg engineroom with dissolve
+
+    "The floor ruptured from underneath Ava, flinging her across the room."
+    
+    show ava uniform neutral surpriseangry:
+        zoom 1.3 ypos 1.2 xpos 0.5
+    with dissolve
+    
+    ava "EEAHHHH!!!"
+    kay "Commander!? Are you all right!?"
+    "Ava wiped the blood from her face."
+    ava "I'm fine!"
+    "She picked herself up and limped towards the Vanguard controls."
+    
+    window hide
+    scene cg_sunriderdamage3 with dissolve
+    pause 0.75
+    
+    play sound "sound/legion_laser.ogg"
+    pause 0.2
+    play sound1 "sound/explosion4.ogg"
+    
+    scene cg_sunriderdamage4 at shake2(repeats=10) with dissolve
+    pause 0.5
+    
+    scene cg_sunriderdamage5 with dissolve
+    pause 2.0
+    
+    window show
+    
+    "Steel shards rained from the ceiling. Ava ducked and covered her head as glass and steel shredded her."
+    ava "Just... a bit..."
+    "She gasped for air as she crawled to the controls."
+    
+    scene cg_avaleverpull1 with dissolve
+    
+    "She pulled herself up and grabbed the steel lever."
+    "Her hand sizzled against the super heated steel. Ava grimaced as her flesh fused with steel."
+    ava "COME ON!!!"
+    "She placed her other hand on the lever and pulled with all her might."
+    ava "COME ONN!!!!!"
+    
+    play sound "sound/explosion4.ogg"
+    scene white with dissolve
+
+    "The console in front of her exploded in a massive fireball. Pieces of Ava splattered the floor. Her arm was torn from her body. Her face was shredded in half."
+    "Shields grimaced as her howl filled the comm."
+    kay "AVA!?"
+    kay "AAVVAA!!!"
+    
+    scene cg_finalstand1 with dissolve
+
+    chi "Captain! The Legion is preparing to fire its primary cannon!"
+    chi "The Sunrider will not fire the Vanguard in time!"
+    chi "You must break off the attack!!"
+    kay "... ... ..."
+    kay "No... Ava will make it!!"
+    chi "CAPTAIN!!!"
+    kay "SHE WILL MAKE IT!!!"
+    
+    scene black with dissolve
+
+    "Ava gagged up blood. She had no idea whether she was still alive."
+    "All she knew was the lever had to be pulled."
+    "The lever..."
+    
+    scene cg_avaleverpull2 with dissolve
+    
+    "She crawled to the controls, a bloody mess."
+    "The lever...!"
+    "She grabbed it with her only remaining hand."
+    "With all her remaining strength, she pulled."
+    ava "Arrggghhhh!!!!!!"
+    ava "EEEAAAAAHHHHHHHHHH!!!!!"
+    
+    scene cg_finalstand1 with dissolve
+    pause 0.5
+    
+    play sound "sound/legion_maincannon_charge.ogg"
+    scene cg_finalstand2 with dissolve
+
+    chi "CAPTAIN!! BREAK OFF!!! BREAK OFF!!!"
+    kay "No...!"
+    kay "It worked! SHE DID IT!!"
+    "Shields shot up, his eyes wide."
+    kay "VANGUARDS...!!! ARE FIRING!!!!"
+    
+    window hide
+    
+    play sound "sound/vanguard cannon.ogg"
+    scene cg_finalstand3 with dissolve
+    
+    pause 2.0
+    
+    play sound1 "sound/explosion4.ogg"
+    scene cg_finalstand4 at shake2(repeats=10) with dissolve
+    
+    pause 2.0
+    
+    scene white with dissolvelong
+    
+    scene cg_legionfallback
+    show cg_legionfall_legion:
+        subpixel True
+        xpos 0.01 ypos -0.1
+        linear 4.0 xpos 0.0 ypos 0.0
+    with dissolvelong
+    
+    pause 1.0
+    
+    play sound "sound/explosion5.ogg"
+    scene legionfall_end with dissolve
+    
+    scene white with dissolve
+    pause 2.0
+    
+    jump legiondestroyed
+
+label crazycommandertoo:
+    
+    $ captain_moralist += 5
+    $ legion_destroyed = False
+    
+    show ava uniform point angry with dissolve
+
+    ava "You said it yourself! We won't get another chance to sink the Legion!"
+    kay "And I'm saying it now, it's not worth it!"
+    ava "What's the matter!? We've come too far to back out now!"
+    kay "... ... ..."
+    ava "It killed your sister, didn't it!?"
+    kay "... ... ..."
+    kay "You're still the only person left, Ava."
+    
+    show ava uniform point shouttear with dissolve
+    
+    ava "NO!"
+    ava "We cannot wait any longer!"
+    ava "We must end the Legion now! Before the whole fleet is lost!"
+    kay "ENOUGH!"
+    "The two stared at each other."
+    kay "The whole of the Alliance can burn! The galaxy can fall to its doom! The end of humanity can come!"
+    kay "But I will not throw you away to die!"
+    ava "You're... emotionally compromised!"
+    kay "I know."
+    kay "Sit down, Ava."
+    
+    show ava uniform armscrossed tearsadblush with dissolve
+    
+    ava "... ... ..."
+    ava "Idiot."
+    
+    show ava uniform salute smileblushtear with dissolve
+    
+    ava "Sir!"
+    kay "Hit our engines! Bypass the Legion!"
+    kay "Our mission critical objective is the Paradox Core! Relay a message to all Alliance ships to concentrate all fire on the Core!"
+    ava "Understood, captain!"
+    
+    jump legionnotdestroyed
+
+
+label legiondestroyed:
+    
+    scene bg bridgered with dissolve
+    
+    "No words came to Shields as what was once the Legion fell into the fires of the star."
+    "For a moment, he stood, speechless."
+    "Then, we returned to his senses."
+    kay "Ava!?"
+    kay "Get medics down to Auxiliary Control Room C now!"
+    kay "Ava!!! Come in, Ava!!"
+    kay "AVAA!!!!!"
+    
+    scene black with horizontalwipe
+    scene bg corebridge with horizontalwipe
+    show fontana:
+        xpos 0.3
+    show arcadius neutral:
+        xpos 0.7 zoom 0.94 ypos 1.05
+    with dissolve
+
+    fon "My leader, the Legion has fallen!"
+    fon "We must get you evacuated. At this rate-"
+    
+    show arcadius fist with dissolve
+    
+    arc "Coward. We will deal with the Sunrider. Personally."
+    fon "My leader?"
+    arc "Prepare our ryders!"
+    arc "Soon, our plan shall come to fruition!"
+    
+    jump plancomefruition
+    
+    
+label legionnotdestroyed:
+    
+    scene black with horizontalwipe
+    scene bg corebridge with horizontalwipe
+    show fontana:
+        xpos 0.3
+    show arcadius neutral:
+        xpos 0.7 zoom 0.94 ypos 1.05
+    with dissolve
+
+    fon "My leader. The enemy is being slaughtered at the gate."
+    fon "However, the Sunrider and a small force of Alliance ships have bypassed our defenses. They are on route to the Paradox Core."
+    fon "As a precaution, we must get you evacuated further behind our lines."
+
+    show arcadius fist with dissolve
+    
+    arc "Coward. We will deal with the Sunrider. Personally."
+    fon "My leader?"
+    arc "Prepare our ryders!"
+    arc "Soon, our plan shall come to fruition!"
+    
+    jump plancomefruition
+    
+label plancomefruition:
+    
+    scene bg bridgered with dissolve
+    
+    if legion_destroyed == True:
+        asa "C'mon! The PACT Fleet's in total disarray! Now's our chance to get the Paradox Core!"
+        
+    if legion_destroyed == False:
+        asa "C'mon! This is our chance to get the Paradox Core!"
+        
+    chi "A-ah! A new unit is entering the battle!"
+
+    scene cg_nightmare_enter with dissolve
+
+    arc "Hahahaha...!"
+    kay "ARCADIUS!! You're here!"
+    arc "Welcome, captain! To our festival!"
+    kay "All ryders! Take out Arcadius, now!"
+    kay "We can end this war here and now!"
+    arc "End this war?"
+    arc "Oh no captain."
+    arc "Our body is immortal! For if we fall, another will pick up the mask and carry on!"
+
+    play sound "sound/Sola Sniper.ogg"
+    pause 2.7
+    play sound1 "sound/explosion4.ogg"
+    scene cg_nightmare_explode with dissolve
+
+    sol "Target neutralized."
+    sol "Even in this era, their speeches run too long."
+
+    scene bg bridgered with dissolve
+
+    kay "Confirm! Did we get him?"
+    asa "We... WE GOT HIM!!! Arcadius is no more!!!"
+    
+    play music "Music/March_to_Glory.ogg" fadeout 1.5
+    
+    arc "HAHAHAHA!!!"
+    kay "W-what!?"
+    
+    scene cg_nightmares_back with dissolve
+    show cg_nightmares_3:
+        ypos 1.0
+        ease 5.0 ypos 0.0
+        
+    arc "Fools."
+    
+    show cg_nightmares_2:
+        ypos 1.0
+        pause 0.5
+        ease 5.0 ypos 0.0
+    
+    arc "You cannot defeat us all."
+    
+    show cg_nightmares_1:
+        ypos 1.0
+        pause 1.0
+        ease 5.0 ypos 0.0
+        
+    show arcadiusneutral1 with dissolve
+    
+    "Arcadius 2" "We are legion."
+    
+    show arcadiusneutral2 behind arcadiusneutral1:
+        xpos 0.3 ypos 1.05 zoom 0.95
+    with dissolve
+    
+    "Arcadius 3" "We number more than the stars!"
+    
+    show arcadiusneutral3 behind arcadiusneutral1:
+        xpos 0.7 ypos 1.05 zoom 0.95
+    with dissolve
+    
+    "Arcadius 4" "But you do not!"
+    
+    show arcadiusneutral4 behind arcadiusneutral2:
+        xpos 0.15 ypos 1.1 zoom 0.9
+    show arcadiusneutral5 behind arcadiusneutral3:
+        xpos 0.85 ypos 1.1 zoom 0.9
+    with dissolve
+    
+    arc "WE... ARE... ARCADIUS!"
+    arc "Hahahaha!! Now do you see, captain?"
+    arc "How will you defeat an enemy whose numbers are infinite?"
+    arc "For every one of us you defeat, more replace us!"
+    arc "Our minds are one! But our bodies are many!"
+    
+    scene cg_blackjack_awaken1 with dissolve
+    show cg_asaga_awaken 1 with dissolve
+    
+    asa "Not... yet!!"
+    asa "I..."
+    asa "I know I'm not as reliable as the commander...! And I'm not as smart as Chigara...!"
+    asa "But I'm the one who'll defeat you! You monster of evil!"
+    arc "Ooh?"
+    
+    play sound "sound/heartbeat.ogg"
+    show cg_asaga_awaken 2
+    show cg_asaga_awakenzoom 2:
+        xpos 0.5 zoom 1.0
+        ease 0.3 zoom 4.0 alpha 0
+    with dissolve
+    
+    asa "Fall back, to the vile pit you came from!"
+    asa "For this is where the line will be drawn."
+    arc "You are but a pathetic girl playing hero."
+    asa "I'm more than a girl...!"
+    asa "I'm more than a hero!"
+    asa "I'm..."
+    
+    play sound "sound/heartbeat.ogg"
+    scene cg_blackjack_awaken2
+    show cg_asaga_awaken 3
+    show cg_asaga_awakenzoom 3:
+        xpos 0.5 zoom 1.0
+        ease 0.3 zoom 4.0 alpha 0
+    with dissolve
+    
+    asa "THE SHARR OF RYUVIA!"
+    arc "What!?"
+    asa "ARCADIUS!! You'll pay for what you did to my father!"
+    
+    hide cg_asaga_awaken 3 with dissolve
+    
+    play sound "Sound/battle.wav"
+    show battlewarning:
+        xpos 0.5 ypos 0.5 zoom 20
+        ease 0.5 zoom 1
+    pause 0.5
+    play sound "Sound/drum.ogg"
+    $ renpy.pause(2)
+
+    window hide
+    hide cg_blackjack_awaken2
+    hide battlewarning
+    
+    $ BM.ships.remove(alliancebs1)
+    $ player_ships.remove(alliancebs1)
+    
+    $ BM.ships.remove(alliancebs2)
+    $ player_ships.remove(alliancebs2)
+    
+    $ BM.ships.remove(alliancebs3)
+    $ player_ships.remove(alliancebs3)
+    
+    $ BM.ships.remove(alliancebs4)
+    $ player_ships.remove(alliancebs4)
+    
+    $ BM.ships.remove(alliancecruiser1)
+    $ player_ships.remove(alliancecruiser1)
+    
+    $ BM.ships.remove(alliancecruiser2)
+    $ player_ships.remove(alliancecruiser2)
+
+    $ BM.mission = 21
+    $ check1 = False
+    $ check2 = False
+    $ check3 = False
+    $ check4 = False
+    $ check5 = False
+    $ check6 = False
+    $ check7 = False
+    
+    call mission21_inits
+    
+    jump battle_start
+    
+label mission21:
+
+    if check1 == False and BM.turn_count == 2:
+
+        arc "Hahaha! We are infinite!"
+
+        python:
+            create_ship(Arcadius(),(15,7))
+            create_ship(Arcadius(),(15,8))
+            create_ship(Arcadius(),(15,10))
+            create_ship(Arcadius(),(15,11))
+            
+        $ check1 = True
+
+    if check2 == False and BM.turn_count == 3:
+
+        arc "My fleets! Crush these fools!"
+
+        python:
+            create_ship(PactBattleship(),(16,4))
+            create_ship(PactBattleship(),(16,11))
+
+        $ check2 = True
+        
+    if check3 == False and BM.turn_count == 4:
+
+        arc "Give up yet?"
+
+        python:
+            create_ship(Arcadius(),(17,1))
+            create_ship(PactCruiser(),(17,8))
+            create_ship(PactCruiser(),(17,9))
+            create_ship(Arcadius(),(17,17))
+            
+        $ check3 = True
+            
+    if check4 == False and BM.turn_count == 5:
+
+        arc "Now, behold providence!"
+
+        python:
+            create_ship(Arcadius(),(16,8))
+            create_ship(Arcadius(),(16,9))
+            create_ship(Arcadius(),(16,10))
+            create_ship(PactAssaultCarrier(),(15,9))
+            create_ship(PactCruiser(),(14,8))
+            create_ship(PactCruiser(),(14,10))
+            create_ship(PactBattleship(),(17,9))
+            create_ship(PactBattleship(),(17,10))
+            
+        $ check4 = True
+        
+    if check5 == False and BM.turn_count == 7:
+
+        arc "Hahahaha! You thought it was over?"
+
+        python:
+            create_ship(Arcadius(),(17,8))
+            create_ship(Arcadius(),(17,9))
+            create_ship(Arcadius(),(17,10))
+            create_ship(Arcadius(),(17,11))
+            
+        $ check5 = True
+
+    $BM.battle()  #continue the battle
+
+    if BM.battlemode == True:   #whenever this is set to False battle ends.
+        jump mission21 #loop back
+    else:
+        pass #continue down to the next label
+    
+label after_mission21:
+    
+    play music "Music/March_to_Glory.ogg"
+    
+    scene cg_nightmaredefeated with dissolve
+
+    arc "Aarrgghh!!!"
+    
+    show cg_asaga_awaken 1 with dissolve
+    
+    asa "Haa... Haa..."
+    asa "It's over!"
+    arc "Heh...Heh..."
+    arc "HAHAHAHA!!!"
+    arc "You are still naive!"
+    arc "This was but a show. Now, prepare for the true reason you were called before us!"
+    arc "Detonate the Paradox Core!"
+    
+    scene bg bridgered with dissolve
+    
+    kay "What!?"
+    arc "In one moment, four Alliance fleets shall disappear into the great void! Along with the great Sunrider, and the last vestiges of Diode's legacy!"
+    arc "But we shall all wake up in our new bodies, ready to conquer the galaxy once more!"
+    kay "Arcadius... You're... inhuman!!"
+    arc "Haha!! Precisely!"
+    
+    play music "Music/The_Flight_of_the_Crow.ogg" fadeout 1.5
+    show fontana with wipeup
+    
+    fon "No."
+    arc "W-what!?"
+    fon "That creature you see before you is not the Great Arcadius."
+    
+    scene bg corebridge
+    show fontana:
+        xpos 0.65
+    with dissolve
+    
+    fon "It is over, Prototype."
+    fon "I have already disarmed the Paradox Core."
+    pro "WHAT!? FONTANA!"
+    pro "YOU TRAITOR!"
+    fon "A traitor? I?"
+    fon "It is I, who must hold the crimson banner. For you have already spat at all it stood for!"
+    fon "The Great Arcadius only made a single mistake! It was allowing a monstrosity like you into our ranks!"
+    fon "From this moment until the end of time, it will be I, the Vennasar Fontana, who carries forth the ideals of the Great Arcadius!"
+    fon "Hear this, you twisted monster of science. You are no longer fit to call yourself by that name!"
+    fon "Behold, the truth that lies beyond the mask of Arcadius!"
+    
+    play music "Music/Coming_Soon_Part1.ogg" fadeout 1.5
+    show arcadius neutral:
+        xpos 0.3 zoom 1.4 ypos 1.4
+    with dissolve
+    
+    "PACT troops loyal to Fontana brought forth who - or what - was formerly known to be Veniczar Arcadius."
+    
+    pro "... ... ..."
+    
+    "Fontana tore the mask of Arcadius off."
+
+    show arcadius prototype smirk:
+        xpos 0.3 zoom 1.4 ypos 1.4
+    with dissolve
+
+    pro "You fool... You will pay for this..."
+    chi "EEEAAAHHHHHHH!!!!"
+    kay "Sweet mother of god..."
+    fon "This is the secret of Diode."    
+    fon "A race of super humans, manufactured to surpass us."
+    fon "Until the creation became smarter than the creators. That was the day of the Diode Catastrophe."
+    fon "They walk among us, pretending to be human. But their goal is clear: The enslavement of the human race."    
+
+    play music "Music/Coming_Soon_Part2.ogg" fadeout 1.5
+    
+    pro "Hahaha..."
+    pro "It's too late, Fontana."
+    pro "We already number in the hundreds. We've embedded ourselves throughout the galaxy, manipulating ideologies, nations..."
+    pro "Leaders..."
+    pro "We already own everything."
+    fon "No."
+
+    play sound "sound/gunshot.ogg"
+    show arcadius prototype shot with dissolve
+    
+    pause 0.5
+    
+    scene black with dissolvemedium
+    
+    fon "You do not own PACT."
+    
+    pause 3.0
+    
+    stop music fadeout 1.5
 
     window hide
 
@@ -18795,6 +22247,11 @@ label credits:
         ypos 1.1
         linear 15 ypos -0.25
     pause 3.0
+    show credits16h:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25
+    pause 3.0
     show credits17:
         xalign 0.5
         ypos 1.1
@@ -18878,84 +22335,64 @@ label credits:
     cre "W-Y:{p}WalkingAtlas, Warboss Curb, Wes Owens, Will Chang, Will Kenni, Will Lawrence, William Bradley, William Bryant, William Fleming, William Joseph Owens, William Laminack, William Perry, William Roberts, William Taylor, Willid, Wilson Bilkovich, Wizbang The Mighty, www.boredgamer.co.uk, Wyrtt"
     cre "X-Z:{p}Xavier Dolci, Xiao, xxzindxx, Yaka, Yohan Withington, Yuri Van Dierendonck, Yurii Furtat, Zac Binion, Zach Milosic, Zach Whitesell, Zachary Kosarik, zack wood, Zak Kalles, Zalminen, zanza, Zenelix, Zenigame, Zero Null, Zetsuna, Zikri Muzammil, Zu Long, Zythiku, アルバート　ウェークス（AJ)"
 
-    jump aftercredits6
+    jump aftercredits7
+
+label aftercredits7:
+    
+    stop music fadeout 2.0
+
+    scene black with dissolvelong
+
+    window show
+    play music "Music/March_of_Immortals.ogg"
+
+    "NEXT TIME ON SUNRIDER..."
+    "Arcadius has been unmasked!"
+    "The discovery splits the crew of the Sunrider!"
+    "The operation to liberate Cera begins! But victory is still far!"
+    "Asaga's destiny is revealed!"
+    "One will betray the Sunrider. But who?"
+    "All that and more, in Sunrider: The Rebirth of the Holy Empire!"
+
+    show dontmissit:
+        zoom 10
+        ease 0.5 zoom 1
+
+    play sound "sound/drum.ogg"
+    
+    $ renpy.pause(1.0)
+
+    stop music fadeout 1.5
+    scene white with dissolvelong
+
+    play sound "sound/drumroll.ogg"
+
+    "And now... The results of our great waifu war!"
+    "And the winner is..."
+
+    show poll6:
+        xalign 0.5 yalign 0.5
+    with dissolve
+    
+    pause
+    
+    "... ... ..."
+    
+    show ava hs armscrossed pout with dissolve
+    
+    ava "... ... ..."
+    
+    show ava hs handhair blush with dissolve
+    
+    ava "Idiot."
+    
+    $ renpy.full_restart()
+    return
+    
 
 label aftercredits6:
     
     
-    play music "Music/Prayers.ogg" fadeout 1.5
-    scene black with dissolvelong
-    
-    show kyoko dead2:
-        zoom 2.0 ypos 1.2 xpos 0.5
-    with dissolve
-
-    kyo "Kayto..."
-    
-    hide kyoko dead2
-    show maray dead:
-        zoom 2.0 ypos 1.6 xpos 0.5
-    with dissolve
-    
-    mar "You killed me..."
-    mar "You killed all of us..."
-    
-    hide maray with dissolve
-    
-    scene bg captainsoffice2_dark with dissolvelong
-    
-    "Shields jolted awake."
-    kay "... ... ..."
-    kay "(Maray...)"
-    "He stumbled out of bed and splashed himself with water."
-    kay "... ... ..."
-    kay "I didn't kill her."
-    "... ... ..."
-    "... ..."
-    "..."
-    "Shields uncapped a bottle of vodka and poured himself a shot."
-    
-    show grey with dissolve
-    
-    gre "We are the greatest force of freedom in the history of the galaxy."
-    gre "Sit down boy, and let me show you war."
-    
-    hide grey
-    show fontana
-    with dissolve
-    
-    fon "You will stand trial for your crimes against humanity."
-    
-    hide fontana
-    show ava uniform handonhip mad
-    with dissolve 
-    
-    ava "Your orders, captain!?"
-    
-    hide ava
-    show icari plugsuit neutral mad
-    with dissolve
-    
-    ica "Your orders!?"
-    
-    hide icari
-    show kryska uniform neutral frown
-    with dissolve
-    
-    kry "Your orders sir!?"
-    
-    hide kryska
-    show chigara plugsuit excited scared
-    with dissolve
-    
-    chi "Captain... What do we do!?"
-    
-    hide chigara with dissolve
-    
-    kay "(...I don't know.)"
-    kay "... ... ..."
-    "Shields gripped his glass."
-    kay "I don't know...!!"
 
     stop music fadeout 2.0
 
@@ -19015,6 +22452,7 @@ label aftercredits6:
     "Ain't it sad, Asaga!? When will your day come!?"
     asa "Sniffle."
     
+    $ renpy.full_restart()
     return
     
 label aftercredits5:
@@ -19263,6 +22701,424 @@ label aftercreditsep2:
     asa "EEEEEHHHHHHHHHH!?"
 
     return
+
+label skiptomaskofarcadius:
+    
+    scene black
+    with dissolve
+    
+    call initialize
+
+    call firstvariables
+    
+    "Welcome to the Mask of Arcadius campaign. It is highly suggested that you complete the First Arrival campaign before playing Mask of Arcadius."
+    "Do you want to go back to menu?"
+    
+    menu:
+        "Yes":
+            jump gobacktomenu      
+        "No":
+            jump continuewithchoices
+            
+label gobacktomenu:
+    
+    $ renpy.full_restart()
+    return
+    
+label continuewithchoices:
+        
+    call initialize
+
+    call firstvariables
+    
+    python:
+        BM.money = 19000
+        BM.cmd = 4000
+        gal_event = 'jumptogalaxy'
+        alliancecruiser1 = None
+        alliancecruiser2 = None
+        
+        warpto_tydaria = True    
+        warpto_occupiedcera = True
+        warpto_astralexpanse = True
+        warpto_pactstation1 = True
+        warpto_versta = True
+        warpto_nomodorn = True
+        warpto_ryuvia = True
+        warpto_farport = True
+        warpto_ongess = False
+        
+        sunrider_weapons = [SunriderLaser(),SunriderKinetic(),SunriderMissile(),SunriderRocket(),SunriderAssault(),SunriderPulse()]
+        sunrider = create_ship(Sunrider(),(1,1),sunrider_weapons)
+        
+        blackjack_weapons = [BlackjackMelee(),BlackjackLaser(),BlackjackAssault(),BlackjackMissile(),BlackjackPulse()]
+        blackjack = create_ship(BlackJack(),(1,2),blackjack_weapons)
+        
+        liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
+        liberty = create_ship(Liberty(),(5,7),liberty_weapons)
+
+        phoenix_weapons = [PhoenixAssault(),PhoenixMelee(),Stealth()]
+        phoenix = create_ship(Phoenix(),(9,5),phoenix_weapons)
+        
+        bianca_weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+        bianca = create_ship(Bianca(),(14,7),bianca_weapons)
+        
+        seraphim_weapons = [SeraphimKinetic(),Awaken()]
+        seraphim = create_ship(Seraphim(),(6,8),seraphim_weapons)
+
+        paladin_weapons = [PaladinMissile(),PaladinAssault(),PaladinKinetic()]
+        paladin = create_ship(Paladin(),(9,8),paladin_weapons)
+        
+        sunrider.repair_drones = 0
+        
+        cal_location = "captainsloft"
+        cal_event = "ftltransponder"
+        res_location = "lab"
+        res_event = "allocatefunds"
+        mission12_complete = True
+        
+
+    "To rebuild your storyline, select the choices you made in the First Arrival campaign."
+    "After the fall of Cera..."
+    
+    menu:
+        "I suggested becoming a pirate ship":
+            jump rb_pirateship
+        "I stayed with the flag of Cera.":
+            jump rb_flagcera
+            
+label rb_pirateship:
+    
+    $ captain_moralist += 1
+    
+    jump rb_2
+
+label rb_flagcera:
+
+    $ captain_prince += 1
+    
+    jump rb_2
+    
+label rb_2:
+
+    "When you came on board the Sunrider..."
+    
+    menu:
+        "I was friendly with Ava.":
+            jump rb_friendlyava
+        "I was professional with Ava":
+            jump rb_proava
+            
+label rb_friendlyava:
+    
+    $ affection_ava += 2
+
+    jump rb_3
+    
+label rb_proava:
+    
+    $ affection_ava -= 1
+
+    jump rb_3
+    
+label rb_3:
+
+    "When Asaga came onboard..."
+    
+    menu:
+        "I sided with Asaga":
+            jump rb_sideasaga
+            
+        "I sided with Ava":
+            jump rb_sideava
+            
+label rb_sideasaga:
+    
+    $ supportedasagacards = True
+    $ affection_asaga += 3
+    $ captain_moralist += 1
+    
+    jump rb_5
+    
+label rb_sideava:
+    
+    $ supportedasagacards = False
+    $ affection_ava += 2
+    $ captain_prince += 1
+    
+    jump rb_5
+
+label rb_5:
+    
+    menu:
+        "I destroyed the PACT spire":
+            jump rb_pactspire
+            
+        "I stopped the traffickers":
+            jump rb_traffickers
+            
+label rb_pactspire:
+    
+    $ captain_prince += 3
+    $ affection_ava += 1
+
+    jump rb_6
+    
+    
+label rb_traffickers:
+
+    menu:
+        "I captured the traffickers and turned them over to the authorities":
+            jump rb_traffickerscapture
+        "I let the traffickers die":
+            jump rb_traffickersdie
+            
+label rb_traffickerscapture:
+
+    $ captain_moralist += 3
+    $ affection_chigara += 1
+    $ affection_asaga += 3
+    
+    jump rb_6
+    
+label rb_traffickersdie:
+
+    $ captain_moralist += 3
+    $ affection_ava += 1
+    $ affection_asaga += 4
+    
+    jump rb_6
+    
+label rb_6:
+
+    "At Versta..."
+    
+    menu:
+        "I saved the diplomats":
+            jump rb_savediplomats
+            
+        "The Agamemnon was destroyed":
+            jump rb_agadestroy
+            
+label rb_savediplomats:
+    
+    
+    $ Saveddiplomats = True
+    $ captain_moralist += 13
+    $ affection_asaga += 2
+    
+    jump rb_7
+    
+label rb_agadestroy:
+
+    $ Saveddiplomats = False
+    $ captain_prince += 13
+    $ affection_icari += 4
+    $ affection_asaga -= 2
+    $ affection_ava += 1
+    
+    jump rb_7
+    
+label rb_7:
+
+    menu:
+        "I sent my ryders ahead to rescue the Mochi":
+            jump rb_rescuemochi
+        "I held my ryders back to protect the Sunrider":
+            jump rb_heldbackryders
+            
+label rb_rescuemochi:
+    
+    $ protectmochi = True
+    $ captain_moralist += 2
+    jump rb_8
+
+label rb_heldbackryders:
+
+    $ protectmochi = False
+    $ captain_prince += 2
+    jump rb_8
+    
+label rb_8:
+
+    "After Claude came on board..."
+    
+    menu:
+        "I supported Claude.":
+            jump rb_supportclaude
+            
+        "I supported Ava.":
+            jump rb_supportava2
+            
+label rb_supportclaude:
+    
+    $ affection_claude += 2
+    
+    jump rb_9
+    
+label rb_supportava2:
+    
+    jump rb_9
+    
+label rb_9:
+    
+    "After Asaga got kidnapped..."
+    
+    menu:
+        "I supported Chigara":
+            jump rb_supportchi
+        "I reprimanded Chigara":
+            jump rb_repremandchi
+            
+label rb_supportchi:
+    
+    $ affection_chigara += 1
+    jump rb_10
+    
+label rb_repremandchi:
+
+    jump rb_10
+    
+label rb_10:
+
+    "After Asaga was kidnapped..."
+
+    menu:
+        "I told Sola to be careful.":
+            jump rb_solacareful
+        
+        "I told Sola to give PACT hell.":
+            jump rb_solahell
+
+label rb_solacareful:
+
+    $ affection_sola += 1
+    $ captain_moralist += 1
+    
+    jump rb_11
+    
+label rb_solahell:
+
+    $ captain_prince += 1
+    
+    jump rb_11
+    
+label rb_11:
+
+    "When Icari got into a fight with Kryska..."
+    menu:
+        "I sided with Icari":
+            jump rb_sideicari
+        "I sided with Kryska":
+            jump rb_sidekryska
+            
+label rb_sideicari:
+    
+    $ affection_icari += 2
+    jump rb_12
+    
+label rb_sidekryska:
+    
+    $ affection_tera += 2
+    jump rb_12
+
+label rb_12:
+    
+    "While Asaga and Chigara were eating..."
+    
+    menu:
+        "I sided with Asaga":
+            jump rb_eatingsideasa
+        "I sided with Chigara":
+            jump rb_eatingsidechi
+            
+label rb_eatingsideasa:
+
+    $ affection_asaga += 1
+    jump rb_13
+    
+label rb_eatingsidechi:
+    
+    $ affection_chigara += 1
+    jump rb_13
+    
+label rb_13:
+
+    "After Asaga's rescue, I told Icari..."
+    
+    menu:
+        "I wasn't interested in fame.":
+            jump rb_interestedfame
+        "I would rally the galaxy against PACT.":
+            jump rb_rallyPACT
+
+label rb_interestedfame:
+    
+    $ captain_moralist += 1
+    jump rb_14
+    
+label rb_rallyPACT:
+
+    $ captain_prince += 1
+    jump rb_14
+
+label rb_14:
+    
+    "When Kryska came onboard..."
+    
+    menu:
+        "I trusted the Alliance":
+            jump rb_trustalliance
+        "I was suspicious of the Alliance":
+            jump rb_alliancesuspicious
+            
+label rb_trustalliance:
+    
+    $ captain_moralist += 1
+    $ affection_tera += 3
+    
+    jump rb_15
+
+label rb_alliancesuspicious:
+    
+    jump rb_15
+
+label rb_15:
+    
+    "While having tea with Chigara..."
+    
+    menu:
+        "I told her technology could be dangerous in misused":
+            jump rb_techdanger
+        "I told her I would want more powerful technology":
+            jump rb_morepowerfultech
+
+label rb_techdanger:
+    
+    $ captain_moralist += 1
+    jump rb_16
+    
+label rb_morepowerfultech:
+
+    $ affection_chigara += 1
+    jump rb_16
+    
+label rb_16:
+
+    if store.Difficulty == 3:
+        $ show_message('Please select your difficulty.',0.5,0.8,2)
+        show screen gameprefs
+
+    window hide
+    
+    stop music fadeout 1.5
+
+    show eyecatch_top with eyecatch_wipe
+    show eyecatch_bottom with eyecatch_wiperev
+    show eyecatch_logo with dissolve
+    $ renpy.pause (2.0)
+
+    jump beachepisode
 
 label devconsoleshow:
     show screen devconsole
