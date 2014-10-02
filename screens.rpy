@@ -286,9 +286,9 @@ init -2 python:
 
     deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes", 0.09)
     # chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select", 0.09)
-    # modScenes = BonusItem("CG/mochi1.jpg", " Addon Scene Select", "mod_scenes", 0.09)
+    modScenes = BonusItem("CG/mochi1.jpg", " Addon Scene Select", "mod_scenes", 0.09)
 
-    bonus_features = [deletedScenes]  #, chapterSelect, modScenes]
+    bonus_features = [deletedScenes, modScenes]  #, chapterSelect]
 
 screen bonus:
 
