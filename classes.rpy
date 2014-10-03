@@ -1008,6 +1008,7 @@ init -2 python:
             self.selectedmode = False
             self.targetingmode = False
             self.active_weapon = None
+            self.weaponhover = None
             self.turn_count += 1
             renpy.music.play(EnemyTurnMusic)
             renpy.call_in_new_context('endofturn')
