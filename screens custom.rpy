@@ -706,19 +706,20 @@ screen battle_screen:
                     zoom 0.25 * zoomlevel
 
             ##MOVE SHIP FROM GRID TO GRID##
-        if BM.moving:
-            $xposition = dispx(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
-            $yposition = dispy(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
-            $next_xposition = dispx(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
-            $next_yposition = dispy(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+        if BM.moving and BM.selected != None:
+            if BM.selected.location != None:
+                $xposition = dispx(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                $yposition = dispy(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
+                $next_xposition = dispx(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
+                $next_yposition = dispy(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
 
-            $travel_time = BM.selected.travel_time
+                $travel_time = BM.selected.travel_time
 
-            add BM.selected.lbl:
-                at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
-                xanchor 0.5
-                yanchor 0.5
-                zoom (zoomlevel/2.5)
+                add BM.selected.lbl:
+                    at move_ship(xposition,yposition,next_xposition,next_yposition,travel_time)
+                    xanchor 0.5
+                    yanchor 0.5
+                    zoom (zoomlevel/2.5)
 
         if BM.debugoverlay:  #may use this later for AI debug things too
             for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
@@ -1281,15 +1282,7 @@ screen enemy_unit_pool:
     
     #I will want to put this in a BM field and add new stuff when they get encountered.
     #I think I'll modify the create_ship function to add it automatically if it's not there yet
-    $ all_enemies = [
-        PactBomber(),  PactMook(),
-        MissileFrigate(), PactCruiser(),
-        PactCarrier(), PactOutpost(),
-        PactBattleship(),RyuvianCruiser(),
-        Havoc(), PirateBomber(),
-        PirateGrunt(), PirateDestroyer(),
-        PirateBase()
-        ]
+    $ all_enemies = store.all_enemies
     
     frame:
         background 'Skirmish/addenemy.png'

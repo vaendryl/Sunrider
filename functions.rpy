@@ -590,6 +590,16 @@ init -6 python:
         if ship.faction == 'Player':
             return ship
         else:
+        
+            #add newly encountered enemy ships to the list of enemies in skirmish.
+            in_all_enemies = False
+            for eship in store.all_enemies:
+                if ship.__class__ == eship.__class__:
+                    in_all_enemies = True
+            if not in_all_enemies:
+                store.all_enemies.append( ship.__class__() )
+                store.all_enemies[-1].location = None
+                    
             return
 
     def get_free_spot_near(location):

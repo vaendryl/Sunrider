@@ -182,6 +182,20 @@ label after_load:
 
     python:
     
+        #used by skirmish
+        if not hasattr(store,'all_enemies'):
+            store.all_enemies = [
+                PactBomber(),  PactMook(),
+                MissileFrigate(), PactCruiser(),
+                PactCarrier(), PactOutpost(),
+                PactBattleship(),RyuvianCruiser(),
+                Havoc(), PirateBomber(),
+                PirateGrunt(), PirateDestroyer(),
+                PirateBase()
+                ]
+        for ship in store.all_enemies:
+            ship.location = None                
+        
         ##debugging stuff##
         # renpy.hide_screen('battle_screen')
         # if not hasattr(BM,'show_tooltips'): BM.show_tooltips = True

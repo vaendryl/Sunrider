@@ -921,14 +921,14 @@ init -5:
         xanchor 0.5
         yanchor 0.5
 
-    image credits1 = Text("Project Director {p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits2 = Text("Writer{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits3 = Text("Lead Character Artist{p}         Ashton Wilson", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits5 = Text("Additional Character Design{p}         Adrian Ferrer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits6 = Text("Mechanical Design{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits1 = Text("Project Director {p}         Sam Yang (Samu-kun)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits2 = Text("Writer{p}         Sam Yang (Samu-kun)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits3 = Text("Lead Character Artist{p}         Ashton Wilson (Melonbunny)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits5 = Text("Additional Character Design{p}         Adrian Ferrer (Sixten)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits6 = Text("Mechanical Design{p}         Sam Yang (Samu-kun)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits7 = Text("3D Textures{p}         CGTextures", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits8 = Text("Background Art{p}         Sam Yang", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits9 = Text("Lead Programmer{p}         Vaendryl", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits8 = Text("Background Art{p}         Sam Yang (Samu-kun)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits9 = Text("Lead Programmer{p}         Paul Schovers (Vaendryl)", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits10 = Text("Renpy Engine Programmer{p}         Tom Rothamel", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11 = Text("Additional Programming{p}         Tom Rothamel, Sam Yang, Endershadow", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits11c = Text("Github Contributors{p}         Tom Rothamel, Quickman, Renari, KingRaptor, {p}BlueOrange, DoumanAsh, LongKnight", size=30, font="Font/GOTHIC.TTF", text_align=0.5)

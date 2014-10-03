@@ -128,6 +128,20 @@ label initialize:
         check7 = False
         check8 = False
         check9 = False
+            
+            
+        all_enemies = [
+            PactBomber(),  PactMook(),
+            MissileFrigate(), PactCruiser(),
+            PactCarrier(), PactOutpost(),
+            PactBattleship(),RyuvianCruiser(),
+            Havoc(), PirateBomber(),
+            PirateGrunt(), PirateDestroyer(),
+            PirateBase(), 
+            ]
+        for ship in all_enemies:
+            ship.location = None
+        
     return
 
 

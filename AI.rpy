@@ -150,7 +150,7 @@ init python:
             most_damage = 0
             heal_target = None
             for eship in enemy_ships:
-                if get_ship_distance(ship,eship) <= 3:
+                if get_ship_distance(ship,eship) <= 3 and eship.location != None:
                     damage = eship.max_hp-eship.hp
                     if damage >= heal_weapon.damage * 0.75 and damage > most_damage:
                         most_damage = damage
@@ -172,7 +172,8 @@ init python:
                     #get a list of ships that do not have this curse on them already
                     viable_targets = []
                     for pship in player_ships:
-                        if pship.modifiers[weapon.modifies][0] > weapon.buff_strength: #  e.g. 0 accuracy > -20 accuracy
+                        #warning, this code does not support abilities that modify more than 1 stat
+                        if pship.modifiers[weapon.modifies][0] > weapon.buff_strength and pship.location != None: #  e.g. 0 accuracy > -20 accuracy
                             viable_targets.append(pship)
                     if viable_targets == []:
                         continue #to next weapon
@@ -201,11 +202,12 @@ init python:
                         viable_target = None 
                         curse_weight = 0
                         for eship in enemy_ships:
-                            for modifier in eship.modifiers:
-                                magnitude, duration = eship.modifiers[modifier]
-                                if magnitude < curse_weight: # e.g. -100 < -20   or  disable < aimdown etc. smaller means more powerful in this case
-                                    viable_target = eship
-                                    curse_weight = magnitude
+                            if eship.location != None:
+                                for modifier in eship.modifiers:
+                                    magnitude, duration = eship.modifiers[modifier]
+                                    if magnitude < curse_weight: # e.g. -100 < -20   or  disable < aimdown etc. smaller means more powerful in this case
+                                        viable_target = eship
+                                        curse_weight = magnitude
                         
                         if viable_target != None:
                             viable_options.append( (weapon,viable_target) )

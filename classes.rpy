@@ -308,7 +308,7 @@ init -2 python:
             # this result can be from one of the imagebuttons in the pool screens or returned from
             # MouseTracker because a hex with a unit in it was clicked.
             selected_ship = self.result[1]
-            BM.selected = selected_ship
+            # BM.selected = selected_ship
 
             if self.remove_mode:
                 if selected_ship.location != None:
@@ -321,7 +321,8 @@ init -2 python:
                         set_cell_available(selected_ship.location)
                         selected_ship.location = None
 
-            else:
+            
+            else:  #normal mode
                 self.targetwarp = True
                 renpy.show_screen('mousefollow')
 
@@ -333,9 +334,10 @@ init -2 python:
                         if selected_ship in enemy_ships:
                             self.ships.remove(self.selected)
                             enemy_ships.remove(self.selected)
-                        else:
-                            self.selected = deepcopy(selected_ship) #breaks alias
-                            self.selected.weapons = self.selected.default_weapon_list
+                    else:
+                        self.selected = deepcopy(selected_ship) #breaks alias
+                        self.selected.weapons = self.selected.default_weapon_list
+            
             if self.selected != None:
                 if self.selected.location != None:
                     set_cell_available(self.selected.location)
@@ -1786,7 +1788,7 @@ init -2 python:
             
             #enough with the plinking
             accuracy = get_acc(weapon,self,pship,guess=True)
-            BM.debug_log.append('accuracy is {}'.format(accuracy))
+            # BM.debug_log.append('accuracy is {}'.format(accuracy))
             if accuracy < 50: 
                 if self.AI_move_towards(pship,max_move_distance=1) != False:
                     return
@@ -1848,11 +1850,17 @@ init -2 python:
                 if pship.damage_estimation[2] > best_target[3]:
                     best_target = [pship,pship.damage_estimation[0],pship.damage_estimation[1],pship.damage_estimation[2]]
             if best_target[0] == None:
-                # pass
-                BM.debug_log.append('no good target was found')
+                #make a function for this?
+                if config.developer:
+                    BM.debug_log.append('no good target was found')
+                else:
+                    pass
+                
             else:
-                # pass
-                BM.debug_log.append('best target is {} with an estimate of {!s} and a priority of {!s}'.format(best_target[0].name,best_target[2],best_target[3]))
+                if config.developer:
+                    BM.debug_log.append('best target is {} with an estimate of {!s} and a priority of {!s}'.format(best_target[0].name,best_target[2],best_target[3]))
+                else:
+                    pass
 
               ##find out if there isn't an ally around that could boost our defenses
               ##I want to change this so that it calculates how attractive each cell on the map is.
@@ -1862,7 +1870,7 @@ init -2 python:
             for weapon in self.weapons:
                 if weapon.wtype == 'Melee':
                     can_melee = True
-                    BM.debug_log.append('I can melee')
+                    # BM.debug_log.append('I can melee')
 
             if can_melee:
                 minimum_damage = 50
@@ -1871,7 +1879,7 @@ init -2 python:
 
             ##decide whether to shoot or to move
             if best_target[0] == None or best_target[2] < minimum_damage:
-                BM.debug_log.append('decided on moving towards an enemy ship')
+                # BM.debug_log.append('decided on moving towards an enemy ship')
                 
                 ##find the enemy ships you want to move towards
                 priority_target = [None,0]                
@@ -2112,7 +2120,7 @@ init -2 python:
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
-            renpy.pause(self.travel_time)
+            renpy.pause(self.travel_time+0.3)
             BM.moving = False
 
             renpy.hide_screen('battle_screen')

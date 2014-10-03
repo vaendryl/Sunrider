@@ -19505,7 +19505,7 @@ label prioritymessagelegion:
     ava "Love's just a chemical reaction."
     ava "When certain conditions are met, chemicals are released into our bloodstream which simulates the sensation of love."
     kay "Huh..."
-    ava "Are we any different than robots than?"
+    ava "Are we any different than robots then?"
     ava "Running on chemicals which simulate our existence?"
     kay "You're not making any sense, Ava..."
     ava "Your eyes are transmitting electronic information of what you see to your brain."
@@ -20120,7 +20120,7 @@ label shieldseyefile:
     kay "O-oh. I see."
     ava "... ... ..."
     kay "... ... ..."
-    kay "I always knew you'd so something amazing."
+    kay "I always knew you'd do something amazing."
     ava "Huh?"
     kay "So you're gonna be in space, huh..."
     kay "Sailing through the stars on a mighty big space ship."
@@ -20979,7 +20979,7 @@ label satalonestaring:
     kay "It's my fault... It was I who failed her...!"
     chi "Shhh..."
     chi "Your order that day saved the lives of everyone on board this ship..."
-    chi "It was the best order you could have gave."
+    chi "It was the best order you could have given."
     kay "Now... I have nothing left..."
     kay "No home to return to... No family..."
     kay "All the places of the past... turned to ash...!"
@@ -21924,24 +21924,34 @@ label plancomefruition:
     hide cg_blackjack_awaken2
     hide battlewarning
     
-    $ BM.ships.remove(alliancebs1)
-    $ player_ships.remove(alliancebs1)
     
-    $ BM.ships.remove(alliancebs2)
-    $ player_ships.remove(alliancebs2)
+    python:
+        #I should make a function for easy (safe!) deletion of ships >.<
+        if hasattr(store,'alliancebs1'):
+            if alliancebs1 in BM.ships:            
+                BM.ships.remove(alliancebs1)
+                player_ships.remove(alliancebs1)
+        if hasattr(store,'alliancebs2'):
+            if alliancebs2 in BM.ships:            
+                BM.ships.remove(alliancebs2)
+                player_ships.remove(alliancebs2)
+        if hasattr(store,'alliancebs3'):
+            if alliancebs3 in BM.ships:            
+                BM.ships.remove(alliancebs3)
+                player_ships.remove(alliancebs3)
+        if hasattr(store,'alliancebs4'):
+            if alliancebs4 in BM.ships:            
+                BM.ships.remove(alliancebs4)
+                player_ships.remove(alliancebs4)
+        if hasattr(store,'alliancecruiser1'):
+            if alliancecruiser1 in BM.ships:            
+                BM.ships.remove(alliancecruiser1)
+                player_ships.remove(alliancecruiser1)
+        if hasattr(store,'alliancecruiser2'):
+            if alliancecruiser2 in BM.ships:            
+                BM.ships.remove(alliancecruiser2)
+                player_ships.remove(alliancecruiser2)            
     
-    $ BM.ships.remove(alliancebs3)
-    $ player_ships.remove(alliancebs3)
-    
-    $ BM.ships.remove(alliancebs4)
-    $ player_ships.remove(alliancebs4)
-    
-    $ BM.ships.remove(alliancecruiser1)
-    $ player_ships.remove(alliancecruiser1)
-    
-    $ BM.ships.remove(alliancecruiser2)
-    $ player_ships.remove(alliancecruiser2)
-
     $ BM.mission = 21
     $ check1 = False
     $ check2 = False

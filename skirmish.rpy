@@ -7,6 +7,7 @@ label skirmish_battle:
         store.temprepair_drones = store.sunrider.repair_drones
         enemy_ships = []
         destroyed_ships = []
+        clean_grid()
         BM.mission = 'skirmish'
         BM.xadj.value = 872
         BM.yadj.value = 370 
