@@ -668,7 +668,7 @@ screen battle_screen:
         if BM.vanguardtarget:   #creates buttons over enemy ships
             $ loc1 = sunrider.location
             $ loc2 = BM.mouse_location
-            if get_distance(loc1, loc2) <= 6:
+            if get_distance(loc1, loc2) <= BM.vanguard_range:
                 $tiles = interpolate_hex(loc1, loc2)
                 for i in tiles:
                     $xposition = dispx(i[0],i[1],zoomlevel)
@@ -957,7 +957,7 @@ screen orders:
                                 ycenter 20
                                 
                                 $ damage = get_modified_damage(BM.vanguard_damage,'notplayer')
-                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of 6 hexes.'.format(damage) ):
+                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of {} hexes.'.format(damage,BM.vanguard_range):                                
                                     xpos 0
                                     ypos 0
                                     size 18
@@ -989,6 +989,19 @@ screen orders:
                                     size 18
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
+                                    
+                        if order == 'RETREAT' and BM.show_tooltips == True:
+                            frame:
+                                background Solid((0,0,0,200))
+                                xpos 150
+                                ycenter 20
+
+                                text str('Retreats your units from the battle with no penalties applied.'):
+                                    xpos 0
+                                    ypos 0
+                                    size 18
+                                    font "Font/sui generis rg.ttf"
+                                    outlines [(1,'000',0,0)]                                    
 
 
                                     #I couldn't get the mouse detection working properly with the buttons. Sorry! :S

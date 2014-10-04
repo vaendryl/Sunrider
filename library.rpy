@@ -2159,7 +2159,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_repair.png'
             self.tooltip = """
             Restores approximately 300 HP to target.
-            Has a range of 3 squares."""
+            Has a range of 3 hexes."""
 
     class AccUp(Support):
         def __init__(self):
@@ -2171,7 +2171,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_aimup.png'
             self.tooltip = """
             Adds an additional 15 points to the target's weapon accuracy.
-            Has a range of 3 squares."""
+            Has a range of 3 hexes."""
 
     class DamageUp(Support):
         def __init__(self):
@@ -2183,7 +2183,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_atkup.png'
             self.tooltip = """
             Increases the target's weapon damage by 20 percent.
-            Has a range of 3 squares."""
+            Has a range of 3 hexes."""
 
     class Restore(Support):
         def __init__(self):
@@ -2196,7 +2196,7 @@ init 2 python:
             self.lbl = 'Battle UI/button_restore.png'
             self.tooltip = """
             Removes all enemy status ailments from the target.
-            Has a range of 3 squares."""
+            Has a range of 3 hexes."""
 
     class Stealth(Support):
         def __init__(self):
