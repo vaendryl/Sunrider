@@ -957,7 +957,7 @@ screen orders:
                                 ycenter 20
                                 
                                 $ damage = get_modified_damage(BM.vanguard_damage,'notplayer')
-                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of {} hexes.'.format(damage,BM.vanguard_range):                                
+                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of {} hexes.'.format(damage,BM.vanguard_range)):                                
                                     xpos 0
                                     ypos 0
                                     size 18
