@@ -279,6 +279,14 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari plugsuit altneutral surprise:
+        "Character/Icari/icari_plugsuit_altneutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True     
+    
+    
         
     ##########################################################UNIFORM
         
@@ -396,6 +404,67 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+    image icari uniform point grin:
+        "Character/Icari/icari_uniform_point_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True        
+    image icari uniform handonhip confident:
+        "Character/Icari/icari_uniform_handonhip_confident.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True             
+    image icari uniform bothhandsonhips laugh:
+        "Character/Icari/icari_uniform_bothhandsonhips_laugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True    
+    image icari uniform handonhip grin:
+        "Character/Icari/icari_uniform_handonhip_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True           
+    image icari uniform armscrossed confidentlaugh:
+        "Character/Icari/icari_uniform_armscrossed_confidentlaugh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image icari uniform armscrossed content:
+        "Character/Icari/icari_uniform_armscrossed_content.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True          
+    image icari uniform neutral surprise:
+        "Character/Icari/icari_uniform_neutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image icari uniform armscrossed laughblush:
+        "Character/Icari/icari_uniform_armscrossed_laughblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True            
+    image icari uniform point shoutblush:
+        "Character/Icari/icari_uniform_point_shoutblush.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True
+    
+        
+        
+        
+        
+        
+        
     image icari plugsuit armscrossed shoutblush:
         "Character/Icari/icari_plugsuit_armscrossed_shoutblush.png"
         yanchor 0.51 ypos 1.0
@@ -414,6 +483,117 @@
         xanchor 0.5
         zoom 0.6255
         subpixel True 
+        
+    
+        
+        
+        
+    image icari beach armscrossed annoyedshout:
+        "Character/Icari/icari_beach_armscrossed_annoyedshout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach point angry:
+        "Character/Icari/icari_beach_point_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed mock:
+        "Character/Icari/icari_beach_armscrossed_mock.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach point laughmock:
+        "Character/Icari/icari_beach_point_laughmock.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach bothhandsonhips grin:
+        "Character/Icari/icari_beach_bothhandsonhips_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed angry:
+        "Character/Icari/icari_beach_armscrossed_angry.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach altneutral neutral:
+        "Character/Icari/icari_beach_altneutral_neutral.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed grin:
+        "Character/Icari/icari_beach_armscrossed_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach altneutral surprise:
+        "Character/Icari/icari_beach_altneutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed confident:
+        "Character/Icari/icari_beach_armscrossed_confident.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach neutral surprise:
+        "Character/Icari/icari_beach_neutral_surprise.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed frown:
+        "Character/Icari/icari_beach_armscrossed_frown.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach handonhip talk:
+        "Character/Icari/icari_beach_handonhip_talk.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach armscrossed sigh:
+        "Character/Icari/icari_beach_armscrossed_sigh.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach point shout:
+        "Character/Icari/icari_beach_point_shout.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach handonhips grin:
+        "Character/Icari/icari_beach_handonhips_grin.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+    image icari beach handonhips smile:
+        "Character/Icari/icari_beach_handonhip_smile.png"
+        yanchor 0.51 ypos 1.0
+        xanchor 0.5
+        zoom 0.6255
+        subpixel True 
+
+
+
+
 
 
 

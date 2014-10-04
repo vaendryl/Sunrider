@@ -3,16 +3,17 @@ screen upgrade:
 
     add "Menu/upgrade_back.jpg"
 
-    text '{!s}$'.format(BM.money):
-        size 50
-        xpos 0.15
-        ypos 0.7
-        color '090'
-        outlines [(1,'000',0,0)]
+
+
+    # imagebutton:
+        # xpos 0.05 ypos 925
+        # action Return(["submit"])
+        # idle "Menu/submit.jpg"
+        # hover "Menu/submit_hover.jpg"
 
     imagebutton:
         xpos 0.05 ypos 975
-        action Return("quit")
+        action Return(["quit"])
         idle "Menu/return.jpg"
         hover "Menu/return_hover.jpg"
 
@@ -80,91 +81,58 @@ screen upgrade:
     if ship.repair > 0:
         $ upgrade_list.append(ship.upgrades['repair'])
 
-    if ship == sunrider:
-        add "Menu/upgrade_sunrider.png"
-    if ship == blackjack:
-        add "Menu/upgrade_blackjack.png"
-    if ship == liberty:
-        add "Menu/upgrade_liberty.png"
-    if ship == phoenix:
-        add "Menu/upgrade_phoenix.png"
-    if ship == bianca:
-        add "Menu/upgrade_bianca.png"
-    if ship == seraphim:
-        add "Menu/upgrade_seraphim.png"
-    if ship == paladin:
-        add "Menu/upgrade_paladin.png"
-
-    textbutton 'DEBUG: reset upgrades (refunds money)':
+    ## Upgrade backgrounds moved to their individual classes in the library
+    
+    add ship.upgrade_menu
+    
+    text '${!s}'.format(BM.money):
+        size 50
+        xpos 70
+        ypos 0.76
+        color '090'
+        outlines [(1,'000',0,0)]
+    
+    textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
         ypos 0.0
         text_size 30
         text_color 'fff'
         text_outlines [(1,'000',0,0)]
-        action Return('reset')
-
-##defunct
-#    textbutton 'next ship':
-#        xpos 0.8
-#        ypos 0.1
-#        text_size 50
-#        text_color 'fff'
-#        text_outlines [(1,'000',0,0)]
-#        action Return('next')
+        action Return(['reset'])
 
     ## show icons of all the player ships in player_ships
     $ count = 0
     for iconship in player_ships:
-        $ icon = None
-        $ hovericon = None
-        $ xposition = 1640
-        if count % 2 != 0:
-            $ xposition = 1758
-        $ yposition = 441 + count * 70
+        if not iconship.mercenary:
+            $ icon = iconship.icon
+            $ hovericon = iconship.hovericon
+            $ xposition = 1640
+            if count % 2 != 0:
+                $ xposition = 1758
+            $ yposition = 441 + count * 70
 
-        if iconship.name == 'Sunrider':
-            $ icon = 'Menu/upgrade_sunrider_button.png'
-            $ hovericon = 'Menu/upgrade_sunrider_button_hover.png'
-        elif iconship.name == 'Liberty':
-            $ icon = 'Menu/upgrade_liberty_button.png'
-            $ hovericon = 'Menu/upgrade_liberty_button_hover.png'
-        elif iconship.name == 'Black Jack':
-            $ icon = 'Menu/upgrade_blackjack_button.png'
-            $ hovericon = 'Menu/upgrade_blackjack_button_hover.png'
-        elif iconship.name == 'Havoc':
-            $ icon = 'Menu/upgrade_havoc_button.png'
-            $ hovericon = 'Menu/upgrade_havoc_hover.png'
-        elif iconship.name == 'Phoenix':
-            $ icon = 'Menu/upgrade_phoenix_button.png'
-            $ hovericon = 'Menu/upgrade_phoenix_button_hover.png'
-        elif iconship.name == 'Seraphim':
-            $ icon = 'Menu/upgrade_seraphim_button.png'
-            $ hovericon = 'Menu/upgrade_seraphim_hover.png'
-        elif iconship.name == 'Bianca':
-            $ icon = 'Menu/upgrade_bianca_button.png'
-            $ hovericon = 'Menu/upgrade_bianca_hover.png'
-        elif iconship.name == 'Paladin':
-            $ icon = 'Menu/upgrade_paladin_button.png'
-            $ hovericon = 'Menu/upgrade_paladin_button_hover.png'
+            ## upgrade icons and hovericons are now in the library
 
-        imagebutton:
-            xpos xposition
-            ypos yposition
-            action SetField(BM,'selected',iconship)
-            idle icon
-            hover hovericon
-            focus_mask True
+            imagebutton:
+                xpos xposition
+                ypos yposition
+                action [ SetField(BM,'selected',iconship) , Play('sound1','Sound/research_changeunit.ogg'), SetField(store.yadj,'value',0) ]
+                idle icon
+                hover hovericon
+                focus_mask True
 
-        $ count += 1
+            $ count += 1
 
     vbox:
-        area (40, 270, 1050, 440)
+        area (40, 270, 1040, 440)
 
         viewport id "upgrade_list":
             draggable True
             mousewheel True
             scrollbars "vertical"
-            child_size (1050,2000)
+            child_size (1020,2000)
+            xadjustment store.xadj #not actually used
+            yadjustment store.yadj
 
             vbox:
 
@@ -191,38 +159,57 @@ screen upgrade:
                                 $ attribute = key
                         $ current = getattr(ship,attribute)
                         hbox:
-                            spacing 60
                             text name:
                                 color '000'
-                                min_width 400
+                                min_width 370
 
                             if increase < 1:
                                 text str(current*100)+'% -> '+ str((current+increase)*100)+'%':
                                     color '000'
-                                    min_width 200
+                                    min_width 240
                             else:
                                 text str(current)+' -> '+ str(current+increase):
                                     color '000'
-                                    min_width 200
+                                    min_width 240
 
                             text str(level):
                                 color '000'
-                                min_width 50
+                                min_width 75
+                                
+                            if level > 1:
+                                $cost_width = 100
+                            else:
+                                $cost_width = 200
+                            
                             text str(cost):
                                 color '000'
-                                min_width 60
+                                min_width cost_width
+                                
+                            if level > 1:
+                                text "({})".format( int(round(cost/multiplier)*0.8) ) :
+                                    color '900'
+                                    min_width 100
+
                             if BM.money >= cost:
                                 textbutton '+':
                                     text_color 'fff'
-                                    action Return(attribute)
+                                    action Return(['+', attribute])
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
                             else:
                                 textbutton 'X':
                                     text_color 'c00'
-                                    action NullAction()
+                                    action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
+
+                            if level > 1:
+                                textbutton '-':
+                                    text_color 'fff'
+                                    action Return(['-', attribute])
+                                    hovered SetField(BM,'active_upgrade',upgrade)
+                                    unhovered SetField(BM,'active_upgrade',None)
+                                    
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:
@@ -241,7 +228,7 @@ screen upgrade:
                 $ quantifier = 'EN'
             if name.find('Flak Resistance') != -1:
                 $ type = 'eccm'
-                $ quantifier = ' Flak Resistance'
+                $ quantifier = ' FR'
 
             $ count = 0
             for weapon in ship.weapons:
@@ -274,3 +261,21 @@ screen upgrade:
                             color '000'
 
                     $ count += 1
+    
+        frame:
+            background Solid((255,255,255,255))
+            xpos 0.46
+            ypos 0.7
+            vbox:
+                label "Future costs:":
+                    right_padding 10
+                    text_color '000'
+                for i in range(1,10):
+                    hbox:
+                        text "Mark {}:".format( level+i+1 ):
+                            min_width 100
+                            color '000'
+                        text " ${}".format( int(cost*multiplier**i) ):
+                            color '000'
+                
+                    

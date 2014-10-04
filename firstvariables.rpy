@@ -14,6 +14,8 @@ label firstvariables:
     $ MetAsaga = False
     $ ChigaraRefugee = False
     $ mission_pirateattack = False
+    $ amissionforalliance = False
+    $ missionforryuvia = False
 
     $ battlemusic = True
 
@@ -27,10 +29,21 @@ label firstvariables:
     $ mission2_name = None
     $ mission3_name = None
 
+    $ mission1_complete = False
+    $ mission2_complete = False
     $ mission3_complete = False
     $ mission4_complete = False
     $ mission5_complete = False
     $ mission6_complete = False
+    $ mission7_complete = False
+    $ mission8_complete = False
+    $ mission9_complete = False
+    $ mission10_complete = False
+    $ mission11_complete = False
+    $ mission12_complete = False
+    $ mission13_complete = False
+    $ mission14_complete = False
+    $ mission15_complete = False    
 
     $ asa_location = None
     $ chi_location = None
@@ -44,18 +57,27 @@ label firstvariables:
     $ cos_location = None
     $ kry_location = None
 
-    $ warpto_tydaria = False
+    $ warpto_tydaria = False    
     $ warpto_occupiedcera = False
     $ warpto_astralexpanse = False
     $ warpto_pactstation1 = False
     $ warpto_versta = False
     $ warpto_nomodorn = False
+    $ warpto_ryuvia = False
+    $ warpto_farport = False
+    $ warpto_ongess = False
 
     $ ep2_cancelwarp = False
 
     $ supportedasagacards = False
     $ paladin = None
-
+    $ wishall = False
+    
+    $ versta_ambush = False
+    $ farport_losttech = False
+    $ tydaria_morepirates = False
+    $ tydaria_escort = False
+    
     #$ sunrider = 0
     #$ blackjack = 0
     #$ liberty = 0
@@ -87,6 +109,8 @@ init python:
             self.MetAsaga = False
             self.ChigaraRefugee = False
             self.mission_pirateattack = False
+            self.amissionforalliance = False
+            self.missionforryuvia = False
 
             self.battlemusic = True
 
@@ -100,10 +124,21 @@ init python:
             self.mission2_name = None
             self.mission3_name = None
 
+            self.mission1_complete = False
+            self.mission2_complete = False
             self.mission3_complete = False
             self.mission4_complete = False
             self.mission5_complete = False
             self.mission6_complete = False
+            self.mission7_complete = False
+            self.mission8_complete = False
+            self.mission9_complete = False
+            self.mission10_complete = False
+            self.mission11_complete = False
+            self.mission12_complete = False
+            self.mission13_complete = False
+            self.mission14_complete = False
+            self.mission15_complete = False
 
             self.asa_location = None
             self.chi_location = None
@@ -123,10 +158,14 @@ init python:
             self.warpto_pactstation1 = False
             self.warpto_versta = False
             self.warpto_nomodorn = False
+            self.warpto_ryuvia = False
+            self.warpto_farport = False
+            self.warpto_ongess = False
 
             self.ep2_cancelwarp = False
 
             self.supportedasagacards = False
+            self.wishall = False
 
             self.sunrider = None
             self.blackjack = None
@@ -137,6 +176,11 @@ init python:
             self.paradigm = None
             self.havoc = None
             self.paladin = None
+            
+            self.versta_ambush = False
+            self.farport_losttech = False
+            self.tydaria_morepirates = False
+            self.tydaria_escort = False
 
             self.check1 = False
             self.check2 = False
@@ -158,8 +202,6 @@ init python:
             self.SHIP_SPEED = 0.3
             self.ZOOM_SPEED = 0.1
             self.GRID_SIZE = (18,16)
-            self.BM = renpy.store.object()
-            self.BM.phase = None
 
 
 

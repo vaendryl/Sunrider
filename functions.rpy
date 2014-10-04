@@ -11,6 +11,49 @@ init -6 python:
     import math
     from copy import deepcopy
 
+    def get_modified_damage(damage,faction):
+        #implementing difficulty setting.
+        Difficulty = store.Difficulty #to be safe
+        
+        if Difficulty == 0: #VNmode
+            if faction == 'Player':
+                damage = int(damage * 0.25)
+            else:
+                damage = int(damage * 4)
+
+        elif Difficulty == 1: #Casual mode
+            if faction == 'Player':
+                damage = int(damage * 0.50)
+            else:
+                damage = int(damage * 2)
+
+        elif Difficulty == 2: #Ensign
+            if faction == 'Player':
+                damage = int(damage * 0.75)
+            else:
+                damage = int(damage * 1.33)
+
+        elif Difficulty == 3: #Captain
+            pass
+            # if faction == 'Player':
+                # damage = int(damage * 1.0)
+            # else:
+                # damage = int(damage * 1.0)
+                
+        elif Difficulty == 4: #Hard
+            if faction == 'Player':
+                damage = int(damage * 1.33)
+            else:
+                damage = int(damage * 0.75)
+                
+        elif Difficulty == 5: #Space Whale Mode
+            if faction == 'Player':
+                damage = int(damage * 1.45)
+            else:
+                damage = int(damage * 0.66)
+        
+        return damage
+    
     def reset_upgrades(ship):
         if ship == None:
             return
@@ -29,14 +72,50 @@ init -6 python:
         ship.upgrades = tempship.upgrades
         BM.money += money_returned
 
+    def process_upgrade(ship, upgrade):
+        name,level,increase,cost,multiplier = ship.upgrades[upgrade]
+        if BM.money >= cost:  #sanity check
+            renpy.music.play('sound/upgrade_purchase.ogg',channel = 'sound1')
+            BM.money -= cost
+            new_value = getattr(ship,upgrade)+increase
+            setattr(ship,upgrade,new_value)
+            level += 1
+            cost = int(cost * multiplier)
+            ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+            BM.active_upgrade = ship.upgrades[upgrade]
+        else:
+            renpy.music.play('sound/Voice/Chigara/Others Line 4.ogg',channel = 'chivoice')
+        
+
+    def reverse_upgrade(ship, upgrade):
+        name,level,increase,cost,multiplier = ship.upgrades[upgrade]
+        level -= 1
+        cost = int(round(cost / multiplier))
+        BM.money += int(cost * 0.8)
+        new_value = getattr(ship,upgrade)-increase
+        setattr(ship,upgrade,new_value)
+        ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+        BM.active_upgrade = ship.upgrades[upgrade]
+
     def buy_upgrades():
         renpy.show_screen('upgrade')
         active = True
+        renpy.music.play('sound/Voice/Chigara/Others Line 1.ogg',channel = 'chivoice')
+        
         while active:
             result = ui.interact()
 
-            if result == 'quit':
+            if result[0] == 'quit':
                 renpy.hide_screen('upgrade')
+                
+                voicelist = [
+                    'sound/Voice/Chigara/Others Line 2.ogg',
+                    'sound/Voice/Chigara/Others Line 3.ogg'
+                    ]
+                renpy.music.play(renpy.random.choice(voicelist),channel = 'chivoice')
+                
+                
+                
                 for ship in player_ships:
                     ship.hp = ship.max_hp
                     ship.en = ship.max_en
@@ -44,32 +123,20 @@ init -6 python:
                 active = False
                 return
 
-            elif result == 'next':
-                if BM.selected != None and len(player_ships) > 1:
-                    index = player_ships.index(BM.selected)
-                    if index == (len(player_ships)-1):
-                        index = 0
-                    else:
-                        index += 1
-                    BM.selected = player_ships[index]
-
-            elif result == 'reset':
+            elif result[0] == 'reset':
                 reset_upgrades(BM.selected)
 
             elif result != None:
-                ship = BM.selected #shorter
-                name,level,increase,cost,multiplier = ship.upgrades[result]
-                if BM.money >= cost:  #sanity check
-                    BM.money -= cost
-                    new_value = getattr(ship,result)+increase
-                    setattr(ship,result,new_value)
-                    level += 1
-                    cost = int(cost * multiplier)
-                    ship.upgrades[result] = [name,level,increase,cost,multiplier]
-                    BM.active_upgrade = [name,level,increase,cost,multiplier]
+                if result[0] == '+':
+                    process_upgrade(BM.selected, result[1])
+                    
+                elif result[0] == '-':
+                    reverse_upgrade(BM.selected, result[1])
+                    renpy.music.play('sound/upgrade_sell.ogg',channel = 'sound2')
+                
 
-    def battlemode(bm):
-        bm.battlemode = True
+    def battlemode():
+        BM.battlemode = True
         config.rollback_enabled = False
 
     def VNmode():
@@ -83,10 +150,45 @@ init -6 python:
             if ship.boss:
                 return
 
+    def apply_modifier(target,modifier,magnitude,duration, cumulative = False):
+        """attempts to apply a buff or a curse and return True on success, False on failure"""
+        if target == None:
+            return False
+        if not hasattr(target,'modifiers'):
+            return False
+        
+        if cumulative:
+            current_magnitude, current_duration = target.modifiers[modifier]
+            magnitude += current_magnitude
+            duration += current_duration  #not sure if this is wanted
+            target.modifiers[modifier] = [magnitude,duration]
+            return True
+        
+        if magnitude > 0:  #I may have to make a better check at some point
+            #buffs
+            if modifier in target.modifiers:
+                if target.modifiers[modifier][0] > magnitude:
+                    return False
+                elif target.modifiers[modifier][0] == magnitude:
+                    if target.modifiers[modifier][1] >= duration:
+                        return False
+        else:
+            #curses
+            if modifier in target.modifiers:
+                if target.modifiers[modifier][0] < magnitude:
+                    return False
+                elif target.modifiers[modifier][0] == magnitude:
+                    if target.modifiers[modifier][1] >= duration:
+                        return False
+        target.modifiers[modifier] = [magnitude,duration]
+        return True
+
     def clean_grid():
         BM.grid = []
         BM.ships = []
+        BM.covers = []
         store.enemy_ships = []
+
         for a in range(GRID_SIZE[0]):
                 BM.grid.append([False]*GRID_SIZE[1])
         for ship in player_ships:
@@ -96,7 +198,7 @@ init -6 python:
 #            BM.grid[x-1][y-1] = True
 
 
-    def get_acc(weapon, attacker, target, guess = False): #calculate the chance to hit an enemy ship
+    def get_acc(weapon, attacker, target, guess = False, range_reduction = 0): #calculate the chance to hit an enemy ship
         accuracy = weapon.accuracy
 
         #upgrades modify the base stat
@@ -110,14 +212,15 @@ init -6 python:
             accuracy *= attacker.melee_acc
 
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
-        if not weapon.wtype == 'Support' or guess:
-            accuracy -= (target.evasion + target.modifiers['evasion'][0])
+        if not weapon.wtype == 'Support' and not guess:
+            accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] ) / 100 )
 
         #an acc. buff is added as a flat bonus
-        accuracy += attacker.modifiers['accuracy'][0]
+        if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
+            accuracy += attacker.modifiers['accuracy'][0]
 
         #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
-        accuracy += 50 - (weapon.acc_degradation * get_ship_distance(attacker,target))
+        accuracy += 50 - (weapon.acc_degradation * (max(get_ship_distance(attacker,target) - range_reduction,1)))
 
         #environmental effects are added
         accuracy *= BM.environment['accuracy'] / 100.0
@@ -132,23 +235,50 @@ init -6 python:
             a,b = location
             X,Y = GRID_SIZE
             if a > 0 and a <= X and b > 0 and b <= Y:
-                if BM.grid[a-1][b-1]:
+                try:
+                    if BM.grid[a-1][b-1]:
+                        return False
+                    else:
+                        return True
+                except:
                     return False
-                else:
-                    return True
             else:
-                False #out of bounds is not available
+                return False #out of bounds is not available
         else:
             return False #None location is not free. failsafes.
+            
+    def get_player_ships_in_battle():
+        result = []
+        for ship in player_ships:
+            if ship.location != None:
+                result.append(ship)
+        return result
+    
+    
+    
+    def set_cell_available(location, available=False):
+        #False means available(empty/nil), True means occupied
+        if location != None:
+            a,b = location
+            X,Y = GRID_SIZE
+            if a > 0 and a <= X and b > 0 and b <= Y:
+                BM.grid[a-1][b-1] = available
+            else:
+                if config.developer:
+                    raise Exception("tried to set availability on a hex that does not exist")
+                else:
+                    pass  #not sure if I should raise an exception or not
 
 
-    def show_message(message,xpos=0.5,ypos=0.7):
+    def show_message(message,xpos=0.5,ypos=0.7,pause = MESSAGE_PAUSE):
+        """briefly show some text on screen"""
         renpy.hide_screen('message')
         renpy.show_screen('message', message=message,xpos=xpos,ypos=ypos)
         try:
-            renpy.pause(MESSAGE_PAUSE)
+            renpy.pause(pause)            
         except:
             pass
+        renpy.hide_screen('message')
 
     def calculate_vector(location1,location2):  #target location, current location
         if location1[0]-location2[0] == 0:
@@ -161,21 +291,20 @@ init -6 python:
             y=(location1[1]-location2[1])/abs(location1[1]-location2[1])
         return (x,y)
 
-    def get_distance(location1,location2):
+    def get_distance(location1, location2):
         if location1 == None or location2 == None: return 999
-        result = abs(location1[0] - location2[0])
-        result += abs(location1[1] - location2[1])
+        cubic1 = convert_to_cubic(location1)
+        cubic2 = convert_to_cubic(location2)
+        result = cubic_distance(cubic1, cubic2)
         return result
 
     def get_ship_distance(ship1,ship2):
         if ship1 == None or ship2 == None: return 999
         if ship1.location == None or ship2.location == None: return 999
-        result = abs(ship1.location[0] - ship2.location[0])
-        result += abs(ship1.location[1] - ship2.location[1])
+        cubic1 = convert_to_cubic(ship1.location)
+        cubic2 = convert_to_cubic(ship2.location)
+        result = cubic_distance(cubic1, cubic2)
         return result
-
-    def update_armor(parent):
-        parent.armor = (parent.base_armor + parent.modifiers['armor'][0]) * parent.hp / parent.max_hp
 
     def real_damage(weapon,parent):
         if weapon == None or parent == None:
@@ -222,9 +351,7 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.update_armor()
         for ship1 in enemy_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -249,9 +376,7 @@ init -6 python:
             if ship1.shields > 100: ship1.shields = 100
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
-            update_armor(ship1)
-            ship1.armor_color = '000'
-            if ship1.armor < ship1.base_armor: ship1.armor_color = '700'
+            ship1.update_armor()
 
     def weapon_type(weapon):
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
@@ -271,15 +396,6 @@ init -6 python:
             if not hasattr(store,key) or getattr(store,key) == None:
                 setattr(store,key,firstvars[key])
 
-    def set_planets():
-        Planet("CERA", "warpto_OccupiedCera", 1297, 480, "warpto_occupiedcera")
-        Planet("TYDARIA", "warpto_Tydaria", 1390, 540, "warpto_tydaria")
-        Planet("ASTRAL EXPANSE", "warpto_astralexpanse", 1250, 540, "warpto_astralexpanse")
-        Planet("PACT Outpost", "warpto_pactstation", 1420, 480, "warpto_pactstation1")
-        Planet("VERSTA", "warpto_versta", 1490, 725, "warpto_versta")
-        Planet("NOMODORN", "warpto_nomodorn", 1630, 590, "warpto_nomodorn")
-
-
     def reset_classes():
         """experimental save file compatibility keeper
         this reruns the __init__() function of every relevant class in the game
@@ -295,41 +411,33 @@ init -6 python:
         except:
             pass
 
-        #create a non aliased copy of BM so we can extract all the field data
-        BM_copy = deepcopy(BM)
-        #extracting field data
-        fields = deepcopy(BM_copy.__dict__)
-        #re-init the copy. this adds new fields defined in classes.rpy
-        BM_copy.__init__()
-        #store all the default field data into a dict
-        fields = BM_copy.__dict__
-
-        #loop over each field stored in the new dict
+        #copy the dict from BM
+        fields = deepcopy(BM.__dict__)
+        
+        #add missing fields to BM
+        BM.__init__()
+        
+        #restore the old values to the dict in BM
         for key in fields:
-            #check if the fielddata itself is a dictionary (like BM.orders)
-            if type(fields[key]) is dict:
-                #check if the new dict already exists. add it if it does not
-                try:
-                    dict2 = getattr(BM,key)
-                except:
-                    setattr(BM,key,fields[key])
-                    continue
-                #create temporary dicts for easy coding
-                dict1 = fields[key]
-                #loop over every key in the new field list
-                for key in dict1:
-                    #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in BM
-                    if key not in dict2:
-                        dict2[key]=dict1[key]
+            if type(BM.__dict__[key]) is dict:
+                dictionary = BM.__dict__[key]
+                for key2 in fields[key]:
+                    #only put missing keys in nested dicts
+                    #this will re-add orders that are not part of the default
+                    if not key2 in dictionary:
+                        dictionary[key2] = fields[key][key2]
             else:
-                #test if BM has this field. if it does not, add it with default value.
-                try:
-                    x = getattr(BM,key)
-                except:
-                    setattr(BM,key,fields[key])
+                BM.__dict__[key] = fields[key]
 
         #repeat same concept for basic variables inside firstvariables.rpy
         add_new_vars()
+        
+        #remake the BM.ships list
+        BM.ships = []
+        for ship in player_ships:
+            BM.ships.append(ship)
+        for ship in enemy_ships:
+            BM.ships.append(ship)
 
         #going to re-init all the ships
         for ship in BM.ships:
@@ -340,41 +448,74 @@ init -6 python:
 
             #make a copy of the ship instance
             ship_copy = deepcopy(ship)
-            #re-init the copy
-            ship_copy.__init__()
-            #copy all the fields of the copy into a dict
-            fields = ship_copy.__dict__
-
-            #loop over all the keys in the dict
-            for key in fields:
-                if type(fields[key]) is dict:
-                    #check if the new dict already exists. add it if it does not
-                    try:
-                        dict2 = getattr(ship,key)  #this will be an alias, and it needs to be.
-                    except:
-                        setattr(ship,key,fields[key])
-                        continue
-                    dict1 = fields[key]
-                    #since the dict already existed, loop over every key in the new field list and update it
-                    for key in dict1:
-                        #if a new key exists, add it to the old dict. thanks to aliasing this updates the dict in the ship too
-                        if key not in dict2:
-                            dict2[key]=dict1[key]
+            #re-init the ship
+            ship.__init__()
+            #loop over all the keys in the dict of the copy
+            for key in ship_copy.__dict__:
+                ship_value = getattr(ship_copy,key)  #= hp value or upgrades dict etc
+                #check if this key represents a nested dict
+                if type(ship_value) is dict: #such as ship.upgrades
+                    new_ship_dict = getattr(ship,key) #the default dict part of the recently reinitialized ship
+                    #loop over all the keys in the dict from the copied ship
+                    for key2 in ship_value:                        
+                        #overwrite the default values with the ones that were there originally
+                        #otherwise all upgrades would get wiped out.
+                        if key2 in new_ship_dict:
+                            new_ship_dict[key2] = ship_value[key2]
                 else:
-                    #test if BM has this field. if it does not, add it with default value.
-                    try:
-                        x = getattr(ship,key)
-                    except:
-                        setattr(ship,key,fields[key])
-
+                    # key not a dict
+                    if hasattr(ship,key):
+                        setattr(ship,key, getattr(ship_copy,key) )
+                        
             #restore the old weapon list
             ship.weapons = weapons
 
         show_message('Reinitialization complete.')
         return
+        
+    def update_mp():
+        for variable in important_variables:
+            if hasattr(store,variable):
+                if getattr(mp,variable) is None:
+                    setattr(mp,variable, getattr(store,variable) )
+        mp.save()
 
-    def time_warp_easeout(t):
+    def time_warp_easeout(t):  ##probably never got used
         return 1.0 - math.cos(t * math.pi / 2.0)
+
+    def get_mouse_location():
+        """
+        get the mouse position and return the hex location the mouse is over.
+        """
+        a,b = renpy.get_mouse_pos()
+        yoffset = 27 * store.zoomlevel
+        hexheight = HEXD * store.zoomlevel
+        hexwidth = HEXW * store.zoomlevel
+        # xmax,ymax = GRID_SIZE
+
+        y = int( (b+BM.yadj.value-yoffset) / hexheight )
+        if y%2==0:
+            xoffset = hexwidth/2
+        else:
+            xoffset = 0
+        x = int( (a+BM.xadj.value-xoffset) / hexwidth )
+        return (x,y)
+        # if x <= 0 and x >= xmax:
+            # return (1,1)
+
+
+    # def test_displayable():
+        # pass
+
+    def ship_position(ship):
+        if ship.location is None:
+            return 0
+
+        a, b = ship.location
+        return a + b * 100
+
+    def sort_ship_list():
+        BM.ships.sort(key=ship_position)
 
     def zoom_handling(result,bm):
         if result == None:
@@ -382,7 +523,7 @@ init -6 python:
         if bm == None:
             return
         mouse_xpos, mouse_ypos = renpy.get_mouse_pos() #such a handy function. Thanks Tom!  I use this to zoom in onto your mouse position
-        if result[1] == 'in':   #fudging the mouseposition a little so you zoom in further than you actually point
+        if result[1] == 'in':   #fudging the mouse position a little so you zoom in further than you actually point
             if mouse_xpos > 960:
                 adjusted_xpos = 960 + (mouse_xpos-960)*1.5
             else:
@@ -416,30 +557,165 @@ init -6 python:
         bm.xadj.value = int(side_distance) #actually set the new viewport values
         bm.yadj.value = int(top_distance)
 
-    def create_ship(ship_class,location,weapons):
+    def create_ship(ship,location=None,weapons=[]):
 
+        #find the location
         if location != None:
+            location = get_free_spot_near(location)
             if BM.grid[location[0]-1][location[1]-1]:
                 return
             else:
-                BM.grid[location[0]-1][location[1]-1]= True #indicate that the cell on the grid is occupied
-        ship = ship_class
+                #indicate that the cell on the grid is occupied
+                BM.grid[location[0]-1][location[1]-1]= True 
+        
+        #set the location
         ship.location = location
+        
+        #confirm the weapon list
+        if weapons == None or weapons == []:
+            weapons = ship.default_weapon_list
+        
+        #register the weapons
         for weapon in weapons:
             ship.register_weapon(weapon)
+        
+        #register the ship
         if ship.faction == 'Player':
             store.player_ships.append(ship)
         else:
             store.enemy_ships.append(ship)
         store.BM.ships.append(ship)
+        
+        #retun the a player ship for easy aliasing
         if ship.faction == 'Player':
             return ship
         else:
+        
+            #add newly encountered enemy ships to the list of enemies in skirmish.
+            in_all_enemies = False
+            for eship in store.all_enemies:
+                if ship.__class__ == eship.__class__:
+                    in_all_enemies = True
+            if not in_all_enemies:
+                store.all_enemies.append( ship.__class__() )
+                store.all_enemies[-1].location = None
+                    
             return
+
+    def get_free_spot_near(location):
+        radius = 0
+        # don't make the radius larger than width and height of the grid
+        while radius < GRID_SIZE[0] or radius < GRID_SIZE[1]:
+            # get the locations in the ring at radius 'radius'
+            locations = get_in_ring(location, radius)
+            
+            # return the first available location in the list
+            for loc in locations:
+                if get_cell_available(loc):
+                    return loc
+            # increment radius
+            radius += 1
+        return location
+        
+    def short_pause():
+        #very useful combined with renpy.invoke_in_new_context
+        renpy.show_screen('battle_screen')
+        renpy.pause(1)
+        
+        
+    def get_remaining_player_ships():
+        count = 0
+        for ship in player_ships:
+            if ship.location != None:
+                count += 1
+        return count
+    
+    def clean_battle_exit():
+        BM.battle_log = []
+        BM.battlemode = False #this ends the battle loop
+        if BM.selected != None: BM.unselect_ship(BM.selected)
+        BM.targetingmode = False
+        BM.weaponhover = None
+        BM.hovered = None
+        renpy.hide_screen('tooltips')
+        BM.phase = 'Player'
+        BM.turn_count = 1
+        BM.active_strategy = [None,0]
+        BM.ships = []
+        BM.selectedmode = False
+        VNmode() #return to visual novel mode. this mostly just restores scrolling rollback
+        for ship in destroyed_ships:
+            if ship.faction == 'Player' and not ship.mercenary:
+                player_ships.append(ship)
+                BM.ships.append(ship)
+        for ship in player_ships:
+            BM.ships.append(ship)
+        for ship in player_ships:
+            ship.en = ship.max_en
+            ship.hp = ship.max_hp
+            ship.hate = 100
+            ship.total_damage = 0
+            ship.total_missile_damage = 0
+            ship.total_kinetic_damage = 0
+            ship.total_energy_damage = 0
+            ship.missiles = ship.max_missiles
+            ship.location = None #this helps if you add new ships but don't know the current location of the existing ones.
+            for modifier in ship.modifiers:
+                ship.modifiers[modifier] = [0,0]
+
+        #reset the entire grid to empty and BM.ships with only the player_ships list
+        clean_grid()
+        BM.covers = []
+        renpy.hide_screen('battle_screen')
+        renpy.hide_screen('commands')
+        renpy.block_rollback()
+        renpy.music.play("Music/Mission_Briefing.ogg") #else battle theme keeps playing after battle
+        
+    def get_shot_hit(accuracy,shotcount,faction):
+        #fudging with actual hit chances for fun and profit  (lolhiddenmechanics)
+        #for now no fudging for AI.
+        if faction == 'Player' and store.Difficulty <=3 and shotcount == 1 and accuracy >50:
+            RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
+            return RNG2 <= int(accuracy)
+        elif faction == 'Player' and store.Difficulty > 3 and accuracy < 50 and shotcount == 1: #muhahaha
+            RNG2 = renpy.random.randint(1,50) + renpy.random.randint(0,50)
+            return RNG2 <= int(accuracy)
+        else:
+            return renpy.random.randint(1,100) <= accuracy  
+
+    def test_RNG(accuracy):
+        #you can use this to see the difference between the 2 ways of calculating a hit.
+        hits1RN = 0
+        hits2RN = 0
+        
+        for i in range(1000):
+            if (renpy.random.randint(1,50) + renpy.random.randint(0,50)) < accuracy:
+                hits2RN += 1
+            if renpy.random.randint(1,100) < accuracy:
+                hits1RN += 1
+        
+        return (hits1RN,hits2RN)
+            
+    
+    def get_shipcount_in_list(shipname,list):
+        #count number of times a ship is in a list. useful for merc counting
+        if len(list) == 0: return 0
+        if shipname == None: return 0
+
+        count = 0
+        for item in list:
+            if shipname == item.name:
+                count+=1
+        return count
 
     def create_cover(location):
         BM.covers.append(Cover(location))
         return
+        
+    
+    def remove_order(order):
+        if order in BM.orders:
+            del BM.orders[order]
 
     def cover_mechanic(weapon,target,accuracy):
             for cover in BM.covers:
@@ -456,28 +732,81 @@ init -6 python:
 
 
     def get_movement_tiles(ship, move_range = None):
-        if ship == None: return
+        if ship == None: return []
+        if ship.location == None: return []
+        
         if move_range == None:
             move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
         tile_locations = []
         for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
             for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                cell_distance = abs(ship.location[0]-a) + abs(ship.location[1]-b)
+                loc1 = convert_to_cubic(ship.location)
+                loc2 = convert_to_cubic([a,b])
+                cell_distance = cubic_distance(loc1, loc2)
+
                 if not BM.grid[a-1][b-1] and cell_distance <= move_range:
-                    xposition = int((a+0.5) * 192 * zoomlevel)
-                    yposition = int((b+0.5) * 120 * zoomlevel)
+                    xposition = dispx(a,b,zoomlevel,0.5 * ADJX) + int(zoomlevel * MOVX)
+                    yposition = dispy(a,b,zoomlevel,0.5 * ADJY) + int(zoomlevel * MOVY)
                     tile_locations.append((xposition,yposition,-cell_distance,a,b))
         return tile_locations
 
+    def has_weapon(ship,wtype):
+        """check if a ship has a weapon of a given type. the weapon type is passed as a string"""
+        for weapon in ship.weapons:
+            if weapon.wtype == wtype:
+                return True
+        return False
+        
+    def get_counter_attack(location, AI = False):
+        """check if a location is next to an (enemy) unit that has an Assault type weapon"""
+        if location == None: return False
+        if AI:
+            shiplist = player_ships
+        else:
+            shiplist = enemy_ships
+        for ship in shiplist:
+            if get_distance(ship.location,location) == 1:
+                if has_weapon(ship,'Assault') and ship.modifiers['flak'][0] != -100:
+                    return True
+        return False
+        
     def update_modifiers():
+        """
+        called when the phase changes. it ticks down modifiers and removes them when expired.
+        """
+
         if BM.phase == 'Player':
-            for ship in player_ships:
+        
+            #order management
+            order_expired = False
+            strat,duration = BM.active_strategy
+            if strat != None:
+                if duration <= 1:
+                    message = "{} has expired!".format(strat)
+                    BM.battle_log_insert(['order'], message)
+                    show_message(message)
+                    order_expired = True
+                    BM.active_strategy = [None,0]
+                else:
+                    BM.active_strategy = [strat,duration -1]
+        
+            #handle the actual modifiers
+            for ship in player_ships:                
                 for key in ship.modifiers:
-                    if ship.modifiers[key][1] > 0:
-                        if ship.modifiers[key][1] == 1:
+                    mod_power,duration = ship.modifiers[key]
+                    if mod_power != 0:
+                        if duration == 1:
+                            if mod_power < 0:
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
+                            else:
+                                if not order_expired:
+                                    message = "{0} lost buff to its {1}".format(ship.name, key.replace('_', ' '))
+                                    BM.battle_log_insert(['support', 'buff'], message)
+                                    show_message(message)
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' lost it\'s buff to it\'s ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
@@ -486,48 +815,260 @@ init -6 python:
                 for key in ship.modifiers:
                     if ship.modifiers[key][1] > 0:
                         if ship.modifiers[key][1] == 1:
+                            if ship.modifiers[key][0] < 0:
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
+                            else:
+                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
+                                BM.battle_log_insert(['support', 'debuff'], message)
+                                show_message(message)
                             ship.modifiers[key] = [0,0]
-                            show_message('the ' +ship.name+ ' recovered from it\'s curse to it\'s ' +key+ '!')
                             renpy.pause(0.5)
                         else:
                             ship.modifiers[key][1] -= 1
 
-##experimental AI##
-    def scan_local_area(ship):
-        if ship == None:
-            return
-
-        move_range = ship.en/ship.move_cost
-        cells_in_range = []
-
-        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
-                distance = get_distance(ship.location,(a,b))
-                if distance <= move_range:
-                    for pship in player_ships:
-                        ship.AI_estimate_damage(pship)
 
     def game_over():
         renpy.hide_screen('game_over_gimmick')
         renpy.show_screen('game_over_gimmick')
 
+##conversion from offset cordinates to cubic coordinates
+##makes working with hexagons easier
 
+    #def convert_to_cubic(location):  #converts offset coordinates to cubic coordiantes
+    #    r = location[0]              #works on even vertical offset
+    #    q = location[1]
+    #    x = q - ((r + (r % 2))/2)
+    #    z = r
+    #    y = (-1 * x) - z
+    #    return [x,y,z]
 
+    def convert_to_cubic(location):  #converts offset coordinates to cubic coordiantes
+        r = location[0]              #works on even horizontal offset
+        q = location[1]
+        x = q
+        z = r - ((q + (q % 2))/2)
+        y = (-1 * x) - z
+        return [x,y,z]
 
+    #def convert_to_offset(location):  #converts cubic coordinates to offset coordinates
+    #    x = location[0]               #works on even vertical offset
+    #    y = location[1]
+    #    z = location[2]
+    #    q = x + (z + (z%2)) / 2
+    #    r = z
+    #    return [r, q]
 
+    def convert_to_offset(location):  #converts cubic coordinates to offset coordinates
+        x = location[0]               #works on even horizontal offset
+        y = location[1]
+        z = location[2]
+        q = x
+        r = z + (x + (x%2)) / 2
+        return (r, q)
 
+    def cubic_distance(location1, location2):  #calculates the distances between two cubic coordiantes
+        x1 = location1[0]
+        y1 = location1[1]
+        z1 = location1[2]
 
+        x2 = location2[0]
+        y2 = location2[1]
+        z2 = location2[2]
 
+        result = (abs(x1 - x2) + abs(y1 - y2) + abs(z1 - z2))/2
+        return result
 
+    def hex_round(location):  #rounds cubic coordinates to the nearest hexagon
+        x = location[0]
+        y = location[1]
+        z = location[2]
+        rx = int(x)
+        ry = int(y)
+        rz = int(z)
 
+        x_diff = abs(rx - x)
+        y_diff = abs(ry - y)
+        z_diff = abs(rz - z)
 
+        if x_diff > y_diff and x_diff > z_diff:
+            rx = -ry-rz
+        elif y_diff > z_diff:
+            ry = -rx-rz
+        else:
+            rz = -rx-ry
 
+        return [rx, ry, rz]
 
+    def interpolate_hex(location1, location2):  #creates a path between location1 and location2
+        tiles = []
+        loc1 = location1
+        loc2 = location2
+        cube1 = convert_to_cubic(loc1)
+        cube2 = convert_to_cubic(loc2)
+        disN = get_distance(loc1, loc2)
 
+        if disN != 0:
+            N = (1.0)/disN
+            for i in range(0, disN+1):
+                x = cube1[0] + (cube2[0] - cube1[0])*i*N
+                y = cube1[1] + (cube2[1] - cube1[1])*i*N
+                z = cube1[2] + (cube2[2] - cube1[2])*i*N
+                #x = cube1[0] * (1 - float(i)/disN) + cube2[0] * float(i)/disN
+                #y = cube1[1] * (1 - float(i)/disN) + cube2[1] * float(i)/disN
+                #z = cube1[2] * (1 - float(i)/disN) + cube2[2] * float(i)/disN
+                cuberound = hex_round([x, y, z])
+                newloc = convert_to_offset(cuberound)
+                if isvalid(newloc):
+                    tiles.append(newloc)
+        return tiles
 
+## functions to calculate position of displayables
 
+    def dispx(x, y, zoom, add = 0):
+        xposition = 0
+        if y % 2 == 0:
+            xposition = int(((x + add) * HEXW + SLIDEX) * zoom)
+        else:
+            xposition = int(((x + add) * HEXW) * zoom)
+        return xposition
 
+    def dispy(x, y, zoom, add = 0):
+        yposition = 0
+        if x % 2 == 0:
+            yposition = int(((y + add) * HEXD + SLIDEY) * zoom)
+        else:
+            yposition = int(((y + add) * HEXD) * zoom)
+        return yposition
 
+    def interpolate_grid(location1, location2): #draws a line from location1 to location2
+        tiles = []
+        loc1 = location1
+        loc2org = location2
+        mx = loc2org[0] - loc1[0] #extrapolation
+        my = loc2org[1] - loc1[1]
+        loc2 = [10*mx+loc2org[0],10*my+loc2org[1]]
+        ystep = 0
+        xstep = 0
+        error = 0
+        errorprev = 0
+        y = loc1[1]
+        x = loc1[0]
+        ddx = 0
+        ddy = 0
+        dx = loc2[0] - loc1[0]
+        dy = loc2[1] - loc1[1]
+        if dy < 0:
+            ystep = -1
+            dy = -dy
+        else:
+            ystep = 1
+        if dx < 0:
+            xstep = -1
+            dx = -dx
+        else:
+            xstep = 1
+        ddy = 2*dy
+        ddx = 2*dx
+        if ddx >= ddy:
+            errorprev = dx
+            error = dx
+            for i in range(0,dx):
+                x+=xstep
+                error+=ddy
+                if error > ddx:
+                    y+=ystep
+                    error-=ddx
+                    if error + errorprev < ddx:
+                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                            tiles.append([x,y-ystep])
+                    else:
+                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                            tiles.append([x-xstep,y])
+                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                    tiles.append([x,y])
+                errorprev = error
+        else:
+            errorprev = dy
+            error = dy
+            for i in range(0,dy):
+                y+=ystep
+                error+=ddx
+                if error > ddy:
+                    x+=xstep
+                    error-=ddy
+                    if error + errorprev < ddy:
+                        if get_distance(location1,(x-xstep,y))<= 6 and isvalid((x-xstep,y)):
+                            tiles.append([x-xstep,y])
+                    else:
+                        if get_distance(location1,(x,y-ystep))<= 6 and isvalid((x,y-ystep)):
+                            tiles.append([x,y-ystep])
+                if get_distance(location1,(x,y))<= 6 and isvalid((x,y)):
+                    tiles.append([x,y])
+                errorprev = error
+        return tiles
 
+    def isvalid(location): #determines if the location in on the grid
+        valid = True
+        if location[0] > GRID_SIZE[0] or location[0] <=0:
+            valid = False
+        if location[1] > GRID_SIZE[1] or location[1] <=0:
+            valid = False
+        return valid
 
+    def get_all_in_radius(location, radius):
+        if radius < 0 or location == None:
+            return []
 
+        locations = []
+        pending = [location]
+        while radius > 0:
+            pending2 = []
+            for loc in pending:
+                x, y = loc
+                pending2.append((x + 1, y))
+                pending2.append((x - 1, y))
+                pending2.append((x, y + 1))
+                pending2.append((x, y - 1))
+                if y % 2 == 0:
+                    pending2.append((x + 1, y + 1))
+                    pending2.append((x + 1, y - 1))
+                else:
+                    pending2.append((x - 1, y + 1))
+                    pending2.append((x - 1, y - 1))
+            locations.extend(pending)
+            pending = list(set(pending2))
+            for loc in locations:
+                if loc in pending:
+                    pending.remove(loc)
+            radius -= 1
+        locations.extend(pending)
+        return clean_locations(list(set(locations)))
+
+    def get_in_ring(loc, radius):
+        outer = get_all_in_radius(loc, radius)
+        inner = get_all_in_radius(loc, radius - 1)
+        # remove all locations in the inner ring from the outer ring
+        for x in inner:
+            a,b = x
+            if a > 1 and a < GRID_SIZE[0] and b > 1 and b < GRID_SIZE[1]:
+                outer.remove(x)
+        return outer   
+
+    def clean_locations(locations):
+        """
+        removes all the locations that are out of bounds
+        """
+        if locations == None: return []
+        if locations == []: return []
+        
+        result = []
+        x,y = GRID_SIZE
+        
+        for location in locations:
+            a,b = location
+            if a > 0 and a <= x and b > 0 and b <= y:
+                result.append(location)
+        
+        return result        

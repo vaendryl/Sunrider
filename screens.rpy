@@ -208,6 +208,7 @@ screen nvl:
 screen main_menu:
 
     $BM = Battle()
+    $MasterBM = BM
     $BM.phase = 'Player'
 
     imagemap:
@@ -216,8 +217,8 @@ screen main_menu:
         insensitive "Menu/menu_inactive.jpg"
         hover "Menu/menu_hover.jpg"
 
-        hotspot (160, 405, 133, 50) action Start()
-        hotspot (80, 472, 208, 50) action FileLoad("1", page="quick", confirm=False)
+        hotspot (160, 405, 133, 50) action Show('campaigns', transition=dissolve)
+        hotspot (80, 472, 208, 50) action FileLoad("1", page="auto", confirm=False)
         hotspot (171, 537, 118, 50) action ShowMenu('load')
         hotspot (92, 598, 200, 50) action ShowMenu('preferences')
         hotspot (138, 666, 151, 50) action ShowMenu('bonus')
@@ -225,7 +226,27 @@ screen main_menu:
 
     text '[config.version]' xpos 0.01 ypos 0.98 size 12
 
+    if CENSOR == False:
 
+        text ' RESTORATION PATCH DETECTED' xpos 0.01 ypos 0.958 size 15
+
+    if CENSOR == True:
+
+        text ' VANILLA EDITION' xpos 0.01 ypos 0.958 size 15
+
+
+screen campaigns:
+    
+    imagemap:
+        ground "Menu/mainmenu_campaign.png"
+        idle "Menu/mainmenu_campaign.png"
+        insensitive "Menu/mainmenu_campaign.png"
+        hover "Menu/mainmenu_campaign_hover.png"
+        alpha False
+        
+        hotspot (300, 385, 230, 40) action Start()
+        hotspot (300, 425, 350, 40) action Start("skiptomaskofarcadius")
+        
 init -2 python:
 
     # Make all the main menu buttons be the same size.
@@ -263,12 +284,11 @@ screen navigation:
 init -2 python:
     style.gm_nav_button.size_group = "gm_nav"
 
-    #                                               number of features
-    bonus_features = [[0 for x in xrange(2)] for x in xrange(1)]
+    deletedScenes = BonusItem("Background/renpytomback.jpg", " Deleted Scenes", "deleted_scenes", 0.09)
+    # chapterSelect = BonusItem("CG/cera.jpg", " Chapter Select", "chapter_select", 0.09)
+    modScenes = BonusItem("CG/mochi1.jpg", " Addon Scene Select", "mod_scenes", 0.09)
 
-    # bonus 1
-    bonus_features[0][0] = "Background/renpytomback.jpg"
-    bonus_features[0][1] = " Doki Doki Space Whale:\n Dating Sim 3"
+    bonus_features = [deletedScenes, modScenes]  #, chapterSelect]
 
 screen bonus:
 
@@ -279,23 +299,11 @@ screen bonus:
         ground "Menu/bonus_base.png"
         hover "Menu/bonus_hover.png"
 
-        $ page = 0
-
-        # we need to make the screen update when the arrows are clicked
-        hotspot (1221, 215, 30, 146):
-            $ page += 1
-            action NullAction()
-        hotspot (1221, 724, 30, 146):
-            if page > 0:
-                $ page -= 1
-            action NullAction()
         hotspot (726, 59, 137, 44) action [ Hide('bonus'), Show('save', transition=dissolve) ]
         hotspot (948, 926, 107, 23) action Hide('bonus', transition=dissolve)
         hotspot (864, 59, 137, 44) action [ Hide('bonus'), Show('load', transition=dissolve) ]
         hotspot (1002, 59, 137, 44) action [ Hide('bonus'), Show('preferences', transition=dissolve) ]
         hotspot (1140, 59, 137, 44) action Hide('bonus', transition=dissolve)
-
-        #style "file_picker_frame"
 
         $ columns = 1
         $ rows = 5
@@ -304,11 +312,11 @@ screen bonus:
         grid columns rows:
             transpose True
             xfill True
-            #style_group "file_picker"
             xpos 753
             ypos 216
-            
-            $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
+
+            if hasattr(store,'BM'):
+                $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
             for i in range(1, columns * rows + 1):
@@ -322,17 +330,17 @@ screen bonus:
                     has hbox
 
                     # Add the image and text.
-                    if page * columns * rows + i - 1 < len(bonus_features):
+                    if i - 1 < len(bonus_features):
                         $ bonusimage = 0
                         imagebutton:
-                            idle bonus_features[i - 1][0]
-                            hover hoverglow(bonus_features[i - 1][0])
-                            at zoom_button(0.09)
-                            action [Hide('main_menu'),Jump('bonus{}'.format(i))]
-                        text bonus_features[i - 1][1]
+                            idle (bonus_features[i - 1].image)
+                            hover hoverglow(bonus_features[i - 1].image)
+                            at zoom_button(bonus_features[i - 1].zoom)
+                            action [ResetBonusPage(),Hide('bonus'),ShowMenu(bonus_features[i - 1].jumpLoc)]
+                        text bonus_features[i - 1].text
 
                     else:
-                        text str(page * columns * rows + i) + ". Empty Bonus."
+                        text str(i) + ". Unused Bonus"
 
 ##############################################################################
 # Save, Load
@@ -350,9 +358,12 @@ screen load:
     modal True
     zorder 200
 
-    key 'mouseup_3' action Hide('load')
+    key "mousedown_3" action Hide('load', transition=dissolve)
 
-    if not (BM.phase == 'Player' or BM.phase == None):
+    if not hasattr(store,'BM'):
+        $ BM = Battle()
+        $ MasterBM = BM
+    if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not load during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
@@ -428,9 +439,12 @@ screen save:
     modal True
     zorder 200
 
-    key 'mouseup_3' action Hide('save')
+    key "mousedown_3" action Hide('save', transition=dissolve)
 
-    if not BM.phase == 'Player':
+    if not hasattr(store,"BM"):
+        $ BM = Battle()
+        #No need to update the MasterBM if there is no battle manager to begin with.  Besides, the MasterBM and the BM might not be the same
+    if (BM.phase == 'PACT' or BM.phase == 'Pirate'):
         text 'WARNING! \n You can not save during the enemy \n turn.':
             xalign 0.5
             yalign 0.5
@@ -525,6 +539,8 @@ screen preferences:
     zorder 200
     modal True
 
+    key "mousedown_3" action Hide('preferences', transition=dissolve)
+    
     imagemap:
 
         ground "Menu/preferences_base.png"
@@ -534,59 +550,85 @@ screen preferences:
 
         hotspot (864, 59, 137, 44) action [ Hide('preferences'), Show('load', transition=dissolve) ]
         hotspot (726, 59, 137, 44) action [ Hide('preferences'), Show('save', transition=dissolve) ]
+        hotspot (1070, 130, 160, 50) action [ Hide('preferences'), Show('gameprefs', transition=dissolve) ]
         hotspot (1140, 59, 137, 44) action MainMenu()
-        hotspot (822, 224, 80, 15) action Preference("display", "window")
-        hotspot (1048, 224, 79, 15) action Preference("display", "fullscreen")
-        hotspot (822, 334, 112, 15) action Preference("skip", "seen")
-        hotspot (1048, 334, 78, 15) action Preference("skip", "all")
-        hotspot (822, 404, 107, 15) action Preference("after choices", "skip")
-        hotspot (1048, 404, 103, 15) action Preference("after choices", "stop")
+        hotspot (820, 235, 100, 25) action Preference("display", "window")
+        hotspot (1035, 235, 180, 25) action Preference("display", "fullscreen")
+        hotspot (820, 340, 200, 25) action Preference("skip", "seen")
+        hotspot (1040, 340, 180, 25) action Preference("skip", "all")
+        hotspot (820, 410, 190, 25) action Preference("after choices", "skip")
+        hotspot (1040, 410, 220, 25) action Preference("after choices", "stop")
         hotspot (822, 470, 146, 15) action Skip(fast=True)
-        hotspot (778, 861, 91, 15) action SetVariable("Difficulty", 0)
-        hotspot (908, 861, 34, 15) action SetVariable("Difficulty", 1)
-        hotspot (987, 861, 53, 15) action SetVariable("Difficulty", 2)
-        hotspot (1092, 861, 32, 15) action SetVariable("Difficulty", 3)
 
         hotspot (948, 926, 107, 23) action Hide('preferences', transition=dissolve)
 
-
-
         bar:
-            xpos 746
-            ypos 716
-            xmaximum 250
-            value Preference("text speed")
-        bar:
-            xpos 746
-            ypos 580
+            xpos 780
+            ypos 570
             xmaximum 250
             value Preference("music volume")
-        text 'Voice':
-            xpos 1000
-            ypos 550
-            size 18
-            color 'fff'
         bar:
-            xpos 1000
-            ypos 580
-            xmaximum 250
-            value Preference("voice volume")
-        bar:
-            xpos 746
-            ypos 645
+            xpos 780
+            ypos 650
             xmaximum 250
             value Preference("sound volume")
+        bar:
+            xpos 780
+            ypos 800
+            xmaximum 250
+            value Preference("text speed")
+
+        bar:
+            xpos 780
+            ypos 725
+            xmaximum 250
+            value Preference("voice volume")
+            
         textbutton "Test":
             xpos 1100
-            ypos 645
+            ypos 650
             action Play("sound", "Sound/explosion1.ogg")
             style "soundtest_button"
         bar:
-            xpos 746
-            ypos 794
+            xpos 780
+            ypos 880
             xmaximum 250
             value Preference("auto-forward time")
+            
+screen gameprefs:
+    
+    zorder 200
+    modal True
+    
+    key "mousedown_3" action Hide('gameprefs', transition=dissolve)
+    
+    imagemap:
 
+        ground "Menu/preferences_gameplay_base.png"
+        hover "Menu/preferences_gameplay_hover.png"
+        selected_idle "Menu/preferences_gameplay_active.png"
+        selected_hover "Menu/preferences_gameplay_active.png"
+    
+        hotspot (864, 59, 137, 44) action [ Hide('gameprefs'), Show('load', transition=dissolve) ]
+        hotspot (726, 59, 137, 44) action [ Hide('gameprefs'), Show('save', transition=dissolve) ]
+        hotspot (750, 130, 160, 50) action [ Hide('gameprefs'), Show('preferences', transition=dissolve) ]
+        hotspot (750, 260, 250, 30) action SetVariable("Difficulty", 0)
+        hotspot (750, 340, 250, 30) action SetVariable("Difficulty", 1)
+        hotspot (750, 400, 250, 30) action SetVariable("Difficulty", 2)
+        hotspot (750, 460, 250, 30) action SetVariable("Difficulty", 3)        
+        hotspot (750, 540, 250, 30) action SetVariable("Difficulty", 4)        
+        hotspot (750, 600, 250, 30) action SetVariable("Difficulty", 5)
+        
+        hotspot (785, 707, 50, 30) action SetField(BM,'show_tooltips',True)  
+        hotspot (1000, 707, 80, 30) action SetField(BM,'show_tooltips',False)
+
+        hotspot (785, 780, 50, 30) action SetField(BM,'edgescroll',(100,800))
+        hotspot (1000, 780, 80, 30) action SetField(BM,'edgescroll',(0,0)) 
+
+        hotspot (785, 850, 50, 30) action Show('battle_log')
+        hotspot (1000, 850, 80, 30) action Hide('battle_log')
+        
+        hotspot (948, 926, 107, 23) action Hide('gameprefs', transition=dissolve)
 
 init -2 python:
     style.bar.hover_color = "#ccc"
