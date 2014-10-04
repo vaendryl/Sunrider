@@ -173,7 +173,7 @@ init -2 python:
                 renpy.music.play('sound/Voice/{}'.format(ship.selection_voice[a]),channel = ship.voice_channel)
                 del a
             
-            if self.mission != 'skirmish':
+            if self.mission != 'skirmish' and BM.phase != 'formation':
                 renpy.show_screen('commands')
                 ship.movement_tiles = get_movement_tiles(ship)
                 self.selectedmode = True
@@ -439,6 +439,7 @@ init -2 python:
         ########################################################
         def formation_phase(self):
             while True:
+                self.phase='formation'
                 self.result = ui.interact()
                 self.dispatch_handler(self.result,'formation')()
 
@@ -936,6 +937,7 @@ init -2 python:
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')
+                BM.selected = None #the selected unit doesn't show up in the pool
                 self.formation_phase()
             else:
                 self.jumptomission()

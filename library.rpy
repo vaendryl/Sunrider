@@ -2263,6 +2263,9 @@ init 2 python:
             # blackjack.modifiers['accuracy'] = [a,b]
             blackjack.update_stats()
             blackjack.hp -= (100 +  -b * 40 - 40)
+            if blackjack.hp < 1: 
+                blackjack.hp = 1
+                blackjack.hate *= 2
             if self in blackjack.weapons:
                 blackjack.weapons.remove(self)
                 blackjack.weapons.append(EndAwakenAsaga())
