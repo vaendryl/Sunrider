@@ -18950,9 +18950,9 @@ label mission18:
         ava "More PACT forces have warped in!"
         kay "A battleship squad!? The hell's going on!?"
         
-        if Saveddiplomats == True:
+        hide ava onlayer screens with dissolve
         
-            hide ava onlayer screens with dissolve
+        if Saveddiplomats == True:
         
             show asaga plugsuit handsonhips frown onlayer screens with dissolve
         
