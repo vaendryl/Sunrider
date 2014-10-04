@@ -21952,6 +21952,12 @@ label plancomefruition:
                 BM.ships.remove(alliancecruiser2)
                 player_ships.remove(alliancecruiser2)            
     
+#debugging
+label temporary_mission21_skip:
+    window hide
+    if not hasattr(store,'legion_destroyed'):
+        $ legion_destroyed = True
+    
     $ BM.mission = 21
     $ check1 = False
     $ check2 = False

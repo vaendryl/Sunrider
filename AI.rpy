@@ -352,6 +352,7 @@ init python:
         while self.en >= melee_weapon.energy_cost(self):
             adjacent = False
             for ship in player_ships:
+                #TODO try to move next to a ryder
                 if get_ship_distance(ship,self) == 1:
                     if ship.stype == 'Ryder':
                         if adjacent == False:
