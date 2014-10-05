@@ -22750,6 +22750,7 @@ label continuewithchoices:
     python:
         BM.money = 19000
         BM.cmd = 4000
+        BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp'] ## Adds in SRW, since the plot event to add it is skipped. Tested it in the current steam ver with and without, should work.
         gal_event = 'jumptogalaxy'
         alliancecruiser1 = None
         alliancecruiser2 = None
