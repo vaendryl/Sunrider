@@ -935,8 +935,8 @@ label mission21_inits:
         alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
 
         blackjack.register_weapon(AwakenAsaga())
-        BM.selected = blackjack  #just in case blackjack is still selected.
-        blackjack.weapons[-1].fire(blackjack,blackjack)
+        BM.selected = blackjack  
+        blackjack.weapons[-1].fire(blackjack,blackjack,hidden=True)
         blackjack.en += 100
         blackjack.hp += 100
         

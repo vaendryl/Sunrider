@@ -1559,7 +1559,7 @@ init 2 python:
 
     class BlackjackMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 400    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
@@ -1714,7 +1714,7 @@ init 2 python:
     class HavocMelee(Melee):
         #wow, I never realized the Havoc had a multi hit melee attack
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 40    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
@@ -2052,7 +2052,7 @@ init 2 python:
 
     class PACTEliteMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 375
             self.energy_use = 50
             self.accuracy = 180
@@ -2472,7 +2472,7 @@ init 2 python:
 
     class PhoenixMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
@@ -2492,7 +2492,7 @@ init 2 python:
  
     class PhoenixEnemyMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
@@ -2554,7 +2554,7 @@ init 2 python:
 
     class NightmareMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 900    #multiplied by shot count
             self.energy_use = 30
             self.ammo_use = 0
@@ -2594,7 +2594,7 @@ init 2 python:
 
     class ArcadiusMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 500    #multiplied by shot count
             self.energy_use = 30
             self.ammo_use = 0

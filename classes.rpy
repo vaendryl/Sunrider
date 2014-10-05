@@ -937,6 +937,8 @@ init -2 python:
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')
+                BM.selectedmode = False #failsafe
+                BM.targetmode = False
                 BM.selected = None #the selected unit doesn't show up in the pool
                 self.formation_phase()
             else:
@@ -1098,8 +1100,8 @@ init -2 python:
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
                 renpy.pause(AI_WAIT_TIME)
-                if config.developer:
-                    renpy.pause()
+                # if config.developer:
+                    # renpy.pause()
 
                 try:
                     if not eship.modifiers['energy regen'][0] == -100:
@@ -1119,8 +1121,8 @@ init -2 python:
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
                 renpy.pause(AI_WAIT_TIME)
-                if config.developer:
-                    renpy.pause()
+                # if config.developer:
+                    # renpy.pause()
 
                 try:
                     if not eship.modifiers['energy regen'][0] == -100:
@@ -1151,8 +1153,8 @@ init -2 python:
 
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(AI_WAIT_TIME)
-                    if config.developer:
-                        renpy.pause()                    
+                    # if config.developer:
+                        # renpy.pause()                    
                     ship.AI()
                     ship.lbl = ship.blbl
 
@@ -2232,6 +2234,7 @@ init -2 python:
             self.hp_cost = 0
             self.acc_degradation = 15
             self.wtype = ''
+            self.name = 'unnamed'
             self.animation_name = None
             self.shot_count = 1
             self.accuracy = 100
@@ -2652,7 +2655,7 @@ init -2 python:
             self.shot_count = 1
             self.lbl = ''
 
-        def fire(self,parent,target,counter = False):
+        def fire(self,parent,target,counter = False,hidden=False):
         
             #handle callbacks
             if self.end_of_turn_callback is not None:
@@ -2723,21 +2726,22 @@ init -2 python:
                     return 0                    
                     
                 else:
-                    target.getting_buff = True
-                    BM.selectedmode = False
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    if BM.phase == 'Player':
-                        if not target == parent and target.faction == 'Player':
-                            renpy.music.play( 'sound/Voice/{}'.format( renpy.random.choice(target.buffed_voice) ),channel = target.voice_channel )
-                    message = "All curses were removed from the {}".format(target.name)
-                    BM.battle_log_insert(['support', 'debuff'], message)
-                    show_message(message)
-                    target.getting_buff = False
-                    if BM.phase == 'Player':
-                        BM.selectedmode = True
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
+                    if not hidden:
+                        target.getting_buff = True
+                        BM.selectedmode = False
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
+                        if BM.phase == 'Player':
+                            if not target == parent and target.faction == 'Player':
+                                renpy.music.play( 'sound/Voice/{}'.format( renpy.random.choice(target.buffed_voice) ),channel = target.voice_channel )
+                        message = "All curses were removed from the {}".format(target.name)
+                        BM.battle_log_insert(['support', 'debuff'], message)
+                        show_message(message)
+                        target.getting_buff = False
+                        if BM.phase == 'Player':
+                            BM.selectedmode = True
+                        renpy.hide_screen('battle_screen')
+                        renpy.show_screen('battle_screen')
                     return 0
 
             #if it's a buff/curse
@@ -2784,33 +2788,33 @@ init -2 python:
                     BM.battle_log_insert(['support', 'buff'], "{0} is buffed with {1}".format(target.name, self.name))
                 else:
                     BM.battle_log_insert(['support', 'debuff'], "{0} is cursed with {1}".format(target.name, self.name))
-                BM.selectedmode = False
-                renpy.hide_screen('battle_screen')
-                renpy.show_screen('battle_screen')
-                if BM.phase == 'Player':
-                    if not target == parent and target.faction == 'Player':
-                        #this is what happens if you don't know about random.choice and you then can't be arsed to fix it everywhere
-                        a = renpy.random.randint(0,len(target.buffed_voice)-1)
-                        renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
-                        del a
-                    elif target.faction != 'Player':
-                        if hasattr(parent,'cursing_voice'):
-                            if len(parent.cursing_voice) > 0:
-                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
-                else:
-                    #enemy turn
-                    if target.faction == 'Player':
-                        if hasattr(target,'cursed_voice'):
-                            if len(target.cursed_voice) > 0:
-                                renpy.music.play( 'sound/Voice/'+renpy.random.choice(target.cursed_voice),channel=target.voice_channel )
-                
-                renpy.invoke_in_new_context( short_pause )
+                if not hidden:
+                    BM.selectedmode = False
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
+                    if BM.phase == 'Player':
+                        if not target == parent and target.faction == 'Player':
+                            #this is what happens if you don't know about random.choice and you then can't be arsed to fix it everywhere
+                            a = renpy.random.randint(0,len(target.buffed_voice)-1)
+                            renpy.music.play('sound/Voice/{}'.format(target.buffed_voice[a]),channel = target.voice_channel)
+                            del a
+                        elif target.faction != 'Player':
+                            if hasattr(parent,'cursing_voice'):
+                                if len(parent.cursing_voice) > 0:
+                                    renpy.music.play( 'sound/Voice/'+renpy.random.choice(parent.cursing_voice),channel=parent.voice_channel )
+                    else:
+                        #enemy turn
+                        if target.faction == 'Player':
+                            if hasattr(target,'cursed_voice'):
+                                if len(target.cursed_voice) > 0:
+                                    renpy.music.play( 'sound/Voice/'+renpy.random.choice(target.cursed_voice),channel=target.voice_channel )
+                    renpy.invoke_in_new_context( short_pause )
+                    if BM.phase == 'Player':
+                        BM.selectedmode = True
+                    renpy.hide_screen('battle_screen')
+                    renpy.show_screen('battle_screen')
                 target.getting_buff = False
                 target.getting_curse = False
-                if BM.phase == 'Player':
-                    BM.selectedmode = True
-                renpy.hide_screen('battle_screen')
-                renpy.show_screen('battle_screen')
 
                 if self.name == 'Disable':  #I should probably put stuff like this in the library at some point
                     parent.hate += 250

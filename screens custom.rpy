@@ -623,32 +623,32 @@ screen battle_screen:
 
 
                 ##DISPLAY MOVEMENT OPTIONS##
-        if BM.selectedmode and BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
-            for tile in BM.selected.movement_tiles:
+        if BM.selectedmode and BM.selected != None:
+            if BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
+                for tile in BM.selected.movement_tiles:
+                    $ lbl = 'Battle UI/move_tile.png'
+                    $ tile_location = (tile[3],tile[4])
                     
-                $ lbl = 'Battle UI/move_tile.png'
-                $ tile_location = (tile[3],tile[4])
-                
-                if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
-                    $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
-                
-                if tile_location == BM.mouse_location:
-                    $ lbl = hoverglow(lbl)  
-                add lbl:
-                    zoom (0.2 * zoomlevel)
-                    alpha 0.5
-                    xanchor 0.5
-                    yanchor 0.5
-                    xpos tile[0]
-                    ypos tile[1]
+                    if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
+                        $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
+                    
+                    if tile_location == BM.mouse_location:
+                        $ lbl = hoverglow(lbl)  
+                    add lbl:
+                        zoom (0.2 * zoomlevel)
+                        alpha 0.5
+                        xanchor 0.5
+                        yanchor 0.5
+                        xpos tile[0]
+                        ypos tile[1]
 
-                text (str(BM.selected.move_cost*tile[2]) + ' EN'):
-                    xpos tile[0]
-                    ypos tile[1]
-                    xanchor 0.5
-                    yanchor 0.5
-                    size (20 * zoomlevel)
-                    outlines [(2,'000',0,0)]
+                    text (str(BM.selected.move_cost*tile[2]) + ' EN'):
+                        xpos tile[0]
+                        ypos tile[1]
+                        xanchor 0.5
+                        yanchor 0.5
+                        size (20 * zoomlevel)
+                        outlines [(2,'000',0,0)]
 
 
           #firing the vanguard cannon  [[doesn't seem to be used any more]]
