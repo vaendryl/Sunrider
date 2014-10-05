@@ -707,7 +707,7 @@ screen battle_screen:
 
             ##MOVE SHIP FROM GRID TO GRID##
         if BM.moving and BM.selected != None:
-            if BM.selected.location != None:
+            if BM.selected.current_location != None and BM.selected.next_location != None:
                 $xposition = dispx(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)
                 $yposition = dispy(BM.selected.current_location[0],BM.selected.current_location[1],zoomlevel,0.25 * ADJY) + int(zoomlevel * MOVY)
                 $next_xposition = dispx(BM.selected.next_location[0],BM.selected.next_location[1],zoomlevel,0.50 * ADJX) + int(zoomlevel * MOVX)

@@ -193,8 +193,8 @@ label after_load:
                 PirateGrunt(), PirateDestroyer(),
                 PirateBase()
                 ]
-        for ship in store.all_enemies:
-            ship.location = None                
+            for ship in store.all_enemies:
+                ship.location = None                
         
         ##debugging stuff##
         # renpy.hide_screen('battle_screen')

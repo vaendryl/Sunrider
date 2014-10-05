@@ -305,7 +305,7 @@ init -6 python:
         cubic2 = convert_to_cubic(ship2.location)
         result = cubic_distance(cubic1, cubic2)
         return result
-
+    
     def real_damage(weapon,parent):
         if weapon == None or parent == None:
             return 0
@@ -479,6 +479,10 @@ init -6 python:
                 if getattr(mp,variable) is None:
                     setattr(mp,variable, getattr(store,variable) )
         mp.save()
+        
+    # def memory_leak_test():
+        # for a in range(1000):
+            # BM.battle_log.append('tonsofcrap')
 
     def time_warp_easeout(t):  ##probably never got used
         return 1.0 - math.cos(t * math.pi / 2.0)
@@ -1016,6 +1020,12 @@ init -6 python:
         if location[1] > GRID_SIZE[1] or location[1] <=0:
             valid = False
         return valid
+        
+    def debuglog_add(text):
+        if config.developer:
+            BM.debug_log.append(text)
+        else:
+            pass
 
     def get_all_in_radius(location, radius):
         if radius < 0 or location == None:
