@@ -61,12 +61,16 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            a = self.location[0]-1  #make the next line of code a little shorter
-            b = self.location[1]-1
-            BM.grid[a][b] = False #tell the BM that the old cell is now free again
-            player_ships.remove(self)
-            BM.ships.remove(self)
-            renpy.jump('sunrider_destroyed')
+            
+            if BM.mission != 'skirmishbattle':
+                a = self.location[0]-1  #make the next line of code a little shorter
+                b = self.location[1]-1
+                BM.grid[a][b] = False #tell the BM that the old cell is now free again
+                player_ships.remove(self)
+                BM.ships.remove(self)
+                renpy.jump('sunrider_destroyed')
+            else:
+                BM.you_lose()
 
     class BlackJack(Battleship): # defining the Blackjack
         def __init__(self):

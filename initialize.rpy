@@ -28,14 +28,15 @@ init -10 python:
 
     planets = []
     
-    mp = MultiPersistent("Sunrider 1")
+    #mods can add item classes to this and they will be loaded into the store. since items are flexible and very powerful, this is pretty cool.
+    mod_items = [] 
     
+    mp = MultiPersistent("Sunrider")
     important_variables = [ 
         'captain_moralist','captain_prince','affection_ava','affection_asaga',
         'affection_chigara','affection_icari','affection_claude','affection_tera',
         'affection_sola','affection_cosette','wishall','Saveddiplomats',
         'OngessTruth','legion_destroyed' ]
-    
     DIFFICULTY_NAMES = {
         0 : 'Visual Novel Mode',
         1 : 'Casual Mode',
@@ -690,21 +691,21 @@ label mission15_inits:
         BM.yadj.value = 370
         
         create_ship(PactBattleship(),(9,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
-        enemy_ships[-1].modifiers['flak'] = [-100,2]
-        enemy_ships[-1].modifiers['shield_generation'] = [-100,2]
+        enemy_ships[-1].modifiers['energy regen'] = [-100,3]
+        enemy_ships[-1].modifiers['flak'] = [-100,3]
+        enemy_ships[-1].modifiers['shield_generation'] = [-100,3]
         create_ship(PactBattleship(),(9,11),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
-        enemy_ships[-1].modifiers['flak'] = [-100,2]
-        enemy_ships[-1].modifiers['shield_generation'] = [-100,2]
+        enemy_ships[-1].modifiers['energy regen'] = [-100,3]
+        enemy_ships[-1].modifiers['flak'] = [-100,3]
+        enemy_ships[-1].modifiers['shield_generation'] = [-100,3]
         create_ship(PactBattleship(),(13,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
-        enemy_ships[-1].modifiers['flak'] = [-100,2]
-        enemy_ships[-1].modifiers['shield_generation'] = [-100,2]
+        enemy_ships[-1].modifiers['energy regen'] = [-100,3]
+        enemy_ships[-1].modifiers['flak'] = [-100,3]
+        enemy_ships[-1].modifiers['shield_generation'] = [-100,3]
         create_ship(PactBattleship(),(13,11),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
-        enemy_ships[-1].modifiers['energy regen'] = [-100,2]
-        enemy_ships[-1].modifiers['flak'] = [-100,2]
-        enemy_ships[-1].modifiers['shield_generation'] = [-100,2]
+        enemy_ships[-1].modifiers['energy regen'] = [-100,3]
+        enemy_ships[-1].modifiers['flak'] = [-100,3]
+        enemy_ships[-1].modifiers['shield_generation'] = [-100,3]
 
         create_ship(PactMook(),(9,5),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])
         create_ship(PactMook(),(8,6),[PACTMookLaser(),PACTMookMissile(),PACTMookAssault()])

@@ -14,6 +14,10 @@ label initStore:
         store_items.append(SellWishallArtifact())  
         store_items.append(RepairUpgrade())
         
+        if hasattr(store,'mod_items'):
+            for moditem in store.mod_items:
+                store_items.append(moditem())
+        
     return
 
 screen store_union:

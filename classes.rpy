@@ -988,7 +988,7 @@ init -2 python:
                 self.you_lose()
 
         def you_lose(self):  #Separated for mod support, in case something other than 'better luck next time' or 'game over' is the consequence of losing
-            if (self.mission != 'skirmish'):
+            if self.mission != 'skirmishbattle':
                 renpy.jump('sunrider_destroyed')
             else:
                 show_message('You were defeated! better luck next time...')
@@ -996,7 +996,7 @@ init -2 python:
                 renpy.jump('dispatch')
                 
         def boss_died(self, deadboss):
-            if (self.mission != 'skirmish'):
+            if (self.mission != 'skirmishbattle'):
                 self.you_win()
                
         def check_for_win(self):
@@ -1861,11 +1861,12 @@ init -2 python:
             #renpy.log('I have {} energy'.format(self.en))
             best_target = [None,None,0,0]
 
+            cheapest_weapon_cost = 999
+            for weapon in self.weapons:
+                if weapon.energy_cost(self) < cheapest_weapon_cost:
+                    cheapest_weapon_cost = weapon.energy_cost(self)
+            
             if not self.support:
-                cheapest_weapon_cost = 999
-                for weapon in self.weapons:
-                    if weapon.energy_cost(self) < cheapest_weapon_cost:
-                        cheapest_weapon_cost = weapon.energy_cost(self)
                 if self.en < cheapest_weapon_cost:
                     debuglog_add('not enough energy to fire any weapon')
                 else:
@@ -1922,7 +1923,9 @@ init -2 python:
                             priority_target = [ship,priority]
                 self.target = priority_target[0]
                 debuglog_add('I am going after the {} because of its weighted priority of {!s}'.format(priority_target[0].name,priority_target[1]))
-                self.AI_move_towards(self.target,rush=True)
+                
+                max_move = (self.en - cheapest_weapon_cost) / self.move_cost
+                self.AI_move_towards(self.target,max_move_distance=max_move)
                 return
 
             elif best_target[0] != None and best_target[2] > minimum_damage:
