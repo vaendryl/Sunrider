@@ -12,6 +12,7 @@ label firstvariables:
     $ affection_cosette = 0
 
     $ MetAsaga = False
+    $ ChigaraNamed = False
     $ ChigaraRefugee = False
     $ mission_pirateattack = False
     $ amissionforalliance = False
@@ -107,6 +108,7 @@ init python:
             self.affection_cosette = 0
 
             self.MetAsaga = False
+            self.ChigaraNamed = False
             self.ChigaraRefugee = False
             self.mission_pirateattack = False
             self.amissionforalliance = False

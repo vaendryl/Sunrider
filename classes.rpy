@@ -3143,6 +3143,7 @@ init -2 python:
             store.affection_cosette = 0
 
             store.MetAsaga = False
+            store.ChigaraNamed = False
             store.ChigaraRefugee = False
             store.mission_pirateattack = False
             store.amissionforalliance = False
