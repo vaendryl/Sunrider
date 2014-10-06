@@ -1595,6 +1595,7 @@ label tellmorefreelancing:
     kay " Chigara...? Is she an engineer?"
     asa " Yeah, you can call her that. She's a genius when it comes to technology, and she can fix just about anything mechanical!"
     kay "(I'm betting we'll get to meet this Chigara very soon...)"
+    $ ChigaraNamed = True
 
     menu:
         "Tell me more about the pirates.":
@@ -1704,9 +1705,13 @@ label fornowsunriderrepairs:
 
     show asaga plugsuit handsonhips happy with dissolve
 
-    asa "Oh! I know someone who can help us with that! Chigara has her workshop in Tydaria. She'll be able to fix your ship in no time!"
-    ava "Chigara? Friend of yours?"
-    asa "Uh-huh! She's a genius when it comes to technology!"
+    if ChigaraNamed:
+        asa "Oh! Chigara has her workshop in Tydaria. She'll be able to fix your ship in no time!"
+    else:
+        asa "Oh! I know someone who can help us with that! Chigara has her workshop in Tydaria. She'll be able to fix your ship in no time!"
+        ava "Chigara? Friend of yours?"
+        asa "Uh-huh! She's a genius when it comes to technology!"
+        
     kay "Alright, if your friend can help us, we can head to her workshop."
     kay "Ava and I are going to head up to the bridge now. You should stay here with your ship. We'll call you on the comm if anything comes up."
     asa "Understood, capt'n!"
