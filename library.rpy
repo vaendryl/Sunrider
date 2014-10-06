@@ -2337,7 +2337,7 @@ init 2 python:
             self.name = 'Flak Off'
             self.lbl = 'Battle UI/button_flak.png'
             self.tooltip = """
-            The target can no longer fire flak at missiles for two turns."""
+            The target can no longer counter attack or fire flak at missiles for two turns."""
 
     class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
