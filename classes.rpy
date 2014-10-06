@@ -157,7 +157,7 @@ init -2 python:
             self.battle_log_yadj.change(self.battle_log_yadj.value + 125)
             
 
-        ## pop entry to battle log
+        ## pop entry from battle log
         # @param index The index of entry to remove
         def battle_log_pop(self, index = None):
             if index is None:
@@ -438,11 +438,12 @@ init -2 python:
         ## Formation dispatcher end
         ########################################################
         def formation_phase(self):
+            self.phase='formation'
             while True:
-                self.phase='formation'
                 self.result = ui.interact()
                 self.dispatch_handler(self.result,'formation')()
-
+                if self.battlemode == False: #whenever this is set to False battle ends.
+                    break
         #------------------------------------------------------#
         ########################################################
         ## Battle dispatcher
@@ -1044,6 +1045,8 @@ init -2 python:
                 ship.en = ship.max_en * (100 + ship.modifiers['energy regen'][0] ) / 100
                 if ship.en < 0: ship.en = 0
             self.active_weapon = None
+            self.targetingmode = False
+            self.target = None
             self.selected = None
             self.selectedmode = False
             self.order_used = False
