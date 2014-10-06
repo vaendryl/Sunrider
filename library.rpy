@@ -61,12 +61,16 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            a = self.location[0]-1  #make the next line of code a little shorter
-            b = self.location[1]-1
-            BM.grid[a][b] = False #tell the BM that the old cell is now free again
-            player_ships.remove(self)
-            BM.ships.remove(self)
-            renpy.jump('sunrider_destroyed')
+            
+            if BM.mission != 'skirmishbattle':
+                a = self.location[0]-1  #make the next line of code a little shorter
+                b = self.location[1]-1
+                BM.grid[a][b] = False #tell the BM that the old cell is now free again
+                player_ships.remove(self)
+                BM.ships.remove(self)
+                renpy.jump('sunrider_destroyed')
+            else:
+                BM.you_lose()
 
     class BlackJack(Battleship): # defining the Blackjack
         def __init__(self):
@@ -1559,7 +1563,7 @@ init 2 python:
 
     class BlackjackMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 400    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
@@ -1714,7 +1718,7 @@ init 2 python:
     class HavocMelee(Melee):
         #wow, I never realized the Havoc had a multi hit melee attack
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 40    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 0
@@ -2052,7 +2056,7 @@ init 2 python:
 
     class PACTEliteMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 375
             self.energy_use = 50
             self.accuracy = 180
@@ -2472,7 +2476,7 @@ init 2 python:
 
     class PhoenixMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
@@ -2492,7 +2496,7 @@ init 2 python:
  
     class PhoenixEnemyMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
@@ -2554,7 +2558,7 @@ init 2 python:
 
     class NightmareMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 900    #multiplied by shot count
             self.energy_use = 30
             self.ammo_use = 0
@@ -2594,7 +2598,7 @@ init 2 python:
 
     class ArcadiusMelee(Melee):
         def __init__(self):
-            Weapon.__init__(self)
+            Melee.__init__(self)
             self.damage = 500    #multiplied by shot count
             self.energy_use = 30
             self.ammo_use = 0

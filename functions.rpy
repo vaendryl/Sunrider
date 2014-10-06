@@ -1030,6 +1030,21 @@ init -6 python:
     def get_all_in_radius(location, radius):
         if radius < 0 or location == None:
             return []
+        if location < 2:
+            return get_all_in_radius_slow(location, radius)
+
+        locations = []
+        cx, cy, cz = convert_to_cubic(location)
+        for dx in range(-radius, radius + 1):
+            for dy in range(max(-radius, -dx - radius), min(radius, -dx + radius) + 1):
+                dz = -dx - dy
+                locations.append(convert_to_offset([cx + dx, cy + dy, cz + dz]))
+
+        return clean_locations(list(set(locations)))
+
+    def get_all_in_radius_slow(location, radius):
+        if radius < 0 or location == None:
+            return []
 
         locations = []
         pending = [location]
