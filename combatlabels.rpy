@@ -239,6 +239,11 @@ label after_load:
                     if len(ship.weapons) == 1:
                         create_ship(UnionFrigate(),ship.location)
                         player_ships.remove(ship)
+                elif ship.name == 'Bianca':
+                    #original set of weapons [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
+                    if len(ship.weapons) == 4:
+                        ship.register_weapon(Restore())
+                        
         
             #temporary fix
             rocketdamage = 800
