@@ -1764,7 +1764,7 @@ label fornowsunriderrepairs:
     hide ava with dissolve
     kay "It's nice to meet you. You must be Chigara."
 
-    chi "Umm... Chigara Lynn's my full name, but Asaga calls me that."
+    chi "Umm... Chigara Lynn Ashada's my full name, but Asaga calls me that."
 
     menu:
 
