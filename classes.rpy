@@ -2190,7 +2190,7 @@ init -2 python:
                 
                 for enemy in enemy_ships:                
                     #if next to enemy, not dead and the enemy isn't cursed.
-                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'] != -100: 
+                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'][0] != -100: 
                         counter = None
                         for weapon in enemy.weapons:
                             if weapon.wtype == 'Assault':
