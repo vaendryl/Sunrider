@@ -458,6 +458,8 @@ init -2 python:
                 store.total_armor_negation = 10
             if not hasattr(store,'total_shield_negation'):
                 store.total_shield_negation = 10
+            if not hasattr(store,'total_flak_interception'):
+                store.total_flak_interception = 0
             if self.target == None:
                 self.target = sunrider
             try:
@@ -882,6 +884,7 @@ init -2 python:
                                 store.hit_count = 1
                                 store.total_armor_negation = 0
                                 store.total_shield_negation = 0
+                                store.total_flak_interception = 0
                                 templist = enemy_ships[:]
                                 self.battle_log_insert(['order'], "ORDER: FIRE VANGUARD CANNON")
                                 for ship in templist:
@@ -2277,6 +2280,7 @@ init -2 python:
             total_damage = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+            store.total_flak_interception = 0
             store.hit_count = 0
 
             #cover mechanic. it returns true if cover is hit. see functions.rpy
@@ -2344,6 +2348,7 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+            store.total_flak_interception = 0
 
             #cover mechanic. it returns true if cover is hit. see functions.rpy
             if cover_mechanic(self,target,accuracy):
@@ -2464,6 +2469,7 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+            #store.total_flak_interception = 0  # this is applied before it reaches the GUI; we'll let simulate() reset it
 
             #cover mechanic. it returns true if cover is hit. see functions.rpy
             if cover_mechanic(self,target,accuracy):
@@ -2497,7 +2503,7 @@ init -2 python:
             it runs the flak_intercept() method part of the MissileSprite class. the result is stored in
             the flaksim field on enemy units and is later used to show how many missiles
             got intercepted and when"""
-
+            store.total_flak_interception = 0
             missile = MissileSprite(parent,target,self)
             BM.missiles.append(missile)
             path = interpolate_hex(parent.location,target.location) #get a list of locations between parent and target
@@ -2571,6 +2577,10 @@ init -2 python:
             interceptor.flak_effectiveness *= 1.0 - (self.shot_count * self.flak_degradation)
             if interceptor.flak_effectiveness < 33: interceptor.flak_effectiveness = 33
             self.shot_count = shots_remaining
+            
+            store.total_flak_interception += shot_down
+            print(store.total_flak_interception)
+            
             return shot_down
 
 
@@ -2611,6 +2621,7 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
+            store.total_flak_interception = 0
             for shot in range(self.shot_count):
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'melee', 'detailed'], "<{0}> miss".format(str(shot)))

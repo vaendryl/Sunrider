@@ -1514,17 +1514,28 @@ screen animation_hp2:
         xalign 1.0
         ypos 0.2
 
-        if store.total_armor_negation > 0:
-            text 'armor negated {} damage'.format(int(store.total_armor_negation)):
+        # moved shield to before armor since it is applied first
+        if store.total_shield_negation > 0:
+            text ( '{image=Battle UI/icon_shield.png} ' + '-{} dmg'.format(int(store.total_shield_negation)) ):
                 xalign 1.0
-                size 22
+                xoffset -32
+                size 32
+                color '6bf'
+                outlines [(1,'000',0,0)]
+        if store.total_armor_negation > 0:
+            text ( '{image=Battle UI/icon_armor.png} ' + '-{} dmg'.format(int(store.total_armor_negation)) ):
+                xalign 1.0
+                xoffset -32
+                size 32
                 color 'fff'
                 outlines [(1,'000',0,0)]
-        if store.total_shield_negation > 0:
-            text 'shields negated {} damage'.format(int(store.total_shield_negation)):
+        
+        if hasattr(store,'total_flak_interception') and store.total_flak_interception > 0:
+            text ( '{image=Battle UI/icon_intercept.png} ' + '{} intercepts'.format(int(store.total_flak_interception)) ):
                 xalign 1.0
-                size 22
-                color 'fff'
+                xoffset -32
+                size 32
+                color 'fa6'
                 outlines [(1,'000',0,0)]
 
 transform victory_tf(xx,wait):

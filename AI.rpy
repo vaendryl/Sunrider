@@ -274,6 +274,7 @@ init python:
         store.hit_count = 1
         store.total_armor_negation = 0
         store.total_shield_negation = 0
+        store.total_flak_interception = 0
         templist = player_ships[:]
         for ship in templist:
             if ship.location in BM.enemy_vanguard_path and BM.battlemode: #failsaves
