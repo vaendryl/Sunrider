@@ -2002,7 +2002,7 @@ init -2 python:
             if len(valid_spots) == 0:
                 debuglog_add('there are no valid spots!')
                 return False
-                
+
             if self in BM.lead_ships or rush and not self.support:
                 #find shortest possible distance from target
                 debuglog_add('moving while ignoring defenses')
@@ -2050,8 +2050,8 @@ init -2 python:
             if old_spot == best_hex:  #calling move_ship() when not needed can lead to double counter attacks.
                 debuglog_add('best spot is the spot I am already at!')
                 return False
-            else:
-                self.move_ship(best_hex,BM)
+            elif best_hex:
+                self.move_ship(best_hex, BM)
                 debuglog_add('moving towards {}'.format( str(best_hex) ) )
                 return True
             return False
