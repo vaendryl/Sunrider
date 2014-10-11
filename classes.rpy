@@ -2469,7 +2469,7 @@ init -2 python:
             store.hit_count = 0
             store.total_armor_negation = 0
             store.total_shield_negation = 0
-            #store.total_flak_interception = 0  # this is applied before it reaches the GUI; we'll let simulate() reset it
+            #store.total_flak_interception = 0  # this is applied before it reaches the GUI; we'll let simulate() reset it instead
 
             #cover mechanic. it returns true if cover is hit. see functions.rpy
             if cover_mechanic(self,target,accuracy):
@@ -2579,7 +2579,6 @@ init -2 python:
             self.shot_count = shots_remaining
             
             store.total_flak_interception += shot_down
-            print(store.total_flak_interception)
             
             return shot_down
 
