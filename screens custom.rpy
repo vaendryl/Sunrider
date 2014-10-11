@@ -506,6 +506,73 @@ screen battle_screen:
         if BM.weaponhover != None or BM.targetingmode and BM.selected != None:
             $ selected = BM.selected  #the screen sometimes loses track of BM.selected and crashes so a local is required
 
+            # draw missile path
+            if BM.hovered != None and BM.active_weapon != None and (BM.active_weapon.wtype == 'Missile' or BM.active_weapon.wtype == 'Rocket'):
+                $ loc1 = selected.location
+                $ loc2 = BM.hovered.location
+                $ tiles = interpolate_hex(loc1, loc2)
+                $ effective_flak = 0
+                $ total_effective_flak = 0
+                for i, tile in enumerate(tiles):
+                    $xposition = dispx(tile[0],tile[1],zoomlevel)
+                    $yposition = dispy(tile[0],tile[1],zoomlevel)
+                    $xsize = int((HEXW + 4) * zoomlevel)
+                    $ysize = int((HEXH + 4) * zoomlevel)
+                    
+                    add "Battle UI/missile hex.png":
+                        xpos xposition
+                        ypos yposition
+                        size (xsize,ysize)
+                        alpha 0.4
+                    
+                    for ship in BM.ships:
+                        if ship.location is not None and not ship.flak_used:
+                            if ship.faction != 'Player':
+                                if get_distance(tile,ship.location) <= ship.flak_range:
+                                    if BM.active_weapon.wtype == 'Rocket':
+                                        #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
+                                        $ effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm)
+                                    else:
+                                        $effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm)
+                                    if effective_flak > 100:
+                                        $ effective_flak = 100
+                                    elif effective_flak < 0:
+                                        $ effective_flak = 0
+                                        
+                                    $ total_effective_flak = total_effective_flak + (1 - total_effective_flak/100.0) * effective_flak
+                                    $ ship.flak_used = True
+                    
+                    if total_effective_flak > 100:
+                        $total_effective_flak = 100
+                    
+                    if i+1 == len(tiles):
+                        if effective_flak > 0:
+                            # FIXME I canna get tile[0] and tile[1] to work properly
+                            add 'Battle UI/icon_intercept.png':
+                                zoom (2 * zoomlevel)
+                                #alpha 0.7
+                                xpos xposition
+                                ypos yposition
+                                xoffset xsize/3
+                                yoffset ysize/2
+                                xanchor 0.5
+                                yanchor 0.5
+                            text ('{0:.2g}'.format(total_effective_flak) + "%"):
+                                xpos xposition
+                                ypos yposition
+                                xoffset xsize/3
+                                yoffset ysize/2
+                                xanchor 0.5
+                                yanchor 0.5
+                                size (30 * zoomlevel)
+                                color 'bbb'
+                                outlines [(2,'000',0,0)]
+                                
+                for ship in BM.ships:
+                    $ ship.flak_used = False
+                $ effective_flak = 0
+                $ total_effective_flak = 0
+
             for ship in BM.ships:
                 if ship.location != None:
 
@@ -620,8 +687,7 @@ screen battle_screen:
                 # size int(16*zoomlevel)
                 # font "Font/sui generis rg.ttf"
                 # outlines [(2,'000',0,0)]
-
-
+               
                 ##DISPLAY MOVEMENT OPTIONS##
         if BM.selectedmode and BM.selected != None:
             if BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
@@ -692,7 +758,7 @@ screen battle_screen:
                     ypos yposition
                     size (xsize,ysize)
                     alpha 0.7
-                                
+
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:
