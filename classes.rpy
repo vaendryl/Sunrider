@@ -306,11 +306,12 @@ init -2 python:
                 self.remove_mode = True
 
         def skirmish_playermusic(self):
-            PlayerTurnMusic = self.result[1]
+            store.PlayerTurnMusic = self.result[1]
             show_message('Player music was changed')
 
         def skirmish_enemymusic(self):
-            EnemyTurnMusic = self.result[1]
+            store.EnemyTurnMusic = self.result[1]
+            show_message('Enemy music was changed')
 
         def skirmish_selection(self):
             # this result can be from one of the imagebuttons in the pool screens or returned from

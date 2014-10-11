@@ -1337,9 +1337,11 @@ screen player_music:
         music_list = {
             "Driving The Top Down": 'Music/Driving_the_Top_Down.ogg',
             "La Busqueda de Lanna": 'Music/La_Busqueda_de_Lanna.ogg',
+            "Overpowered": 'Music/Overpowered.ogg',
             "Powerful": 'Music/Powerful.ogg',
             "Riding With The Wind": 'Music/Riding_With_the_Wind.ogg',
-            "Titan": 'Music/Titan.ogg'
+            "The Bladed Druid": 'Music/The_Bladed_Druid.ogg',
+            "Titan": 'Music/Titan.ogg',
             }
             
     add "Skirmish/playermusic_back.png"
@@ -1373,7 +1375,9 @@ screen enemy_music:
             "Intruders": 'Music/Intruders.ogg',
             "Poltergeist Attack": 'Music/Poltergeist_Attack.ogg',
             "Posthumus Regium": 'Music/Posthumus_Regium.ogg',
-            "Sui Generis": 'Music/Sui_Generis.ogg'
+            "Sui Generis": 'Music/Sui_Generis.ogg',
+            "The Departure": 'Music/The_Departure.ogg',
+            "The Flight of the Crow": 'music/The_Flight_of_the_Crow.ogg',
             }
              
     add "Skirmish/enemymusic_back.png"
