@@ -546,7 +546,7 @@ screen battle_screen:
                         $total_effective_flak = 100
                     
                     if i+1 == len(tiles):
-                        if effective_flak > 0:
+                        if total_effective_flak > 0:
                             # FIXME I canna get tile[0] and tile[1] to work properly
                             add 'Battle UI/icon_intercept.png':
                                 zoom (2 * zoomlevel)
