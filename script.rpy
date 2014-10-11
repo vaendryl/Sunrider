@@ -13311,7 +13311,7 @@ label beachepisode:
     
     show ava beach fistup forcedgrin with dissolve
     
-    ava "SO LETS CRACK OPEN THIS BOTTLE ALREADY AND GET THIS OVER WITH."
+    ava "SO LET'S CRACK OPEN THIS BOTTLE ALREADY AND GET THIS OVER WITH."
     
     show asaga beach excited surprise:
         ease 0.05 xpos 0.21
@@ -13355,7 +13355,7 @@ label beachasaga:
     
     asa "Oh! How's it goin', capt'n!"
     kay "It's nice to be out here for a change."
-    asa "I never knew stuff like this even existed! Man, I've definitely shoulda left Ryuvia earlier if I knew all the stuff the rest of the galaxy had!"
+    asa "I never knew stuff like this even existed! Man, I definitely shoulda left Ryuvia earlier if I knew all the stuff the rest of the galaxy had!"
     asa "Always being cooped up in the Star Palace was so boring! Nothing but dry lessons and old geezers!"
     kay "How'd you learn to pilot like that anyways?"
     
@@ -13393,7 +13393,7 @@ label beachasaga:
     
     show asaga beach neutral thinking with dissolve
     
-    asa "All this stuff was just boring text in the books that the maesters would force me to read..."
+    asa "All this stuff was just boring text in the books that the masters would force me to read..."
     asa "I never thought any of it mattered."
     asa "Our ryders were obsolete. We had no space fleets."
     
@@ -14108,7 +14108,7 @@ label afterbeachtalk:
     
     "Asaga let the sea breeze waft through her hair."
     asa "Eah, they can even simulate the wind!"
-    "She caught a glimps of Shields and turned her head."
+    "She caught a glimpse of Shields and turned her head."
     "As if caught in a trance, Asaga gazed at him. Her lips parted as she felt her face weaken."
     
     show asaga beach altneutral smileblush with dissolve
@@ -14156,7 +14156,7 @@ label afterbeachtalk:
     
     show claude beach excited happy with dissolve
     
-    cla "Then I guess it's all right if I take him all for myself then?"
+    cla "Then I guess it's all right if I take him all for myself?"
     
     show chigara beach excited closedeyesshout with dissolve
     
@@ -15111,8 +15111,8 @@ label checkformissions:
     kay "All right. Any other missions?"
     
     ava "I've picked up some rumors on the holonet about an ancient Ryuvian artifact hidden on Far Port's moon."
-    ava "Strange thing is, the Alliance recently dispatched a squadron of twelve battle cruisers to the moon as well. They lost contact with the entire squad just three hours after the squad arrived."
-    ava "There's been no sign of squad ever since."
+    ava "Strange thing is, the Alliance recently dispatched a squadron of twelve battle cruisers to the moon as well. They lost contact with the entire squad just three hours after it arrived."
+    ava "There's been no sign of them ever since."
     ava "I did some more research, and it seems just about every ship which approached that moon has disappeared as well."
     kay "Heh. You suppose it's haunted?"
     
@@ -16474,7 +16474,7 @@ label anyleadscosette:
     kay "... ... ..."
     ava "It's not just Cosette on your mind, is it?"
     kay "The Alliance has gotten awfully comfortable here. Those space stations in orbit around Ongess aren't temporary."
-    kay "Those stations are a pre-cursors to space elevators. They'll most likely drop tethers down from them to transport Ongessite ore to orbit. That way, they can refine the ore into liquid Ongessite for warships and to be transported deeper into the core worlds."
+    kay "Those stations are precursors to space elevators. They'll most likely drop tethers down from them to transport Ongessite ore to orbit. That way, they can refine the ore into liquid Ongessite for warships and to be transported deeper into the core worlds."
     kay "The Alliance intends to establish a permanent foothold this deep in the Neutral Rim."
     
     show ava uniform handonhip neutral with dissolve
@@ -17756,7 +17756,7 @@ label ryuvianongesssharr:
     kay "The good of the Empire, huh..."
     sol "... ... ..."
     sol "Whatever happens, I am sure that you will make your decision based on what is good for the galaxy."
-    kay "I wonder what that is. Terms like the ,\"good of the galaxy\" are hard to define. It could mean anything."
+    kay "I wonder what that is. Terms like the \"good of the galaxy\" are hard to define. It could mean anything."
     
     show sola uniform backturn neutral with dissolve
     
@@ -19351,7 +19351,7 @@ label shieldsputpicture:
     
     show maray neutral sad with dissolve
     
-    mar "The maestro scolded me again for dazing off."
+    mar "The maestro scolded me again for dozing off."	# was previously "dazing off" - was that intentional?
     kay "Really? I thought he liked you."
     mar "I don't think so..."
     mar "He's always saying I slow down too much."
@@ -19846,7 +19846,7 @@ label shieldseyefile:
 
     "Shields eyed a file on his computer."
     "Maray_Concert4-12-498.mus"
-    "He hovered his curser over it."
+    "He hovered his cursor over it."	# was previously "curser"... lol
     
     play sound "sound/doorbell.ogg"
     
@@ -19865,7 +19865,7 @@ label shieldseyefile:
     with dissolve
     
     kay "A space station of some kind?"
-    ava "Definitely PACT. But the design doesn't match any blue prints that we're aware of."
+    ava "Definitely PACT. But the design doesn't match any blueprints that we're aware of."
     ava "There's too much electronic interference due to the station's orbit around Helion."
     ava "We do know there is a sizable combined PACT and pirate fleet protecting it though."
     kay "PACT wouldn't have deployed the Legion along with a fleet that huge unless that thing's worth protecting."
@@ -23110,7 +23110,7 @@ label rb_15:
     "While having tea with Chigara..."
     
     menu:
-        "I told her technology could be dangerous in misused":
+        "I told her technology could be dangerous if misused":
             jump rb_techdanger
         "I told her I would want more powerful technology":
             jump rb_morepowerfultech
