@@ -138,10 +138,15 @@ init -6 python:
     def battlemode():
         BM.battlemode = True
         config.rollback_enabled = False
+        if BM.show_battle_log:
+            renpy.show_screen('battle_log')
 
     def VNmode():
         BM.battlemode = False
         config.rollback_enabled = True
+        if BM.show_battle_log:
+            renpy.hide_screen('battle_log')
+            BM.show_battle_log = False
 
     def instant_win():
         temp_list = enemy_ships[:]
