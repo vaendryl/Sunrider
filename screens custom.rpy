@@ -113,7 +113,7 @@ screen battle_screen:
     ##messing with the player for fun and profit
     if BM.battlemode:
         timer 900 repeat False action Show('game_over_gimmick')
-    
+
     add MouseTracker() #relates drags and clicks to the viewport and the BM
 
     if config.developer: #a release version should have set this to False
@@ -1867,8 +1867,8 @@ screen battle_log():
     default filter_debuff   = True
     default log_tags        = set(['all', 'system', 'player', 'enemy', 'order', 'attack', 'detailed', 'laser', 'kinetic', 'missile', 'melee', 'support', 'heal', 'buff', 'debuff'])
     drag:
-        xalign 0.5
-        ypos 0.2
+        xalign 1.0
+        yalign 0.0
         frame:
             xpadding 10
             ypadding 10
@@ -1979,7 +1979,7 @@ screen battle_log():
                             
                     textbutton "X":
                         xalign 1.0
-                        action Hide('battle_log')
+                        action [Hide('battle_log'), SetField(BM, 'show_battle_log', False)]
 
                 side "c r":
                     viewport:

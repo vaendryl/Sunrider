@@ -619,14 +619,14 @@ screen gameprefs:
         hotspot (750, 540, 250, 30) action SetVariable("Difficulty", 4)        
         hotspot (750, 600, 250, 30) action SetVariable("Difficulty", 5)
         
-        hotspot (785, 707, 50, 30) action SetField(BM,'show_tooltips',True)  
-        hotspot (1000, 707, 80, 30) action SetField(BM,'show_tooltips',False)
+        hotspot (785, 707, 50, 30) action SetField(BM, 'show_tooltips', True)  
+        hotspot (1000, 707, 80, 30) action SetField(BM, 'show_tooltips', False)
 
-        hotspot (785, 780, 50, 30) action SetField(BM,'edgescroll',(100,800))
-        hotspot (1000, 780, 80, 30) action SetField(BM,'edgescroll',(0,0)) 
+        hotspot (785, 780, 50, 30) action SetField(BM, 'edgescroll', (100,800))
+        hotspot (1000, 780, 80, 30) action SetField(BM, 'edgescroll', (0,0)) 
 
-        hotspot (785, 850, 50, 30) action Show('battle_log')
-        hotspot (1000, 850, 80, 30) action Hide('battle_log')
+        hotspot (785, 850, 50, 30) action SetField(BM, 'show_battle_log', True)
+        hotspot (1000, 850, 80, 30) action SetField(BM, 'show_battle_log', False)
         
         hotspot (948, 926, 107, 23) action Hide('gameprefs', transition=dissolve)
 

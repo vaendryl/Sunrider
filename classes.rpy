@@ -84,6 +84,7 @@ init -2 python:
             self.draggable = True
             self.debug_log = []
             #Battle log
+            self.show_battle_log = False
             self.battle_log = []
             self.battle_log_yadj = ui.adjustment(adjustable=True)
             #dispatchers
@@ -149,13 +150,14 @@ init -2 python:
                 self.battle_log.insert(position, entry)
             else:
                 self.battle_log.append(entry)
-            
-            #trimming, in case this list can lead to or contribute to memory leaks.
+            self.battle_log_yadj.change(self.battle_log_yadj.value + 125)
+
+        #trimming, in case this list can lead to or contribute to memory leaks.
+        def battle_log_trimm(self):
             if len(self.battle_log) > 500:
                 start = len(self.battle_log) - 500 
                 self.battle_log = self.battle_log[start:]
-            self.battle_log_yadj.change(self.battle_log_yadj.value + 125)
-            
+                self.battle_log_yadj.change(self.battle_log_yadj.value - (125 * start))
 
         ## pop entry from battle log
         # @param index The index of entry to remove
@@ -1016,6 +1018,7 @@ init -2 python:
 #ending a turn
         def end_player_turn(self):
             self.battle_log_insert(['system'], "---------Player turn end---------")
+            self.battle_log_trimm()
             renpy.hide_screen('commands')
             self.selected = None #some sanity checking
             self.target = None
@@ -1033,6 +1036,7 @@ init -2 python:
 
             self.enemy_AI() #call the AI to take over
             self.battle_log_insert(['system'], "---------{0} turn end---------".format(self.phase))
+            self.battle_log_trimm()
              ##I have NO idea why this dumb workaround is needed, but the destroy() method -somehow- doesn't want to jump to this label sometimes.
             if sunrider.hp < 0:
                 renpy.jump('sunrider_destroyed')
@@ -1050,6 +1054,7 @@ init -2 python:
             self.selected = None
             self.selectedmode = False
             self.order_used = False
+            self.moving = False
             
             #run the end of turn callbacks
             if BM.end_turn_callbacks != []:
