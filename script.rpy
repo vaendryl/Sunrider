@@ -18154,6 +18154,8 @@ label mission16:
 
 label after_mission16:
     
+    $ mission16_complete = True
+    
     hide screen battle_screen
     hide screen commands
     
@@ -18302,6 +18304,8 @@ label mission17:
 
 
 label after_mission17:
+    
+    $ mission17_complete = True
     
     hide screen battle_screen
     hide screen commands
@@ -19077,6 +19081,8 @@ label mission18:
 
 label after_mission18:
     
+    $ mission18_complete = True
+    
     python:
         BM.ships.remove(freighter)
         player_ships.remove(freighter)
@@ -19351,7 +19357,7 @@ label shieldsputpicture:
     
     show maray neutral sad with dissolve
     
-    mar "The maestro scolded me again for dozing off."	# was previously "dazing off" - was that intentional?
+    mar "The maestro scolded me again for dozing off."  # was previously "dazing off" - was that intentional?
     kay "Really? I thought he liked you."
     mar "I don't think so..."
     mar "He's always saying I slow down too much."
@@ -19846,7 +19852,7 @@ label shieldseyefile:
 
     "Shields eyed a file on his computer."
     "Maray_Concert4-12-498.mus"
-    "He hovered his cursor over it."	# was previously "curser"... lol
+    "He hovered his cursor over it."    # was previously "curser"... lol
     
     play sound "sound/doorbell.ogg"
     
@@ -20365,6 +20371,8 @@ label mission19:
         pass #continue down to the next label
 
 label after_mission19:
+
+    $ mission19_complete = True
 
     hide screen commands
     hide screen battle_screen
@@ -21249,6 +21257,8 @@ label mission20:
 
 label after_mission20:
     
+    $ mission20_complete = True
+    
     play music "Music/Posthumus_Regium.ogg"
     
     scene bg bridgered with dissolve
@@ -22049,6 +22059,8 @@ label mission21:
     
 label after_mission21:
     
+    $ mission21_complete = True
+    
     play music "Music/March_to_Glory.ogg"
     
     scene cg_nightmaredefeated with dissolve
@@ -22797,7 +22809,9 @@ label continuewithchoices:
         cal_event = "ftltransponder"
         res_location = "lab"
         res_event = "allocatefunds"
-        mission12_complete = True
+        
+        for i in range(12):
+            setattr(store, 'mission{}_complete'.format(i + 1), True)
         
 
     "To rebuild your storyline, select the choices you made in the First Arrival campaign."

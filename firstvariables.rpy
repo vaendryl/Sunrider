@@ -44,7 +44,13 @@ label firstvariables:
     $ mission12_complete = False
     $ mission13_complete = False
     $ mission14_complete = False
-    $ mission15_complete = False    
+    $ mission15_complete = False
+    $ mission16_complete = False
+    $ mission17_complete = False
+    $ mission18_complete = False
+    $ mission19_complete = False
+    $ mission20_complete = False
+    $ mission21_complete = False
 
     $ asa_location = None
     $ chi_location = None
