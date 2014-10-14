@@ -18492,7 +18492,7 @@ label holdwarpcoordinatesyour:
     
     play music "Music/Prayers.ogg" fadeout 1.5
     
-    if affection_cosette == 3:
+    if affection_cosette >= 3:
         jump youllregretlots
     if affection_cosette < 3:
         jump oncehandsyoucrew
