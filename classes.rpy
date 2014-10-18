@@ -2689,7 +2689,10 @@ init -2 python:
                 return 'no energy'
             else:
                 parent.en -= self.energy_use
-                parent.hp -= self.hp_cost  #pretty much only relevant for Sola's awakaning skill
+                #pretty much only relevant for awakaning skills 
+                if self.hp_cost:
+                    parent.hp -= self.hp_cost  
+                    if parent.hp < 1: parent.hp = 1
 
             if self.self_buff:
                 target = parent
