@@ -1466,8 +1466,9 @@ label mission2:
 
         asa "By the way, did you know about repeating attacks?"
         asa "Some weapons like assault rifles don't deal much damage, but shoot multiple times in a single attack.  It's a good way to deal reliable damage against units with high evasion like ryders."
-        asa "Watch out though! They're totally useless against units with armor, like capital ships."
-        asa "If you select a weapon, the third number listed on the enemy unit is that unit's armor rating.  Be careful when you're using your kinetic-type weapons especially, because armor's twice as effective against kinetics!"
+        asa "Watch out though! They're totally useless against intact units with armor, like bombers and capital ships."
+        asa "Of course, if you punch lots of holes in their armor with a big gun first, even a little peashooter will mess them up good!"
+        asa "If you select a weapon, the third number listed on the enemy unit is that unit's armor rating. Be careful when you're using your kinetic-type weapons especially, because armor's twice as effective against kinetics!"
 
         hide asaga onlayer screens with dissolve
 
