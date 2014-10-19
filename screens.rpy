@@ -207,9 +207,9 @@ screen nvl:
 
 screen main_menu:
 
-    $BM = Battle()
-    $MasterBM = BM
-    $BM.phase = 'Player'
+    $store.BM = Battle()
+    $store.MasterBM = store.BM
+    $store.BM.phase = 'Player'
 
     imagemap:
         ground "Menu/menu_default.jpg"

@@ -12936,8 +12936,11 @@ label after_mission12:
     show eyecatch_bottom with eyecatch_wiperev
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
+
+label beachepisode(reset_lowest_difficulty = False):
     
-label beachepisode:
+    if reset_lowest_difficulty:
+        $ BM.lowest_difficulty = store.Difficulty
     
     window show
 
@@ -15175,6 +15178,7 @@ label afterbeachcarry:
     $ ica_location = None
     $ sol_location = None
     $ pro_location = None
+    $ pro_event = None
     $ gal_location = "bridge"
     
     $ warpto_ryuvia = True
@@ -23145,6 +23149,7 @@ label rb_16:
         $ show_message('Please select your difficulty.',0.5,0.8,2)
         show screen gameprefs
 
+
     window hide
     
     stop music fadeout 1.5
@@ -23154,7 +23159,7 @@ label rb_16:
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
 
-    jump beachepisode
+    call beachepisode(True)
 
 label devconsoleshow:
     show screen devconsole
