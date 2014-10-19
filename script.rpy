@@ -265,7 +265,7 @@ label give_report_move_on:
 
 label bridge_tour:
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg bridge
     show ava uniform alt neutral neutral:
@@ -286,7 +286,7 @@ label bridge_tour:
 
 label engineering_tour:
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg engineering
     show ava uniform alt neutral neutral:
@@ -306,7 +306,7 @@ label engineering_tour:
 
 label messhall_tour:
 
-    hide screen deck0
+    hide screen ship_map
     scene bg messhall
     show ava uniform alt neutral neutral:
         xanchor 0.5 xpos 0.8
@@ -1135,7 +1135,7 @@ label warptotydaria:
     $ warpto_occupiedcera = True
     $ warpto_tydaria = True
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg bridge
     show ava uniform alt neutral neutral
@@ -1891,7 +1891,7 @@ label firstpriority:
 
     $ captaindeck = 1
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg bridge
     show ava uniform handonhip neutral
@@ -1942,7 +1942,7 @@ label defeatingthepirates:
 
     $ captaindeck = 2
 
-    hide screen deck2
+    hide screen ship_map
 
     scene bg hangar
     show asaga plugsuit neutralalt smile
@@ -2164,7 +2164,7 @@ label chigarafirstconvo:
 
 
     $ captaindeck = 1
-    hide screen deck1
+    hide screen ship_map
 
     scene bg engineering
     show chigara plugsuitlabcoat holdingipad surprise
@@ -2355,7 +2355,7 @@ label thanksallfornow:
 
 label attackonpiratesnest:
 
-    hide screen deck1
+    hide screen ship_map
 
     play music "Music/Mission_Briefing.ogg" fadeout 1.5
 
@@ -2451,7 +2451,7 @@ label attackonpiratesnest:
 
 label jumptogalaxy:
 
-    hide screen deck1
+    hide screen ship_map
     with dissolve
     jump galaxymap
 
@@ -2459,7 +2459,7 @@ label meetsophita:
 
     $ captaindeck = 0
 
-    hide screen deck0
+    hide screen ship_map
 
     scene bg captainsoffice
     show ava uniform handonhip neutral
@@ -2556,7 +2556,7 @@ label researchanddevelopment:
 
     $ captaindeck = 1
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg lab
 
@@ -3238,7 +3238,7 @@ label celebratehangar:
 
 label celebratepiratebase_asa:
 
-    hide screen deck2
+    hide screen ship_map
 
     $ asa_location = None
     $ asa_event = None
@@ -3314,7 +3314,7 @@ label goingtohappenwithChigara:
 
 label celebratepiratebase_chi:
 
-    hide screen deck2
+    hide screen ship_map
 
     scene bg hangar
     show chigara plugsuit handonchest smile
@@ -4154,7 +4154,7 @@ label dontbelieveicari:
 
 label whattodoicari_ava:
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg bridge
     show ava uniform alt neutral neutral:
@@ -4234,7 +4234,7 @@ label consideringoptionsfornow:
 
 label whattodoicari_asa:
 
-    hide screen deck0
+    hide screen ship_map
 
     scene bg messhall
     show asaga uniform neutral happy
@@ -4323,7 +4323,7 @@ label caredontreckless:
 
 label whattodoicari_chi:
 
-    hide screen deck1
+    hide screen ship_map
 
     scene bg engineering
     show chigara uniform handsup surprise
@@ -4415,7 +4415,7 @@ label thanksbyechigara:
 
 label proceed_rescuediplomats:
 
-    hide screen deck0
+    hide screen ship_map
     stop music fadeout 1.5
     scene black
     window show
