@@ -2003,8 +2003,6 @@ init -2 python:
                                 continue
                         else:
                             continue
-                        
-                        continue
                     # if distance < travel_distance:
                     valid_spots.append(hex)
             
