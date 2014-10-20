@@ -25,6 +25,7 @@ init -2 python:
             self.ships = []           #holds all ships to display on the map
             self.covers = []          #holds a list of all the cover on the map
             self.enemy_vanguard_path = []#stores the hexes that the enemy's vanguard will go through.
+            self.player_vanguard_path = []#stores the hexes that the player's vanguard will go through (only used by AI).
             self.missiles = []        #all the missiles on screen. right now all missiles are fired one by one
             self.selected = None      #current selection
             self.hovered = None       #what unit are you hovering over
@@ -52,6 +53,7 @@ init -2 python:
             self.formation_range = 7  #the farthest column the player can place units during the formation phase
             self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider. [no longer used]
             self.remove_mode = False  #when True the player can easily remove units in skirmish
+            self.player_ai = False
             self.end_turn_callbacks = []
             
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
@@ -130,6 +132,7 @@ init -2 python:
                                        "SHORT RANGE WARP" : self.battle_short_range_warp,
                                        "RETREAT"          : self.battle_retreat,
                                        "VANGUARD CANNON"  : self.battle_order_vanguard_cannon,
+                                       "toggle player ai" : self.toggle_player_ai,
                                        "endturn"          : self.battle_end_turn   }
             
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
@@ -919,6 +922,9 @@ init -2 python:
             else:
                 renpy.say('Ava','It\'s hopeless, captain!')
                 self.order_used = False
+        
+        def toggle_player_ai(self):
+            self.player_ai = not self.player_ai
 
         def battle_end_turn(self):
             if self.targetingmode:
@@ -929,6 +935,7 @@ init -2 python:
         ########################################################
         def start(self):
             self.battle_log_insert(['system'], "-------------BATTLE START-------------")
+            BM.player_ai = False
             battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
@@ -958,8 +965,18 @@ init -2 python:
             return (type(self.mission) != str and self.mission > 12) #apparently string>int is completely legal in python :o
         
         def battle(self):
-            #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
-            self.result = ui.interact()
+            for ship in player_ships:
+                if not hasattr(ship, 'blbl'):
+                    ship.blbl = ship.lbl
+            
+            if self.player_ai:
+                self.player_AI()
+                self.toggle_player_ai()
+                self.result = 'endturn'
+            else:
+                #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
+                self.result = ui.interact()
+            
             if store.Difficulty < self.lowest_difficulty:
                 self.lowest_difficulty = store.Difficulty
 
@@ -1078,6 +1095,98 @@ init -2 python:
             except:
                 pass
 
+        def player_AI(self):
+
+              ##lead ships don't care about looking for other ships for protection
+              ##other ships come to them! instead, lead ships typically go on the
+              ##offensive, dragging allies along.
+            self.support_ships = []
+            self.lead_ships = []
+            total_defense = 0
+            update_stats()
+            
+            #support ships take their turn first, so they can improve the effects of all other units.
+            for pship in player_ships:
+                if pship.support:
+                    self.support_ships.append(pship)
+            
+            for pship in player_ships:
+                total_defense += pship.shield_generation + pship.flak + pship.armor
+            average_defense = total_defense / float(len(player_ships))
+
+              ##because I assume  most of the time there will be many mooks and only
+              ##a few high defense ships the few that are are definitely above average.
+              ##this method is very dynamic and doesn't rely on blueprint flags.
+            for pship in player_ships:
+                defense = pship.shield_generation + pship.flak + pship.armor
+                if defense > average_defense and pship not in self.support_ships:
+                    self.lead_ships.append(pship)
+
+            for pship in self.support_ships:
+                if BM.stopAI:
+                    return
+
+                pship.en = pship.max_en
+                pship.lbl = im.MatrixColor(pship.blbl,im.matrix.brightness(0.3))
+                renpy.pause(AI_WAIT_TIME)
+                # if config.developer:
+                    # renpy.pause()
+
+                try:
+                    if not pship.modifiers['energy regen'][0] == -100:
+                        pship.AI()
+                    else:
+                        show_message('the {} is disabled!'.format(pship.name) )
+                except:
+                    pship.modifiers['energy regen'] = (0,0)
+                    pship.AI()
+                pship.lbl = pship.blbl
+
+                ##the lead ships take their turn after the support ships.
+            for pship in self.lead_ships:
+                if BM.stopAI:
+                    return
+
+                pship.en = pship.max_en
+                pship.lbl = im.MatrixColor(pship.blbl,im.matrix.brightness(0.3))
+                renpy.pause(AI_WAIT_TIME)
+                # if config.developer:
+                    # renpy.pause()
+
+                try:
+                    if not pship.modifiers['energy regen'][0] == -100:
+                        pship.AI()
+                    else:
+                        show_message('the {} is disabled!'.format(pship.name) )
+                except:
+                    pship.modifiers['energy regen'] = (0,0)
+                    pship.AI()
+                pship.lbl = pship.blbl
+
+                ## the rest of the enemy units take their turns last
+            for ship in player_ships:
+                if BM.stopAI:
+                    return
+                #now all the non-lead and all the non-support ships take their turn
+                if ship not in self.lead_ships and ship not in self.support_ships:
+
+                    try:
+                        if ship.modifiers['energy regen'][0] == -100:
+                            show_message('the {} is disabled!'.format(ship.name) )
+                            ship.en = 0
+                        else:
+                            ship.en = ship.max_en
+                    except:
+                        ship.modifiers['energy regen'] = (0,0)
+                        ship.en = ship.max_en
+
+                    ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
+                    renpy.pause(AI_WAIT_TIME)
+                    # if config.developer:
+                        # renpy.pause()                    
+                    ship.AI()
+                    ship.lbl = ship.blbl
+
         def enemy_AI(self):
 
               ##lead ships don't care about looking for other ships for protection
@@ -1095,7 +1204,10 @@ init -2 python:
             
             for eship in enemy_ships:
                 total_defense += eship.shield_generation + eship.flak + eship.armor
-            average_defense = total_defense / float(len(enemy_ships))
+            if len(enemy_ships) > 0:
+                average_defense = total_defense / float(len(enemy_ships))
+            else:
+                average_defense = total_defense
 
               ##because I assume  most of the time there will be many mooks and only
               ##a few high defense ships the few that are are definitely above average.
@@ -1867,7 +1979,7 @@ init -2 python:
 
 #basic loop
         def AI_basic_loop(self):
-            if self not in enemy_ships:
+            if self not in (player_ships if self.faction == 'Player' else enemy_ships):
                 return
             #renpy.log('{} starting AI_basic_loop'.format(self.name))
             #renpy.log('I have {} energy'.format(self.en))
@@ -1883,7 +1995,7 @@ init -2 python:
                     debuglog_add('not enough energy to fire any weapon')
                 else:
                       ##create some damage estimates
-                    for pship in player_ships:
+                    for pship in (enemy_ships if self.faction == 'Player' else player_ships):
                         if pship.location != None:
                             self.AI_estimate_damage(pship)
                               ##first, if we can finish off an enemy in one hit we will try.
@@ -1896,7 +2008,7 @@ init -2 python:
 
                       ##find the target we can do the most damage on right now
                      #ship,weapon,estimate,priority
-                    for pship in player_ships:
+                    for pship in (enemy_ships if self.faction == 'Player' else player_ships):
                         if pship.location != None:
                              ##damage_estimation[0] is the weapon
                              ##damage_estimation[1] is the amount of expected damage
@@ -1924,7 +2036,7 @@ init -2 python:
                 
                 ##find the enemy ships you want to move towards
                 priority_target = [None,0]                
-                for ship in player_ships:
+                for ship in (enemy_ships if self.faction == 'Player' else player_ships):
                     if ship.location != None:
                         distance = get_ship_distance(self,ship)
                         if ship.stype == 'Ryder' and can_melee:
@@ -1997,7 +2109,7 @@ init -2 python:
                 if get_cell_available(hex):
                     distance = abs(get_distance(hex,target.location) - preferred_distance)
                     #check if you will get countered by moving to this hex
-                    if get_counter_attack(hex, AI = True):
+                    if get_counter_attack(hex, AI = self.faction != 'Player'):
                         if melee_distance:
                             if self.en < get_melee_weapon(self).energy_cost(self) + self.move_cost * distance:
                                 continue
@@ -2085,15 +2197,23 @@ init -2 python:
                 #let's bring the pain
                 if BM.enemy_vanguard_path != [] and self.en > 0:
                     should_fire = False
-                    for ship in player_ships:
-                        if ship.location in BM.enemy_vanguard_path:
-                            should_fire = True
+                    if self.faction == 'Player':
+                        for ship in enemy_ships:
+                            if ship.location in BM.player_vanguard_path:
+                                should_fire = True
+                    else:
+                        for ship in player_ships:
+                            if ship.location in BM.enemy_vanguard_path:
+                                should_fire = True
                     
                     if should_fire:
                         fire_legion_vanguard(self)
                         return
                     else:
-                        BM.enemy_vanguard_path = []
+                        if self.faction == 'Player':
+                            BM.player_vanguard_path = []
+                        else:
+                            BM.enemy_vanguard_path = []
                     
                     
             #################################### HOLD MY BEER, I'M DOING THIS
@@ -2130,13 +2250,22 @@ init -2 python:
                 if starting_en == self.en:
                       ##no (more) engine power was (/could be) used so we quit the AI
                     
-                    if self.name == 'Legion' and BM.enemy_vanguard_path == []:
-                        result = get_vanguard_feasible(self)
-                        if result != False:
-                            # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
-                            # show_message(message)
-                            # BM.battle_log_insert([], message)
-                            BM.enemy_vanguard_path = interpolate_hex(self.location,result)
+                    if self.faction == 'Player':
+                        if self.name == 'Legion' and BM.player_vanguard_path == []:
+                            result = get_vanguard_feasible(self)
+                            if result != False:
+                                # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
+                                # show_message(message)
+                                # BM.battle_log_insert([], message)
+                                BM.player_vanguard_path = interpolate_hex(self.location,result)
+                    else:
+                        if self.name == 'Legion' and BM.enemy_vanguard_path == []:
+                            result = get_vanguard_feasible(self)
+                            if result != False:
+                                # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
+                                # show_message(message)
+                                # BM.battle_log_insert([], message)
+                                BM.enemy_vanguard_path = interpolate_hex(self.location,result)
                     self.AI_running = False
                     return
 

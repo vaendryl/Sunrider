@@ -122,6 +122,7 @@ init 2 python:
             self.stype = 'Ryder'
             self.name = 'Liberty'
             self.animation_name = 'liberty'
+            self.support = True
             self.faction = 'Player'
             self.max_hp = 475
             self.hp = self.max_hp
@@ -208,6 +209,7 @@ init 2 python:
             self.name = 'Bianca'
             self.animation_name = 'bianca'
             self.faction = 'Player'
+            self.support = True
             self.max_hp = 400
             self.hp = self.max_hp
             self.max_en = 100

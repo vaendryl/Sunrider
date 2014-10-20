@@ -114,10 +114,11 @@ init python:
                     ryder,cost,weaponlist = spawn
                     create_ship(ryder(),spawn_location,weaponlist)
 
-                    if BM.turn_count <= 5:
-                        enemy_ships[-1].money_reward *= 1.0 - (0.2*BM.turn_count)
-                    else:
-                        enemy_ships[-1].money_reward = 0
+                    if ship.faction is not 'Player':
+                        if BM.turn_count <= 5:
+                            enemy_ships[-1].money_reward *= 1.0 - (0.2*BM.turn_count)
+                        else:
+                            enemy_ships[-1].money_reward = 0
 
                     renpy.pause(0.2)
                     ship.en -= cost
@@ -149,15 +150,15 @@ init python:
         if can_heal:
             most_damage = 0
             heal_target = None
-            for eship in enemy_ships:
-                if get_ship_distance(ship,eship) <= 3 and eship.location != None:
-                    damage = eship.max_hp-eship.hp
+            for oship in (player_ships if ship.faction == 'Player' else enemy_ships):
+                if get_ship_distance(ship,oship) <= 3 and oship.location != None:
+                    damage = oship.max_hp-oship.hp
                     if damage >= heal_weapon.damage * 0.75 and damage > most_damage:
                         most_damage = damage
-                        heal_target = eship
+                        heal_target = oship
             
             if heal_target != None:
-                viable_options.append( (heal_weapon,heal_target) )
+                viable_options.append((heal_weapon,heal_target))
                 
         #go through the list of curses and look for viable targets.
         for weapon in ship.weapons:
@@ -171,23 +172,23 @@ init python:
                 
                     #get a list of ships that do not have this curse on them already
                     viable_targets = []
-                    for pship in player_ships:
+                    for oship in (enemy_ships if ship.faction == 'Player' else player_ships):
                         #warning, this code does not support abilities that modify more than 1 stat
-                        if pship.modifiers[weapon.modifies][0] > weapon.buff_strength and pship.location != None: #  e.g. 0 accuracy > -20 accuracy
-                            viable_targets.append(pship)
+                        if oship.modifiers[weapon.modifies][0] > weapon.buff_strength and oship.location != None: #  e.g. 0 accuracy > -20 accuracy
+                            viable_targets.append(oship)
                     if viable_targets == []:
                         continue #to next weapon
                     
                     if weapon.modifies == 'flak':
                         viable_targets = heapq.nlargest( 3 , viable_targets , key=lambda x:x.flak ) #return the 3 ships with the highest flak
-                        for pship in viable_targets[:]:
-                            if pship.flak < 10:
-                                viable_targets.remove(pship)
+                        for oship in viable_targets[:]:
+                            if oship.flak < 10:
+                                viable_targets.remove(oship)
                     elif weapon.modifies == 'shield_generation':
                         viable_targets = heapq.nlargest( 3 , viable_targets , key=lambda x:x.shield_generation )    
-                        for pship in viable_targets[:]:
-                            if pship.shield_generation < 10:
-                                viable_targets.remove(pship)                        
+                        for oship in viable_targets[:]:
+                            if oship.shield_generation < 10:
+                                viable_targets.remove(oship)                        
                     else:
                         viable_targets = heapq.nlargest( 3 , viable_targets , key=lambda x:x.hate )
                         
@@ -201,12 +202,12 @@ init python:
                         # worse curses take precedence over lesser ones.
                         viable_target = None 
                         curse_weight = 0
-                        for eship in enemy_ships:
-                            if eship.location != None:
-                                for modifier in eship.modifiers:
-                                    magnitude, duration = eship.modifiers[modifier]
+                        for oship in (player_ships if ship.faction == 'Player' else enemy_ships):
+                            if oship.location != None:
+                                for modifier in oship.modifiers:
+                                    magnitude, duration = oship.modifiers[modifier]
                                     if magnitude < curse_weight: # e.g. -100 < -20   or  disable < aimdown etc. smaller means more powerful in this case
-                                        viable_target = eship
+                                        viable_target = oship
                                         curse_weight = magnitude
                         
                         if viable_target != None:
@@ -241,8 +242,8 @@ init python:
             
             #count the number of player ships in between the target and self
             target_count = 0
-            for pship in player_ships:
-                if pship.location in path:
+            for oship in (enemy_ships if ship.faction == 'Player' else player_ships):
+                if oship.location in path:
                     target_count += 1
             
             #record best target
@@ -275,15 +276,26 @@ init python:
         store.total_armor_negation = 0
         store.total_shield_negation = 0
         store.total_flak_interception = 0
-        templist = player_ships[:]
-        for ship in templist:
-            if ship.location in BM.enemy_vanguard_path and BM.battlemode: #failsaves
-                if ship in player_ships: 
-                    BM.target = ship
-                    ship.receive_damage(store.damage,self,'Vanguard')
-        renpy.hide_screen('battle_screen')
-        renpy.show_screen('battle_screen')
-        BM.enemy_vanguard_path = []
+        if self.faction == 'Player':
+            templist = enemy_ships[:]
+            for ship in templist:
+                if ship.location in BM.player_vanguard_path and BM.battlemode: #failsaves
+                    if ship in enemy_ships: 
+                        BM.target = ship
+                        ship.receive_damage(store.damage,self,'Vanguard')
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
+            BM.player_vanguard_path = []
+        else:
+            templist = player_ships[:]
+            for ship in templist:
+                if ship.location in BM.enemy_vanguard_path and BM.battlemode: #failsaves
+                    if ship in player_ships: 
+                        BM.target = ship
+                        ship.receive_damage(store.damage,self,'Vanguard')
+            renpy.hide_screen('battle_screen')
+            renpy.show_screen('battle_screen')
+            BM.enemy_vanguard_path = []
         return
         
     def estimate_flak(self,target,adjustment = 10,shiplist='player_ships'):
@@ -304,7 +316,7 @@ init python:
                         ship.flak_used = True
                         
         
-        for ship in player_ships:
+        for ship in (enemy_ships if ship.faction == 'Player' else player_ships):
             ship.flak_used = False
         
         return flak_strength
@@ -319,7 +331,7 @@ init python:
         locationholder = store.object()
         locationholder.location = hex
         for ship in ships:            
-            flak += estimate_flak(ship,locationholder,adjustment=0,shiplist='enemy_ships')
+            flak += estimate_flak(ship,locationholder,adjustment=0,shiplist='enemy_ships' if AI else 'player_ships')
         return (100 - 100 * (flak / len(ships)))
         
     def get_shielding_at_hex(hex,AI=True):
@@ -352,7 +364,7 @@ init python:
         
         while self.en >= melee_weapon.energy_cost(self):
             adjacent = False
-            for ship in player_ships:
+            for ship in (enemy_ships if self.faction == 'Player' else player_ships):
                 #TODO try to move next to a ryder
                 if get_ship_distance(ship,self) == 1:
                     if ship.stype == 'Ryder':
@@ -390,9 +402,9 @@ init python:
         best_average = 0
         for hex in valid_spots:
             distance = 0
-            for ship in player_ships:
+            for ship in (enemy_ships if ship.faction == 'Player' else player_ships):
                 distance += get_ship_distance(self,ship)
-            average = distance / len(player_ships)
+            average = distance / len((enemy_ships if ship.faction == 'Player' else player_ships))
             if average > best_average:
                 best_average = average
                 best_hex = hex

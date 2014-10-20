@@ -816,8 +816,10 @@ screen battle_screen:
                 # else:
                     # textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
                 
-                if store.Difficulty < 3:
+                if store.Difficulty < 3 or config.developer:
                     textbutton "restart turn" xalign 1.0 action Jump('restartturn')
+                if BM.mission == 'skirmish' or config.developer:
+                    textbutton "Player AI" xalign 1.0 action Return(['toggle player ai'])
     
             if config.developer:
                 vbox:

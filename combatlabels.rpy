@@ -93,20 +93,37 @@ label endofturn:
         play sound2 'sound/drum.ogg'
         hide sunrider_phase onlayer screens zorder 50 with dissolve
         $ BM.phase = 'Player'
-    elif BM.phase == 'Player' and enemy_ships[0].faction == 'PACT':
-        play sound1 'sound/battle.wav'
-        show PACT_phase onlayer screens zorder 50
-        $ renpy.pause(TURN_SPEED, hard=True)
-        play sound2 'sound/drum.ogg'
-        hide PACT_phase onlayer screens zorder 50 with dissolve
-        $ BM.phase = 'PACT'
-    elif BM.phase == 'Player' and enemy_ships[0].faction == 'Pirate':
-        play sound1 'sound/battle.wav'
-        show Pirate_phase onlayer screens zorder 50
-        $ renpy.pause(TURN_SPEED, hard=True)
-        play sound2 'sound/drum.ogg'
-        hide Pirate_phase onlayer screens zorder 50 with dissolve
-        $ BM.phase = 'Pirate'
+    else:
+        if len(enemy_ships) > 0:
+            if enemy_ships[0].faction == 'PACT':
+                play sound1 'sound/battle.wav'
+                show PACT_phase onlayer screens zorder 50
+                $ renpy.pause(TURN_SPEED, hard=True)
+                play sound2 'sound/drum.ogg'
+                hide PACT_phase onlayer screens zorder 50 with dissolve
+                $ BM.phase = 'PACT'
+            elif enemy_ships[0].faction == 'Pirate':
+                play sound1 'sound/battle.wav'
+                show Pirate_phase onlayer screens zorder 50
+                $ renpy.pause(TURN_SPEED, hard=True)
+                play sound2 'sound/drum.ogg'
+                hide Pirate_phase onlayer screens zorder 50 with dissolve
+                $ BM.phase = 'Pirate'
+        else:
+            if destroyed_ships[-1].faction == 'PACT':
+                play sound1 'sound/battle.wav'
+                show PACT_phase onlayer screens zorder 50
+                $ renpy.pause(TURN_SPEED, hard=True)
+                play sound2 'sound/drum.ogg'
+                hide PACT_phase onlayer screens zorder 50 with dissolve
+                $ BM.phase = 'PACT'
+            elif destroyed_ships[-1].faction == 'Pirate':
+                play sound1 'sound/battle.wav'
+                show Pirate_phase onlayer screens zorder 50
+                $ renpy.pause(TURN_SPEED, hard=True)
+                play sound2 'sound/drum.ogg'
+                hide Pirate_phase onlayer screens zorder 50 with dissolve
+                $ BM.phase = 'Pirate'
 
     $update_modifiers() #update buffs and curses
 
