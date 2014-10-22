@@ -6,6 +6,9 @@ init -5:
     image cg_avacg2:
         "Censored/avasexcg2.jpg"
 
+init 10:
+    $ CENSOR = False
+
 label censorscene1:
         
     scene bg avaroom with dissolve

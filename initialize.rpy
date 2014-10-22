@@ -27,12 +27,12 @@ init -10 python:
     MOVX = 0
 
     planets = []
-    
+
     #mods can add item classes to this and they will be loaded into the store. since items are flexible and very powerful, this is pretty cool.
-    mod_items = [] 
-    
+    mod_items = []
+
     mp = MultiPersistent("Sunrider")
-    important_variables = [ 
+    important_variables = [
         'captain_moralist','captain_prince','affection_ava','affection_asaga',
         'affection_chigara','affection_icari','affection_claude','affection_tera',
         'affection_sola','affection_cosette','wishall','Saveddiplomats',
@@ -119,7 +119,7 @@ label initialize:
         paladin = None
         havoc = None
         paradigm = None
-        
+
         check1 = False
         check2 = False
         check3 = False
@@ -129,8 +129,8 @@ label initialize:
         check7 = False
         check8 = False
         check9 = False
-            
-            
+
+
         all_enemies = [
             PactBomber(),  PactMook(),
             MissileFrigate(), PactCruiser(),
@@ -138,11 +138,11 @@ label initialize:
             PactBattleship(),RyuvianCruiser(),
             Havoc(), PirateBomber(),
             PirateGrunt(), PirateDestroyer(),
-            PirateBase(), 
+            PirateBase(),
             ]
         for ship in all_enemies:
             ship.location = None
-        
+
     return
 
 
@@ -564,14 +564,14 @@ label mission12_inits:
         phoenix.set_location(6,8)
         liberty.set_location(6,9)
         seraphim.set_location(6,10)
-        
+
         if paladin == None: #mostly used by chapter select
             paladin_weapons = [PaladinMissile(),PaladinAssault(),PaladinKinetic()]
             paladin = create_ship(Paladin(),(9,8),paladin_weapons)
             alliancecruiser_weapons = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
             alliancecruiser1 = create_ship(AllianceCruiser(),(5,5),alliancecruiser_weapons)
             alliancecruiser2 = create_ship(AllianceCruiser(),(5,4),alliancecruiser_weapons)
-        
+
         paladin.set_location(6,11)
         alliancecruiser1.set_location(5,7)
         alliancecruiser2.set_location(5,9)
@@ -615,7 +615,7 @@ label mission13_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PirateGrunt(),(9,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(9,11),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
         create_ship(PirateGrunt(),(10,8),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
@@ -646,14 +646,14 @@ label mission13_inits:
         create_ship(PirateBase(),(13,10),[PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()])
         enemy_ships[-1].boss=False
         enemy_ships[-1].money_reward=350
-        
+
     $ PlayerTurnMusic = "music/Powerful.ogg"
     $ EnemyTurnMusic = "music/Sui_Generis.ogg"
 
     return
 
 label mission14_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -663,7 +663,7 @@ label mission14_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-    
+
         create_ship(RyuvianCruiser(),(9,6),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(10,7),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
         create_ship(RyuvianCruiser(),(10,11),[RyuvianCruiserKinetic(),RyuvianCruiserMissile()])
@@ -679,7 +679,7 @@ label mission14_inits:
     return
 
 label mission15_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
@@ -689,7 +689,7 @@ label mission15_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PactBattleship(),(9,7),[PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()])
         enemy_ships[-1].modifiers['energy regen'] = [-100,3]
         enemy_ships[-1].modifiers['flak'] = [-100,3]
@@ -716,7 +716,7 @@ label mission15_inits:
         create_ship(PactBomber(),(10,8),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(10,10),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
         create_ship(PactBomber(),(10,11),[PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()])
-        
+
         create_ship(MissileFrigate(),(12,6),[PactFrigateMissile()])
         create_ship(MissileFrigate(),(12,12),[PactFrigateMissile()])
 
@@ -735,8 +735,8 @@ label mission15_inits:
         create_ship(PactOutpost(),(12,10),[PACTOutpostLaser(),PACTOutpostKinetic()])
         enemy_ships[-1].boss=False
         enemy_ships[-1].money_reward=350
-    
-    
+
+
     $ PlayerTurnMusic = "music/La_Busqueda_de_Lanna.ogg"
     $ EnemyTurnMusic = "music/Intruders.ogg"
 
@@ -752,29 +752,29 @@ label mission16_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PactBattleship(),(14,7))
-        
+
         create_ship(PactMook(),(13,4))
         create_ship(PactMook(),(13,5))
         create_ship(PactMook(),(13,7))
         create_ship(PactMook(),(13,8))
 
         create_ship(PactCarrier(),(16,8))
-        
+
         create_ship(PirateIronhog(),(14,12))
         create_ship(PirateIronhog(),(14,14))
-        
+
         create_ship(PirateBomber(),(13,13))
         create_ship(PirateBomber(),(13,14))
 
         create_ship(PirateDestroyer(),(12,12))
         create_ship(PirateDestroyer(),(12,13))
         create_ship(PirateDestroyer(),(12,14))
-        
+
         create_ship(PactSupport(),(17,6))
         create_ship(PactSupport(),(15,8))
-    
+
     $ PlayerTurnMusic = "music/Powerful.ogg"
     $ EnemyTurnMusic = "music/The_Departure.ogg"
 
@@ -790,7 +790,7 @@ label mission17_inits:
         #center the viewport on the sunrider
         BM.xadj.value = 872
         BM.yadj.value = 370
-        
+
         create_ship(PactBattleship(),(11,9))
         create_ship(PactAssaultCarrier(),(12,6))
         create_ship(PactAssaultCarrier(),(12,10))
@@ -803,19 +803,19 @@ label mission17_inits:
         create_ship(PactCruiser(),(11,6))
         create_ship(PactCruiser(),(12,7))
         create_ship(PactCruiser(),(12,10))
-    
+
     $ PlayerTurnMusic = "music/Overpowered.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
 
     return
 
 label mission18_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
         destroyed_ships = []
-        
+
         freighter_weapons = []
         freighter = create_ship(Freighter(),(2,6),freighter_weapons)
 
@@ -823,11 +823,11 @@ label mission18_inits:
         create_ship(PactMook(),(12,4))
         create_ship(PactMook(),(12,8))
         create_ship(PactMook(),(12,9))
-        
+
         create_ship(PactMook(),(13,3))
         create_ship(PactMook(),(13,4))
         create_ship(PactBomber(),(13,8))
-        create_ship(PactBomber(),(13,9))        
+        create_ship(PactBomber(),(13,9))
 
         create_ship(PactCruiser(),(13,4))
         create_ship(PactCruiser(),(13,8))
@@ -847,12 +847,12 @@ label mission18_inits:
     return
 
 label mission19_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
         destroyed_ships = []
-        
+
         create_ship(PactElite(),(12,5))
         create_ship(PactElite(),(11,6))
         create_ship(PactElite(),(11,10))
@@ -880,31 +880,31 @@ label mission19_inits:
     return
 
 label mission20_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
         destroyed_ships = []
-        
+
         create_ship(PactElite(),(11,7))
         create_ship(PactElite(),(11,9))
         create_ship(PactElite(),(11,6))
         create_ship(PactElite(),(11,10))
         create_ship(PactElite(),(12,5))
         create_ship(PactElite(),(12,11))
-        
+
         create_ship(PactSupport(),(12,6))
         create_ship(PactBomber(),(12,7))
         create_ship(PactBomber(),(12,9))
         create_ship(PactSupport(),(12,10))
-        
+
         create_ship(PactAssaultCarrier(),(13,7))
         create_ship(PactAssaultCarrier(),(13,9))
 
         create_ship(PactBattleship(),(13,6))
         create_ship(PactBattleship(),(13,10))
-        
-        
+
+
         create_ship(Legion(),(13,8))
         enemy_ships[-1].boss=True
 
@@ -916,19 +916,19 @@ label mission20_inits:
     $ PlayerTurnMusic = "music/Riding_With_the_Wind.ogg"
     $ EnemyTurnMusic = "music/Posthumus_Regium.ogg"
 
-    return 
+    return
 
 label mission21_inits:
-    
+
     python:
         zoomlevel = 1
         enemy_ships = []
         destroyed_ships = []
-        
+
         if legion_destroyed == True:
             player_ships.remove(sunrider)
             BM.ships.remove(sunrider)
-            
+
             alliancebs1 = create_ship(AllianceBattleship(),(5,5))
             alliancebs2 = create_ship(AllianceBattleship(),(5,6))
             alliancebs2 = create_ship(AllianceBattleship(),(5,7))
@@ -936,21 +936,21 @@ label mission21_inits:
         alliancecruiser1 = create_ship(AllianceCruiser(),(10,13))
 
         blackjack.register_weapon(AwakenAsaga())
-        BM.selected = blackjack  
+        BM.selected = blackjack
         blackjack.weapons[-1].fire(blackjack,blackjack,hidden=True)
         blackjack.en += 100
         blackjack.hp += 100
-        
+
         create_ship(PactElite(),(10,8))
         create_ship(PactElite(),(10,10))
         create_ship(PactElite(),(11,6))
         create_ship(PactElite(),(11,12))
-        
+
         create_ship(Arcadius(),(11,7))
         create_ship(Arcadius(),(11,8))
         create_ship(Arcadius(),(11,10))
         create_ship(Arcadius(),(11,11))
-        
+
         create_ship(PactAssaultCarrier(),(12,7))
         create_ship(PactAssaultCarrier(),(13,11))
         create_ship(PactAssaultCarrier(),(13,11))
@@ -962,7 +962,7 @@ label mission21_inits:
     $ PlayerTurnMusic = "music/The_Bladed_Druid.ogg"
     $ EnemyTurnMusic = "music/The_Flight_of_the_Crow.ogg"
 
-    return 
+    return
 
 label preview_mission:
 

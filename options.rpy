@@ -30,7 +30,7 @@ init -1 python hide:
     ## running in a window.
 
     config.name = "Sunrider Mask of Arcadius"
-    config.version = " Beta 7.1a"
+    config.version = " Beta 7.2"
     config.window_title = config.name+config.version
 
     config.image_cache_size = 50
@@ -347,5 +347,5 @@ init python:
 
     build.documentation('*.html')
     build.documentation('*.txt')
-    
+
     CENSOR = True

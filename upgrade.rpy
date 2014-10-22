@@ -82,16 +82,16 @@ screen upgrade:
         $ upgrade_list.append(ship.upgrades['repair'])
 
     ## Upgrade backgrounds moved to their individual classes in the library
-    
+
     add ship.upgrade_menu
-    
+
     text '${!s}'.format(BM.money):
         size 50
         xpos 70
         ypos 0.76
         color '090'
         outlines [(1,'000',0,0)]
-    
+
     textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
         ypos 0.0
@@ -175,16 +175,16 @@ screen upgrade:
                             text str(level):
                                 color '000'
                                 min_width 75
-                                
+
                             if level > 1:
                                 $cost_width = 100
                             else:
                                 $cost_width = 200
-                            
+
                             text str(cost):
                                 color '000'
                                 min_width cost_width
-                                
+
                             if level > 1:
                                 text "({})".format( int(round(cost/multiplier)*0.8) ) :
                                     color '900'
@@ -209,7 +209,7 @@ screen upgrade:
                                     action Return(['-', attribute])
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
-                                    
+
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:
@@ -232,7 +232,7 @@ screen upgrade:
 
             $ count = 0
             for weapon in ship.weapons:
-                if name.find( weapon_type(weapon) ) == 0:
+                if name.find( get_weapon_type(weapon) ) == 0:
                     add weapon.lbl:
                         ypos (750 + count*140)
                         xpos 480
@@ -261,7 +261,7 @@ screen upgrade:
                             color '000'
 
                     $ count += 1
-    
+
         frame:
             background Solid((255,255,255,255))
             xpos 0.46
@@ -277,5 +277,5 @@ screen upgrade:
                             color '000'
                         text " ${}".format( int(cost*multiplier**i) ):
                             color '000'
-                
-                    
+
+

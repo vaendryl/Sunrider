@@ -7,7 +7,7 @@ init:
 label testpause:
     python:
         renpy.pause(1)
-        
+
     return
 
 transform shake(time=0.5,repeats=20): #defunct?
@@ -25,7 +25,7 @@ label test_battle:
         enemy_ships = []
         destroyed_ships = []
         BM.mission = 'test'
-        
+
         BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
 
         #create the sunrider. you only have to create a player ship once:
@@ -44,7 +44,7 @@ label test_battle:
         create_ship(Havoc(),(13,5),[Melee(),HavocAssault(),HavocMissile(),HavocRocket()])
         enemy_ships[-1].name = 'Legion' #testing out the new cannon
         havoc = enemy_ships[-1]
-        
+
         # enemy_ships[-1].hp = 1
         # create_ship(PactSupport(),(14,5))
         # create_ship(PirateGrunt(),(13,7),[PirateGruntLaser(),PirateGruntMissile(),PirateGruntAssault()])
@@ -78,10 +78,10 @@ label missiontest:
 
     # jump dispatch
     return
-    
-  
-  
-  
+
+
+
+
 label endofturn:
     show screen battle_screen
     $update_stats()
@@ -133,7 +133,7 @@ label endofturn:
 
     return
 
-    
+
 label battle_start:
     play music PlayerTurnMusic
     python:
@@ -198,21 +198,11 @@ label restartturn:
 label after_load:
 
     python:
-    
+
         #used by skirmish
         if not hasattr(store,'all_enemies'):
-            store.all_enemies = [
-                PactBomber(),  PactMook(),
-                MissileFrigate(), PactCruiser(),
-                PactCarrier(), PactOutpost(),
-                PactBattleship(),RyuvianCruiser(),
-                Havoc(), PirateBomber(),
-                PirateGrunt(), PirateDestroyer(),
-                PirateBase()
-                ]
-            for ship in store.all_enemies:
-                ship.location = None                
-        
+            add_enemy_list()
+
         ##debugging stuff##
         # renpy.hide_screen('battle_screen')
         # if not hasattr(BM,'show_tooltips'): BM.show_tooltips = True
@@ -221,89 +211,85 @@ label after_load:
         # if not hasattr(BM,'enemy_vanguard_path'): BM.enemy_vanguard_path = []
         # if not hasattr(BM,'vanguardtarget'): BM.vanguardtarget = None
         # if not hasattr(BM,'show_grid'): BM.show_grid = True
-        
+
         if not hasattr(store,'BM'): BM = Battle()
         if not hasattr(BM,'debug_log'): BM.debug_log = []
-        
+
         # return_stack = renpy.get_return_stack()
         # for item in return_stack:
             # BM.debug_log.append(str(item) )
         # renpy.show_screen('debug_window')
         # renpy.pause()
-        
-    
-    
+
+        #check if the classes should be reset
         reset = False
         if not hasattr(store,'BM'):
-            BM = Battle()
-            MasterBM = BM
-        if hasattr(BM,'save_version'):
-            if BM.save_version != config.version:
+            store.BM = Battle()
+            store.MasterBM = BM
+        if hasattr(store.BM,'save_version'):
+            if store.BM.save_version != config.version:
                 reset = True
             else:
                 pass #everything is fine, do not reset
         else:
             reset = True
 
-        if reset:      
-            
+        if reset:
+
             # #update the multipersistent object with the most critical flags.
             # update_mp()
-            
-            #replace old union frigates with new ones
-            for ship in player_ships[:]:
-                if ship.name == 'Mining Union Frigate':
-                    if len(ship.weapons) == 1:
-                        create_ship(UnionFrigate(),ship.location)
-                        player_ships.remove(ship)
-                elif ship.name == 'Bianca':
-                    #original set of weapons [BiancaAssault(),GravityGun(),AccDown(),DamageUp()]
-                    if len(ship.weapons) == 4:
-                        ship.register_weapon(Restore())
-                        
-        
-            #temporary fix
-            rocketdamage = 800
-            chi_repair = 300
-            
-            if hasattr(store,'sunrider_rocket'):
-                rocketdamage = store.sunrider_rocket.damage
-            if hasattr(store,'chigara_repair'):
-                chi_repair = store.liberty.weapons[1].damage
+
+            #add the restore skill to Bianca if she doesn't have it (due to very old save)
+            if len(bianca.weapons) == 4:
+                ship.register_weapon(Restore())
                 
+            #this was reduced in 7.2
+            store.BM.formation_range = 6
+                
+            #some backwards compatibility with previously bought store items.
+            if hasattr(store,'sunrider_rocket'):
+                if store.sunrider_rocket.damage == 1200:
+                    if not hasattr(store.sunrider_rocket,'keep_after_reset'):
+                        store.sunrider_rocket.keep_after_reset = {}
+                    store.sunrider_rocket.keep_after_reset['damage'] = 1200
+            if hasattr(store,'chigara_repair'):
+                if store.chigara_repair.damage == 500:
+                    if not hasattr(store.chigara_repair,'keep_after_reset'):
+                        store.chigara_repair.keep_after_reset = {}
+                    store.chigara_repair.keep_after_reset['damage'] = 500
+                    store.chigara_repair.keep_after_reset['energy_use'] = 70
+
+            #updates the BM, ships and weapons used so that new default values are added.
             reset_classes()
-            
-            if sunrider != None:
-                store.sunrider.weapons[3].damage = rocketdamage
-            if liberty != None:
-                store.liberty.weapons[1].damage = chi_repair                
-            
+
+            #set the new save version
             BM.save_version = config.version
-            
+
+            #make sure the player can access the lab
             if store.mission2_complete:
                 res_location = "lab"
-                res_event = "allocatefunds"             
+                res_event = "allocatefunds"
 
         #attempt to supply a fail-safe label if the return label does not exist.
         #this requires a very recent (unreleased) version of renpy to work!
-        try:
-            return_stack = renpy.get_return_stack()
-            new_stack = []
-            for item in return_stack:
-                if renpy.has_label(item):
-                    new_stack.append(item)
-                else:
-                    BM.debug_log.append('return label {} missing'.format(str(item)))
-                    fail_safe_label = 'dispatch'
-                    if BM.battlemode:
-                        fail_safe_label = 'mission{}'.format(BM.mission)
-                    new_stack.append(fail_safe_label)
-            renpy.set_return_stack(new_stack)            
-        except:
-            pass
+        # try:
+            # return_stack = renpy.get_return_stack()
+            # new_stack = []
+            # for item in return_stack:
+                # if renpy.has_label(item):
+                    # new_stack.append(item)
+                # else:
+                    # BM.debug_log.append('return label {} missing'.format(str(item)))
+                    # fail_safe_label = 'dispatch'
+                    # if BM.battlemode:
+                        # fail_safe_label = 'mission{}'.format(BM.mission)
+                    # new_stack.append(fail_safe_label)
+            # renpy.set_return_stack(new_stack)
+        # except:
+            # pass
             # show_message('there was an error in the return stack code')
             # BM.debug_log.append('there was an error in the return stack code')
-                    
+
     return
 
 

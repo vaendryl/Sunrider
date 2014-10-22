@@ -64,7 +64,7 @@ label firstvariables:
     $ cos_location = None
     $ kry_location = None
 
-    $ warpto_tydaria = False    
+    $ warpto_tydaria = False
     $ warpto_occupiedcera = False
     $ warpto_astralexpanse = False
     $ warpto_pactstation1 = False
@@ -79,12 +79,12 @@ label firstvariables:
     $ supportedasagacards = False
     $ paladin = None
     $ wishall = False
-    
+
     $ versta_ambush = False
     $ farport_losttech = False
     $ tydaria_morepirates = False
     $ tydaria_escort = False
-    
+
     #$ sunrider = 0
     #$ blackjack = 0
     #$ liberty = 0
@@ -184,7 +184,7 @@ init python:
             self.paradigm = None
             self.havoc = None
             self.paladin = None
-            
+
             self.versta_ambush = False
             self.farport_losttech = False
             self.tydaria_morepirates = False

@@ -15,10 +15,10 @@ init -2 python:
         ##here the Battle class gets defined. it forms the core and spine of the entire combat engine.
         ##it gets initialized into an instance called BM, short for battlemanager
     class Battle(store.object): # handles managing a list of all battle units, handles turns and manages enemy AI
-        
+
         def __init__(self):
             #when the first instance gets created a couple of default values get initialized.
-            self.cmd = 0              #your command point total   
+            self.cmd = 0              #your command point total
             self.money = 0            #go on, set this to 999'999'999. you know you want to.
             self.seen_skirmish = False #if not seen skirmish before Ava explains it.
             self.save_version = config.version
@@ -40,7 +40,7 @@ init -2 python:
             self.active_weapon = None #similar to weaponhover, but is used after you actually click a weapon so you can target something
             self.mission = 1          #what mission are we on? decides where to loop and is important for in battle events
             self.turn_count = 1       #most important when calculating command points awarded
-            self.grid = []            #keep track of what cells in the grid are free and which are not.            
+            self.grid = []            #keep track of what cells in the grid are free and which are not.
             self.vanguard = False     #when True the battlemap shows the vanguard cannon being fired.
             self.active_strategy = [None,0] #you can have either 'full forward' or 'all guard' active, but not both.
             self.vanguardtarget = False #creates buttons to select vanguard fire direction
@@ -50,12 +50,12 @@ init -2 python:
             self.show_tooltips = True #hide or show tooltips
             self.debugoverlay = False #overlay coords etc for debug purposes
             self.show_grid = True     #show or hide the grid. no grid is much faster!
-            self.formation_range = 7  #the farthest column the player can place units during the formation phase
+            self.formation_range = 6  #the farthest column the player can place units during the formation phase
             self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider. [no longer used]
             self.remove_mode = False  #when True the player can easily remove units in skirmish
             self.player_ai = False
             self.end_turn_callbacks = []
-            
+
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
             self.mouse_location = (0,0)
             self.vanguard_damage = 800
@@ -64,7 +64,7 @@ init -2 python:
                 'FULL FORWARD':[750,'full_forward'],
                 'ALL GUARD':[750,'all_guard'],
                 'REPAIR DRONES':[750,'repair_drones'],
-                'VANGUARD CANNON':[2500,'vanguard_cannon']                
+                'VANGUARD CANNON':[2500,'vanguard_cannon']
                 }
             self.order_used = False   #when True the orders button is hidden.
               #environment modififiers are initialized here and can be changed later
@@ -134,7 +134,7 @@ init -2 python:
                                        "VANGUARD CANNON"  : self.battle_order_vanguard_cannon,
                                        "toggle player ai" : self.toggle_player_ai,
                                        "endturn"          : self.battle_end_turn   }
-            
+
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
             for a in range(GRID_SIZE[0]):
                 self.grid.append([False]*GRID_SIZE[1])
@@ -158,7 +158,7 @@ init -2 python:
         #trimming, in case this list can lead to or contribute to memory leaks.
         def battle_log_trimm(self):
             if len(self.battle_log) > 500:
-                start = len(self.battle_log) - 500 
+                start = len(self.battle_log) - 500
                 self.battle_log = self.battle_log[start:]
                 self.battle_log_yadj.change(self.battle_log_yadj.value - (125 * start))
 
@@ -177,7 +177,7 @@ init -2 python:
                 a = renpy.random.randint(0,len(ship.selection_voice)-1)
                 renpy.music.play('sound/Voice/{}'.format(ship.selection_voice[a]),channel = ship.voice_channel)
                 del a
-            
+
             if self.mission != 'skirmish' and BM.phase != 'formation':
                 renpy.show_screen('commands')
                 ship.movement_tiles = get_movement_tiles(ship)
@@ -190,7 +190,7 @@ init -2 python:
             self.targetingmode = False
             if ship != None:
                 ship.movement_tiles = []
-        
+
         def dispatch_handler(self,result,dispatch_type='battle'):
             ui_action = None
             #check handling of dispatcher
@@ -211,7 +211,7 @@ init -2 python:
                 elif dispatch_type == 'battle':
                     ui_action = self.battle_dispatcher[result]
             return ui_action
-        
+
         ########################################################
         ## Common dispatcher
         ########################################################
@@ -258,7 +258,7 @@ init -2 python:
                     self.ships.remove(self.selected)
                     enemy_ships.remove(self.selected)
             self.targetwarp = False
-            renpy.hide_screen('mousefollow') 
+            renpy.hide_screen('mousefollow')
             self.unselect_ship(self.selected)
         ########################################################
         ## Common dispatcher end
@@ -333,7 +333,7 @@ init -2 python:
                         set_cell_available(selected_ship.location)
                         selected_ship.location = None
 
-            
+
             else:  #normal mode
                 self.targetwarp = True
                 renpy.show_screen('mousefollow')
@@ -349,7 +349,7 @@ init -2 python:
                     else:
                         self.selected = deepcopy(selected_ship) #breaks alias
                         self.selected.weapons = self.selected.default_weapon_list
-            
+
             if self.selected != None:
                 if self.selected.location != None:
                     set_cell_available(self.selected.location)
@@ -378,7 +378,7 @@ init -2 python:
         ########################################################
         ## Skirmish dispatcher end
         ########################################################
-        def skirmish_phase(self):            
+        def skirmish_phase(self):
             self.result = ui.interact()
             self.dispatch_handler(self.result,'skirmish')()
 
@@ -553,7 +553,7 @@ init -2 python:
                 return
             #you do have a weapon active.
             else:
-                weapon = self.active_weapon                    
+                weapon = self.active_weapon
                 #is this a valid target?
                 if weapon.wtype == 'Melee':
                     if get_ship_distance(self.selected,self.target) > 1 or self.target.stype != 'Ryder':
@@ -647,16 +647,16 @@ init -2 python:
         def battle_order_resurrection(self):
             if self.cmd >= self.orders[self.result[0]][0]:
                 self.cmd -= self.orders[self.result[0]][0]
-                
+
                 renpy.show_screen('ryderlist')
                 result = ui.interact()
-                
+
                 if result[0] == 'deselect':
                     self.cmd += self.orders['RESURRECTION'][0]
                     renpy.hide_screen('ryderlist')
                     self.order_used = False
                     return
-                
+
                 elif result[0] == 'selection':
                     revived_ship = result[1]
                     renpy.hide_screen('ryderlist')
@@ -671,11 +671,15 @@ init -2 python:
                     message = "ORDER: {0} is resurrected".format(revived_ship.name)
                     self.battle_log_insert(['order'], message)
                     BM.order_used = True
-                    
+
+                    #Phoenix rising from the ashes!
+                    if revived_ship.name == 'Phoenix':
+                        revived_ship.en = revived_ship.max_en / 2
+
                     #wipe all modifiers after a res
                     for modifier in revived_ship.modifiers:
                         revived_ship.modifiers[modifier] = [0,0]
-                    
+
                     #play the resurrect voice
                     if hasattr(revived_ship,'resurrect_voice'):
                         if len(revived_ship.resurrect_voice) > 0:
@@ -686,8 +690,8 @@ init -2 python:
         def battle_order_all_guard(self):
             if self.cmd >= self.orders[self.result[0]][0]:
                 self.cmd -= self.orders[self.result[0]][0]
-                
-                if self.active_strategy[0] == 'full forward':                        
+
+                if self.active_strategy[0] == 'full forward':
                     show_message("Full Forward order cancelled!")
                     for ship in player_ships:
                         if ship.modifiers['accuracy'][0] == 15:
@@ -695,15 +699,15 @@ init -2 python:
                         if ship.modifiers['damage'][0] == 20:
                             ship.modifiers['damage'] = [0,0]
 
-                self.active_strategy = ['all guard',5]                    
-                
+                self.active_strategy = ['all guard',4]
+
                 succesful = False
                 for ship in player_ships:
                     if ship.flak > 0:
-                        if apply_modifier(ship,'flak',20,5): succesful = True
+                        if apply_modifier(ship,'flak',20,4): succesful = True
                     if ship.shield_generation > 0:
-                        if apply_modifier(ship,'shield_generation',10,5): succesful = True
-                    if apply_modifier(ship,'evasion',10,5): succesful = True
+                        if apply_modifier(ship,'shield_generation',10,4): succesful = True
+                    if apply_modifier(ship,'evasion',10,4): succesful = True
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
@@ -713,11 +717,11 @@ init -2 python:
                     self.battle_log_insert(['order'], message)
                     BM.order_used = True
                     store.show_message('all ships gained improved flak, shielding and evasion!')
-                    
+
                     random_ship = renpy.random.choice( get_player_ships_in_battle() )
                     random_voice = renpy.random.choice(random_ship.buffed_voice)
                     renpy.music.play('sound/Voice/{}'.format(random_voice),channel = random_ship.voice_channel)
-                    
+
                     for ship in player_ships:
                         ship.getting_buff = True
                     renpy.hide_screen('battle_screen')
@@ -726,7 +730,7 @@ init -2 python:
                     for ship in player_ships:
                         ship.getting_buff = False
                     renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')     
+                    renpy.show_screen('battle_screen')
                 update_stats()
 
             else:
@@ -736,7 +740,7 @@ init -2 python:
         def battle_order_full_forward(self):
             if self.cmd >= self.orders[self.result[0]][0]:
                 self.cmd -= self.orders[self.result[0]][0]
-                
+
                 if self.active_strategy[0] == 'all guard':
                     show_message("All Guard order cancelled!")
                     for ship in player_ships:
@@ -746,13 +750,13 @@ init -2 python:
                             ship.modifiers['shield_generation'] = [0,0]
                         if ship.modifiers['evasion'][0] == 10:
                             ship.modifiers['evasion'] = [0,0]
-                                
-                self.active_strategy = ['full forward',5]
-                
+
+                self.active_strategy = ['full forward',4]
+
                 succesful = False
                 for ship in player_ships:
-                    if apply_modifier(ship,'accuracy',15,5): succesful = True
-                    if apply_modifier(ship,'damage',20,5): succesful = True
+                    if apply_modifier(ship,'accuracy',15,4): succesful = True
+                    if apply_modifier(ship,'damage',10,4): succesful = True
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
@@ -845,10 +849,10 @@ init -2 python:
                         self.targetwarp = False
                         renpy.hide_screen('battle_screen')
                         renpy.show_screen('battle_screen')
-                        
+
                     if result[0] == "zoom":
                         zoom_handling(result,self)
-                        
+
                     if result[0] == 'deselect':
                         self.cmd += self.orders['SHORT RANGE WARP'][0]
                         looping = False
@@ -876,7 +880,7 @@ init -2 python:
                     looping = True
                     while looping:
                         result = ui.interact()
-                        
+
                         if result[0] == "selection":
                             if result[1].faction != 'Player' and get_ship_distance(sunrider,result[1]) <= BM.vanguard_range:
                                 loc1 = sunrider.location
@@ -921,7 +925,7 @@ init -2 python:
                                 renpy.hide_screen('battle_screen')
                                 renpy.show_screen('battle_screen')
                                 BM.order_used = True
-                                
+
                         if result[0] == 'deselect':
                             self.cmd += self.orders['VANGUARD CANNON'][0]
                             looping = False
@@ -934,7 +938,7 @@ init -2 python:
             else:
                 renpy.say('Ava','It\'s hopeless, captain!')
                 self.order_used = False
-        
+
         def toggle_player_ai(self):
             self.player_ai = not self.player_ai
 
@@ -951,9 +955,9 @@ init -2 python:
             battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
-            
-            #new formation feature (only after mission 12 for now)            
-            if self.editableformations():   
+
+            #new formation feature (only after mission 12 for now)
+            if self.editableformations():
                 self.phase = 'formation'
 
                 for ship in player_ships:
@@ -971,16 +975,16 @@ init -2 python:
                 self.jumptomission()
 
         def jumptomission(self):
-            renpy.jump('mission{}'.format(self.mission)) 
-        
+            renpy.jump('mission{}'.format(self.mission))
+
         def editableformations(self):
             return (type(self.mission) != str and self.mission > 12) #apparently string>int is completely legal in python :o
-        
+
         def battle(self):
             for ship in player_ships:
                 if not hasattr(ship, 'blbl'):
                     ship.blbl = ship.lbl
-            
+
             if self.player_ai:
                 self.player_AI()
                 self.toggle_player_ai()
@@ -988,7 +992,7 @@ init -2 python:
             else:
                 #battle_screen should be shown, and ui.interact waits for your input. 'result' stores the value return from the Return actionable in the screen
                 self.result = ui.interact()
-            
+
             if store.Difficulty < self.lowest_difficulty:
                 self.lowest_difficulty = store.Difficulty
 
@@ -1013,7 +1017,7 @@ init -2 python:
                     if ship in self.ships:
                         self.ships.remove(ship)
 
-            self.dispatch_handler(self.result)()            
+            self.dispatch_handler(self.result)()
 
             self.check_for_loss()
             self.check_for_win()
@@ -1030,15 +1034,15 @@ init -2 python:
                 show_message('You were defeated! better luck next time...')
                 clean_battle_exit()
                 renpy.jump('dispatch')
-                
+
         def boss_died(self, deadboss):
             if (self.mission != 'skirmishbattle'):
                 self.you_win()
-               
+
         def check_for_win(self):
             if len(enemy_ships) == 0:
                 self.you_win()
-                
+
         def you_win(self):
             self.stopAI = True
             if self.battlemode: #Ignore calls to you_win if we're not actually in battle mode.
@@ -1088,7 +1092,7 @@ init -2 python:
             self.selectedmode = False
             self.order_used = False
             self.moving = False
-            
+
             #run the end of turn callbacks
             if BM.end_turn_callbacks != []:
                 for callback in BM.end_turn_callbacks:
@@ -1098,7 +1102,7 @@ init -2 python:
                 renpy.music.play(PlayerTurnMusic)
                 renpy.call_in_new_context('endofturn')
             renpy.take_screenshot()
-            
+
             # I've sometimes been getting this error for some silly reason:
             # WindowsError: [Error 183] Cannot create a file when that file already exists
             # may just be me, but to be safe I'll put a catch here
@@ -1116,12 +1120,12 @@ init -2 python:
             self.lead_ships = []
             total_defense = 0
             update_stats()
-            
+
             #support ships take their turn first, so they can improve the effects of all other units.
             for pship in player_ships:
                 if pship.support:
                     self.support_ships.append(pship)
-            
+
             for pship in player_ships:
                 total_defense += pship.shield_generation + pship.flak + pship.armor
             average_defense = total_defense / float(len(player_ships))
@@ -1195,7 +1199,7 @@ init -2 python:
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(AI_WAIT_TIME)
                     # if config.developer:
-                        # renpy.pause()                    
+                        # renpy.pause()
                     ship.AI()
                     ship.lbl = ship.blbl
 
@@ -1208,12 +1212,12 @@ init -2 python:
             self.lead_ships = []
             total_defense = 0
             update_stats()
-            
+
             #support ships take their turn first, so they can improve the effects of all other units.
             for eship in enemy_ships:
                 if eship.support:
                     self.support_ships.append(eship)
-            
+
             for eship in enemy_ships:
                 total_defense += eship.shield_generation + eship.flak + eship.armor
             if len(enemy_ships) > 0:
@@ -1290,11 +1294,11 @@ init -2 python:
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
                     renpy.pause(AI_WAIT_TIME)
                     # if config.developer:
-                        # renpy.pause()                    
+                        # renpy.pause()
                     ship.AI()
                     ship.lbl = ship.blbl
 
-        
+
         def battle_end(self, lost = False):
             """ending the battle - reset values for next battle"""
             self.battlemode = False #this ends the battle loop
@@ -1305,7 +1309,7 @@ init -2 python:
             BM.enemy_vanguard_path = []
             renpy.hide_screen('tooltips')
             BM.phase = 'Player'
-            
+
             if store.Difficulty < self.lowest_difficulty:
                 self.lowest_difficulty = store.Difficulty
 
@@ -1339,17 +1343,17 @@ init -2 python:
                     store.repair_cost += int((ship.max_hp - ship.hp)*0.1)
 
                 store.net_gain = int(store.total_money + store.surrender_bonus - store.repair_cost)
-                
+
                 #SPACE WHALE TAX!
                 if store.Difficulty == 5:
                     store.net_gain *= 0.8
-                    
+
                 self.money += int(net_gain)
-                
+
                 #Captain and higher difficulties reduce the total CP you get per battle.
-                difficulty_penalty = store.Difficulty - 2
+                difficulty_penalty = store.Difficulty - 1
                 if difficulty_penalty < 0: difficulty_penalty = 0
-                
+
                 self.cmd += int((net_gain*10)/(BM.turn_count+difficulty_penalty))
 
                 renpy.show_screen('victory2')
@@ -1396,44 +1400,44 @@ init -2 python:
 
     ## Displayables ##
     #custom displayables harness the power of pygame directly.
-    
+
     class MouseTracker(renpy.Displayable):
         """
-        this class keeps track of where the mouse is and what it does and relates 
+        this class keeps track of where the mouse is and what it does and relates
         drags and clicks to the viewport and the BM. This way the ships can be simple
         images instead of imagebuttons, reducing lag. I guess this doesn't have to be
         a displayable but it works so meh
         """
-        
+
         def __init__(self,**kwargs):
             renpy.Displayable.__init__(self,**kwargs)
             self.width = 0
             self.height = 0
             self.mouse_has_moved = True
             self.rel = (0,0)
-            
+
         def render(self, width, height, st, at):
             render = renpy.Render(self.width, self.height)
             return render
-            
+
         def event(self, ev, x, y, st):
             if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
                 self.mouse_has_moved = False
                 self.rel = pygame.mouse.get_rel()
-            
+
             if ev.type == pygame.MOUSEMOTION:
                 self.mouse_has_moved = True
                 renpy.hide_screen('game_over_gimmick')   #why this no werk?
-                
+
                 # if the left mouse button is pressed, it's a drag
                 if ev.buttons[0] == 1:
                     if BM.draggable:
-                        BM.xadj.change(BM.xadj.value - ev.rel[0] * 2) 
+                        BM.xadj.change(BM.xadj.value - ev.rel[0] * 2)
                         BM.yadj.change(BM.yadj.value - ev.rel[1] * 2)
                         # if abs(ev.rel[0]) + abs(ev.rel[1]) > 5:
-                        
+
                 mouse_location = get_mouse_location()
-                
+
                 #vanguard targeting
                 if BM.vanguardtarget:
                     if BM.mouse_location != mouse_location and ev.buttons[0] != 1:
@@ -1441,8 +1445,8 @@ init -2 python:
                             BM.mouse_location = mouse_location
                             self.mouse_has_moved = True
                             renpy.restart_interaction()
-                
-                
+
+
                 #check for hovering over movement tiles
                 if BM.selected != None:
                     if BM.mouse_location != mouse_location and ev.buttons[0] != 1:
@@ -1450,7 +1454,7 @@ init -2 python:
                             BM.mouse_location = mouse_location
                             self.mouse_has_moved = True
                             renpy.restart_interaction()
-                
+
                 #check for hovering over ships
                 if BM.hovered != None:
                     if BM.hovered.location != mouse_location:
@@ -1462,19 +1466,19 @@ init -2 python:
                             BM.hovered = ship
                             renpy.restart_interaction()
                             break
-                            
+
             elif ev.type == pygame.MOUSEBUTTONUP and ev.button == 1:
                 # being very careful that the mouse -did not move- recently before an actual click is registered
                 # otherwise it's a drag
                 if not self.mouse_has_moved and pygame.mouse.get_rel() == (0,0):
                     # show_message('tried to click')
                     mouse_location = get_mouse_location()
-                    
+
                     # if you are using short range warp or are in skirmish mode this is used
                     if BM.targetwarp:
                         if get_cell_available(mouse_location):
                             return ['warptarget',get_mouse_location()]
-                    
+
                     #move handling
                     elif BM.selected != None and BM.weaponhover == None:
                         if BM.selected.faction == 'Player':
@@ -1484,11 +1488,11 @@ init -2 python:
                                     move_range = int(float(BM.selected.en) / BM.selected.move_cost)
                                     if distance <= move_range:
                                         return [ 'move' , mouse_location ]
-                    
+
                     #sometimes it's possible to have nothing selected and still something left in BM.weaponhover
                     if BM.selected == None:
                         BM.weaponhover == None
-                    
+
                     #selection handling
                     if (BM.weaponhover == None or BM.active_weapon != None) and not BM.targetwarp:
                         for ship in BM.ships:
@@ -1499,14 +1503,14 @@ init -2 python:
                             spoof_ship.location = mouse_location
                             spoof_ship.faction = 'Not the Player'
                             return ['selection', spoof_ship]
-        
-        
+
+
     class MouseFollow(renpy.Displayable):
         """
         this class creates an object that will display an image at the mouse cursor
         which gets redrawn every frame so it follows the cursor.
         """
-        
+
         def __init__(self,child,**kwargs):
             renpy.Displayable.__init__(self,**kwargs)
             self.child = renpy.displayable(child)
@@ -1532,16 +1536,16 @@ init -2 python:
             #return the render object so that renpy can do things with it.
             return render
 
-        def event(self, ev, x, y, st):    
+        def event(self, ev, x, y, st):
             pass
             # if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
 
-                
+
         def visit(self):
            return [ self.child ]
-           
-           
-           
+
+
+
     ##blueprints##
 
       #this class is the basis of all unit types in the game. these values are the default one if none are specified.
@@ -1562,6 +1566,8 @@ init -2 python:
             self.flak_used = False
             self.flaksim = None
             self.fireing_flak = False
+            self.just_spawned = False
+            self.melee_location = None
             self.morale = 100
             self.enemies = {}
             self.hate = 100 #this is actually how much the enemy hates you. aka threat
@@ -1593,9 +1599,9 @@ init -2 python:
                 'kinetic_dmg':['Kinetic Damage',1,0.05,105,1.55],
                 'kinetic_acc':['Kinetic Accuracy',1,0.05,100,1.5],
                 'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.0],
-                'energy_dmg':['Energy Damage',1,0.05,95,1.45],
-                'energy_acc':['Energy Accuracy',1,0.05,100,1.5],
-                'energy_cost':['Energy Cost',1,-0.05,100,2.0],
+                'energy_dmg':['Energy Damage',1,0.075,100,1.3],
+                'energy_acc':['Energy Accuracy',1,0.05,120,1.5],
+                'energy_cost':['Energy Cost',1,-0.05,100,1.8],
                 'missile_dmg':['Missile Damage',1,0.10,100,1.5],
                 'missile_eccm':['Missile Flak Resistance',1,1,100,1.5],
                 'missile_cost':['Missile Energy Cost',1,-0.10,100,2.0],
@@ -1657,7 +1663,7 @@ init -2 python:
 
         #return None if an attribute does not exist
         # def __getattr__(self,X):
-            # return None        
+            # return None
 
         def update_armor(self):
             self.armor = (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * self.hp / float(self.max_hp)
@@ -1725,7 +1731,7 @@ init -2 python:
                     try:
                         renpy.call_in_new_context('melee_attack_player')
                     except:
-                        pass #player probably attacked a non-ryder. silly players. 
+                        pass #player probably attacked a non-ryder. silly players.
                 else:
                     try:
                         renpy.call_in_new_context('miss_{}'.format(self.animation_name)) #show the miss animation
@@ -1745,7 +1751,7 @@ init -2 python:
                         sunrider.hp = 0  #failsafe
                     # BM.stopAI = True   #inexplicably gives odd results
                     return
-                
+
                 #handle healing
                 if wtype == 'Support':
                     #BM.battle_log.append("{0} is healed for {1} HP".format(self.name, str(int(damage))))
@@ -1774,15 +1780,15 @@ init -2 python:
                 if wtype == 'Laser' or wtype == 'Pulse':
                     attacker.total_energy_damage += damage
                     self.fear['energy'] += damage / 10
-                
+
                 attacker.hate += damage*0.5  #damaging enemies increases how likely they are to target you
                 self.hate -= damage  #getting damaged lowers your threat back down
                 if self.hate < 100: self.hate = 100
                 BM.target = self
-                
+
                 #difficulty fudging
-                damage = get_modified_damage(damage,self.faction) 
-                
+                damage = get_modified_damage(damage,self.faction)
+
                 store.damage = damage #the global variant is used by the health_animation screen
 
                   #if the attack hits, show the hit animation of the target based on weapon type
@@ -1811,10 +1817,10 @@ init -2 python:
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy morale too
             self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
-            
+
             if self == BM.selected:   # useful when you suicide into a counter
                 BM.unselect_ship(self)
-            
+
             #hate/morale management
             self.hate = 100  #reset hate so that after getting resurrected it doesn't pull everything again.
             if not self.faction == 'Player':
@@ -1830,28 +1836,28 @@ init -2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            
+
             #this list gets used after battle
             destroyed_ships.append(self)
-            
+
             #list maintenance
             if self in enemy_ships:
                 enemy_ships.remove(self)
             elif self in player_ships:
                 player_ships.remove(self)
 
-                    
+
             #grid maintenance
             set_cell_available(self.location)
-            
+
             #more list maintenance
             if self in BM.ships:
                 BM.ships.remove(self)
-                
+
             #did you lose a mercenary?   (not really used anymore)
             if self.mercenary and BM.mission != 'skirmish':
                 BM.mercenary_count -= 1
-                
+
             #killing a boss ends the battle (the rest surrenders)
             #if this was the last enemy ship you win too, but that can be handled by the battle manager
             if self.boss:
@@ -1860,7 +1866,7 @@ init -2 python:
             BM.check_for_loss()
             BM.check_for_win()
 
-                
+
         def register_weapon(self, weapon):
             if len(self.weapons) >= self.max_weapons:
                 raise IndexError('ERROR: too many weapons assigned to the {}'.format(self.name))
@@ -1881,22 +1887,24 @@ init -2 python:
 
 #AI estimate damage
         def AI_estimate_damage(self,pship,en = 0, range_reduction = 0):  #part of the AI
+            priority_modifier = 1.5 #the higher this number, the greater the effect hate has.
+
             if en == 0: en = self.en
 
             pship.damage_estimation = [None,0,0] #weapon,estimation,priority
             if pship.hp < 1:
                 return
-                
+
             #cycle through all the weapons and find out which one is likely to be most
             #effective for each player ship
             for weapon in self.weapons:
                 if self.en < weapon.energy_cost(self):
                     continue
-                else:    
+                else:
                     accuracy = get_acc(weapon,self,pship,True, range_reduction)
                     if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
                         estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**1.3/10))
+                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
                         if pship.damage_estimation[2] < priority:
@@ -1904,17 +1912,12 @@ init -2 python:
                     if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
                         if weapon.uses_missiles and self.missiles <= 0:
                             return
-                        
-                        minimum_flak_effectiveness = 99
-                        if self.name != 'Pirate Ironhog':  #I should put this in the library
-                            minimum_flak_effectiveness = 0
-                        
-                        if weapon.uses_rockets and (self.rockets <= 0 or pship.flak_effectiveness > minimum_flak_effectiveness): #if the target hasn't fired their flak yet rockets should be conserved.
+                        elif weapon.uses_rockets and self.rockets <= 0:
                             return
                         else:
                             estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
                             estimation = estimation * estimate_flak(self,pship)
-                            priority = int(estimation * (1 + (pship.hate/100.0)**1.3/10))
+                            priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                             #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                             #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
                             if pship.damage_estimation[2] < priority:
@@ -1922,17 +1925,17 @@ init -2 python:
                     if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
                         estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
                         estimation = estimation * (100 - pship.shields) / 100.0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**1.3/10))
+                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
                         if pship.damage_estimation[2] < priority:
                             pship.damage_estimation = [weapon,int(estimation),priority]
                     if weapon.wtype == 'Melee':
                         if pship.stype == "Ryder":
-                            estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
+                            estimation = estimate_melee_damage(self,weapon,pship)
                         else:
                             estimation = 0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**1.3/10))
+                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
                         if pship.damage_estimation[2] < priority:
@@ -1945,24 +1948,33 @@ init -2 python:
 #AI attacks
         def AI_attack_target(self,pship,weapon,counter=False):
             update_stats()
-            
+
+            if weapon.wtype == 'Melee':
+                if get_ship_distance(self,pship) > 1:
+                    debuglog_add('adjusting position for melee')
+                    if self.melee_location is None:
+                        self.AI_move_towards(pship,max_move_distance=1)
+                    else:
+                        self.move_ship(self.melee_location,BM)
+                        self.melee_location = None
+
             #enough with the plinking
             accuracy = get_acc(weapon,self,pship,guess=True)
             debuglog_add('using {} on {}. accuracy is {}'.format(weapon.name, pship.name, accuracy))
-            
+
             max_advance_distance = (self.en - weapon.energy_cost(self)) / self.move_cost
             if max_advance_distance > 0:
-                if accuracy < 75: 
+                if accuracy < 75:
                     debuglog_add('moving towards target because acc < 75')
                     if self.AI_move_towards(pship,max_move_distance=max_advance_distance):
                         return
-                    debuglog_add('unable to move')    
-                elif accuracy < 25: 
+                    debuglog_add('unable to move')
+                elif accuracy < 25:
                     debuglog_add('charging target because acc < 25')
                     if self.AI_move_towards(pship,max_move_distance=3, rush=True):
                         return
                     debuglog_add('unable to move')
-                    
+
             #check if we ended up next to an enemy ryder and can melee it instead of whatever we were planning.
             if weapon.wtype != 'Melee' and not counter:
                 if get_can_melee(self):
@@ -1971,10 +1983,10 @@ init -2 python:
                         debuglog_add('trying to disengage')
                         disengage(self) #flee away if there's energy left
                         return
-            
+
             BM.attacker = self
             BM.target = pship
-            
+
             if BM.target.hp < 0:
                 return
             if weapon.wtype == 'Melee' or weapon.wtype == 'Support' or weapon.wtype == 'Curse':
@@ -2004,10 +2016,13 @@ init -2 python:
             for weapon in self.weapons:
                 if weapon.energy_cost(self) < cheapest_weapon_cost:
                     cheapest_weapon_cost = weapon.energy_cost(self)
-            
+
             if not self.support:
                 if self.en < cheapest_weapon_cost:
                     debuglog_add('not enough energy to fire any weapon')
+                elif self.just_spawned:
+                    self.just_spawned = False
+                    debuglog_add('will not fire because just spawned.')
                 else:
                       ##create some damage estimates
                     for pship in (enemy_ships if self.faction == 'Player' else player_ships):
@@ -2035,7 +2050,7 @@ init -2 python:
                         debuglog_add('no good target was found')
                     else:
                         debuglog_add('best target is {} with an estimate of {!s} and a priority of {!s}'.format(best_target[0].name,best_target[2],best_target[3]))
-            
+
             else: #is support
                 pass
 
@@ -2048,21 +2063,21 @@ init -2 python:
             ##decide whether to shoot or to move
             if (best_target[0] == None or best_target[2] < minimum_damage) and self.en >= self.move_cost:
                 debuglog_add('decided on moving towards an enemy ship')
-                
+
                 ##find the enemy ships you want to move towards
-                priority_target = [None,0]                
+                priority_target = [None,0]
                 for ship in (enemy_ships if self.faction == 'Player' else player_ships):
                     if ship.location != None:
                         distance = get_ship_distance(self,ship)
                         if ship.stype == 'Ryder' and can_melee:
-                            priority = 2*(1 + (ship.hate/100.0)**1.3/10) / float( (distance**1.6/10.0) )
+                            priority = 2*(1 + (ship.hate/100.0)**1.5/10) / float( (distance**1.6/10.0) )
                         else:
-                            priority = (1 + (ship.hate/100.0)**1.3/10) / float( (distance**1.6/10.0) )
+                            priority = (1 + (ship.hate/100.0)**1.5/10) / float( (distance**1.6/10.0) )
                         if  priority > priority_target[1]:
                             priority_target = [ship,priority]
                 self.target = priority_target[0]
                 debuglog_add('I am going after the {} because of its weighted priority of {!s}'.format(priority_target[0].name,priority_target[1]))
-                
+
                 max_move = (self.en - cheapest_weapon_cost) / self.move_cost
                 self.AI_move_towards(self.target,max_move_distance=max_move)
                 return
@@ -2090,23 +2105,23 @@ init -2 python:
             preferred distance can be set to to not move too close
             rush means ignore defensive value of hexes
             """
-        
-            if target == None: 
+
+            if target == None:
                 debuglog_add('warning, movetarget is none!')
                 return False
-            if self.location == None or target.location == None: 
+            if self.location == None or target.location == None:
                 debuglog_add('warning, self location or target locaion is none!')
                 return False
             # if self.support: preferred_distance = 99
-            
+
             old_spot = self.location
             if max_move_distance == 0:
                 max_move_distance = self.en/self.move_cost
-                
+
             if max_move_distance == 0:
                 debuglog_add('I cannot move due to lack of energy')
-                return False                
-                
+                return False
+
             travel_distance = get_ship_distance(self,target)
             debuglog_add('total travel distance: {}'.format(travel_distance) )
 
@@ -2132,7 +2147,7 @@ init -2 python:
                             continue
                     # if distance < travel_distance:
                     valid_spots.append(hex)
-            
+
             if len(valid_spots) == 0:
                 debuglog_add('there are no valid spots!')
                 return False
@@ -2145,26 +2160,26 @@ init -2 python:
                     distance = abs(get_distance(hex,target.location) - preferred_distance)
                     if distance < shortest_distance:
                         shortest_distance = distance
-                        
+
                 if shortest_distance == 999 or shortest_distance == travel_distance:
                     debuglog_add('there is no spot that is closer')
                     return False
-                
+
                 debuglog_add('shortest distance: {}'.format(shortest_distance) )
-                
+
                 #there may be multiple spots at the best distance
                 closest_spots = []
                 for hex in valid_spots:
                     if abs(get_distance(hex,target.location) - preferred_distance) == shortest_distance:
                         closest_spots.append(hex)
-                        
+
                 #this might be improvable :p
                 # if closest_spots == []: return False   #this should not actually be possible
                 if len(closest_spots) > 1:
                     best_hex = renpy.random.choice(closest_spots)
                 else:
                     best_hex = closest_spots[0]
-                
+
             else:
                 #find hex that is close but also offers good defence
                 debuglog_add('moving while looking for defensive spots')
@@ -2180,7 +2195,7 @@ init -2 python:
                     if value > best_value:
                         best_hex = hex
                         best_value = value
-            
+
             if old_spot == best_hex:  #calling move_ship() when not needed can lead to double counter attacks.
                 debuglog_add('best spot is the spot I am already at!')
                 return False
@@ -2203,11 +2218,11 @@ init -2 python:
 
             if self.en == 0:
                 return
-            
+
             if self.stype == 'Carrier' and self.location != None:
                 spawn_ryders(self)
                 return
-                
+
             if self.name == 'Legion':
                 #let's bring the pain
                 if BM.enemy_vanguard_path != [] and self.en > 0:
@@ -2220,7 +2235,7 @@ init -2 python:
                         for ship in player_ships:
                             if ship.location in BM.enemy_vanguard_path:
                                 should_fire = True
-                    
+
                     if should_fire:
                         fire_legion_vanguard(self)
                         return
@@ -2229,20 +2244,20 @@ init -2 python:
                             BM.player_vanguard_path = []
                         else:
                             BM.enemy_vanguard_path = []
-                    
-                    
+
+
             #################################### HOLD MY BEER, I'M DOING THIS
-            
+
             if self.stype == 'Assault Carrier' and self.location != None:
-                
+
                 spawnchance = renpy.random.randint(0,2)
-                
+
                 if spawnchance == 1:
-                
+
                     spawn_ryders(self)
-                
+
                     return
-                
+
             if self.support:
                 supporting = True
                 while supporting:
@@ -2264,7 +2279,7 @@ init -2 python:
                 self.AI_basic_loop()
                 if starting_en == self.en:
                       ##no (more) engine power was (/could be) used so we quit the AI
-                    
+
                     if self.faction == 'Player':
                         if self.name == 'Legion' and BM.player_vanguard_path == []:
                             result = get_vanguard_feasible(self)
@@ -2318,7 +2333,7 @@ init -2 python:
             bm.moving = True
 
             order_state = BM.order_used
-            
+
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
@@ -2327,7 +2342,7 @@ init -2 python:
 
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
-            
+
             BM.order_used = order_state
 
             self.location = new_location
@@ -2341,10 +2356,10 @@ init -2 python:
             ## BLIND SIDE ATTACKS
             if self.faction == 'Player' and self.modifiers['stealth'][0] != 100:
                 #player unit moves next to enemy unit
-                
-                for enemy in enemy_ships:                
+
+                for enemy in enemy_ships:
                     #if next to enemy, not dead and the enemy isn't cursed.
-                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'][0] != -100: 
+                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'][0] != -100:
                         counter = None
                         for weapon in enemy.weapons:
                             if weapon.wtype == 'Assault':
@@ -2357,7 +2372,7 @@ init -2 python:
                             BM.just_moved = False
             else:
                 #enemy moves next to player unit
-                
+
                 if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
                     for ship in player_ships:
                         if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
@@ -2390,20 +2405,16 @@ init -2 python:
             self.energy_use = 0
             self.hp_cost = 0
             self.acc_degradation = 15
+            self.base_accuracy = 50
             self.wtype = ''
             self.name = 'unnamed'
+            self.max_range = None
             self.animation_name = None
             self.shot_count = 1
             self.accuracy = 100
             self.tooltip = ''
-           
-
-        
-        #return None when attribute does not exist.
-        # def __getattr__(self,X):
-            # return None
-
-
+            #a dict that keeps track of what specific fields on this class should be after a reset.
+            self.keep_after_reset = {}
 
         ## Laser ##
     class Laser(Weapon): #starter laser weapon and parent of all other lasers
@@ -2411,13 +2422,15 @@ init -2 python:
             Weapon.__init__(self)
             self.damage = 300
             self.energy_use = 100
+            self.acc_degradation = 10
+            self.base_accuracy = 40
             self.wtype = 'Laser'
             self.name = 'Basic Laser'
             self.lbl = 'Battle UI/button_laser.png'
-        
+
         def energy_cost(self, parent):
             return int(self.energy_use * parent.energy_cost)
-            
+
         def fire(self, parent, target, counter = False): #firing lasers!
             target.update_armor()
             if parent.en < self.energy_cost(parent):  #energy handling
@@ -2482,7 +2495,7 @@ init -2 python:
 
         def energy_cost(self, parent):
             return int(self.energy_use * parent.kinetic_cost)
-            
+
         def fire(self, parent, target, counter = False): #firing gunz!
             target.update_armor()
 
@@ -2548,7 +2561,7 @@ init -2 python:
             self.eccm = 0
             self.lbl = 'Battle UI/button_missile.png'
             self.flaklist = []
-            
+
         def energy_cost(self, parent):
             return int(self.energy_use * parent.missile_cost)
 
@@ -2588,7 +2601,7 @@ init -2 python:
             BM.missile_moving = True
 
             order_state = BM.order_used
-            
+
             renpy.hide_screen('battle_screen')
             renpy.show_screen('battle_screen')
 
@@ -2605,7 +2618,7 @@ init -2 python:
             renpy.show_screen('battle_screen')
 
             BM.order_used = order_state
-            
+
             for ship in BM.ships:
                 ship.flak_used = False
                 ship.flaksim = None
@@ -2658,9 +2671,9 @@ init -2 python:
             missile = MissileSprite(parent,target,self)
             BM.missiles.append(missile)
             path = interpolate_hex(parent.location,target.location) #get a list of locations between parent and target
-            
+
             #store how much time has passed since the missile was launched. used to time the flak icon etc
-            time = 0.5 
+            time = 0.5
 
             for ship in BM.ships:
                 ship.flak_used = False
@@ -2675,7 +2688,7 @@ init -2 python:
                                 effective_flak = ship.flak + ship.modifiers['flak'][0]
                                 if effective_flak > 100: effective_flak = 100
                                 elif effective_flak < 0: effective_flak = 0
-                                
+
                                 if effective_flak > 0:
                                     ship.flaksim = None
                                     ship.flaksim = (time,missile.flak_intercept(ship))
@@ -2728,9 +2741,9 @@ init -2 python:
             interceptor.flak_effectiveness *= 1.0 - (self.shot_count * self.flak_degradation)
             if interceptor.flak_effectiveness < 33: interceptor.flak_effectiveness = 33
             self.shot_count = shots_remaining
-            
+
             store.total_flak_interception += shot_down
-            
+
             return shot_down
 
 
@@ -2740,6 +2753,7 @@ init -2 python:
             self.damage = 400    #multiplied by shot count
             self.energy_use = 50
             self.ammo_use = 1
+            self.max_range = 1
             self.accuracy = 140
             self.acc_degradation = 100
             self.wtype = 'Melee'
@@ -2747,9 +2761,9 @@ init -2 python:
             self.type = 'Melee'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_melee.png'
-            
+
         def energy_cost(self, parent):
-            return int(self.energy_use * parent.melee_cost)            
+            return int(self.energy_use * parent.melee_cost)
 
         def fire(self, parent, target, counter = False):
             target.update_armor()
@@ -2757,7 +2771,7 @@ init -2 python:
             #don't really want to fix this yet :D
             # if target.stype != 'Ryder':
                 # return 0
-           
+
             energy_cost = int(self.energy_use * parent.melee_cost)
             if parent.en < energy_cost:  #energy handling
                 return 'no energy'
@@ -2802,6 +2816,8 @@ init -2 python:
             self.damage = 0 #also used to repair
             self.uses_missiles = False
             self.uses_rockets = False
+            self.max_range = None
+            self.base_accuracy = 50
             self.energy_use = 60
             self.hp_cost = 0
             self.wtype = 'Support'
@@ -2820,7 +2836,7 @@ init -2 python:
             self.lbl = ''
 
         def fire(self,parent,target,counter = False,hidden=False):
-        
+
             #handle callbacks
             if self.end_of_turn_callback is not None:
                 if self.end_of_turn_callback not in BM.end_turn_callbacks:
@@ -2831,9 +2847,9 @@ init -2 python:
                 return 'no energy'
             else:
                 parent.en -= self.energy_use
-                #pretty much only relevant for awakaning skills 
+                #pretty much only relevant for awakaning skills
                 if self.hp_cost:
-                    parent.hp -= self.hp_cost  
+                    parent.hp -= self.hp_cost
                     if parent.hp < 1: parent.hp = 1
 
             if self.self_buff:
@@ -2865,10 +2881,10 @@ init -2 python:
                     BM.battle_log_insert(['support', 'heal'], "{0} heals {1} HP".format(parent.name, str(int(healing))))
                 else:
                     BM.battle_log_insert(['support', 'heal'], "{0} heals {1} for {2} HP".format(parent.name, target.name, str(int(healing))))
-                    
+
                 #time to hear the lamentations of the women.
                 parent.hate += healing / 5
-                
+
                 return healing
 
             elif self.modifies == 'restore':
@@ -2882,7 +2898,7 @@ init -2 python:
                         successful = True
                         BM.battle_log_insert(['support', 'debuff'], "{0} is healed from curse to its {1}".format(target.name, modifier.replace('_', ' ')))
                         target.modifiers[modifier] = [0,0]
-                        
+
                 if not successful:
                     #there were no curses to remove
                     message = "No curses to remove from {0}".format(target.name)
@@ -2890,8 +2906,8 @@ init -2 python:
                     show_message(message)
                     parent.en += self.energy_use
                     parent.hp += self.hp_cost
-                    return 0                    
-                    
+                    return 0
+
                 else:
                     if not hidden:
                         target.getting_buff = True
@@ -2913,13 +2929,13 @@ init -2 python:
 
             #if it's a buff/curse
             else:
-                
+
                 #I should replace this with proper immunity flagging.
                 if self.name == 'Disable' and target.name == 'Legion':
                     show_message( "The Legion is immune!" )
                     parent.en += self.energy_use
                     return 0
-            
+
                 successful = False
                 if parent is target:
                     # let's hope that we cannot use self-debuff....
@@ -2987,7 +3003,7 @@ init -2 python:
                     parent.hate += 250
 
                 return 0
-            
+
         def energy_cost(self, parent):
             return int(self.energy_use)
 
@@ -3004,6 +3020,8 @@ init -2 python:
             self.damage = 0 #also used to repair
             self.uses_missiles = False
             self.uses_rockets = False
+            self.max_range = None
+            self.base_accuracy = 50
             self.energy_use = 60
             self.hp_cost = 0
             self.wtype = 'Special'
@@ -3030,12 +3048,12 @@ init -2 python:
             if target.stype != 'Ryder':
                 show_message('you can only use this ability on ryders!')
                 return
-            
+
             #energy handeling
             if parent.en < self.energy_use:
                 return
             parent.en -= self.energy_use
-            
+
             #make movement buttons appear
             BM.selectedmode = True
 
@@ -3060,7 +3078,7 @@ init -2 python:
             #movement loop
             while looping:
                 result = ui.interact()
-                
+
                 # player clicked a spot to move to
                 if result[0] == 'move':
                     #if we don't reset the faction now enemies will counter attack their own allies!
@@ -3068,7 +3086,7 @@ init -2 python:
                     target.move_ship(result[1],BM) #result[1] is the new location to move towards
                     BM.battle_log_insert(['support'], "{0} used Gravity Gun on {1}".format(parent.name, target.name))
                     looping = False
-                
+
                 # player clicked the right mouse button
                 if result[0] == 'deselect':
                     cancel = True
@@ -3082,7 +3100,7 @@ init -2 python:
             target.faction = target_faction
             target.weapons = target_weapons
             target.en = target_en
-            
+
             #select the parent again (usually the bianca)
             BM.select_ship(parent, play_voice = False)
             #update the movement tiles as the target could now be blocking a spot the parent could have moved to before.
@@ -3090,31 +3108,9 @@ init -2 python:
             #cancelling the movement just leads to annoying problem
             BM.just_moved = False
             return
-
-
-## DEFUNCT
-    # class Legion(store.object):     
-        # def __init__(self):
-            # self.active = None
-            # self.row = 0
-            # self.location = None
-
-        # def AI(self):
-            # fire = False
-            # if self.row != 0:
-                # pship_count = 0
-                # eship_count = 0
-                # for ship in BM.ships:
-                    # if ship.location != None:
-                        # if ship.location[1] == self.row:
-                            # if ship.faction == 'Player':
-                                # pship_count += 1
-                            # else:
-                                # eship_count += 1
-
-                # if eship_count < pship_count:
-                    # fire = True
-
+        
+        def energy_cost(self,parent):
+            return self.energy_use
 
     class Cover(store.object):
         def __init__(self,location = (1,1)):
@@ -3365,7 +3361,7 @@ init -2 python:
             store.warpto_versta = self.lastMission >= 5
             store.warpto_nomodorn = self.lastMission >= 8
             store.warpto_ryuvia = self.lastMission >= 10
-            store.warpto_farport = self.lastMission >= 12            
+            store.warpto_farport = self.lastMission >= 12
             store.warpto_ongess = self.lastMission >= 13 #not sure
 
             store.ep2_cancelwarp = False
@@ -3394,7 +3390,7 @@ init -2 python:
             ADJX = 1.0   #192.0/HEXW
             MOVY = 60    #used to offset the displayables
             MOVX = 0
-            
+
             store.all_enemies = [
                 PactBomber(),  PactMook(),
                 MissileFrigate(), PactCruiser(),
@@ -3402,10 +3398,10 @@ init -2 python:
                 PactBattleship(),RyuvianCruiser(),
                 Havoc(), PirateBomber(),
                 PirateGrunt(), PirateDestroyer(),
-                PirateBase(), 
+                PirateBase(),
                 ]
             for ship in all_enemies:
-                ship.location = None            
+                ship.location = None
 
             if self.lastMission >= 3:
                 store.liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
@@ -3438,12 +3434,12 @@ init -2 python:
             if self.lastMission >= 10:
                 if blackjack not in player_ships:
                     store.player_ships.append(store.blackjack)
-                
+
             if self.lastMission >= 10:
                 store.sunrider.repair_drones = 0
-            
-            if self.lastMission >= 11:                
-                BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']    
+
+            if self.lastMission >= 11:
+                BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
 
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
@@ -3455,11 +3451,11 @@ init -2 python:
             self.id = ''                 #unique name for this item
             self.visibility_condition = 'True' #when is this item visible in store?
             self.display_name = 'master item' #how it appears in the store
-            self.cost = 0                #cost of this item     
+            self.cost = 0                #cost of this item
             self.tooltip = ''            #text explaining what this item does
-            self.variable_name = None    #[string or None] what variable keeps track of how many of this item the player has? 
+            self.variable_name = None    #[string or None] what variable keeps track of how many of this item the player has?
             self.max_amt = 0             #maximum allowed of this item. irrelevant if self.amount_variable == None
-            
+
             # if self not in store_items:
                 # store_items.append(self)
 
@@ -3576,19 +3572,19 @@ init -2 python:
             update_stats()
 
             renpy.restart_interaction()
-            
+
     class ZoomAction(Action):
         def __init__(self,direction):
             self.direction = direction
-        
+
         def __call__(self):
             zoom_handling(self.direction,BM)
             if BM.selectedmode: BM.selected.movement_tiles = get_movement_tiles(BM.selected)
             renpy.restart_interaction()
-            
+
     class RestartInteraction(Action):  #experimental, obviously.
         def __init__(self):
             Action.__init__(self)
-            
+
         def __call__(self):
             renpy.restart_interaction()
