@@ -882,6 +882,18 @@ init -2 python:
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
                                 listlocs = interpolate_hex(loc1, loc2)
+                                hasship = False
+                                for loc in listlocs:
+                                    if not get_cell_available(loc):
+                                        for ship in enemy_ships:
+                                            if ship.location[0] == loc[0] and ship.location[1] == loc[1]:
+                                                hasship = True
+                                if not hasship:
+                                    self.cmd += self.orders['VANGUARD CANNON'][0]
+                                    looping = False
+                                    self.vanguardtarget = False
+                                    self.order_used = False
+                                    return
                                 renpy.music.play('Music/March_of_Immortals.ogg')
                                 renpy.call_in_new_context('atkanim_sunrider_vanguard')
                                 renpy.hide_screen('battle_screen')
@@ -1482,8 +1494,11 @@ init -2 python:
                         for ship in BM.ships:
                             if ship.location == mouse_location:
                                 return ['selection',ship]
-                            else:
-                                pass 
+                        if BM.vanguardtarget:
+                            spoof_ship = store.object()
+                            spoof_ship.location = mouse_location
+                            spoof_ship.faction = 'Not the Player'
+                            return ['selection', spoof_ship]
         
         
     class MouseFollow(renpy.Displayable):
