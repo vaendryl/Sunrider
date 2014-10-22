@@ -33,7 +33,7 @@ init -1 python hide:
     config.version = " Beta 7.1a"
     config.window_title = config.name+config.version
 
-    config.image_cache_size = 15
+    config.image_cache_size = 50
     renpy.music.set_volume(0.75, 0, channel="music")
 
     #########################################
