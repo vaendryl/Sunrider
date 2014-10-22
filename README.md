@@ -1,3 +1,32 @@
+beta 7.2
+--------
+* Vanguard can now be aimed at spaces without ships [by EnderShadow]
+* Player AI added [by EnderShadow]
+* added icons for armor and shield negation, plus attacking with missiles now show the route the missiles will take on the map along with an indicator for combined intercept change between the attacker and the target. [by KingRaptor]
+* the accuracy of energy weapons (laser+pulse) now degrade at a rate of 10 per hex instead of 15. to compensate, their base accuracy is reduced by 10. as a result, accuracy upgrades are now very valuable and costs for these have increased.
+* energy damage now scales significantly better with upgrades. (far better than kinetics)
+* increased the effect threat has on the AI. the Sunrider should now get targeted more often, assuming it does the most damage whereas units doing little damage will be ignored more easily by the AI.
+* increased the energy cost of ShutOff for PACT support ryders to 60
+* the AI can now use rockets again even if the target is still at 100% flak effectiveness.
+* ryders spawned from a carrier will no longer attack on the same turn.
+* the Phoenix now has the unique ability to start with half of her max energy after being restored to battle with the Resurrection order.
+* the cost multiplier for Sunrider's missile storage upgrade is reduced from 3 to 2.
+* Full forward and All Guard orders have had their duration reduced by 1 turn.
+* Full forward now provides a damage boost of +10% instead of +20%. the accuracy bonus has stayed the same.
+* The Black Jack had her melee attack energy cost reduced to 45 (from 50)
+* the Black Jack now scales better with melee upgrades in general.
+* added an upgrade in the store that reduces the Black Jack's movement cost to 15 (from 20). available after mission 5 (pirate base)
+* added an item that reduces energy cost of the gravity gun from 60 to 40. available after mission 12 (far port)
+* the furthest to the right you can now place units during formation phase is column 6 (down from 7). 1 exception is the 2nd escort mission (mission 18)
+* The AI now considers attacking with melee a bit better.
+* the repair upgrade for the Liberty now also reduces repair energy cost by 10EN. to compensate, the upgrade had its price increased to 1000$
+* the Phoenix' max EN upgrades are now 25% cheaper, allowing for greater mobility and damage output.
+
+
+beta 7.1a
+------
+* fixed a number of game breaking bugs which required a rollback to 7.0
+
 beta 7.1
 ------
 * fixed some issues with skirmish
@@ -30,6 +59,7 @@ beta 7
 * added a new [REDACTED]
 * healing now generates a minor amount of hate.
 * Paladin's assault energy cost went from 20 to 30, and its missiles were rebalanced to be more effective against armor.
+* the Seraphim scales a lot better with upgrades now to better reflect how specialized nature.
 
 
 
