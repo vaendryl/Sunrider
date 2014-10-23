@@ -137,8 +137,17 @@ label endofturn:
 label battle_start:
     play music PlayerTurnMusic
     python:
+        BM.battlestart_player_ships = store.player_ships[:]
+        for ship in BM.battlestart_player_ships:
+            ship.battlestart_location = ship.location
+        BM.battlestart_enemy_ships = deepcopy(store.enemy_ships)
+        BM.battlestart_covers = deepcopy(BM.covers)
+        BM.battlestart_sunrider_rockets = sunrider.rockets
+        BM.battlestart_sunrider_repair_drones = sunrider.repair_drones
+        BM.battlestart_cmd = BM.cmd
         BM.stopAI = False
         BM.order_used = False
+        BM.player_ai = False
         renpy.take_screenshot()
         renpy.save('battlestart')
         renpy.take_screenshot()
@@ -182,10 +191,58 @@ label loadsavedgame:   #used when the player chooses to load a saved game after 
     return
 
 label tryagain:
-    $renpy.load('battlestart')
-    pause
-    $show_message('this should never show up')
-    pause
+    hide badend
+    $ clean_battle_exit(True)
+    python:
+        battle1_check1 = False
+        battle2_check1 = False
+        battle2_check2 = False
+        battle_check1 = False
+        i = 1
+        while True:
+            if hasattr(store, 'check{}'.format(i)):
+                setattr(store, 'check{}'.format(i), False)
+                i += 1
+            else:
+                break
+    
+        store.destroyed_ships = []
+        store.player_ships = BM.battlestart_player_ships
+        for ship in store.player_ships:
+            ship.missiles = ship.max_missiles
+            ship.location = ship.battlestart_location
+        sunrider.rockets = BM.battlestart_sunrider_rockets
+        sunrider.repair_drones = BM.battlestart_sunrider_repair_drones
+        BM.cmd = BM.battlestart_cmd
+        BM.turn_count = 1
+        
+        store.enemy_ships = BM.battlestart_enemy_ships
+        for ship in store.enemy_ships:
+            if isinstance(ship, Havoc):
+                store.havoc = ship
+        
+        BM.covers = BM.battlestart_covers
+        for cover in BM.covers:
+            cover.hp = cover.max_hp
+        BM.ships = []
+        for ship in store.player_ships:
+            BM.ships.append(ship)
+        for ship in store.enemy_ships:
+            BM.ships.append(ship)
+        
+        BM.grid = []
+        for a in range(GRID_SIZE[0]):
+            BM.grid.append([False]*GRID_SIZE[1])
+        for ship in BM.ships:
+            if ship.location == None:
+                continue
+            x, y = ship.location
+            BM.grid[x - 1][y - 1] = True
+    jump battle_start
+    #$renpy.load('battlestart')
+    #pause
+    #$show_message('this should never show up')
+    #pause
     return
 
 label restartturn:

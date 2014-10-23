@@ -360,7 +360,7 @@ init python:
                         ship.flak_used = True
 
 
-        for ship in (enemy_ships if ship.faction == 'Player' else player_ships):
+        for ship in (enemy_ships if self.faction == 'Player' else player_ships):
             ship.flak_used = False
 
         return flak_strength
@@ -446,9 +446,9 @@ init python:
         best_average = 0
         for hex in valid_spots:
             distance = 0
-            for ship in (enemy_ships if ship.faction == 'Player' else player_ships):
+            for ship in (enemy_ships if self.faction == 'Player' else player_ships):
                 distance += get_ship_distance(self,ship)
-            average = distance / len((enemy_ships if ship.faction == 'Player' else player_ships))
+            average = distance / len((enemy_ships if self.faction == 'Player' else player_ships))
             if average > best_average:
                 best_average = average
                 best_hex = hex

@@ -69,6 +69,7 @@ init 2 python:
 
             if BM.mission != 'skirmishbattle':
                 set_cell_available(self.location) #tell the BM that the old cell is now free again
+                destroyed_ships.append(self)
                 player_ships.remove(self)
                 BM.ships.remove(self)
                 renpy.jump('sunrider_destroyed')

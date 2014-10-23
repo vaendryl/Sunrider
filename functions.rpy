@@ -649,7 +649,7 @@ init -6 python:
                 count += 1
         return count
 
-    def clean_battle_exit():
+    def clean_battle_exit(save_destroyed_mercenaries = False):
         BM.battle_log = []
         BM.battlemode = False #this ends the battle loop
         if BM.selected != None: BM.unselect_ship(BM.selected)
@@ -664,7 +664,7 @@ init -6 python:
         BM.selectedmode = False
         VNmode() #return to visual novel mode. this mostly just restores scrolling rollback
         for ship in destroyed_ships:
-            if ship.faction == 'Player' and not ship.mercenary:
+            if ship.faction == 'Player' and (not ship.mercenary or save_destroyed_mercenaries):
                 player_ships.append(ship)
                 BM.ships.append(ship)
         for ship in player_ships:
