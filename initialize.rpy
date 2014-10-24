@@ -114,7 +114,8 @@ label initialize:
         blackjack = None
         liberty = None
         phoenix = None
-        bianca = None
+        bianca = Bianca()
+        bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
         seraphim = None
         paladin = None
         havoc = None

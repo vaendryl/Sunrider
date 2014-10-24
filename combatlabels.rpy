@@ -302,8 +302,13 @@ label after_load:
             # update_mp()
 
             #add the restore skill to Bianca if she doesn't have it (due to very old save)
-            if len(bianca.weapons) == 4:
-                ship.register_weapon(Restore())
+            if hasattr(store,'bianca'):
+                if bianca is not None:
+                    if len(bianca.weapons) == 4:
+                        ship.register_weapon(Restore())
+                else:
+                    bianca = Bianca()
+                    bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 
             #this was reduced in 7.2
             store.BM.formation_range = 6
@@ -325,7 +330,7 @@ label after_load:
             reset_classes()
 
             #set the new save version
-            BM.save_version = config.version
+            store.BM.save_version = config.version
 
             #make sure the player can access the lab
             if store.mission2_complete:

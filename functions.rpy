@@ -163,7 +163,7 @@ init -6 python:
         if cumulative:
             current_magnitude, current_duration = target.modifiers[modifier]
             magnitude += current_magnitude
-            duration += current_duration  #not sure if this is wanted
+            if current_duration <= 1: duration += current_duration
             target.modifiers[modifier] = [magnitude,duration]
             return True
 
@@ -226,6 +226,9 @@ init -6 python:
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
         if not weapon.wtype == 'Support' and not guess:
             accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] ) / 100 )
+        elif guess:
+            #AI assumes all ryders have 25 evasion.
+            if target.stype == 'Ryder': accuracy -= 25
 
         #an acc. buff is added as a flat bonus
         if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
@@ -440,12 +443,14 @@ init -6 python:
         for ship in enemy_ships:
             BM.ships.append(ship)
 
+        #the all_enemies list also needs to be updated or you get problems in skirmish
+        iterate_list = BM.ships + store.all_enemies 
         #going to re-init all the ships
-        for ship in BM.ships:
+        for ship in iterate_list:
             weapons = ship.weapons
             
             #re-init all the weapons to default values
-            for weapon in weapons:
+            for weapon in weapons+ship.default_weapon_list:
                 #make a copy of the weapon if required
                 weaponcopy = None
                 if hasattr(weapon,'keep_after_reset'):

@@ -163,19 +163,6 @@ screen battle_screen:
                 xpos int(HEXW * zoomlevel)
                 ypos int((HEXD-2) * zoomlevel)
 
-        ##legion warning indicator
-        ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
-#        if hasattr(store,'legion'):
-#            if legion.active:
-#                if legion.row != 0:
-#                    text '  - - - - warning - - - - - warning - - - - - warning- - - - - warning - - - -  ':
-#                        color 'f00' ypos int(120*(legion.row-0.25) *zoomlevel)
-#                        size int(120*zoomlevel)
-##                        layout nowrap
-
-          ##display shield and flak ranges
-          ##I'm sure this could be made to be much much faster
-
         if not BM.hovered == None: #when you hover over a ship
             if BM.hovered.shield_generation > 0:
                 for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
@@ -311,17 +298,13 @@ screen battle_screen:
                         zoom (zoomlevel/2.0)
                         at cursedown(yposition-(190)*zoomlevel)
 
-
             ## as of the new UI interact code (with MouseTracker) most of the following is defunct.
             ## only the parts that affect lbl do anything anymore.
 
                 #default values
                 $mode = '' #default
-                # $act = Return(['selection',ship])
                 $lbl = ship.lbl
                 $hvr = hoverglow(ship.lbl)
-                # $hvrd = SetField(BM,'hovered',ship)
-                # $unhvrd = SetField(BM,'hovered',None)
 
                 #some properties of the imagebutton representing a ship change depending on circumstances
                 if ship.faction == 'Player':
@@ -359,10 +342,7 @@ screen battle_screen:
 
                 if mode == 'target':
                     $ lbl = hoverglow(ship.lbl)
-                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
                 elif mode == 'offline':
-                    # $ act = NullAction()
-                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
                     $ lbl = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
 
                 if BM.hovered != None:
@@ -419,7 +399,6 @@ screen battle_screen:
                         outlines [(2,'000',0,0)]
 
                 else:    #enemies
-
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
                     $hp_size = int(405*(float(ship.hp)/ship.max_hp))
@@ -663,31 +642,6 @@ screen battle_screen:
                             size (14 * zoomlevel)
                             color 'fff'
 
-          #when you hover over an enemy ship the HP bar and HP text will overlay again on top of other ships.
-          #actually, with the hex grid overlap issues are mostly gone
-        # if BM.hovered != None: #when you hover over a ship
-            # $ hovered_ship = BM.hovered
-            # if hovered_ship.location == None:
-                # $ pass
-            # # elif hovered_ship.faction != 'Player':
-            # $xposition = dispx(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
-            # $yposition = dispy(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
-            # $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
-            # add 'Battle UI/label hp bar.png':
-                # xpos xposition
-                # ypos yposition
-                # zoom (zoomlevel/2.5)
-                # crop (0,0,hp_size,90)
-
-            # text str(BM.hovered.hp):
-                # xanchor 0.5
-                # yanchor 0.5
-                # xpos int(xposition+80*zoomlevel)
-                # ypos int(yposition+27*zoomlevel)
-                # size int(16*zoomlevel)
-                # font "Font/sui generis rg.ttf"
-                # outlines [(2,'000',0,0)]
-
                 ##DISPLAY MOVEMENT OPTIONS##
         if BM.selectedmode and BM.selected != None:
             if BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
@@ -806,15 +760,6 @@ screen battle_screen:
             xalign 1.0
             vbox:
                 xalign 1.0
-                # textbutton "Battle Log" xalign 1.0 action Show('battle_log')
-                # if BM.edgescroll == (0,0):
-                    # textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
-                # else:
-                    # textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
-                # if BM.show_tooltips:
-                    # textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
-                # else:
-                    # textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
 
                 if store.Difficulty < 3 or config.developer:
                     textbutton "restart turn" xalign 1.0 action Jump('restartturn')
@@ -823,7 +768,6 @@ screen battle_screen:
 
             if config.developer:
                 vbox:
-                    # ypos 100
                     xalign 1.0
                     textbutton "Debug Cheats" xalign 1.0 action Return(['cheat'])
                     textbutton "Fast Quit" xalign 1.0 action Jump('quit')
@@ -860,7 +804,6 @@ screen battle_screen:
             color 'fff'
             outlines [(1,'000',0,0)]
 
-
     if BM.phase == 'Player':
         $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(0.6, 1.0, 0.5))
         for ship in player_ships:
@@ -873,7 +816,6 @@ screen battle_screen:
             idle endturnbutton_idle
             hover hoverglow(endturnbutton_idle)
             action Return(['endturn'])
-
 
     if BM.phase == 'formation':
         imagebutton:
@@ -925,8 +867,6 @@ transform move_down(ystart,yend,xx=0):
         #not sure why this is needed. I'm calling bug in renpy
         time 2
         alpha 0
-
-
 
 screen orders:
     zorder 1
@@ -1087,7 +1027,6 @@ screen orders:
         size 30
         color 'fff'
         outlines [(1,'000',0,0)]
-
 
 screen commands: ##show the weapon buttons etc##
     zorder 1 #always show on top of the battle screen
@@ -1255,8 +1194,6 @@ screen commands: ##show the weapon buttons etc##
 
                 $count += 1
 
-
-
 transform move_vertical(xstart,xend,xx=0):
     #used by skirmish windows
     xpos xstart
@@ -1340,7 +1277,6 @@ screen player_unit_pool:
             hover hoverglow('skirmish/decrease_cmd.png')
             action If( BM.cmd <= 100 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 100)) )
             alternate If( BM.cmd <= 1000 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 1000)) )
-
 
 screen enemy_unit_pool_collapsed:
     zorder 2
@@ -1469,13 +1405,6 @@ screen enemy_music:
                     color '000'
                     size 28
 
-
-
-
-
-
-
-
 screen tooltips:
     zorder 9
 
@@ -1501,7 +1430,6 @@ screen tooltips:
                     font "Font/sui generis rg.ttf"
                     outlines [(1,'000',0,0)]
 
-
 transform hp_falls(hp_size1,hp_size2):
     crop (0,0,hp_size1,42)
     linear 1 crop (0,0,hp_size2,42)
@@ -1510,7 +1438,6 @@ transform float_up:
     xpos 0.5
     ypos 0.5
     linear 3 ypos 0.2 alpha 0
-
 
 screen animation_hp:
     zorder 2
@@ -1811,7 +1738,6 @@ screen victory2:
         text low_diff_text:
             size 12
             xalign 1.0
-
 
 transform message_transform(x,y):
     # These control the position.

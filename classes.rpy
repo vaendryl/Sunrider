@@ -1310,7 +1310,7 @@ init -2 python:
                             show_message('the {} is disabled!'.format(ship.name) )
                             ship.en = 0
                         else:
-                            ship.en = ship.max_en
+                            if not ship.just_spawned: ship.en = ship.max_en
                     except:
                         ship.modifiers['energy regen'] = (0,0)
                         ship.en = ship.max_en
@@ -1425,8 +1425,6 @@ init -2 python:
 
             renpy.block_rollback()
 
-
-
     ## Displayables ##
     #custom displayables harness the power of pygame directly.
 
@@ -1533,7 +1531,6 @@ init -2 python:
                             spoof_ship.faction = 'Not the Player'
                             return ['selection', spoof_ship]
 
-
     class MouseFollow(renpy.Displayable):
         """
         this class creates an object that will display an image at the mouse cursor
@@ -1573,12 +1570,11 @@ init -2 python:
         def visit(self):
            return [ self.child ]
 
-
-
     ##blueprints##
 
-      #this class is the basis of all unit types in the game. these values are the default one if none are specified.
     class Battleship(store.object):
+        """this class is the basis of all unit types in the game. 
+        these values are the default one if none are specified."""
         def __init__(self):
             self.brain = DefaultAI(self)
             self.shield_generation = 0
@@ -1670,6 +1666,8 @@ init -2 python:
             self.spawns = []
             self.support = False #used by AI to check whether to run support ability code
             self.location = None
+            self.current_location = None
+            self.next_location = None
             self.movement_tiles = []
             self.portrait = None
             self.death_animation = 'no_animation'  #the default death animation: none.
@@ -2035,7 +2033,6 @@ init -2 python:
             self.hp_cost = 0
             self.acc_degradation = 15
             self.base_accuracy = 50
-            self.repair = False
             self.wtype = ''
             self.name = 'unnamed'
             self.max_range = None
@@ -2172,7 +2169,6 @@ init -2 python:
             if total_damage == 0: return 'miss'
             BM.battle_log_insert(['attack', 'kinetic'], "{0}'s armour negated {1} total damage of {2}'s attack".format(target.name, store.total_armor_negation, parent.name))
             return int(total_damage)
-
 
         ## Missiles ##
     class Missile(Weapon): #starter Missile weapon
@@ -2376,7 +2372,6 @@ init -2 python:
 
             return shot_down
 
-
     class Melee(Weapon):
         def __init__(self):
             Weapon.__init__(self)
@@ -2438,7 +2433,6 @@ init -2 python:
             BM.battle_log_insert(['attack', 'melee'], "{0}'s armour negated {1} total damage of {2}'s melee attack".format(target.name, store.total_armor_negation, parent.name))
             return int(total_damage)
 
-
     class Support(store.object):
         def __init__(self):
             self.repair = False
@@ -2452,6 +2446,7 @@ init -2 python:
             self.hp_cost = 0
             self.wtype = 'Support'
             self.end_of_turn_callback = None
+            self.keep_after_reset = {} #used by save compat code.
             self.cumulative = False  #if true it does not overwrite but add to the current value.
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
@@ -2658,6 +2653,7 @@ init -2 python:
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
+            self.keep_after_reset = {} #used by save compatibility code
             self.tooltip = """
             Allows Claude to move any Ryder a single hex.
             This movement will provoke Blindside attacks, if you move an enemy Ryder
@@ -2761,7 +2757,6 @@ init -2 python:
                 show_message('The asteroid was destroyed!')
                 renpy.pause(0.5)
 
-
          ### WEAPONFIRE PARTICLE GENERATOR ###
     class FlakShield(object): #created for us by RenpyTom! thanks man!
 
@@ -2850,7 +2845,6 @@ init -2 python:
             Stops shooting flak.
             """
             self.running = False
-
 
     class Planet(store.object):
         def __init__(self, name, jumpLocation, xPos, yPos, showOnMapCondition):
@@ -3074,9 +3068,9 @@ init -2 python:
             clean_grid() #cleans BM.grid, BM.ships, BM.covers and store.enemy_ships
             renpy.jump_out_of_context(self.jumpLoc)
 
-    #master class of all store objects
-    #the actual items are defined in the library
     class StoreItem(store.object):
+        """master class of all store objects 
+        the actual items are defined in the library"""
         def __init__(self):
             self.id = ''                 #unique name for this item
             self.visibility_condition = 'True' #when is this item visible in store?
@@ -3102,7 +3096,6 @@ init -2 python:
             return eval(self.visibility_condition)
 
     ## CUSTOM ACTIONS ##
-
     class BonusPageNext(Action):
         def __init__(self):
             self.page = store.bonusPage + 1
@@ -3116,7 +3109,6 @@ init -2 python:
 
         def get_sensitive(self):
             return self.page is not None
-
 
     class BonusPagePrevious(Action):
         def __init__(self):
@@ -3139,7 +3131,6 @@ init -2 python:
             store.bonusPage = 0
             renpy.restart_interaction()
 
-
     class CreateShipAction(Action):
         def __init__(self, ship, weapons, location = None):
             self.ship = ship
@@ -3149,7 +3140,6 @@ init -2 python:
         def __call__(self):
             #deepcopy is used to break aliasing (we don't want to add the same ship x times)
             create_ship(deepcopy(self.ship), self.location, self.weapons)
-
 
     class HoverWeapon(Action):
         def __init__(self, weapon):
@@ -3171,7 +3161,6 @@ init -2 python:
                     ship.cth = get_acc(BM.weaponhover, BM.selected, ship, ignore_evasion)
 
             renpy.restart_interaction()
-
 
     class FireWeapon(Action):
         def __init__(self, weapon):
@@ -3212,7 +3201,7 @@ init -2 python:
             if BM.selectedmode: BM.selected.movement_tiles = get_movement_tiles(BM.selected)
             renpy.restart_interaction()
 
-    class RestartInteraction(Action):  #experimental, obviously.
+    class RestartInteraction(Action): 
         def __init__(self):
             Action.__init__(self)
 

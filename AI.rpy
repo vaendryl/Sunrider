@@ -8,8 +8,10 @@ init python:
         """parent AI class"""
         def __init__(self,parent):
             self.parent = parent
-            self.enemy_faction = ['Player']
+            self.enemy_faction = ['Player'] #not used yet.
             self.preferred_distance = 0
+            #the higher the less likely the unit is to approach kinetic users.
+            self.kinetic_fear = 0.75
 
         def AI_estimate_damage(self):
             raise NotImplementedError
@@ -94,10 +96,7 @@ init python:
 
                     ##MELEE
                     if weapon.wtype == 'Melee':
-                        if pship.stype == "Ryder":
-                            estimation = estimate_melee_damage(parent,weapon,pship)
-                        else:
-                            estimation = 0
+                        estimation = estimate_melee_damage(parent,weapon,pship) if pship.stype == 'Ryder' else 0
                         priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
@@ -205,7 +204,6 @@ init python:
 
                 #units that just spawned don't get to fire.
                 elif parent.just_spawned:
-                    parent.just_spawned = False
                     debuglog_add('will not fire because just spawned.')
 
                 #carry on with finding a suitable target.
@@ -238,7 +236,7 @@ init python:
                 pass
 
             #check if this unit has a melee weapon. if it does, it's okay to move closer than normal.
-            can_melee = get_can_melee
+            can_melee = get_can_melee(parent)
             if can_melee:
                 minimum_damage = 50
             else:
@@ -296,8 +294,9 @@ init python:
             """
             #some basic inits
             parent = self.parent
-            if preferred_distance == 0: preferred_distance = self.preferred_distance 
-            if max_move_distance == 0: max_move_distance = parent.en/parent.move_cost 
+            if preferred_distance == 0: preferred_distance = self.preferred_distance
+            if max_move_distance == 0: max_move_distance = parent.en/parent.move_cost
+            if melee_distance is None: melee_distance = get_can_melee(parent)
             if target == None:
                 debuglog_add('warning, movetarget is none!')
                 return False
@@ -314,8 +313,7 @@ init python:
             travel_distance = get_ship_distance(parent,target)
             debuglog_add('total travel distance: {}'.format(travel_distance) )
 
-            #check if I can melee and if so, moving next to enemy targets is okay.
-            if melee_distance is None: melee_distance = can_melee() 
+            
 
             #make a list of all the spots this ship could move to.
             move_range = get_all_in_radius(old_spot,max_move_distance)
@@ -327,14 +325,14 @@ init python:
                         if not melee_distance:
                             continue
                         else:
-                            #find out if a ryder is next to this hex. maybe put this in a function?                            
+                            #find out if a ryder is next to this hex. maybe put this in a function?
                             ryder_adj = False
                             shiplist = enemy_ships if parent.faction == 'Player' else player_ships
                             for ship in shiplist:
                                 if ship.stype == 'Ryder' and get_distance(ship.location,hex) == 1:
                                     ryder_adj = True
                             #if a ryder is not next to this hex we have no business getting countered for nothing.
-                            if not ryder_adj: 
+                            if not ryder_adj:
                                 continue
                     # if distance < travel_distance:
                     valid_spots.append(hex)
@@ -378,30 +376,39 @@ init python:
                 debuglog_add('moving while looking for defensive spots')
                 best_hex = None
                 best_value = 0
+                store.hex_values = {}
                 for hex in valid_spots:
                     distance = abs(get_distance(hex,target.location) - preferred_distance)
-                    # if distance == 0 : distance = 1
+                    if get_counter_attack(hex, AI = parent.faction != 'Player'):
+                        if not melee_distance:
+                            continue
                     value = 0
-                    #support units don't actually care about gettin closer at all - just defensive value.
+                    #support units don't actually care about getting closer at all - just defensive value.
                     if not parent.support:
                         value = (travel_distance - distance) * 75
+                    value -= get_hex_lethal(parent,hex)
                     value += get_flak_at_hex(hex,ignore=[parent]) + get_shielding_at_hex(hex,ignore=[parent])
+                    store.hex_values[hex] = value
                     if value > best_value:
                         best_hex = hex
                         best_value = value
 
             #calling move_ship() when not needed can lead to double counter attacks.
-            if old_spot == best_hex:  
+            if old_spot == best_hex:
                 debuglog_add('best spot is the spot I am already at!')
                 return False
             elif best_hex:
                 parent.move_ship(best_hex, BM)
                 debuglog_add('moving towards {}'.format( str(best_hex) ) )
                 return True
+            debuglog_add('moving failed because of unknown reason')
             return False
 
 #AI START
         def AI(self):
+            """this method gets called directly to start the AI and it usually
+            runs AI_basic_loop multiple times. this method is the primary one to
+            overwrite to make custom AI's"""
             parent = self.parent
             #renpy.log('{} starting AI'.format(parent.name))
             #renpy.log('I have {} energy'.format(parent.en))
@@ -409,11 +416,8 @@ init python:
                 pass
                 #renpy.log('I am a lead ship!')
 
-            if BM.stopAI:
-                return
-
-            if parent.en == 0:
-                return
+            if BM.stopAI: return
+            if parent.en == 0: return
 
             if parent.stype == 'Carrier' and parent.location != None:
                 spawn_ryders(parent)
@@ -424,6 +428,7 @@ init python:
                 if BM.enemy_vanguard_path != [] and parent.en > 0:
                     should_fire = False
                     if parent.faction == 'Player':
+                        #used by player_AI
                         for ship in enemy_ships:
                             if ship.location in BM.player_vanguard_path:
                                 should_fire = True
@@ -445,19 +450,13 @@ init python:
             #################################### HOLD MY BEER, I'M DOING THIS
 
             if parent.stype == 'Assault Carrier' and parent.location != None:
+                if renpy.random.randint(0,2) == 1:
+                    spawn_ryders(parent,max=1)
 
-                spawnchance = renpy.random.randint(0,2)
-
-                if spawnchance == 1:
-
-                    spawn_ryders(parent)
-
-                    return
-
-            if parent.support:
+            if parent.support and not parent.just_spawned:
                 supporting = True
                 while supporting:
-                    supporting = support_AI(parent) #if this function returns False it couldn't support. therefore stop the loop and do something else, such as move.
+                    supporting = support_AI(parent) #if this function returns False it couldn't support. therefore stop the loop and do something else, such as move.            
 
             parent.target = None
             BM.selected = parent
@@ -493,8 +492,8 @@ init python:
                                 # BM.battle_log_insert([], message)
                                 BM.enemy_vanguard_path = interpolate_hex(parent.location,result)
                     parent.AI_running = False
+                    parent.just_spawned = False
                     return
-
 
     def cartesian_product(seq,n):
         """
@@ -571,13 +570,18 @@ init python:
         return cells_in_range
 
     def get_hex_lethal(self,location):
-        """check if this location is likely to get you killed in one blow"""
-        if location is None or self is None: return True
-        lethal = False
-
+        """check if this location is dangerous. right now it only checks
+        enemy kinetic accuracy."""
+        if location is None or self is None: return 999
+        highest_kinetic_acc = 0
         for pship in player_ships:
             for weapon in pship.weapons:
-                pass
+                if weapon.wtype == 'Kinetic':
+                    distance = get_distance(pship.location,location)
+                    estimated_accuracy = 70 + 50 - self.evasion - (15*distance)
+                    if estimated_accuracy > highest_kinetic_acc:
+                        highest_kinetic_acc = estimated_accuracy
+        return highest_kinetic_acc * self.brain.kinetic_fear
 
     def estimate_melee_damage(self,weapon,target):
         """check if a melee attack is possible and what the expected damage would be."""
@@ -608,52 +612,59 @@ init python:
         self.melee_location = shortest_location
         return get_acc(weapon,self,target,guess = True,custom_range=1) * (weapon.damage-target.armor) * weapon.shot_count / 100
 
-    def spawn_ryders(ship):
+    def spawn_ryders(ship,max=None):
         """
         used by carrier class enemies to spawn ryders
         """
 
-        available_spaces = get_all_in_radius(ship.location,1)
+        #get all the free spaces around the parent
         free_spaces = []
-        for hex in available_spaces:
+        for hex in get_all_in_radius(ship.location,1):
             if get_cell_available(hex):
                 free_spaces.append(hex)
+        if len(free_spaces) == 0: return
 
-        if len(free_spaces) > 0:
-            spawning = True
-            while spawning:
+        spawning = True
+        spawn_count = 0
+        while spawning:
 
-                possible_spawn = []
-                for spawn in ship.spawns:
-                    ryder,cost,weaponlist = spawn
-                    if ship.en >= cost:
-                        possible_spawn.append(spawn)
+            possible_spawn = []
+            for spawn in ship.spawns:
+                ryder,cost,weaponlist = spawn
+                if ship.en >= cost:
+                    possible_spawn.append(spawn)
 
-                if len(possible_spawn) == 0:
-                    spawning = False
-                else:
-                    spawn_location = renpy.random.choice(free_spaces)
-                    spawn = renpy.random.choice(possible_spawn)
-                    ryder,cost,weaponlist = spawn
-                    create_ship(ryder(),spawn_location,weaponlist)
-                    spawned_ship = enemy_ships[-1]
-                    spawned_ship.en = spawned_ship.move_cost * 2
-                    if spawned_ship.en > spawned_ship.max_en: spawned_ship.en = spawned_ship.max_en
-                    spawned_ship.just_spawned = True
+            if len(possible_spawn) == 0:
+                spawning = False
+            else:
+                spawn_location = renpy.random.choice(free_spaces)
+                spawn = renpy.random.choice(possible_spawn)
+                ryder,cost,weaponlist = spawn
+                create_ship(ryder(),spawn_location,weaponlist)
+                spawned_ship = enemy_ships[-1]
+                spawned_ship.en = spawned_ship.move_cost * 2
+                #reset the weapons to default in case they changed.
+                for weapon in spawned_ship.weapons:
+                    weapon.__init__()
+                if spawned_ship.en > spawned_ship.max_en: spawned_ship.en = spawned_ship.max_en
+                spawned_ship.just_spawned = True
+                if max:
+                    spawn_count += 1
+                    if spawn_count >= max:
+                        spawning = False
 
+                if ship.faction is not 'Player':
+                    if BM.turn_count <= 5:
+                        enemy_ships[-1].money_reward *= 1.0 - (0.2*BM.turn_count)
+                    else:
+                        enemy_ships[-1].money_reward = 0
 
-                    if ship.faction is not 'Player':
-                        if BM.turn_count <= 5:
-                            enemy_ships[-1].money_reward *= 1.0 - (0.2*BM.turn_count)
-                        else:
-                            enemy_ships[-1].money_reward = 0
+                renpy.pause(0.2)
+                ship.en -= cost
+                free_spaces.remove(spawn_location)
 
-                    renpy.pause(0.2)
-                    ship.en -= cost
-                    free_spaces.remove(spawn_location)
-
-                if len(free_spaces) == 0:
-                    spawning = False
+            if len(free_spaces) == 0:
+                spawning = False
 
     def support_AI(ship):
         """
@@ -699,7 +710,7 @@ init python:
             if not weapon.repair:  #we already handled these
 
                 #handle curses
-                if weapon.wtype == 'Curse' and not isinstance(weapon.modifies, list):
+                if weapon.wtype == 'Curse':
 
                     #get a list of ships that do not have this curse on them already
                     viable_targets = []
@@ -830,8 +841,9 @@ init python:
         return
 
     def estimate_flak(self,target,adjustment = 10,shiplist='player_ships',ignore = []):
-        if self is None or target is None: return 100
-        if self.location is None or target.location is None: return 100
+        if self is None: return 0
+        if not hasattr(target,'location'):return 0
+        if self.location is None or target.location is None: return 0
         if type(ignore) is not list: ignore = [ignore]
 
         path = interpolate_hex(self.location,target.location) #get a list of locations between parent and target
@@ -869,7 +881,9 @@ init python:
         for ship in ships:
             flak += estimate_flak(ship,locationholder,adjustment=0,shiplist='enemy_ships' if AI else 'player_ships',ignore=ignore)
             shipcount += 1
-        return (100 - 100 * (flak / shipcount))
+        
+        average_flak = (flak / shipcount) * 100  # e.g. (1,25 / 5) * 100 = 25
+        return int(100 - average_flak)
 
     def get_shielding_at_hex(hex,AI=True,ignore=[]):
         if hex == None: return 0
