@@ -2406,6 +2406,7 @@ init -2 python:
             self.hp_cost = 0
             self.acc_degradation = 15
             self.base_accuracy = 50
+            self.repair = False
             self.wtype = ''
             self.name = 'unnamed'
             self.max_range = None

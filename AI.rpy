@@ -212,7 +212,7 @@ init python:
             if not weapon.repair:  #we already handled these
 
                 #handle curses
-                if weapon.wtype == 'Curse':
+                if weapon.wtype == 'Curse' and not isinstance(weapon.modifies, list):
 
                     #get a list of ships that do not have this curse on them already
                     viable_targets = []
