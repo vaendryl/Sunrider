@@ -1144,7 +1144,14 @@ init -2 python:
 
                 pship.en = pship.max_en
                 pship.lbl = im.MatrixColor(pship.blbl,im.matrix.brightness(0.3))
-                renpy.pause(AI_WAIT_TIME)
+                
+                #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
+                #this is but a work-around.
+                try:
+                    renpy.pause(AI_WAIT_TIME)
+                except:
+                    pass
+                    
                 # if config.developer:
                     # renpy.pause()
 
@@ -1165,7 +1172,11 @@ init -2 python:
 
                 pship.en = pship.max_en
                 pship.lbl = im.MatrixColor(pship.blbl,im.matrix.brightness(0.3))
-                renpy.pause(AI_WAIT_TIME)
+
+                try:
+                    renpy.pause(AI_WAIT_TIME)
+                except:
+                    pass
                 # if config.developer:
                     # renpy.pause()
 
@@ -1197,7 +1208,10 @@ init -2 python:
                         ship.en = ship.max_en
 
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
-                    renpy.pause(AI_WAIT_TIME)
+                    try:
+                        renpy.pause(AI_WAIT_TIME)
+                    except:
+                        pass
                     # if config.developer:
                         # renpy.pause()
                     ship.AI()
@@ -1239,7 +1253,10 @@ init -2 python:
 
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
-                renpy.pause(AI_WAIT_TIME)
+                try:
+                    renpy.pause(AI_WAIT_TIME)
+                except:
+                    pass
                 # if config.developer:
                     # renpy.pause()
 
@@ -1260,7 +1277,14 @@ init -2 python:
 
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
-                renpy.pause(AI_WAIT_TIME)
+                
+                #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
+                #this is but a work-around.
+                try:
+                    renpy.pause(AI_WAIT_TIME)
+                except:
+                    pass
+                    
                 # if config.developer:
                     # renpy.pause()
 
@@ -1292,9 +1316,14 @@ init -2 python:
                         ship.en = ship.max_en
 
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
-                    renpy.pause(AI_WAIT_TIME)
-                    # if config.developer:
-                        # renpy.pause()
+                    
+                    #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
+                    #this is but a work-around.
+                    try:
+                        renpy.pause(AI_WAIT_TIME)
+                    except:
+                        pass
+                        
                     ship.AI()
                     ship.lbl = ship.blbl
 
@@ -1551,6 +1580,7 @@ init -2 python:
       #this class is the basis of all unit types in the game. these values are the default one if none are specified.
     class Battleship(store.object):
         def __init__(self):
+            self.brain = DefaultAI(self)
             self.shield_generation = 0
             self.shields = self.shield_generation
             self.shield_range = -1
@@ -1846,7 +1876,6 @@ init -2 python:
             elif self in player_ships:
                 player_ships.remove(self)
 
-
             #grid maintenance
             set_cell_available(self.location)
 
@@ -1866,7 +1895,6 @@ init -2 python:
             BM.check_for_loss()
             BM.check_for_win()
 
-
         def register_weapon(self, weapon):
             if len(self.weapons) >= self.max_weapons:
                 raise IndexError('ERROR: too many weapons assigned to the {}'.format(self.name))
@@ -1885,420 +1913,21 @@ init -2 python:
             BM.grid[xnew-1][ynew-1] = True
             self.location = (xnew,ynew)
 
-#AI estimate damage
         def AI_estimate_damage(self,pship,en = 0, range_reduction = 0):  #part of the AI
-            priority_modifier = 1.5 #the higher this number, the greater the effect hate has.
+            self.brain.AI_estimate_damage(pship,en,range_reduction)
 
-            if en == 0: en = self.en
-
-            pship.damage_estimation = [None,0,0] #weapon,estimation,priority
-            if pship.hp < 1:
-                return
-
-            #cycle through all the weapons and find out which one is likely to be most
-            #effective for each player ship
-            for weapon in self.weapons:
-                if self.en < weapon.energy_cost(self):
-                    continue
-                else:
-                    accuracy = get_acc(weapon,self,pship,True, range_reduction)
-                    if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
-                        estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
-                        if pship.damage_estimation[2] < priority:
-                            pship.damage_estimation = [weapon,int(estimation),priority]
-                    if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
-                        if weapon.uses_missiles and self.missiles <= 0:
-                            return
-                        elif weapon.uses_rockets and self.rockets <= 0:
-                            return
-                        else:
-                            estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
-                            estimation = estimation * estimate_flak(self,pship)
-                            priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                            #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                            #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
-                            if pship.damage_estimation[2] < priority:
-                                pship.damage_estimation = [weapon,int(estimation),priority]
-                    if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
-                        estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
-                        estimation = estimation * (100 - pship.shields) / 100.0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
-                        if pship.damage_estimation[2] < priority:
-                            pship.damage_estimation = [weapon,int(estimation),priority]
-                    if weapon.wtype == 'Melee':
-                        if pship.stype == "Ryder":
-                            estimation = estimate_melee_damage(self,weapon,pship)
-                        else:
-                            estimation = 0
-                        priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
-                        if pship.damage_estimation[2] < priority:
-                            pship.damage_estimation = [weapon,int(estimation),priority]
-            # if pship.damage_estimation[0] == None:
-                # debuglog_add( 'all weapons can do no damage on the {}'.format(pship.name) )
-            # else:
-                # debuglog_add('{} has the highest damage({!s}) on the {} with a priority of {!s}'.format(pship.damage_estimation[0].name,pship.damage_estimation[1],pship.name,pship.damage_estimation[2]))
-
-#AI attacks
         def AI_attack_target(self,pship,weapon,counter=False):
-            update_stats()
+            self.brain.AI_attack_target(pship,weapon,counter)
 
-            if weapon.wtype == 'Melee':
-                if get_ship_distance(self,pship) > 1:
-                    debuglog_add('adjusting position for melee')
-                    if self.melee_location is None:
-                        self.AI_move_towards(pship,max_move_distance=1)
-                    else:
-                        self.move_ship(self.melee_location,BM)
-                        self.melee_location = None
-
-            #enough with the plinking
-            accuracy = get_acc(weapon,self,pship,guess=True)
-            debuglog_add('using {} on {}. accuracy is {}'.format(weapon.name, pship.name, accuracy))
-
-            max_advance_distance = (self.en - weapon.energy_cost(self)) / self.move_cost
-            if max_advance_distance > 0:
-                if accuracy < 75:
-                    debuglog_add('moving towards target because acc < 75')
-                    if self.AI_move_towards(pship,max_move_distance=max_advance_distance):
-                        return
-                    debuglog_add('unable to move')
-                elif accuracy < 25:
-                    debuglog_add('charging target because acc < 25')
-                    if self.AI_move_towards(pship,max_move_distance=3, rush=True):
-                        return
-                    debuglog_add('unable to move')
-
-            #check if we ended up next to an enemy ryder and can melee it instead of whatever we were planning.
-            if weapon.wtype != 'Melee' and not counter:
-                if get_can_melee(self):
-                    debuglog_add('trying to melee')
-                    if attempt_melee(self): #returns True if succeeds
-                        debuglog_add('trying to disengage')
-                        disengage(self) #flee away if there's energy left
-                        return
-
-            BM.attacker = self
-            BM.target = pship
-
-            if BM.target.hp < 0:
-                return
-            if weapon.wtype == 'Melee' or weapon.wtype == 'Support' or weapon.wtype == 'Curse':
-                pass
-            else:
-                try:
-                    animation_name = weapon.wtype.lower()
-                    if weapon.animation_name != None:
-                        animation_name = weapon.animation_name
-                    renpy.call_in_new_context('atkanim_{}_{}'.format(self.animation_name,animation_name))
-                except:
-                    show_message('missing animation. "atkanim_{}_{}" does\'t seem to exist'.format(self.animation_name,weapon.wtype.lower()))
-            damage = weapon.fire(self,pship,counter)
-            if weapon.wtype != 'Curse':
-                pship.receive_damage(damage,self,weapon.wtype)
-#            update_stats() - updated in receive_damage()
-
-#basic loop
         def AI_basic_loop(self):
-            if self not in (player_ships if self.faction == 'Player' else enemy_ships):
-                return
-            #renpy.log('{} starting AI_basic_loop'.format(self.name))
-            #renpy.log('I have {} energy'.format(self.en))
-            best_target = [None,None,0,0]
-
-            cheapest_weapon_cost = 999
-            for weapon in self.weapons:
-                if weapon.energy_cost(self) < cheapest_weapon_cost:
-                    cheapest_weapon_cost = weapon.energy_cost(self)
-
-            if not self.support:
-                if self.en < cheapest_weapon_cost:
-                    debuglog_add('not enough energy to fire any weapon')
-                elif self.just_spawned:
-                    self.just_spawned = False
-                    debuglog_add('will not fire because just spawned.')
-                else:
-                      ##create some damage estimates
-                    for pship in (enemy_ships if self.faction == 'Player' else player_ships):
-                        if pship.location != None:
-                            self.AI_estimate_damage(pship)
-                              ##first, if we can finish off an enemy in one hit we will try.
-                              ##damage_estimation = [weapon,average damage,priority]
-                            if pship.hp < pship.damage_estimation[1] and pship.hp > 0:
-                                self.AI_attack_target(pship,pship.damage_estimation[0])
-                                debuglog_add('I took an attack of opportunity against {}'.format(pship.name))
-                                  ##loop again and see what to do with the rest of the ships EN power
-                                return
-
-                      ##find the target we can do the most damage on right now
-                     #ship,weapon,estimate,priority
-                    for pship in (enemy_ships if self.faction == 'Player' else player_ships):
-                        if pship.location != None:
-                             ##damage_estimation[0] is the weapon
-                             ##damage_estimation[1] is the amount of expected damage
-                             ##damage_estimation[2] is the calculated priority
-                            if pship.damage_estimation[2] > best_target[3]:
-                                best_target = [pship,pship.damage_estimation[0],pship.damage_estimation[1],pship.damage_estimation[2]]
-                    if best_target[0] == None:
-                        #make a function for this?
-                        debuglog_add('no good target was found')
-                    else:
-                        debuglog_add('best target is {} with an estimate of {!s} and a priority of {!s}'.format(best_target[0].name,best_target[2],best_target[3]))
-
-            else: #is support
-                pass
-
-            can_melee = get_can_melee
-            if can_melee:
-                minimum_damage = 50
-            else:
-                minimum_damage = 10
-
-            ##decide whether to shoot or to move
-            if (best_target[0] == None or best_target[2] < minimum_damage) and self.en >= self.move_cost:
-                debuglog_add('decided on moving towards an enemy ship')
-
-                ##find the enemy ships you want to move towards
-                priority_target = [None,0]
-                for ship in (enemy_ships if self.faction == 'Player' else player_ships):
-                    if ship.location != None:
-                        distance = get_ship_distance(self,ship)
-                        if ship.stype == 'Ryder' and can_melee:
-                            priority = 2*(1 + (ship.hate/100.0)**1.5/10) / float( (distance**1.6/10.0) )
-                        else:
-                            priority = (1 + (ship.hate/100.0)**1.5/10) / float( (distance**1.6/10.0) )
-                        if  priority > priority_target[1]:
-                            priority_target = [ship,priority]
-                self.target = priority_target[0]
-                debuglog_add('I am going after the {} because of its weighted priority of {!s}'.format(priority_target[0].name,priority_target[1]))
-
-                max_move = (self.en - cheapest_weapon_cost) / self.move_cost
-                self.AI_move_towards(self.target,max_move_distance=max_move)
-                return
-
-            elif best_target[0] != None and best_target[2] > minimum_damage:
-                debuglog_add('attacking {}'.format(best_target[0].name))
-                target_ship,weapon,estimate,priority = best_target
-                self.AI_attack_target(target_ship,weapon)
-                return
-            else:
-                if best_target[0] == None:
-                    return
-                else:
-                      #just attack whatever as it seems to be the only thing left we can do.
-                    debuglog_add('can not find anything better to do, so I just attack with whatever')
-                    self.AI_attack_target(best_target[0],best_target[1])
-                    return
-
-#AI move towards
+            self.brain.AI_basic_loop()
+            
         def AI_move_towards(self, target, melee_distance = False, max_move_distance = 0, preferred_distance = 0,rush=False):
-            """
-            move towards an enemy, but pay attention to which cells offer protection and think about using melee if available
-            if melee_distance == True  try to move right next to the target
-            max_move_distance sets the max number of hexes to move
-            preferred distance can be set to to not move too close
-            rush means ignore defensive value of hexes
-            """
+            self.brain.AI_move_towards(target,melee_distance,max_move_distance,preferred_distance,rush)
 
-            if target == None:
-                debuglog_add('warning, movetarget is none!')
-                return False
-            if self.location == None or target.location == None:
-                debuglog_add('warning, self location or target locaion is none!')
-                return False
-            # if self.support: preferred_distance = 99
-
-            old_spot = self.location
-            if max_move_distance == 0:
-                max_move_distance = self.en/self.move_cost
-
-            if max_move_distance == 0:
-                debuglog_add('I cannot move due to lack of energy')
-                return False
-
-            travel_distance = get_ship_distance(self,target)
-            debuglog_add('total travel distance: {}'.format(travel_distance) )
-
-            #check if I can melee and if so, try to move right next to a target
-            if melee_distance == False:
-                if target.stype == 'Ryder' and self.hp >= 250:
-                    for weapon in self.weapons:
-                        if weapon.wtype == 'Melee':
-                            melee_distance = True
-
-            #find all the valid spots, which are spots that are available, don't counter if you can't melee and are closer.
-            move_range = get_all_in_radius(old_spot,max_move_distance)
-            valid_spots = []
-            for hex in move_range:
-                if get_cell_available(hex):
-                    distance = abs(get_distance(hex,target.location) - preferred_distance)
-                    #check if you will get countered by moving to this hex
-                    if get_counter_attack(hex, AI = self.faction != 'Player'):
-                        if melee_distance:
-                            if self.en < get_melee_weapon(self).energy_cost(self) + self.move_cost * distance:
-                                continue
-                        else:
-                            continue
-                    # if distance < travel_distance:
-                    valid_spots.append(hex)
-
-            if len(valid_spots) == 0:
-                debuglog_add('there are no valid spots!')
-                return False
-
-            if self in BM.lead_ships or rush and not self.support:
-                #find shortest possible distance from target
-                debuglog_add('moving while ignoring defenses')
-                shortest_distance = 999
-                for hex in valid_spots:
-                    distance = abs(get_distance(hex,target.location) - preferred_distance)
-                    if distance < shortest_distance:
-                        shortest_distance = distance
-
-                if shortest_distance == 999 or shortest_distance == travel_distance:
-                    debuglog_add('there is no spot that is closer')
-                    return False
-
-                debuglog_add('shortest distance: {}'.format(shortest_distance) )
-
-                #there may be multiple spots at the best distance
-                closest_spots = []
-                for hex in valid_spots:
-                    if abs(get_distance(hex,target.location) - preferred_distance) == shortest_distance:
-                        closest_spots.append(hex)
-
-                #this might be improvable :p
-                # if closest_spots == []: return False   #this should not actually be possible
-                if len(closest_spots) > 1:
-                    best_hex = renpy.random.choice(closest_spots)
-                else:
-                    best_hex = closest_spots[0]
-
-            else:
-                #find hex that is close but also offers good defence
-                debuglog_add('moving while looking for defensive spots')
-                best_hex = None
-                best_value = 0
-                for hex in valid_spots:
-                    distance = abs(get_distance(hex,target.location) - preferred_distance)
-                    if distance == 0 : distance = 1
-                    value = 0
-                    if not self.support:
-                        value = (travel_distance - distance) * 100
-                    value += get_flak_at_hex(hex) + get_shielding_at_hex(hex)
-                    if value > best_value:
-                        best_hex = hex
-                        best_value = value
-
-            if old_spot == best_hex:  #calling move_ship() when not needed can lead to double counter attacks.
-                debuglog_add('best spot is the spot I am already at!')
-                return False
-            elif best_hex:
-                self.move_ship(best_hex, BM)
-                debuglog_add('moving towards {}'.format( str(best_hex) ) )
-                return True
-            return False
-
-#AI START
         def AI(self):
-            #renpy.log('{} starting AI'.format(self.name))
-            #renpy.log('I have {} energy'.format(self.en))
-            if self in BM.lead_ships:
-                pass
-                #renpy.log('I am a lead ship!')
-
-            if BM.stopAI:
-                return
-
-            if self.en == 0:
-                return
-
-            if self.stype == 'Carrier' and self.location != None:
-                spawn_ryders(self)
-                return
-
-            if self.name == 'Legion':
-                #let's bring the pain
-                if BM.enemy_vanguard_path != [] and self.en > 0:
-                    should_fire = False
-                    if self.faction == 'Player':
-                        for ship in enemy_ships:
-                            if ship.location in BM.player_vanguard_path:
-                                should_fire = True
-                    else:
-                        for ship in player_ships:
-                            if ship.location in BM.enemy_vanguard_path:
-                                should_fire = True
-
-                    if should_fire:
-                        fire_legion_vanguard(self)
-                        return
-                    else:
-                        if self.faction == 'Player':
-                            BM.player_vanguard_path = []
-                        else:
-                            BM.enemy_vanguard_path = []
-
-
-            #################################### HOLD MY BEER, I'M DOING THIS
-
-            if self.stype == 'Assault Carrier' and self.location != None:
-
-                spawnchance = renpy.random.randint(0,2)
-
-                if spawnchance == 1:
-
-                    spawn_ryders(self)
-
-                    return
-
-            if self.support:
-                supporting = True
-                while supporting:
-                    supporting = support_AI(self) #if this function returns False it couldn't support. therefore stop the loop and do something else, such as move.
-
-            self.target = None
-            BM.selected = self
-            self.AI_running = True
-            while self.AI_running:
-                #if for whatever reason the AI should stop doing stuff BM.stopAI will be True
-                if BM.stopAI:
-                    self.AI_running = False
-                    return
-
-                #store the current EN value. if this doesn't change during a loop than there's nothing more the ship can do.
-                starting_en = self.en
-
-                #if self.target == None: ##I need to get back to this
-                self.AI_basic_loop()
-                if starting_en == self.en:
-                      ##no (more) engine power was (/could be) used so we quit the AI
-
-                    if self.faction == 'Player':
-                        if self.name == 'Legion' and BM.player_vanguard_path == []:
-                            result = get_vanguard_feasible(self)
-                            if result != False:
-                                # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
-                                # show_message(message)
-                                # BM.battle_log_insert([], message)
-                                BM.player_vanguard_path = interpolate_hex(self.location,result)
-                    else:
-                        if self.name == 'Legion' and BM.enemy_vanguard_path == []:
-                            result = get_vanguard_feasible(self)
-                            if result != False:
-                                # message = "WARNING: Legion aims vanguard at {0}".format(result.name)
-                                # show_message(message)
-                                # BM.battle_log_insert([], message)
-                                BM.enemy_vanguard_path = interpolate_hex(self.location,result)
-                    self.AI_running = False
-                    return
-
+            self.brain.AI()
+            
         def move_ship(self, new_location,bm):
               ##play voices based on backwards or forwards motion
             if self.faction == 'Player':
