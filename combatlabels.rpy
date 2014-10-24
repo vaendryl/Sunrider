@@ -147,7 +147,9 @@ label battle_start:
         BM.battlestart_cmd = BM.cmd
         BM.stopAI = False
         BM.order_used = False
-        BM.player_ai = False
+        BM.enemy_vanguard_path = []
+        BM.player_vanguard_path = []
+        BM.active_strategy = [None,0]
         renpy.take_screenshot()
         renpy.save('beginturn')
         if BM.show_tooltips:
