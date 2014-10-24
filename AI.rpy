@@ -446,13 +446,20 @@ init python:
                         else:
                             BM.enemy_vanguard_path = []
 
-
-            #################################### HOLD MY BEER, I'M DOING THIS
-
+            #Assault carrier specific AI
             if parent.stype == 'Assault Carrier' and parent.location != None:
-                if renpy.random.randint(0,2) == 1:
-                    spawn_ryders(parent,max=1)
-
+                #I'd like to make this dynamic but it's not trivial.
+                elite_count = get_shipcount_in_list('PACT Elite',enemy_ships)
+                support_count = get_shipcount_in_list('PACT Support',enemy_ships)
+                if support_count == 0:
+                    spawn_ryders(parent,max=1,force='PACT Support')
+                elif elite_count <= 1:
+                    spawn_ryders(parent,max=1,force='PACT Elite')
+                elif support_count + elite_count < 10:
+                    spawn_ryders(parent,max=1,force='PACT Support' if support_count < elite_count-1 else 'PACT Elite')
+                else:
+                    pass
+                        
             if parent.support and not parent.just_spawned:
                 supporting = True
                 while supporting:
@@ -473,8 +480,9 @@ init python:
                 #if parent.target == None: ##I need to get back to this
                 parent.AI_basic_loop()
                 if starting_en == parent.en:
-                      ##no (more) engine power was (/could be) used so we quit the AI
-
+                    #no (more) engine power was (/could be) used so we quit the AI
+                    
+                    #bit first let's have the legion do its thing
                     if parent.faction == 'Player':
                         if parent.name == 'Legion' and BM.player_vanguard_path == []:
                             result = get_vanguard_feasible(parent)
@@ -612,11 +620,8 @@ init python:
         self.melee_location = shortest_location
         return get_acc(weapon,self,target,guess = True,custom_range=1) * (weapon.damage-target.armor) * weapon.shot_count / 100
 
-    def spawn_ryders(ship,max=None):
-        """
-        used by carrier class enemies to spawn ryders
-        """
-
+    def spawn_ryders(ship,max=None,force=None):
+        """used by carrier class enemies to spawn ryders"""
         #get all the free spaces around the parent
         free_spaces = []
         for hex in get_all_in_radius(ship.location,1):
@@ -631,8 +636,12 @@ init python:
             possible_spawn = []
             for spawn in ship.spawns:
                 ryder,cost,weaponlist = spawn
+                #if a name was given to enforce skip if this one does not match.
+                if force:
+                    if force != ryder().name: continue
                 if ship.en >= cost:
                     possible_spawn.append(spawn)
+                    
 
             if len(possible_spawn) == 0:
                 spawning = False
@@ -784,7 +793,7 @@ init python:
 
             #count the number of player ships in between the target and self
             target_count = 0
-            for oship in (enemy_ships if ship.faction == 'Player' else player_ships):
+            for oship in (enemy_ships if self.faction == 'Player' else player_ships):
                 if oship.location in path:
                     target_count += 1
 

@@ -811,7 +811,7 @@ init 2 python:
             self.stype = 'Ryder'
             self.name = 'PACT Elite'
             self.animation_name = 'pactelite'
-            self.faction = 'PACT' #for now...
+            self.faction = 'PACT'
             self.max_hp = 700
             self.hp = self.max_hp
             self.max_en = 100
