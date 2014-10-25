@@ -26,7 +26,7 @@ init 2 python:
             
             #custom upgrades
             self.upgrades['base_armor'] = ['Armor',1,5,500,2]
-            self.upgrades['max_missiles'] = ['Missile Storage',1,1,500,2],
+            self.upgrades['max_missiles'] = ['Missile Storage',1,1,500,2]
             
             
             self.missiles = self.max_missiles
@@ -104,9 +104,9 @@ init 2 python:
             self.flak = 35
             
             ##custom upgrade scaling
-            self.upgrades['melee_dmg'] = ['Melee Damage',1,0.05,100,1.4],
-            self.upgrades['melee_acc'] = ['Melee Accuracy',1,0.05,100,1.4],
-            self.upgrades['melee_cost'] = ['Melee Energy Cost',1,0.05,100,1.8],
+            self.upgrades['melee_dmg'] = ['Melee Damage',1,0.05,100,1.4]
+            self.upgrades['melee_acc'] = ['Melee Accuracy',1,0.05,100,1.4]
+            self.upgrades['melee_cost'] = ['Melee Energy Cost',1,0.05,100,1.8]
 
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_blackjack.png'
@@ -194,7 +194,7 @@ init 2 python:
                 }
             self.flak = 20
             self.upgrades['max_hp'] = ['Hull Plating',1,100,100,2.0]
-            self.upgrades['max_en'] = ['Hull Plating',1,5,150,1.4]
+            self.upgrades['max_en'] = ['Energy Reactor',1,5,150,1.4]
 
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_phoenix.png'
