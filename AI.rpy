@@ -463,7 +463,7 @@ init python:
             if parent.support and not parent.just_spawned:
                 supporting = True
                 while supporting:
-                    supporting = support_AI(parent) #if this function returns False it couldn't support. therefore stop the loop and do something else, such as move.            
+                    supporting = parent.support_AI(parent) #if this function returns False it couldn't support. therefore stop the loop and do something else, such as move.            
 
             parent.target = None
             BM.selected = parent

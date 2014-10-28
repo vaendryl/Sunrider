@@ -233,6 +233,7 @@ init -6 python:
         #an acc. buff is added as a flat bonus
         if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
             accuracy += attacker.modifiers['accuracy'][0]
+            accuracy += attacker.morale_acc
 
         #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
         if custom_range:
@@ -356,6 +357,7 @@ init -6 python:
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             ship1.update_armor()
+            ship1.update_morale()
         for ship1 in enemy_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -381,6 +383,7 @@ init -6 python:
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             ship1.update_armor()
+            ship1.update_morale()
 
     def get_weapon_type(weapon):
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':

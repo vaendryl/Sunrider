@@ -1076,6 +1076,9 @@ init -2 python:
             for ship in player_ships:
                 ship.en = ship.max_en * (100 + ship.modifiers['energy regen'][0] ) / 100
                 if ship.en < 0: ship.en = 0
+                if ship.hp <= ((ship.hp / 100) * 25): ship.morale -= 5
+            for ship in enemy_ships:
+                if ship.hp <= ((ship.hp / 100) * 25): ship.morale -= 5
             self.active_weapon = None
             self.targetingmode = False
             self.target = None
@@ -1398,6 +1401,7 @@ init -2 python:
             for ship in player_ships:
                 ship.en = ship.max_en
                 ship.hp = ship.max_hp
+                ship.morale = 100
                 ship.hate = 100
                 ship.total_damage = 0
                 ship.total_missile_damage = 0
@@ -1585,7 +1589,10 @@ init -2 python:
             self.fireing_flak = False
             self.just_spawned = False
             self.melee_location = None
+            self.morale_up = False
+            self.morale_down = False
             self.morale = 100
+            self.morale_acc = 0
             self.enemies = {}
             self.hate = 100 #this is actually how much the enemy hates you. aka threat
             self.attraction = 0 #AI uses this. ships that provide lots of cover attract others
@@ -1689,7 +1696,38 @@ init -2 python:
             self.armor = int(self.armor)
             self.armor_color = '000'
             if self.armor < self.base_armor: self.armor_color = '700'
-            if self.armor > self.base_armor: self.armor_color = '070'
+            elif self.armor > self.base_armor: self.armor_color = '070'
+
+        ## aplly hidden morale modifiers
+        def update_morale(self):
+            if self.morale > 200:
+                if not self.morale_up:
+                    self.morale_up = True
+                    self.evasion += 5
+                    self.morale_acc += 10
+                if self.morale_down:
+                    self.morale_down = False
+                    self.evasion += 5
+                    self.morale_acc += 10
+            elif self.morale < 100:
+                if not self.morale_down:
+                    self.morale_down = True
+                    self.evasion -= 5
+                    self.morale_acc -= 10
+                if self.morale_up:
+                    self.morale_up = False
+                    self.evasion -= 5
+                    self.morale_acc -= 10
+            else:
+                if self.morale_up:
+                    self.morale_up = False
+                    self.evasion -= 5
+                    self.morale_acc -= 10
+                elif self.morale_down:
+                    self.morale_down = False
+                    self.evasion += 5
+                    self.morale_acc += 10
+            return
 
         def update_stats(self):
             try:
@@ -1731,6 +1769,7 @@ init -2 python:
             self.shield_color = '000'
             if self.shields > self.shield_generation: self.shield_color = '070'
             self.update_armor()
+            self.update_morale()
 
         def receive_damage(self,damage,attacker,wtype):
             BM.attacker = attacker
@@ -1832,7 +1871,7 @@ init -2 python:
                 else:
                     self.update_stats()
 
-        def destroy(self,attacker,no_animation = False):
+        def destroy(self, attacker, no_animation = False):
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy morale too
             self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
@@ -1842,12 +1881,29 @@ init -2 python:
 
             #hate/morale management
             self.hate = 100  #reset hate so that after getting resurrected it doesn't pull everything again.
+            attaker.morale += 10
+            #enemy loss morale affection
             if not self.faction == 'Player':
                 attacker.hate += self.max_hp*0.3
                 attacker.target = None
+                #loss of lead ship leads to total morale degradation
+                if self in lead_ships:
+                    for eship in enemy_ships: eship.morale -= 10
+                else:
+                    for eship in enemy_ships:
+                        if get_ship_distance(self,eship) <= 4:
+                            eship.morale -= 10
+                for pship in player_ships:
+                    if get_ship_distance(self,eship) <= 4:
+                        eship.morale += 10
+            #player loss morale affection
+            else:
                 for eship in enemy_ships:
                     if get_ship_distance(self,eship) <= 4:
-                        eship.morale -= 20
+                        eship.morale += 10
+                for pship in player_ships:
+                    if get_ship_distance(self,eship) <= 4:
+                        eship.morale -= 10
 
             #show the animation of the ship getting blown up
             if not no_animation:
