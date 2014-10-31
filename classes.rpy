@@ -57,6 +57,7 @@ init -2 python:
             self.end_turn_callbacks = []
 
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
+            self.lead_ships = []
             self.mouse_location = (0,0)
             self.vanguard_damage = 800
             self.vanguard_range = 6
@@ -291,15 +292,19 @@ init -2 python:
             self.battlemode = False
 
         def skirmish_quit(self):
+            renpy.hide_screen('store_union') #seems like it has trouble staying closed?
             renpy.hide_screen('player_unit_pool_collapsed')
             renpy.hide_screen('enemy_unit_pool_collapsed')
             renpy.hide_screen('player_unit_pool')
             renpy.hide_screen('enemy_unit_pool')
             renpy.hide_screen('mousefollow')
             renpy.hide_screen('battle_screen')
-            renpy.hide_screen('store_union') #seems like it has trouble staying closed?
-            self.battlemode = False
             clean_battle_exit()
+            self.battlemode = False
+            BM.cmd = store.tempcmd
+            BM.money = store.tempmoney
+            BM.mission = None
+            store.player_ships = store.player_ships_original
             renpy.jump('dispatch')
 
         def skirmish_remove(self):
@@ -1630,7 +1635,7 @@ init -2 python:
                 'energy_cost':['Energy Cost',1,-0.05,100,1.8],
                 'missile_dmg':['Missile Damage',1,0.10,100,1.5],
                 'missile_eccm':['Missile Flak Resistance',1,1,100,1.5],
-                'missile_cost':['Missile Energy Cost',1,-0.10,100,2.0],
+                'missile_cost':['Missile Energy Cost',1,-0.5,100,2.0],
                 'max_missiles':['Missile Storage',1,1,500,3],
                 'melee_dmg':['Melee Damage',1,0.05,100,1.5],
                 'melee_acc':['Melee Accuracy',1,0.05,100,1.5],

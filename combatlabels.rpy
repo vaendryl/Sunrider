@@ -9,6 +9,18 @@ label testpause:
         renpy.pause(1)
 
     return
+    
+label RnD_skirmish:
+
+    window hide
+
+    python:
+        store.xadj = ui.adjustment()
+        store.yadj = ui.adjustment()
+        BM.active_upgrade = None
+        buy_upgrades()
+    
+jump mission_skirmish
 
 transform shake(time=0.5,repeats=20): #defunct?
     xalign 0.5 yalign 0.5

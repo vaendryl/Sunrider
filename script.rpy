@@ -22331,23 +22331,28 @@ label credits:
         xalign 0.5
         ypos 1.1
         linear 15 ypos -0.25
-    pause 3.0
+    pause 5.0
     show credits25:
+        xalign 0.5
+        ypos 1.1
+        linear 15 ypos -0.25    
+    pause 7
+    show credits26:
         xalign 0.5
         ypos 1.1
         linear 6.666666666666667 ypos 0.5
     pause 15.0
-    hide credits25 with dissolve
+    hide credits26 with dissolve
 
     scene bg black2
 
     $ renpy.pause(0.1)
 
-    show credits26:
+    show credits27:
         xalign 0.5 ypos 0.2
 
     pause 4.0
-    hide credits26 with dissolve
+    hide credits27 with dissolve
 
     window hide
 

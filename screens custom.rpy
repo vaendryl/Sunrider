@@ -817,6 +817,7 @@ screen battle_screen:
             hover hoverglow(endturnbutton_idle)
             action Return(['endturn'])
 
+    ## skirmish buttons start, return, remove, e.music, p.music
     if BM.phase == 'formation':
         imagebutton:
             xpos 170
@@ -857,6 +858,15 @@ screen battle_screen:
                 idle 'Skirmish/playermusic.png'
                 hover hoverglow('Skirmish/playermusic.png')
                 action Show('player_music')
+                
+            imagebutton:
+                xpos 414
+                ypos 1022
+                xanchor 0.5
+                yanchor 0.5
+                idle 'Menu/res_button.png'
+                hover hoverglow('Menu/res_button.png')
+                action Jump('RnD_skirmish')
 
 transform move_down(ystart,yend,xx=0):
     xpos xx

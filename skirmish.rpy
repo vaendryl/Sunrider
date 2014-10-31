@@ -3,8 +3,10 @@ label skirmish_battle:
     python:
         store.tempmoney = BM.money
         store.tempcmd = BM.cmd
-        store.temprockets = store.sunrider.rockets
-        store.temprepair_drones = store.sunrider.repair_drones
+        # store.temprockets = store.sunrider.rockets
+        # store.temprepair_drones = store.sunrider.repair_drones
+        player_ships_original = player_ships
+        player_ships = deepcopy(player_ships) #upgrades should not be permanent.
         enemy_ships = []
         destroyed_ships = []
         clean_grid()
@@ -43,8 +45,10 @@ label skirmish_battle:
     python:
         BM.cmd = store.tempcmd
         BM.money = store.tempmoney
-        store.sunrider.rockets = store.temprockets
-        store.sunrider.repair_drones = store.temprepair_drones
+        # store.sunrider.rockets = store.temprockets
+        # store.sunrider.repair_drones = store.temprepair_drones
+        player_ships = player_ships_original
+        BM.mission = None
     jump dispatch
     return
 

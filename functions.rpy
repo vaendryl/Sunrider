@@ -74,9 +74,10 @@ init -6 python:
 
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
-        if BM.money >= cost:  #sanity check
+        if BM.money >= cost or BM.mission == 'skirmish':  #sanity check
             renpy.music.play('sound/upgrade_purchase.ogg',channel = 'sound1')
-            BM.money -= cost
+            if not BM.mission == 'skirmish':
+                BM.money -= cost
             new_value = getattr(ship,upgrade)+increase
             setattr(ship,upgrade,new_value)
             level += 1
@@ -90,7 +91,8 @@ init -6 python:
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
         level -= 1
         cost = int(round(cost / multiplier))
-        BM.money += int(cost * 0.8)
+        if not BM.mission == 'skirmish': #better safe than sorry
+            BM.money += int(cost * 0.8)  
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
@@ -112,8 +114,6 @@ init -6 python:
                     'sound/Voice/Chigara/Others Line 3.ogg'
                     ]
                 renpy.music.play(renpy.random.choice(voicelist),channel = 'chivoice')
-
-
 
                 for ship in player_ships:
                     ship.hp = ship.max_hp
@@ -197,7 +197,7 @@ init -6 python:
         for ship in player_ships:
             BM.ships.append(ship)
 
-    def add_enemy_list():        
+    def add_enemy_list():
         store.all_enemies = [
             PactBomber(),  PactMook(),
             MissileFrigate(), PactCruiser(),
@@ -208,8 +208,8 @@ init -6 python:
             PirateBase()
             ]
         for ship in store.all_enemies:
-            ship.location = None 
-    
+            ship.location = None
+
     def get_acc(weapon, attacker, target, guess = False, range_reduction = 0,custom_range=0): #calculate the chance to hit an enemy ship
         if weapon.max_range and custom_range == 0:  #if this value is not None, False or 0.
             if get_ship_distance(attacker,target) > weapon.max_range: return 0
@@ -444,13 +444,18 @@ init -6 python:
             BM.ships.append(ship)
 
         #the all_enemies list also needs to be updated or you get problems in skirmish
-        iterate_list = BM.ships + store.all_enemies 
+        iterate_list = BM.ships + store.all_enemies
         #going to re-init all the ships
         for ship in iterate_list:
             weapons = ship.weapons
-            
+
             #re-init all the weapons to default values
-            for weapon in weapons+ship.default_weapon_list:
+            if ship.faction == 'Player':
+                weaponlist = weapons
+            else:
+                weaponlist = weapons + ship.default_weapon_list
+
+            for weapon in weaponlist:
                 #make a copy of the weapon if required
                 weaponcopy = None
                 if hasattr(weapon,'keep_after_reset'):
@@ -503,7 +508,7 @@ init -6 python:
             ]
         for ship in store.all_enemies:
             ship.location = None
-        
+
     def update_mp():
         for variable in important_variables:
             if hasattr(store,variable):
@@ -515,9 +520,7 @@ init -6 python:
         return 1.0 - math.cos(t * math.pi / 2.0)
 
     def get_mouse_location():
-        """
-        get the mouse position and return the hex location the mouse is over.
-        """
+        """get the mouse position and return the hex location the mouse is over."""
         a,b = renpy.get_mouse_pos()
         yoffset = 27 * store.zoomlevel
         hexheight = HEXD * store.zoomlevel
@@ -799,9 +802,7 @@ init -6 python:
         return False
 
     def update_modifiers():
-        """
-        called when the phase changes. it ticks down modifiers and removes them when expired.
-        """
+        """called when the phase changes. it ticks down modifiers and removes them when expired."""
 
         if BM.phase == 'Player':
 
@@ -1081,9 +1082,7 @@ init -6 python:
         return outer
 
     def clean_locations(locations):
-        """
-        removes all the locations that are out of bounds
-        """
+        """removes all the locations that are out of bounds"""
         if locations == None: return []
         if locations == []: return []
 

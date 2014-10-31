@@ -949,13 +949,18 @@ init -5:
     image credits18 = Text("Voice Director{p}         Mike Salyer", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits19 = Text("Sound Effects{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits20 = Text("Voice Clean Up{p}         Steve Green", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, Eternal Dream, SAMFREE Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits21 = Text("Soundtrack{p}         Arnaud Conde, Marc Teichert, Epic Soul Factory{p}Celestrial Aeon Project, Eternal Dream, SAMFREE Music, Amacha Music", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits22 = Text("OP Song{p}         |Sora no Senritsu|{p}vocals: lily-an{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits23 = Text("ED Song{p}         |Firn -The Pale Sun-|{p}vocals: lily-an, Maya{p}instruments: Keita Takanashi{p}Iced Blade", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     image credits24 = Text("Additional Sound Effects{p}         fonogeno, junggle, sandyrb, sarge4267, ryansnook, klerrp,{p}robinhood76, nengisuls, mediapaja2009, shawnyboy,{p}zimbot, lloydevans09, goup, omar-alvarado, roper1911,{p}NEO_Soun, BlackCow, Ivan-8042, Diode111, cgeffex,{p}qudodup, unfa, zeuss, kiddpark, isaac200000, tommccann", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
-    image credits25 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits26 = Text("CC Love in Space, 2013-14", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
 
-    image credits26 = Text("We thank the following Kickstarter backers...", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
+    image credits25 = Text("Many thanks to those who entered our Fan Fiction contest!{p}The winners are:{p}"
+        "1: Marx-93 - Home{p}2: Whalecow - Unknown Pilot-kun: Unknown Soldier{p}"
+        "3: Drath - The Fall of Senna{p}4: Light Mage - Pirate Logs{p}"
+        "5: Radclive - Lifa and Times of Sola vi Ryuvia", size=30, font="Font/GOTHIC.TTF", text_align=0)
+    
+    image credits27 = Text("We thank the following Kickstarter backers...", size=30, font="Font/GOTHIC.TTF", text_align=0.5)
     
     ########################PARALAX EFFECTS
 

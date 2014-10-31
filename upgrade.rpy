@@ -1,15 +1,8 @@
 screen upgrade:
     modal True
+    zorder 50
 
     add "Menu/upgrade_back.jpg"
-
-
-
-    # imagebutton:
-        # xpos 0.05 ypos 925
-        # action Return(["submit"])
-        # idle "Menu/submit.jpg"
-        # hover "Menu/submit_hover.jpg"
 
     imagebutton:
         xpos 0.05 ypos 975
@@ -18,7 +11,7 @@ screen upgrade:
         hover "Menu/return_hover.jpg"
 
     if BM.selected == None:
-        $ BM.selected = sunrider
+        $ BM.selected = player_ships[0]
     $ ship = BM.selected
 
     $ can_use_melee = False
@@ -85,7 +78,8 @@ screen upgrade:
 
     add ship.upgrade_menu
 
-    text '${!s}'.format(BM.money):
+    $ funds_text = '${!s}'.format(BM.money) if BM.mission!='skirmish' else 'UNLIMITED'
+    text funds_text:
         size 50
         xpos 70
         ypos 0.76
@@ -172,36 +166,54 @@ screen upgrade:
                                     color '000'
                                     min_width 240
 
-                            text str(level):
-                                color '000'
-                                min_width 75
+                            if level < 19:
+                                text str(level):
+                                    color '000'
+                                    min_width 75
+                            else:
+                                text 'max':
+                                    xpos -15
+                                    color '000'
+                                    min_width 75
 
                             if level > 1:
                                 $cost_width = 100
                             else:
                                 $cost_width = 200
 
-                            text str(cost):
-                                color '000'
-                                min_width cost_width
+                            if level < 19:
+                                text str(cost):
+                                    color '000'
+                                    min_width cost_width
+                            else:
+                                text ' -':
+                                    color '000'
+                                    min_width cost_width                                
 
                             if level > 1:
                                 text "({})".format( int(round(cost/multiplier)*0.8) ) :
                                     color '900'
                                     min_width 100
 
-                            if BM.money >= cost:
-                                textbutton '+':
-                                    text_color 'fff'
-                                    action Return(['+', attribute])
-                                    hovered SetField(BM,'active_upgrade',upgrade)
-                                    unhovered SetField(BM,'active_upgrade',None)
+                            if level < 19:
+                                if BM.money >= cost or BM.mission=='skirmish':
+                                    textbutton '+':
+                                        text_color 'fff'
+                                        action Return(['+', attribute])
+                                        hovered SetField(BM,'active_upgrade',upgrade)
+                                        unhovered SetField(BM,'active_upgrade',None)
+                                else:
+                                    textbutton 'X':
+                                        text_color 'c00'
+                                        action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
+                                        hovered SetField(BM,'active_upgrade',upgrade)
+                                        unhovered SetField(BM,'active_upgrade',None)
                             else:
                                 textbutton 'X':
                                     text_color 'c00'
-                                    action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
-                                    hovered SetField(BM,'active_upgrade',upgrade)
-                                    unhovered SetField(BM,'active_upgrade',None)
+                                    action NullAction()
+                                    hovered None
+                                    unhovered None
 
                             if level > 1:
                                 textbutton '-':
@@ -267,15 +279,17 @@ screen upgrade:
             xpos 0.46
             ypos 0.7
             vbox:
-                label "Future costs:":
-                    right_padding 10
-                    text_color '000'
+                if level < 18:
+                    label "Future costs:":
+                        right_padding 10
+                        text_color '000'
                 for i in range(1,10):
                     hbox:
-                        text "Mark {}:".format( level+i+1 ):
-                            min_width 100
-                            color '000'
-                        text " ${}".format( int(cost*multiplier**i) ):
-                            color '000'
+                        if level+i+1 < 20:
+                            text "Mark {}:".format( level+i+1 ):
+                                min_width 100
+                                color '000'
+                            text " ${}".format( int(cost*multiplier**i) ):
+                                color '000'
 
 
