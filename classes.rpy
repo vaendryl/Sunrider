@@ -91,10 +91,7 @@ init -2 python:
             self.battle_log = []
             self.battle_log_yadj = ui.adjustment(adjustable=True)
             #dispatchers
-            self.skirmish_dispatcher = { None            : self.common_none,
-                                         True            : self.common_bool,
-                                         False           : self.common_bool,
-                                         'start'         : self.skirmish_start,
+            self.skirmish_dispatcher = { 'start'         : self.skirmish_start,
                                          'quit'          : self.skirmish_quit,
                                          'remove'        : self.skirmish_remove,
                                          'playermusic'   : self.skirmish_playermusic,
@@ -104,19 +101,13 @@ init -2 python:
                                          "deselect"      : self.common_deselect,
                                          "selection"     : self.skirmish_selection,
                                          "warptarget"    : self.skirmish_warptarget }
-            self.formation_dispatcher = { None           : self.common_none,
-                                          True           : self.common_bool,
-                                          False          : self.common_bool,
-                                          "start"        : self.formation_start,
+            self.formation_dispatcher = { "start"        : self.formation_start,
                                           "zoom"         : self.common_zoom,
                                           "next ship"    : self.common_next_ship,
                                           "deselect"     : self.common_deselect,
                                           "selection"    : self.formation_selection,
                                           "warptarget"   : self.formation_warptarget }
-            self.battle_dispatcher = { None               : self.common_none,
-                                       True               : self.common_bool,
-                                       False              : self.common_bool,
-                                       "anime"            : self.battle_anime,
+            self.battle_dispatcher = { "anime"            : self.battle_anime,
                                        "cheat"            : self.battle_cheat,
                                        "I WIN"            : self.battle_inst_win,
                                        "deselect"         : self.battle_deselect,
@@ -192,30 +183,25 @@ init -2 python:
             if ship != None:
                 ship.movement_tiles = []
 
-        def dispatch_handler(self,result,dispatch_type='battle'):
+        def dispatch_handler(self, result, dispatch_type = 'battle'):
             ui_action = None
             #check handling of dispatcher
             if result is None: return self.common_none
-            elif type(result) is bool: return self.common_bool
-            elif type(result) is list:
-                if dispatch_type == 'skirmish':
-                    ui_action = self.skirmish_dispatcher[result[0]]
-                elif dispatch_type == 'formation':
-                    ui_action = self.formation_dispatcher[result[0]]
-                elif dispatch_type == 'battle':
-                    ui_action = self.battle_dispatcher[result[0]]
+            elif isinstance(result, bool): return self.common_bool
+            elif isinstance(result, list):
+                disp_type = dispatch_type + "_dispatcher"
+                ui_action = getattr(self, disp_type).get(result[0], self.common_unexpected)
             else:
-                if dispatch_type == 'skirmish':
-                    ui_action = self.skirmish_dispatcher[result]
-                elif dispatch_type == 'formation':
-                    ui_action = self.formation_dispatcher[result]
-                elif dispatch_type == 'battle':
-                    ui_action = self.battle_dispatcher[result]
+                disp_type = dispatch_type + "_dispatcher"
+                ui_action = getattr(self, disp_type).get(result, self.common_unexpected)
             return ui_action
 
         ########################################################
         ## Common dispatcher
         ########################################################
+        def common_unexpected(self):
+            self.debug_log.append("Unexpected dispatcher key: " + self.result)
+
         def common_none(self):
             pass
 
@@ -1149,14 +1135,14 @@ init -2 python:
 
                 pship.en = pship.max_en
                 pship.lbl = im.MatrixColor(pship.blbl,im.matrix.brightness(0.3))
-                
+
                 #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
                 #this is but a work-around.
                 try:
                     renpy.pause(AI_WAIT_TIME)
                 except:
                     pass
-                    
+
                 # if config.developer:
                     # renpy.pause()
 
@@ -1282,14 +1268,14 @@ init -2 python:
 
                 eship.en = eship.max_en
                 eship.lbl = im.MatrixColor(eship.blbl,im.matrix.brightness(0.3))
-                
+
                 #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
                 #this is but a work-around.
                 try:
                     renpy.pause(AI_WAIT_TIME)
                 except:
                     pass
-                    
+
                 # if config.developer:
                     # renpy.pause()
 
@@ -1321,14 +1307,14 @@ init -2 python:
                         ship.en = ship.max_en
 
                     ship.lbl = im.MatrixColor(ship.blbl,im.matrix.brightness(0.3))
-                    
+
                     #a number of people have reported crashes: Exception: ui.interact called with non-empty widget/layer stack.
                     #this is but a work-around.
                     try:
                         renpy.pause(AI_WAIT_TIME)
                     except:
                         pass
-                        
+
                     ship.AI()
                     ship.lbl = ship.blbl
 
@@ -1578,7 +1564,7 @@ init -2 python:
     ##blueprints##
 
     class Battleship(store.object):
-        """this class is the basis of all unit types in the game. 
+        """this class is the basis of all unit types in the game.
         these values are the default one if none are specified."""
         def __init__(self):
             self.brain = DefaultAI(self)
@@ -1924,13 +1910,13 @@ init -2 python:
 
         def AI_basic_loop(self):
             self.brain.AI_basic_loop()
-            
+
         def AI_move_towards(self, target, melee_distance = False, max_move_distance = 0, preferred_distance = 0,rush=False):
             self.brain.AI_move_towards(target,melee_distance,max_move_distance,preferred_distance,rush)
 
         def AI(self):
             self.brain.AI()
-            
+
         def move_ship(self, new_location,bm):
               ##play voices based on backwards or forwards motion
             if self.faction == 'Player':
@@ -2739,7 +2725,7 @@ init -2 python:
             #cancelling the movement just leads to annoying problem
             BM.just_moved = False
             return
-        
+
         def energy_cost(self,parent):
             return self.energy_use
 
@@ -3074,7 +3060,7 @@ init -2 python:
             renpy.jump_out_of_context(self.jumpLoc)
 
     class StoreItem(store.object):
-        """master class of all store objects 
+        """master class of all store objects
         the actual items are defined in the library"""
         def __init__(self):
             self.id = ''                 #unique name for this item
@@ -3206,7 +3192,7 @@ init -2 python:
             if BM.selectedmode: BM.selected.movement_tiles = get_movement_tiles(BM.selected)
             renpy.restart_interaction()
 
-    class RestartInteraction(Action): 
+    class RestartInteraction(Action):
         def __init__(self):
             Action.__init__(self)
 
