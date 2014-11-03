@@ -92,7 +92,7 @@ init -6 python:
         level -= 1
         cost = int(round(cost / multiplier))
         if not BM.mission == 'skirmish': #better safe than sorry
-            BM.money += int(cost * 0.8)  
+            BM.money += int(cost * 0.8)
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
@@ -225,7 +225,7 @@ init -6 python:
 
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
         if not weapon.wtype == 'Support' and not guess:
-            accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] ) / 100 )
+            accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] + target.morale.eva ) / 100 )
         elif guess:
             #AI assumes all ryders have 25 evasion.
             if target.stype == 'Ryder': accuracy -= 25
@@ -233,6 +233,8 @@ init -6 python:
         #an acc. buff is added as a flat bonus
         if not weapon.wtype == 'Support' or weapon.wtype == 'Curse':
             accuracy += attacker.modifiers['accuracy'][0]
+            #morale bonus is zero on difficulty lower than Hard
+            accuracy += attacker.morale.acc
 
         #accuracy degrades over distance based on a weapon stat. missiles and rockets usually degrade much more slowly
         if custom_range:
@@ -356,6 +358,7 @@ init -6 python:
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             ship1.update_armor()
+            ship1.morale.update()
         for ship1 in enemy_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -381,6 +384,7 @@ init -6 python:
             ship1.shield_color = '000'
             if ship1.shields > ship1.shield_generation: ship1.shield_color = '070'
             ship1.update_armor()
+            ship1.morale.update()
 
     def get_weapon_type(weapon):
         if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':

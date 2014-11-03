@@ -940,9 +940,16 @@ init -2 python:
         ########################################################
         ## Battle dispatcher end
         ########################################################
+        def morale_reset(self):
+            for ship in player_ships:
+                ship.morale.reset()
+            for ship in enemy_ships:
+                ship.morale.reset()
+
         def start(self):
             self.battle_log_insert(['system'], "-------------BATTLE START-------------")
             BM.player_ai = False
+            self.morale_reset()
             battlemode() #stop scrollback and set BM.battlemode = True
             update_stats()  #used to update some attributes like armour and shields
             renpy.show_screen('battle_screen')
@@ -1076,6 +1083,9 @@ init -2 python:
             for ship in player_ships:
                 ship.en = ship.max_en * (100 + ship.modifiers['energy regen'][0] ) / 100
                 if ship.en < 0: ship.en = 0
+                if ship.hp <= ((ship.max_hp/ 100) * 25): ship.morale.value -= 5
+            for ship in enemy_ships:
+                if ship.hp <= ((ship.max_hp/ 100) * 25): ship.morale.value -= 5
             self.active_weapon = None
             self.targetingmode = False
             self.target = None
@@ -1398,6 +1408,7 @@ init -2 python:
             for ship in player_ships:
                 ship.en = ship.max_en
                 ship.hp = ship.max_hp
+                ship.morale.value = 0
                 ship.hate = 100
                 ship.total_damage = 0
                 ship.total_missile_damage = 0
@@ -1561,6 +1572,72 @@ init -2 python:
         def visit(self):
            return [ self.child ]
 
+    ##morale struct
+    class MoraleSystem():
+        def __init__(self):
+            self.value      = 0         #numerical representation of morale
+            self.state      = "Normal"  #text representation of morale
+            self.acc        = 0         #accuracy bonus
+            self.eva        = 0         #evasion bonus
+            self.dmg        = 1.0       #damage factor bonus(not stackable)
+            self.time       = 0         #number of turns in morale state
+
+        def reset(self):
+            self.__init__()
+
+        ##methods for morale update
+        # internal methods
+        def Normal_update(self):
+            self.dmg = 1.0
+            self.acc = 0
+            self.eva = 0
+
+        def Down_update(self):
+            self.dmg = 0.9
+            self.acc = -10 - self.time
+            self.eva = -5
+
+        def Break_update(self):
+            self.value += 10
+            self.dmg = 0.75
+            self.acc = -20 - (2 * self.time)
+            self.eva = -10 - self.time
+
+        def High_update(self):
+            self.dmg = 1.1
+            self.acc = 10 + self.time
+            self.eva = 5
+
+        def Rally_update(self):
+            self.value -= 10
+            self.dmg = 1.25
+            self.acc = 20 + (2 * self.time)
+            self.eva = 10 + self.time
+
+        def update_state(self, state):
+            if self.state == state:
+                self.time += 1
+            else:
+                self.time = 0
+                self.state = state
+
+        def calc_state(self):
+            state = "Normal"
+            if self.value >= 100:
+                if self.value >= 200: state = "Rally"
+                else: state = "High"
+            elif self.value <= -100:
+                if self.value <= -200: state = "Break"
+                else: state = "Down"
+            self.update_state(state)
+
+        ##external method for morale update
+        def update(self):
+            self.calc_state()
+            dispatch = self.state + "_update"
+            getattr(self, dispatch)()
+            return
+
     ##blueprints##
 
     class Battleship(store.object):
@@ -1585,9 +1662,9 @@ init -2 python:
             self.fireing_flak = False
             self.just_spawned = False
             self.melee_location = None
-            self.morale = 100
             self.enemies = {}
             self.hate = 100 #this is actually how much the enemy hates you. aka threat
+            self.morale = MoraleSystem()
             self.attraction = 0 #AI uses this. ships that provide lots of cover attract others
             self.fear = {
                 'kinetics':20,
@@ -1689,7 +1766,7 @@ init -2 python:
             self.armor = int(self.armor)
             self.armor_color = '000'
             if self.armor < self.base_armor: self.armor_color = '700'
-            if self.armor > self.base_armor: self.armor_color = '070'
+            elif self.armor > self.base_armor: self.armor_color = '070'
 
         def update_stats(self):
             try:
@@ -1731,6 +1808,7 @@ init -2 python:
             self.shield_color = '000'
             if self.shields > self.shield_generation: self.shield_color = '070'
             self.update_armor()
+            self.morale.update()
 
         def receive_damage(self,damage,attacker,wtype):
             BM.attacker = attacker
@@ -1832,7 +1910,7 @@ init -2 python:
                 else:
                     self.update_stats()
 
-        def destroy(self,attacker,no_animation = False):
+        def destroy(self, attacker, no_animation = False):
               #first take care of some AI data tracking stuff
               #destroying enemy ships increases hate, but lowers enemy morale too
             self.en = 0 #this turns out to be useful especially for not having the AI do stuff with dead units.
@@ -1842,12 +1920,29 @@ init -2 python:
 
             #hate/morale management
             self.hate = 100  #reset hate so that after getting resurrected it doesn't pull everything again.
+            attaker.morale.value += 10
+            #enemy loss morale affection
             if not self.faction == 'Player':
                 attacker.hate += self.max_hp*0.3
                 attacker.target = None
+                #loss of lead ship leads to total morale degradation
+                if self in lead_ships:
+                    for eship in enemy_ships: eship.morale.value -= 10
+                else:
+                    for eship in enemy_ships:
+                        if get_ship_distance(self,eship) <= 4:
+                            eship.morale.value -= 10
+                for pship in player_ships:
+                    if get_ship_distance(self,eship) <= 4:
+                        eship.morale.value += 10
+            #player loss morale affection
+            else:
                 for eship in enemy_ships:
                     if get_ship_distance(self,eship) <= 4:
-                        eship.morale -= 20
+                        eship.morale.value += 10
+                for pship in player_ships:
+                    if get_ship_distance(self,eship) <= 4:
+                        eship.morale.value -= 10
 
             #show the animation of the ship getting blown up
             if not no_animation:
@@ -2073,8 +2168,9 @@ init -2 python:
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'laser', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
-                    damage = self.damage * parent.energy_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
+                    damage = self.damage * parent.morale.dmg * parent.energy_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
+
                     if target.shields > 0:
                         negation = damage * target.shields / 100.0
                         damage -= negation
@@ -2140,7 +2236,7 @@ init -2 python:
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'kinetic', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
-                    damage = self.damage * parent.kinetic_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
+                    damage = self.damage * parent.morale.dmg * parent.kinetic_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     if counter:
                         #when countering, flak buffs give an extra damage bonus.
@@ -2258,7 +2354,7 @@ init -2 python:
 
             for shot in range(missile.shot_count):
                 if get_shot_hit(accuracy,self.shot_count,parent.faction):
-                    damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
+                    damage = self.damage * parent.morale.dmg * parent.missile_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
                     damage -= target.armor
                     store.total_armor_negation += target.armor
@@ -2406,9 +2502,9 @@ init -2 python:
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'melee', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
-                    damage = self.damage * parent.melee_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
+                    damage = self.damage * parent.morale.dmg * parent.melee_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
-                    if damage < target.armor *2:
+                    if damage < target.armor * 2:
                         store.total_armor_negation += damage -1
                     else:
                         store.total_armor_negation += target.armor *2
@@ -2473,7 +2569,7 @@ init -2 python:
 
             #if this is a healing skill
             if self.repair:
-                healing = int(self.damage * renpy.random.triangular(0.8,1.2) )
+                healing = int(self.damage * parent.morale.dmg * renpy.random.triangular(0.95, 1.05))
                 if self.wtype == 'Support':
                     target.getting_buff = True
                 else:
