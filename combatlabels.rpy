@@ -152,11 +152,11 @@ label battle_start:
         BM.battlestart_player_ships = store.player_ships[:]
         for ship in BM.battlestart_player_ships:
             ship.battlestart_location = ship.location
-        BM.battlestart_enemy_ships = deepcopy(store.enemy_ships)
-        BM.battlestart_covers = deepcopy(BM.covers)
-        BM.battlestart_sunrider_rockets = sunrider.rockets
-        BM.battlestart_sunrider_repair_drones = sunrider.repair_drones
-        BM.battlestart_cmd = BM.cmd
+        BM.battlestart.enemy_ships = deepcopy(store.enemy_ships)
+        BM.battlestart.covers = deepcopy(BM.covers)
+        BM.battlestart.sunrider_rockets = sunrider.rockets
+        BM.battlestart.sunrider_repair_drones = sunrider.repair_drones
+        BM.battlestart.cmd = BM.cmd
         BM.stopAI = False
         BM.order_used = False
         BM.enemy_vanguard_path = []
@@ -206,10 +206,10 @@ label tryagain:
     hide badend
     $ clean_battle_exit(True)
     python:
-        battle1_check1 = False
-        battle2_check1 = False
-        battle2_check2 = False
-        battle_check1 = False
+        store.battle1_check1 = False
+        store.battle2_check1 = False
+        store.battle2_check2 = False
+        store.battle_check1 = False
         i = 1
         while True:
             if hasattr(store, 'check{}'.format(i)):
@@ -220,21 +220,21 @@ label tryagain:
         
         try:
             store.destroyed_ships = []
-            store.player_ships = BM.battlestart_player_ships
+            store.player_ships = BM.battlestart.player_ships
             for ship in store.player_ships:
                 ship.missiles = ship.max_missiles
                 ship.location = ship.battlestart_location
-            sunrider.rockets = BM.battlestart_sunrider_rockets
-            sunrider.repair_drones = BM.battlestart_sunrider_repair_drones
-            BM.cmd = BM.battlestart_cmd
+            sunrider.rockets = BM.battlestart.sunrider_rockets
+            sunrider.repair_drones = BM.battlestart.sunrider_repair_drones
+            BM.cmd = BM.battlestart.cmd
             BM.turn_count = 1
             
-            store.enemy_ships = BM.battlestart_enemy_ships
+            store.enemy_ships = BM.battlestart.enemy_ships
             for ship in store.enemy_ships:
                 if isinstance(ship, Havoc):
                     store.havoc = ship
             
-            BM.covers = BM.battlestart_covers
+            BM.covers = BM.battlestart.covers
             for cover in BM.covers:
                 cover.hp = cover.max_hp
         except:

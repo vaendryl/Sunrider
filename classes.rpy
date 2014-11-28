@@ -54,6 +54,7 @@ init -2 python:
             self.mercenary_count = 0  #the number of mercenaries in service to the Sunrider. [no longer used]
             self.remove_mode = False  #when True the player can easily remove units in skirmish
             self.player_ai = False
+            self.battlestart = store.object()
             self.end_turn_callbacks = []
 
             self.lowest_difficulty = 3 #lowest recorded difficulty. bragging rights!
