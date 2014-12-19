@@ -72,6 +72,17 @@ init -6 python:
         ship.upgrades = tempship.upgrades
         BM.money += money_returned
 
+    def update_upgrades(ship):
+        if ship == None:
+            return
+        upgrades = deepcopy(ship.upgrades)
+        reset_upgrades(ship)
+        for key in upgrades:
+            name,level,increase,cost,multiplier = upgrades[key]
+            if key in ship.upgrades:
+                for count in range(level-1):
+                    process_upgrade(ship, key)
+
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
         if BM.money >= cost or BM.mission == 'skirmish':  #sanity check
@@ -124,6 +135,9 @@ init -6 python:
 
             elif result[0] == 'reset':
                 reset_upgrades(BM.selected)
+
+            elif result[0] == 'update':
+                update_upgrades(BM.selected)
 
             elif result != None:
                 if result[0] == '+':
