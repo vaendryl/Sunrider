@@ -6,7 +6,9 @@ label skirmish_battle:
         # store.temprockets = store.sunrider.rockets
         # store.temprepair_drones = store.sunrider.repair_drones
         player_ships_original = player_ships
+        original_sunrider = sunrider
         player_ships = deepcopy(player_ships) #upgrades should not be permanent.
+        sunrider = get_ship_from_list(player_ships, 'Sunrider')
         enemy_ships = []
         destroyed_ships = []
         clean_grid()
@@ -24,7 +26,7 @@ label skirmish_battle:
     $ PlayerTurnMusic = "music/Titan.ogg"
     $ EnemyTurnMusic = "music/Dusty_Universe.ogg"
 
-    hide screen deck0
+    hide screen ship_map
     show screen battle_screen
     show screen player_unit_pool_collapsed
     show screen enemy_unit_pool_collapsed
@@ -48,6 +50,7 @@ label skirmish_battle:
         # store.sunrider.rockets = store.temprockets
         # store.sunrider.repair_drones = store.temprepair_drones
         player_ships = player_ships_original
+        sunrider = original_sunrider
         BM.mission = None
     jump dispatch
     return
@@ -72,8 +75,4 @@ label mission_skirmish:
     else:
         pass #continue down
     # jump dispatch
-    return
-
-
-
     return

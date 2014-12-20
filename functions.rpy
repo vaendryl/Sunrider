@@ -1109,3 +1109,9 @@ init -6 python:
                 result.append(location)
 
         return result
+
+    def get_ship_from_list(ship_list, ship_name):
+        for ship in ship_list:
+            if ship.name == ship_name:
+                return ship
+        return None
