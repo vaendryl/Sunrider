@@ -75,13 +75,39 @@ init -6 python:
     def update_upgrades(ship):
         if ship == None:
             return
+        
+        # make a backup of the current upgrade level and player money
+        original_money = BM.money
         upgrades = deepcopy(ship.upgrades)
-        reset_upgrades(ship)
+        
+        # reset upgrades to level 1
+        for key in upgrades:
+            name,level,increase,cost,multiplier = upgrades[key]
+            if key in ship.upgrades:
+                for count in range(level-1):
+                    reverse_upgrade(ship, key)
+        
+        # calculate the amount of money used to originally purchase the upgrades
+        BM.money = 1000000000
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if key in ship.upgrades:
                 for count in range(level-1):
                     process_upgrade(ship, key)
+        old_cost = 1000000000 - BM.money
+        
+        # calculate the new cost to purchase the upgrades and update upgrades to the latest version
+        reset_upgrades(ship)
+        BM.money = 1000000000
+        for key in upgrades:
+            name,level,increase,cost,multiplier = upgrades[key]
+            if key in ship.upgrades:
+                for count in range(level-1):
+                    process_upgrade(ship, key)
+        new_cost = 1000000000 - BM.money
+        
+        # update player money to the correct cost
+        BM.money = original_money + old_cost - new_cost
 
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
