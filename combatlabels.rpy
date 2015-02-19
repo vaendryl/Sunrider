@@ -149,8 +149,8 @@ label endofturn:
 label battle_start:
     play music PlayerTurnMusic
     python:
-        BM.battlestart_player_ships = store.player_ships[:]
-        for ship in BM.battlestart_player_ships:
+        BM.battlestart.player_ships = store.player_ships[:]
+        for ship in BM.battlestart.player_ships:
             ship.battlestart_location = ship.location
         BM.battlestart.enemy_ships = deepcopy(store.enemy_ships)
         BM.battlestart.covers = deepcopy(BM.covers)
