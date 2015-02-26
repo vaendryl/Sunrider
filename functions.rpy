@@ -62,7 +62,7 @@ init -6 python:
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if level > 1:
-                for count in range(level-1):
+                for count in xrange(level-1):
                     cost = int(cost / float(multiplier) )
                     money_returned += cost
                     new_value = getattr(ship,key)-increase
@@ -75,37 +75,37 @@ init -6 python:
     def update_upgrades(ship):
         if ship == None:
             return
-        
+
         # make a backup of the current upgrade level and player money
         original_money = BM.money
         upgrades = deepcopy(ship.upgrades)
-        
+
         # reset upgrades to level 1
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if key in ship.upgrades:
-                for count in range(level-1):
+                for count in xrange(level-1):
                     reverse_upgrade(ship, key)
-        
+
         # calculate the amount of money used to originally purchase the upgrades
         BM.money = 1000000000
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if key in ship.upgrades:
-                for count in range(level-1):
+                for count in xrange(level-1):
                     process_upgrade(ship, key)
         old_cost = 1000000000 - BM.money
-        
+
         # calculate the new cost to purchase the upgrades and update upgrades to the latest version
         reset_upgrades(ship)
         BM.money = 1000000000
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if key in ship.upgrades:
-                for count in range(level-1):
+                for count in xrange(level-1):
                     process_upgrade(ship, key)
         new_cost = 1000000000 - BM.money
-        
+
         # update player money to the correct cost
         BM.money = original_money + old_cost - new_cost
 
@@ -129,7 +129,7 @@ init -6 python:
         level -= 1
         cost = int(round(cost / multiplier))
         if not BM.mission == 'skirmish': #better safe than sorry
-            BM.money += int(cost * 0.8)  
+            BM.money += int(cost * 0.8)
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
@@ -232,7 +232,7 @@ init -6 python:
         BM.covers = []
         store.enemy_ships = []
 
-        for a in range(GRID_SIZE[0]):
+        for a in xrange(GRID_SIZE[0]):
                 BM.grid.append([False]*GRID_SIZE[1])
         for ship in player_ships:
             BM.ships.append(ship)
@@ -477,11 +477,7 @@ init -6 python:
         add_new_vars()
 
         #remake the BM.ships list
-        BM.ships = []
-        for ship in player_ships:
-            BM.ships.append(ship)
-        for ship in enemy_ships:
-            BM.ships.append(ship)
+        BM.ships = player_ships + enemy_ships
 
         #the all_enemies list also needs to be updated or you get problems in skirmish
         iterate_list = BM.ships + store.all_enemies
@@ -755,7 +751,7 @@ init -6 python:
         hits1RN = 0
         hits2RN = 0
 
-        for i in range(1000):
+        for i in xrange(1000):
             if (renpy.random.randint(1,50) + renpy.random.randint(0,50)) < accuracy:
                 hits2RN += 1
             if renpy.random.randint(1,100) < accuracy:
@@ -795,7 +791,7 @@ init -6 python:
                         show_message('the shot was blocked by an asteroid!')
                         renpy.pause(1.0)
                         total_damage = 0
-                        for shot in range(weapon.shot_count):
+                        for shot in xrange(weapon.shot_count):
                                 total_damage += weapon.damage  #asteroid has no defenses
                         cover.receive_damage(total_damage)
                         return True
@@ -809,8 +805,8 @@ init -6 python:
             move_range = int(float(ship.en) / ship.move_cost)
         if move_range > 4 : move_range = 4  #limit the max number of movement tiles on screen
         tile_locations = []
-        for a in range(1,GRID_SIZE[0]+1):  #cycle through rows
-            for b in range(1,GRID_SIZE[1]+1):  #cycle through columns
+        for a in xrange(1,GRID_SIZE[0]+1):  #cycle through rows
+            for b in xrange(1,GRID_SIZE[1]+1):  #cycle through columns
                 loc1 = convert_to_cubic(ship.location)
                 loc2 = convert_to_cubic([a,b])
                 cell_distance = cubic_distance(loc1, loc2)
@@ -961,7 +957,7 @@ init -6 python:
 
         if disN != 0:
             N = (1.0)/disN
-            for i in range(0, disN+1):
+            for i in xrange(0, disN+1):
                 x = cube1[0] + (cube2[0] - cube1[0])*i*N
                 y = cube1[1] + (cube2[1] - cube1[1])*i*N
                 z = cube1[2] + (cube2[2] - cube1[2])*i*N
@@ -1024,7 +1020,7 @@ init -6 python:
         if ddx >= ddy:
             errorprev = dx
             error = dx
-            for i in range(0,dx):
+            for i in xrange(0,dx):
                 x+=xstep
                 error+=ddy
                 if error > ddx:
@@ -1042,7 +1038,7 @@ init -6 python:
         else:
             errorprev = dy
             error = dy
-            for i in range(0,dy):
+            for i in xrange(0,dy):
                 y+=ystep
                 error+=ddx
                 if error > ddy:
@@ -1075,8 +1071,8 @@ init -6 python:
 
         locations = []
         cx, cy, cz = convert_to_cubic(location)
-        for dx in range(-radius, radius + 1):
-            for dy in range(max(-radius, -dx - radius), min(radius, -dx + radius) + 1):
+        for dx in xrange(-radius, radius + 1):
+            for dy in xrange(max(-radius, -dx - radius), min(radius, -dx + radius) + 1):
                 dz = -dx - dy
                 locations.append(convert_to_offset([cx + dx, cy + dy, cz + dz]))
 
