@@ -1,7 +1,7 @@
 init -1 python:
 
     bonusPage = 0
-    
+
     doki_doki_space_whale = BonusItem("Background/renpytomback.jpg", " Doki Doki Space Whale:\n Dating Sim 3", "deleted_scene_1", 0.09)
     after_ep2 = BonusItem("Background/poll1.jpg", " Beta 2 Post Credits", "aftercreditsep2", 0.205)
     after_ep3 = BonusItem("CG/popularity2.jpg", " Beta 3 Post Credits", "aftercreditsep3", 0.155)
@@ -14,7 +14,7 @@ screen deleted_scenes:
 
     modal True
     zorder 200
-    
+
     imagemap:
         ground "Menu/deleted_scenes_base.png"
         hover "Menu/deleted_scenes_hover.png"
@@ -45,7 +45,7 @@ screen deleted_scenes:
                 $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
-            for i in range(1, columns * rows + 1):
+            for i in xrange(1, columns * rows + 1):
 
                 button:
 
@@ -114,7 +114,7 @@ screen chapter_select:
                 $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             #Display five file slots, numbered 1 - 5.
-            for i in range(1, columns * rows + 1):
+            for i in xrange(1, columns * rows + 1):
 
                 button:
 
@@ -123,7 +123,7 @@ screen chapter_select:
                     background None #Solid(0,0,0,255)
 
                     has hbox
-                    
+
                     $chaptercount = bonusPage*columns*rows + i -1
 
                     # # Add the image and text.
@@ -145,7 +145,7 @@ screen mod_scenes:
 
     modal True
     zorder 200
-    
+
     imagemap:
         ground "Menu/mod_scenes_base.png"
         hover "Menu/mod_scenes_hover.png"
@@ -176,7 +176,7 @@ screen mod_scenes:
                 $BM.phase = 'Player' # This is done to make sure that we can open the menu while in a bonus
 
             # Display five file slots, numbered 1 - 5.
-            for i in range(1, columns * rows + 1):
+            for i in xrange(1, columns * rows + 1):
 
                 button:
 
@@ -198,4 +198,4 @@ screen mod_scenes:
                         text addon_scenes[i - 1].text
 
                     else:
-                        text str(bonusPage * columns * rows + i) + ". No Scene Found"                        
+                        text str(bonusPage * columns * rows + i) + ". No Scene Found"

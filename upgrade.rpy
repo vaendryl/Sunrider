@@ -196,7 +196,7 @@ screen upgrade:
                             else:
                                 text ' -':
                                     color '000'
-                                    min_width cost_width                                
+                                    min_width cost_width
 
                             if level > 1:
                                 text "({})".format( int(round(cost/multiplier)*0.8) ) :
@@ -291,7 +291,7 @@ screen upgrade:
                     label "Future costs:":
                         right_padding 10
                         text_color '000'
-                for i in range(1,10):
+                for i in xrange(1,10):
                     hbox:
                         if level+i+1 < 20:
                             text "Mark {}:".format( level+i+1 ):

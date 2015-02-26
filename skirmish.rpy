@@ -70,9 +70,5 @@ label missionskirmishbattle:
 label mission_skirmish:
     $ BM.skirmish_phase()
 
-    if BM.battlemode == True:   #whenever this is set to False battle ends.
-        jump mission_skirmish #loop back
-    else:
-        pass #continue down
     # jump dispatch
     return

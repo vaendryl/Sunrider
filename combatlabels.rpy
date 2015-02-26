@@ -9,7 +9,7 @@ label testpause:
         renpy.pause(1)
 
     return
-    
+
 label RnD_skirmish:
 
     window hide
@@ -19,7 +19,7 @@ label RnD_skirmish:
         store.yadj = ui.adjustment()
         BM.active_upgrade = None
         buy_upgrades()
-    
+
 jump mission_skirmish
 
 transform shake(time=0.5,repeats=20): #defunct?
@@ -217,7 +217,7 @@ label tryagain:
                 i += 1
             else:
                 break
-        
+
         try:
             store.destroyed_ships = []
             store.player_ships = BM.battlestart.player_ships
@@ -228,12 +228,12 @@ label tryagain:
             sunrider.repair_drones = BM.battlestart.sunrider_repair_drones
             BM.cmd = BM.battlestart.cmd
             BM.turn_count = 1
-            
+
             store.enemy_ships = BM.battlestart.enemy_ships
             for ship in store.enemy_ships:
                 if isinstance(ship, Havoc):
                     store.havoc = ship
-            
+
             BM.covers = BM.battlestart.covers
             for cover in BM.covers:
                 cover.hp = cover.max_hp
@@ -244,9 +244,9 @@ label tryagain:
             BM.ships.append(ship)
         for ship in store.enemy_ships:
             BM.ships.append(ship)
-        
+
         BM.grid = []
-        for a in range(GRID_SIZE[0]):
+        for a in xrange(GRID_SIZE[0]):
             BM.grid.append([False]*GRID_SIZE[1])
         for ship in BM.ships:
             if ship.location == None:
@@ -323,10 +323,10 @@ label after_load:
                 else:
                     bianca = Bianca()
                     bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
-                
+
             #this was reduced in 7.2
             store.BM.formation_range = 6
-                
+
             #some backwards compatibility with previously bought store items.
             if hasattr(store,'sunrider_rocket'):
                 if store.sunrider_rocket.damage == 1200:

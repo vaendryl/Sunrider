@@ -129,7 +129,7 @@ init -2 python:
                                        "endturn"          : self.battle_end_turn   }
 
               #stores a matrix of the grid to keep track of what spots are free. False is free, True is occupied
-            for a in range(GRID_SIZE[0]):
+            for a in xrange(GRID_SIZE[0]):
                 self.grid.append([False]*GRID_SIZE[1])
             self.battle_bg = "Background/space{!s}.jpg".format(renpy.random.randint(1,9))
             self.result = None #store result of ui.interact()
@@ -185,16 +185,16 @@ init -2 python:
                 ship.movement_tiles = []
 
         def dispatch_handler(self, result, dispatch_type = 'battle'):
-            ui_action = None
-            #check handling of dispatcher
-            if result is None: return self.common_none
-            elif isinstance(result, bool): return self.common_bool
-            elif isinstance(result, list):
-                disp_type = dispatch_type + "_dispatcher"
-                ui_action = getattr(self, disp_type).get(result[0], self.common_unexpected)
+            ui_action = self.common_unexpected
+            if result is None: ui_action = self.common_none
+            elif isinstance(result, bool): ui_action = self.common_bool
             else:
-                disp_type = dispatch_type + "_dispatcher"
-                ui_action = getattr(self, disp_type).get(result, self.common_unexpected)
+                temp_result = result[0] if isinstance(result, list) else result
+                disp_type = "_".join((dispatch_type, "dispatcher"))
+                try:
+                    ui_action = getattr(self, disp_type)[temp_result]
+                except KeyError:
+                    ui_action = self.common_unexpected
             return ui_action
 
         ########################################################
@@ -371,8 +371,11 @@ init -2 python:
         ## Skirmish dispatcher end
         ########################################################
         def skirmish_phase(self):
-            self.result = ui.interact()
-            self.dispatch_handler(self.result,'skirmish')()
+            while True:
+                self.result = ui.interact()
+                self.dispatch_handler(self.result, 'skirmish')()
+                if not self.battlemode: #whenever this is set to False battle ends.
+                    break
 
         #------------------------------------------------------#
         ########################################################
@@ -439,8 +442,8 @@ init -2 python:
             self.phase='formation'
             while True:
                 self.result = ui.interact()
-                self.dispatch_handler(self.result,'formation')()
-                if self.battlemode == False: #whenever this is set to False battle ends.
+                self.dispatch_handler(self.result, 'formation')()
+                if not self.battlemode: #whenever this is set to False battle ends.
                     break
         #------------------------------------------------------#
         ########################################################
@@ -489,7 +492,7 @@ init -2 python:
                 self.select_ship(sunrider)
                 return
 
-            if self.selected != None and len(player_ships) > 1:
+            elif len(player_ships) > 1:
                 if self.selected.faction == 'Player':
                     index = player_ships.index(self.selected)
                     looping = True
@@ -865,6 +868,7 @@ init -2 python:
             for ship in enemy_ships:
                 if get_distance(sunrider.location,ship.location) <= BM.vanguard_range:
                     inrange = True
+                    break
             if inrange:
                 if self.cmd >= self.orders[self.result[0]][0]:
                     self.cmd -= self.orders[self.result[0]][0]
@@ -1323,7 +1327,8 @@ init -2 python:
         def battle_end(self, lost = False):
             """ending the battle - reset values for next battle"""
             self.battlemode = False #this ends the battle loop
-            if self.selected != None: self.unselect_ship(self.selected)
+            if self.selected:
+                self.unselect_ship(self.selected)
             self.targetingmode = False
             self.weaponhover = None
             self.hovered = None
@@ -1688,9 +1693,9 @@ init -2 python:
         def update_armor(self):
             self.armor = (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * self.hp / float(self.max_hp)
             self.armor = int(self.armor)
-            self.armor_color = '000'
-            if self.armor < self.base_armor: self.armor_color = '700'
-            if self.armor > self.base_armor: self.armor_color = '070'
+            self.armor_color = ("700" if self.armor < self.base_armor else
+                                "070" if self.armor > self.base_armor else
+                                "000")
 
         def update_stats(self):
             try:
@@ -2070,7 +2075,7 @@ init -2 python:
             if cover_mechanic(self,target,accuracy):
                 return 'miss'
 
-            for shot in range(self.shot_count):
+            for shot in xrange(self.shot_count):
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'laser', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
@@ -2137,7 +2142,7 @@ init -2 python:
             if cover_mechanic(self,target,accuracy):
                 return 'miss'
 
-            for shot in range(self.shot_count):
+            for shot in xrange(self.shot_count):
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'kinetic', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
@@ -2257,7 +2262,7 @@ init -2 python:
             if cover_mechanic(self,target,accuracy):
                 return 'miss'
 
-            for shot in range(missile.shot_count):
+            for shot in xrange(missile.shot_count):
                 if get_shot_hit(accuracy,self.shot_count,parent.faction):
                     damage = self.damage * parent.missile_dmg * renpy.random.triangular(0.95,1.05)  #add a little variation in the damage
                     damage = damage * (100 + parent.modifiers['damage'][0] + BM.environment['damage']) / 100.0
@@ -2350,7 +2355,7 @@ init -2 python:
             effective_flak = (interceptor.flak-self.eccm)*interceptor.flak_effectiveness/100.0
 
             if effective_flak > 0:
-                for shot in range(self.shot_count):
+                for shot in xrange(self.shot_count):
                     if renpy.random.randint(0,100) <= effective_flak:
                         shots_remaining -= 1
             shot_down = 0
@@ -2403,7 +2408,7 @@ init -2 python:
             store.total_armor_negation = 0
             store.total_shield_negation = 0
             store.total_flak_interception = 0
-            for shot in range(self.shot_count):
+            for shot in xrange(self.shot_count):
                 if not get_shot_hit(accuracy,self.shot_count,parent.faction):
                     BM.battle_log_insert(['attack', 'melee', 'detailed'], "<{0}> miss".format(str(shot)))
                 else:
@@ -2938,7 +2943,7 @@ init -2 python:
             store.mission2_name = None
             store.mission3_name = None
 
-            for count in range(self.lastMission):
+            for count in xrange(self.lastMission):
                 setattr(store,'mission{}_complete'.format(count+1),True)
 
             store.mission4_complete = False
@@ -3031,7 +3036,7 @@ init -2 python:
                 store.seraphim_weapons = [SeraphimKinetic(),Awaken()]
                 store.seraphim = create_ship(Seraphim(),(6,8),store.seraphim_weapons)
 
-            for num in range(0, self.lastMission):
+            for num in xrange(0, self.lastMission):
                 renpy.call_in_new_context('mission' + str(num + 1) + '_inits')
 
             if self.lastMission >= 3:
