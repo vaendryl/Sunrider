@@ -185,15 +185,15 @@ init -2 python:
                 ship.movement_tiles = []
 
         def dispatch_handler(self, result, dispatch_type = 'battle'):
-            ui_action = None
+            ui_action = self.common_unexpected
             #check handling of dispatcher
-            if result is None: return self.common_none
-            elif isinstance(result, bool): return self.common_bool
+            if result is None: ui_action = self.common_none
+            elif isinstance(result, bool): ui_action = self.common_bool
             elif isinstance(result, list):
-                disp_type = dispatch_type + "_dispatcher"
+                disp_type = "_".join((dispatch_type, "dispatcher"))
                 ui_action = getattr(self, disp_type).get(result[0], self.common_unexpected)
             else:
-                disp_type = dispatch_type + "_dispatcher"
+                disp_type = "_".join((dispatch_type, "dispatcher"))
                 ui_action = getattr(self, disp_type).get(result, self.common_unexpected)
             return ui_action
 
