@@ -1,0 +1,23 @@
+Sunrider Github Terms of Use Agreement
+
+This agreement is made between Sam Yang and the github contributor ("Contributor") who uses the Sunrider github page to submit code.
+With this agreement, Contributor agrees to provide Sam Yang rights to code written by Contributor on the following terms and conditions.
+Rights to the work
+Contributor gives Sam Yang rights to code ("code") provided by Contributor on github under the following terms.
+Contributor will remain owner of the code. Contributor gives Sam Yang the rights to use and distribute the code as part of the Sunrider series ("Sunrider") royalty-free, including art, images, designs, audio, videos, code, typography, and text. Sam Yang has the rights to use the code for Sunrider worldwide, indefinitely, on every distribution platform. Sam Yang can give the same rights to others if Sunrider is made for a company or if Sunrider is distributed through a company, publisher or platform. Sam Yang has the right to create derivative works based upon the code created by Contributor under this agreement.
+Contributor provides to Sam Yang the code "as is" with no warranties of any kind, including fitness for a particular purpose, subject to the limitation in the following paragraph. Contributor is not liable for any damages which may arise from the use of the code produced, and Sam Yang shall indemnify Contributor for third party claims or liabilities arising from the use of the code, subject to the limitation in the following paragraph.
+Contributor declares he is the owner of the code the Contributor provides on github. Contributor declares he owns all intellectual property rights to the listed code, and will indemnify Sam Yang from any IP claims if a third party makes a successful claim of IP infringement.
+Contributor can use the code for Contributor's portfolio, but if the game containing the code is still unreleased, Contributor needs written permission from Sam Yang. 
+Sam Yang agrees to credit Contributor following the industry standard and give Contributor access to the github space for Sunrider.
+Confidentiality
+Contributor agrees not to disclose or use any proprietary or confidential information of Sam Yang without Sam Yang's written permission, both during and after the term of this agreement.
+Cancelation
+24 hours after Contributor's code is merged into the Sunrider source, Contributor cannot rescind this agreement as applied to the merged code.
+Contributor can rescind this agreement to code which has not yet been merged into the Sunrider source file, or within 24 hours of merging, by contacting either Sam Yang's github administrator or sunrider.visualnovel@gmail.com.
+This contract has been made under the laws of California and will only be interpreted under California law. Personal jurisdiction and controlling law are both set in California.
+Contributor's Agreement
+By using the Sunrider github page and contributing code to be used in Sunrider, the Contributor agrees to the above terms. The submission of Contributor's code shall be taken as Contributor's acceptance and be binding upon Sam Yang and Contributor.
+
+
+
+

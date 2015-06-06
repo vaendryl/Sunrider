@@ -175,6 +175,8 @@ init python:
             #curses return something, but they don't do damage.
             if weapon.wtype != 'Curse':
                 pship.receive_damage(damage,parent,weapon.wtype)
+                
+            return
 
 #basic loop
         def AI_basic_loop(self):

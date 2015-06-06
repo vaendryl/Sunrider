@@ -298,15 +298,13 @@ screen battle_screen:
                         zoom (zoomlevel/2.0)
                         at cursedown(yposition-(190)*zoomlevel)
 
-            ## as of the new UI interact code (with MouseTracker) most of the following is defunct.
-            ## only the parts that affect lbl do anything anymore.
-
-                #default values
+                #default values.
                 $mode = '' #default
                 $lbl = ship.lbl
                 $hvr = hoverglow(ship.lbl)
 
-                #some properties of the imagebutton representing a ship change depending on circumstances
+                ##depending on the circumstance of the particular ship in the loop the avatar should appear normally, should blink(target) or should appear dark(offline).
+                
                 if ship.faction == 'Player':
                     #by default player ships can be selected, which the above values are already set to.
 
@@ -314,14 +312,18 @@ screen battle_screen:
                         #you cannot target yourself with an active weapon
                         $ mode = 'offline'
 
-                        if BM.active_weapon.wtype == 'Support':
+                        if BM.active_weapon.wtype == 'Support'and BM.active_weapon != None:
                             #except when the active weapon is a support skill. in that case, player ships become targets
                             $ mode = 'target'
+                            
+                        if ship.cth <=0:
+                            #if the target cannot be affected it should be obvious.
+                            $ mode = 'offline'
 
                 else: #ship is an enemy faction
                     #by default enemy ships can be selected (to view stat details), which the above values are already set to.
 
-                    if BM.targetingmode:
+                    if BM.targetingmode and BM.active_weapon != None:
                         #with an active weapon selected enemies become targets
                         $ mode = 'target'
 
@@ -781,6 +783,8 @@ screen battle_screen:
                     else:
                         textbutton "old grid" xalign 1.0 action SetField(BM,'show_grid',True)
                     textbutton "debug log" xalign 1.0 action Show('debug_window')
+                    textbutton "debug pships" xalign 1.0 action Show('debug_pships')
+                    textbutton "debug eships" xalign 1.0 action Show('debug_eships')
 
     if BM.just_moved:
         textbutton 'cancel movement':
@@ -2122,4 +2126,81 @@ screen debug_window:
                         value YScrollValue('debug log')
                         hovered SetField(BM, 'draggable', False)
                         unhovered SetField(BM, 'draggable', True)
+                        
+                        
+screen debug_pships:
+    #show a list all all player ships and as much relevant data about them as possible. useful for tracing weird behaviour. maybe.
+    zorder 100    
+    drag:
+        xalign 0.5
+        ypos 0.2
+        frame:
+            xpadding 10
+            ypadding 10
+            xalign 0.5
+            ypos 0.2
+            xmaximum 400
+            ymaximum 600
+            background Solid((0,0,0,200))
+            vbox:
+                textbutton "X":
+                    xalign 1.0
+                    action Hide('debug_pships')
+                side "c r":
+                    viewport:
+                        id 'debug pship list'
+                        yinitial 0
+                        mousewheel True
+                        
+                        vbox:
+                            for pship in player_ships:
+                                text pship.name size 12
+                                vbox:
+                                    xpos 20
+                                    for entry in pship.__dict__:                                                                            
+                                        $ data = getattr(pship,entry)
+                                        if not type(data) is dict and not type(data) is list:  #renpy can't deal with those at all
+                                            text str(entry)+ ' : ' + str(data) size 12
+                                
+                    vbar:
+                        value YScrollValue('debug pship list')
+                        hovered SetField(BM, 'draggable', False)
+                        unhovered SetField(BM, 'draggable', True)
 
+screen debug_eships:
+    zorder 100    
+    drag:
+        xalign 0.5
+        ypos 0.2
+        frame:
+            xpadding 10
+            ypadding 10
+            xalign 0.5
+            ypos 0.2
+            xmaximum 400
+            ymaximum 600
+            background Solid((0,0,0,200))
+            vbox:
+                textbutton "X":
+                    xalign 1.0
+                    action Hide('debug_eships')
+                side "c r":
+                    viewport:
+                        id 'debug eship list'
+                        yinitial 0
+                        mousewheel True
+                        
+                        vbox:
+                            for eship in enemy_ships:
+                                text eship.name size 12
+                                vbox:
+                                    xpos 20
+                                    for entry in eship.__dict__:                                                                            
+                                        $ data = getattr(eship,entry)
+                                        if not type(data) is dict and not type(data) is list:
+                                            text str(entry)+ ' : ' + str(data) size 12
+                                
+                    vbar:
+                        value YScrollValue('debug eship list')
+                        hovered SetField(BM, 'draggable', False)
+                        unhovered SetField(BM, 'draggable', True)

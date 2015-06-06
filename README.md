@@ -21,6 +21,7 @@ beta 7.2
 * The AI now considers attacking with melee a bit better.
 * the repair upgrade for the Liberty now also reduces repair energy cost by 10EN. to compensate, the upgrade had its price increased to 1000$
 * the Phoenix' max EN upgrades are now 25% cheaper, allowing for greater mobility and damage output.
+* fixed a bug when the player targets a ship with a support ability when it is out of range.
 
 
 beta 7.1a

@@ -32,8 +32,8 @@ init 2 python:
             self.missiles = self.max_missiles
             self.rockets = 0
             self.evasion = -25  # cruisers are easy to hit
-            self.lbl = 'Battle UI/label_sunrider.png'  #this is the battle avatar
-            self.portrait = 'Battle UI/ava_portrait.png'
+            self.lbl = Image('Battle UI/label_sunrider.png')  #this is the battle avatar
+            self.portrait = Image('Battle UI/ava_portrait.png')
             self.flak = 40
             self.flak_range = 2
             self.move_cost = 30

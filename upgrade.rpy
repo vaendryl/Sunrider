@@ -86,21 +86,22 @@ screen upgrade:
         color '090'
         outlines [(1,'000',0,0)]
 
-    textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
-        xalign 1.0
-        ypos 0.0
-        text_size 30
-        text_color 'fff'
-        text_outlines [(1,'000',0,0)]
-        action Return(['reset'])
+    if config.developer:
+        textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
+            xalign 1.0
+            ypos 0.0
+            text_size 30
+            text_color 'fff'
+            text_outlines [(1,'000',0,0)]
+            action Return(['reset'])
 
-    textbutton 'DEBUG: UPDATE SHIP UPGRADES':
-        xalign 1.0
-        ypos 0.04
-        text_size 30
-        text_color 'fff'
-        text_outlines [(1,'000',0,0)]
-        action Return(['update'])
+        textbutton 'DEBUG: UPDATE SHIP UPGRADES':
+            xalign 1.0
+            ypos 0.04
+            text_size 30
+            text_color 'fff'
+            text_outlines [(1,'000',0,0)]
+            action Return(['update'])
 
     ## show icons of all the player ships in player_ships
     $ count = 0

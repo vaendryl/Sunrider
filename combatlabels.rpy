@@ -4,11 +4,15 @@
 init:
     image black = Solid((0, 0, 0, 255))
 
-label testpause:
+# label test:    
+    # return
+    
     python:
-        renpy.pause(1)
-
-    return
+        def test():
+            for entry in sunrider.__dict__:
+                data = getattr(sunrider,entry)
+                if not type(data) is dict and not type(data) is list:
+                    renpy.say( 'debug' , str(entry) + ' : ' + str(data) )
     
 label RnD_skirmish:
 

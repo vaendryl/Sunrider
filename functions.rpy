@@ -108,6 +108,10 @@ init -6 python:
         
         # update player money to the correct cost
         BM.money = original_money + old_cost - new_cost
+        
+        #I don't really want people ending up with negative money after an update
+        if BM.money < 0:
+            BM.money = 0
 
     def process_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
@@ -258,10 +262,10 @@ init -6 python:
 
         #upgrades modify the base stat
         wtype = get_weapon_type(weapon)
-        if weapon.wtype == 'Kinetic': accuracy *= attacker.kinetic_acc
-        elif weapon.wtype == 'Laser': accuracy *= attacker.energy_acc
-        elif weapon.wtype == 'Missile': pass
-        elif weapon.wtype == 'Melee': accuracy *= attacker.melee_acc
+        if wtype == 'Kinetic': accuracy *= attacker.kinetic_acc
+        elif wtype == 'Laser': accuracy *= attacker.energy_acc
+        elif wtype == 'Melee': accuracy *= attacker.melee_acc
+        else: pass
 
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
         if not weapon.wtype == 'Support' and not guess:
@@ -432,7 +436,7 @@ init -6 python:
         elif weapon.wtype == 'Melee':
             return 'Melee'
         else:
-            return 'notype'
+            return weapon.wtype #return support or curse types
 
     def add_new_vars():
         firstvars = deepcopy(AllVariables().__dict__)
@@ -533,6 +537,9 @@ init -6 python:
             #restore the old weapon list
             ship.weapons = weapons
 
+        for pship in player_ships:
+            update_upgrades(pship)        
+        
         show_message('Reinitialization complete.')
         return
 

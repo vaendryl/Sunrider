@@ -43,7 +43,7 @@ init -2 python:
             self.grid = []            #keep track of what cells in the grid are free and which are not.
             self.vanguard = False     #when True the battlemap shows the vanguard cannon being fired.
             self.active_strategy = [None,0] #you can have either 'full forward' or 'all guard' active, but not both.
-            self.vanguardtarget = False #creates buttons to select vanguard fire direction
+            self.vanguardtarget = False #When True the player can select a target for the VC cannon
             self.warping = False      #used by the short range warp order. it makes an outline of the selected ship show at the mouse cursor
             self.targetwarp = False   #used by the short ranged warp order.  it creates buttons on the tiles
             self.showing_orders = False #This is True when the list of orders is visible.
@@ -69,7 +69,7 @@ init -2 python:
                 'VANGUARD CANNON':[2500,'vanguard_cannon']
                 }
             self.order_used = False   #when True the orders button is hidden.
-              #environment modififiers are initialized here and can be changed later
+              #environment modifiers are initialized here and can be changed later
             self.environment = {
                 'accuracy':100,
                 'turndamage':0,
@@ -522,7 +522,6 @@ init -2 python:
         def battle_zoom(self):
             zoom_handling(self.result,self) #see funtion.rpy how this is handled. it took a LONG time to get it to a point I am happy with
             if self.selectedmode: self.selected.movement_tiles = get_movement_tiles(self.selected)
-            # self.just_moved = True #zooming doesn't have to reset this button
 
         def battle_selection(self):
             # if self.result == None:
@@ -564,7 +563,7 @@ init -2 python:
                     if weapon.wtype == 'Support' or weapon.wtype == 'Special':
                         if self.target.cth <= 0:
                             self.draggable = False
-                            renpy.say('Ava',"No enemies in range, captain.")
+                            renpy.say('',"The target is out of range, captain!")
                             self.draggable = True
                             self.targetingmode = True #try again
                             return #do end the method, this is important.
@@ -1325,6 +1324,7 @@ init -2 python:
             self.battlemode = False #this ends the battle loop
             if self.selected != None: self.unselect_ship(self.selected)
             self.targetingmode = False
+            self.vanguardtarget = False
             self.weaponhover = None
             self.hovered = None
             BM.enemy_vanguard_path = []
@@ -1417,6 +1417,30 @@ init -2 python:
 
             renpy.block_rollback()
 
+    
+    #SHIT A BUG IN THE CODE! KILL IT WITH FIRE!!!
+                          #ug
+                       #b
+                      #g           bug
+                      #u        bug
+      #bugbug          b       g
+            #bug      bugbug bu
+               #bug  bugbugbugbugbugbug
+  #bug   bug   bugbugbugbugbugbugbugbugb
+     #bug   bug bugbugbugbugbugbugbugbugbu
+   #bugbugbugbu gbugbugbugbugbugbugbugbugbu
+  #bugbugbugbug
+   #bugbugbugbu gbugbugbugbugbugbugbugbugbu
+     #bug   bug bugbugbugbugbugbugbugbugbu
+  #bug   bug  gbugbugbugbugbugbugbugbugb
+               #bug  bugbugbugbugbugbug
+            #bug      bugbug  bu
+      #bugbug          b        g
+                      #u         bug
+                      #g            bug
+                       #b
+                        #ug
+    
     ## Displayables ##
     #custom displayables harness the power of pygame directly.
 
@@ -1617,12 +1641,12 @@ init -2 python:
                 'kinetic_dmg':['Kinetic Damage',1,0.05,105,1.55],
                 'kinetic_acc':['Kinetic Accuracy',1,0.05,100,1.5],
                 'kinetic_cost':['Kinetic Energy Cost',1,-0.05,100,2.0],
-                'energy_dmg':['Energy Damage',1,0.075,100,1.3],
-                'energy_acc':['Energy Accuracy',1,0.05,120,1.5],
-                'energy_cost':['Energy Cost',1,-0.05,100,1.8],
+                'energy_dmg':['Energy Damage',1,0.1,100,1.3],
+                'energy_acc':['Energy Accuracy',1,0.05,150,1.75],
+                'energy_cost':['Energy Cost',1,-0.075,100,1.8],
                 'missile_dmg':['Missile Damage',1,0.10,100,1.5],
                 'missile_eccm':['Missile Flak Resistance',1,1,100,1.5],
-                'missile_cost':['Missile Energy Cost',1,-0.5,100,2.0],
+                'missile_cost':['Missile Energy Cost',1,-0.1,150,2.5],
                 'max_missiles':['Missile Storage',1,1,500,3],
                 'melee_dmg':['Melee Damage',1,0.05,100,1.5],
                 'melee_acc':['Melee Accuracy',1,0.05,100,1.5],
@@ -1765,7 +1789,7 @@ init -2 python:
                         renpy.call_in_new_context('hitlegion_{}'.format(self.animation_name)) #you just got pwnd, son.
                     except:
                         show_message('missing animation. "hitlegion_{}" does\'t seem to exist'.format(self.animation_name))
-                    if not self.mercenary:
+                    if not self.mercenary and store.Difficulty > 0:
                         # show_message( 'the {} was obliterated. Game Over.'.format(self.name) )
                         renpy.jump('sunrider_destroyed') #game over
                         sunrider.hp = 0  #failsafe
