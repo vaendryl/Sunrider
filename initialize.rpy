@@ -477,7 +477,7 @@ label mission10_inits:
         destroyed_ships = []
 
         sunrider.set_location(4,6)
-        blackjack.set_location(0,0)
+        blackjack.location = None
         player_ships.remove(blackjack)
         BM.selected = sunrider  #just in case blackjack is still selected.
         liberty.set_location(6,7)

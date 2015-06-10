@@ -35,14 +35,14 @@ label skirmish_battle:
         show screen skirmishhelp
         $ BM.seen_skirmish = True
 
-    call mission_skirmish
+    call mission_skirmish from _call_mission_skirmish
 
     python:
         BM.phase = 'Player'
         BM.mission = 'skirmishbattle'
         update_stats()
 
-    call battle_start
+    call battle_start from _call_battle_start
 
     python:
         BM.cmd = store.tempcmd

@@ -1,10 +1,11 @@
 beta 7.2
 --------
+* The game now runs on the latest renpy version (v6.99.3).
 * Vanguard can now be aimed at spaces without ships [by EnderShadow]
 * Player AI added [by EnderShadow]
 * added icons for armor and shield negation, plus attacking with missiles now show the route the missiles will take on the map along with an indicator for combined intercept change between the attacker and the target. [by KingRaptor]
 * the accuracy of energy weapons (laser+pulse) now degrade at a rate of 10 per hex instead of 15. to compensate, their base accuracy is reduced by 10. as a result, accuracy upgrades are now very valuable and costs for these have increased.
-* energy damage now scales significantly better with upgrades. (far better than kinetics)
+* energy damage now scales significantly better with upgrades. (compared to kinetics)
 * increased the effect threat has on the AI. the Sunrider should now get targeted more often, assuming it does the most damage whereas units doing little damage will be ignored more easily by the AI.
 * increased the energy cost of ShutOff for PACT support ryders to 60
 * the AI can now use rockets again even if the target is still at 100% flak effectiveness.
@@ -19,7 +20,8 @@ beta 7.2
 * The AI now considers attacking with melee a bit better.
 * the repair upgrade for the Liberty now also reduces repair energy cost by 10EN. to compensate, the upgrade had its price increased to 1000$
 * the Phoenix' max EN upgrades are now 25% cheaper, allowing for greater mobility and damage output.
-* fixed a bug when the player targets a ship with a support ability when it is out of range.
+* the player can test out all upgrades in skirmish mode, and skirmish mode is now available from mission 2 onwards.
+* numerous bugfixes
 
 
 beta 7.1a

@@ -270,173 +270,175 @@ screen battle_screen:
         for ship in BM.ships: #cycle through every ship in the battle
                   ##first we show the circle base below every unit
             if ship.location != None:
-                $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
-                $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
-                $xsize = int(210 * zoomlevel)
-                $ysize = int(120 * zoomlevel)
-                if ship.faction == 'Player':
-                    add IC.player_base:
-                        xanchor 0.5
-                        yanchor 0.5
-                        xpos xposition
-                        ypos yposition
-                        size (xsize,ysize)
-                if ship.faction == 'PACT':
-                    add IC.pact_base:
-                        xanchor 0.5
-                        yanchor 0.5
-                        xpos xposition
-                        ypos yposition
-                        size (xsize,ysize)
-                if ship.faction == 'Pirate':
-                    add IC.pirate_base:
-                        xanchor 0.5
-                        yanchor 0.5
-                        xpos xposition
-                        ypos yposition
-                        size (xsize,ysize)
+                $ x,y = ship.location
+                if x > 0 and y > 0:            
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
+                    $xsize = int(210 * zoomlevel)
+                    $ysize = int(120 * zoomlevel)
+                    if ship.faction == 'Player':
+                        add IC.player_base:
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos xposition
+                            ypos yposition
+                            size (xsize,ysize)
+                    if ship.faction == 'PACT':
+                        add IC.pact_base:
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos xposition
+                            ypos yposition
+                            size (xsize,ysize)
+                    if ship.faction == 'Pirate':
+                        add IC.pirate_base:
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos xposition
+                            ypos yposition
+                            size (xsize,ysize)
 
-                $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
-                $cell_height = 1503 / ((GRID_SIZE[1]+2)/2)
-                #$cell_offset = cell_width / 2
+                    $cell_width = 1920 / ((GRID_SIZE[0]+2)/2)
+                    $cell_height = 1503 / ((GRID_SIZE[1]+2)/2)
+                    #$cell_offset = cell_width / 2
 
-                #calculate the position of the ships on the field
-                $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
-                $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.25 * ADJY) + int(zoomlevel * MOVY)
+                    #calculate the position of the ships on the field
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.25 * ADJY) + int(zoomlevel * MOVY)
 
-                if ship.getting_buff:  #used if you buff someone
-                    add 'Battle UI/buff_back.png':
-                        xpos int(xposition-(cell_width/2)*zoomlevel)
-                        zoom (zoomlevel/2.0)
-                        at buffup(yposition)
+                    if ship.getting_buff:  #used if you buff someone
+                        add 'Battle UI/buff_back.png':
+                            xpos int(xposition-(cell_width/2)*zoomlevel)
+                            zoom (zoomlevel/2.0)
+                            at buffup(yposition)
 
-                if ship.getting_curse:  #used if you curse someone
-                    add 'Battle UI/curse_back.png':
-                        xpos int(xposition-(cell_width/2)*zoomlevel)
-                        zoom (zoomlevel/2.0)
-                        at cursedown(yposition-(190)*zoomlevel)
+                    if ship.getting_curse:  #used if you curse someone
+                        add 'Battle UI/curse_back.png':
+                            xpos int(xposition-(cell_width/2)*zoomlevel)
+                            zoom (zoomlevel/2.0)
+                            at cursedown(yposition-(190)*zoomlevel)
 
-                #default values.
-                $mode = '' #default
-                $lbl = ship.lbl
-                $hvr = hoverglow(ship.lbl)
+                    #default values.
+                    $mode = '' #default
+                    $lbl = ship.lbl
+                    $hvr = hoverglow(ship.lbl)
 
-                ##depending on the circumstance of the particular ship in the loop the avatar should appear normally, should blink(target) or should appear dark(offline).
-                
-                if ship.faction == 'Player':
-                    #by default player ships can be selected, which the above values are already set to.
+                    ##depending on the circumstance of the particular ship in the loop the avatar should appear normally, should blink(target) or should appear dark(offline).
+                    
+                    if ship.faction == 'Player':
+                        #by default player ships can be selected, which the above values are already set to.
 
-                    if BM.targetingmode:
-                        #you cannot target yourself with an active weapon
-                        $ mode = 'offline'
-
-                        if BM.active_weapon != None:
-                            if BM.active_weapon.wtype == 'Support':
-                                #except when the active weapon is a support skill. in that case, player ships become targets
-                                $ mode = 'target'
-                            
-                        if ship.cth <=0:
-                            #if the target cannot be affected it should be made obvious.
+                        if BM.targetingmode:
+                            #you cannot target yourself with an active weapon
                             $ mode = 'offline'
 
-                else: #ship is an enemy faction
-                    #by default enemy ships can be selected (to view stat details), which the above values are already set to.
+                            if BM.active_weapon != None:
+                                if BM.active_weapon.wtype == 'Support':
+                                    #except when the active weapon is a support skill. in that case, player ships become targets
+                                    $ mode = 'target'
+                                
+                            if ship.cth <=0:
+                                #if the target cannot be affected it should be made obvious.
+                                $ mode = 'offline'
 
-                    if BM.targetingmode and BM.active_weapon != None:
-                        #with an active weapon selected enemies become targets
-                        $ mode = 'target'
+                    else: #ship is an enemy faction
+                        #by default enemy ships can be selected (to view stat details), which the above values are already set to.
 
-                        if BM.active_weapon.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
-                            #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
-                            $ mode = 'offline'
-
-                        if BM.active_weapon.wtype == 'Support':
-                            $ mode = 'offline'
-
-                if BM.active_weapon != None:
-                    if BM.active_weapon.name == 'Gravity Gun':
-                        #the gravity gun is a bit unique
-                        if ship.stype != 'Ryder':
-                            $ mode = 'offline'
-                        else:
+                        if BM.targetingmode and BM.active_weapon != None:
+                            #with an active weapon selected enemies become targets
                             $ mode = 'target'
 
-                if mode == 'target':
-                    $ lbl = hoverglow(ship.lbl)
-                elif mode == 'offline':
-                    $ lbl = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
+                            if BM.active_weapon.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(BM.selected,ship) != 1):
+                                #except when the active weapon is melee and this enemy is neither a ryder nor next to the attacking ship
+                                $ mode = 'offline'
 
-                if BM.hovered != None:
-                    if BM.hovered == ship:
-                        if mode != 'offline':
-                            $ lbl = hoverglow(ship.lbl)
+                            if BM.active_weapon.wtype == 'Support':
+                                $ mode = 'offline'
 
-                add lbl:
-                    xanchor 0.5
-                    yanchor 0.5
-                    xpos xposition
-                    ypos yposition
-                    zoom (zoomlevel/2.5)
+                    if BM.active_weapon != None:
+                        if BM.active_weapon.name == 'Gravity Gun':
+                            #the gravity gun is a bit unique
+                            if ship.stype != 'Ryder':
+                                $ mode = 'offline'
+                            else:
+                                $ mode = 'target'
 
-                if ship.getting_buff:
-                    add 'Battle UI/buff_front.png':
-                        xpos int(xposition-96*zoomlevel)
-                        zoom (zoomlevel/2.0)
-                        at buffup(int(yposition+50*zoomlevel))
+                    if mode == 'target':
+                        $ lbl = hoverglow(ship.lbl)
+                    elif mode == 'offline':
+                        $ lbl = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
 
-                if ship.getting_curse:
-                    add 'Battle UI/curse_front.png':
-                        xpos int(xposition-96*zoomlevel)
-                        zoom (zoomlevel/2.0)
-                        at cursedown(yposition-(190-50)*zoomlevel)
+                    if BM.hovered != None:
+                        if BM.hovered == ship:
+                            if mode != 'offline':
+                                $ lbl = hoverglow(ship.lbl)
 
-                  ##add the HP bar and the EN bar
-                if ship.faction == 'Player':
-                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
-                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
-                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add IC.hp_bar:
-                        xpos xposition
-                        ypos yposition
-                        zoom (zoomlevel/2.5)
-                        crop (0,0,hp_size,79)
-
-                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
-                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
-                    $energy_size = int(405*(float(ship.en)/ship.max_en))
-                    add IC.energy_bar:
-                        xpos xposition
-                        ypos yposition
-                        zoom (zoomlevel/2.5)
-                        crop (0,0,energy_size,79)
-
-                    text str(ship.hp):
+                    add lbl:
                         xanchor 0.5
                         yanchor 0.5
-                        xpos int(xposition+80*zoomlevel)
-                        ypos int(yposition+27*zoomlevel)
-                        size int(16*zoomlevel)
-                        font "Font/sui generis rg.ttf"
-                        outlines [(2,'000',0,0)]
-
-                else:    #enemies
-                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
-                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
-                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add IC.hp_bar:
                         xpos xposition
                         ypos yposition
                         zoom (zoomlevel/2.5)
-                        crop (0,0,hp_size,90)
 
-                    text str(ship.hp):
-                        xanchor 0.5
-                        yanchor 0.5
-                        xpos int(xposition+80*zoomlevel)
-                        ypos int(yposition+27*zoomlevel)
-                        size int(16*zoomlevel)
-                        font "Font/sui generis rg.ttf"
-                        outlines [(2,'000',0,0)]
+                    if ship.getting_buff:
+                        add 'Battle UI/buff_front.png':
+                            xpos int(xposition-96*zoomlevel)
+                            zoom (zoomlevel/2.0)
+                            at buffup(int(yposition+50*zoomlevel))
+
+                    if ship.getting_curse:
+                        add 'Battle UI/curse_front.png':
+                            xpos int(xposition-96*zoomlevel)
+                            zoom (zoomlevel/2.0)
+                            at cursedown(yposition-(190-50)*zoomlevel)
+
+                      ##add the HP bar and the EN bar
+                    if ship.faction == 'Player':
+                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
+                        $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                        add IC.hp_bar:
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,79)
+
+                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
+                        $energy_size = int(405*(float(ship.en)/ship.max_en))
+                        add IC.energy_bar:
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,energy_size,79)
+
+                        text str(ship.hp):
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos int(xposition+80*zoomlevel)
+                            ypos int(yposition+27*zoomlevel)
+                            size int(16*zoomlevel)
+                            font "Font/sui generis rg.ttf"
+                            outlines [(2,'000',0,0)]
+
+                    else:    #enemies
+                        $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+                        $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
+                        $hp_size = int(405*(float(ship.hp)/ship.max_hp))
+                        add IC.hp_bar:
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,90)
+
+                        text str(ship.hp):
+                            xanchor 0.5
+                            yanchor 0.5
+                            xpos int(xposition+80*zoomlevel)
+                            ypos int(yposition+27*zoomlevel)
+                            size int(16*zoomlevel)
+                            font "Font/sui generis rg.ttf"
+                            outlines [(2,'000',0,0)]
 
 ##show flak icon and intercept text
         if BM.missile_moving:

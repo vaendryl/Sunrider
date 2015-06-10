@@ -596,7 +596,7 @@ label hitanim_sunrider_missile:
     show sunrider_missiletrail_hit with sunridermissilehitwipe
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider
 
     pause 0.3
 
@@ -645,7 +645,7 @@ label hitanim_sunrider_kinetic:
 
     pause 0.25
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider_1
 
     pause 0.5
 
@@ -675,7 +675,7 @@ label hitanim_sunrider_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider_2
 
     pause 0.5
 
@@ -787,7 +787,7 @@ label hitanim_sunrider_pulse:
         ease 1 alpha 0
     show layer master at shake1
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider_3
 
     pause 1
 
@@ -828,7 +828,7 @@ label hitanim_sunrider_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider_4
 
     pause 0.5
 
@@ -958,7 +958,7 @@ label hitanim_sunrider_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_sunrider
+    call hit_sunrider from _call_hit_sunrider_5
 
     pause 0.2
 
@@ -2410,7 +2410,7 @@ label hitanim_blackjack_kinetic:
 
     pause 0.5
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack
 
     return
 
@@ -2479,7 +2479,7 @@ label hitanim_blackjack_missile:
 
     pause 0.1
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_1
 
     return
 
@@ -2515,7 +2515,7 @@ label hitanim_blackjack_laser:
 
     pause 0.5
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_2
 
     return
 
@@ -2626,7 +2626,7 @@ label hitanim_blackjack_pulse:
 
     pause 1
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_3
 
     return
 
@@ -2664,7 +2664,7 @@ label hitanim_blackjack_rocket:
 
     pause 0.5
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_4
 
     return
 
@@ -2781,7 +2781,7 @@ label hitanim_blackjack_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_5
 
     return
 
@@ -2838,7 +2838,7 @@ label hitanim_blackjack_melee:
 
     pause 0.5
 
-    call hit_blackjack
+    call hit_blackjack from _call_hit_blackjack_6
 
     return
 
@@ -3124,7 +3124,7 @@ label hitanim_liberty_kinetic:
 
     pause 0.5
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty
 
     return
 
@@ -3193,7 +3193,7 @@ label hitanim_liberty_missile:
 
     pause 0.1
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty_1
 
     return
 
@@ -3229,7 +3229,7 @@ label hitanim_liberty_laser:
 
     pause 0.5
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty_2
 
     return
 
@@ -3340,7 +3340,7 @@ label hitanim_liberty_pulse:
 
     pause 1
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty_3
 
     return
 
@@ -3378,7 +3378,7 @@ label hitanim_liberty_rocket:
 
     pause 0.5
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty_4
 
     return
 
@@ -3495,7 +3495,7 @@ label hitanim_liberty_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_liberty
+    call hit_liberty from _call_hit_liberty_5
 
     return
 
@@ -3797,7 +3797,7 @@ label hitanim_seraphim_kinetic:
 
     pause 0.5
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim
 
     return
 
@@ -3866,7 +3866,7 @@ label hitanim_seraphim_missile:
 
     pause 0.1
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim_1
 
     return
 
@@ -3902,7 +3902,7 @@ label hitanim_seraphim_laser:
 
     pause 0.5
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim_2
 
     return
 
@@ -4013,7 +4013,7 @@ label hitanim_seraphim_pulse:
 
     pause 1
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim_3
 
     return
 
@@ -4051,7 +4051,7 @@ label hitanim_seraphim_rocket:
 
     pause 0.5
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim_4
 
     return
 
@@ -4168,7 +4168,7 @@ label hitanim_seraphim_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_seraphim
+    call hit_seraphim from _call_hit_seraphim_5
 
     return
 
@@ -13592,7 +13592,7 @@ label hitanim_agamemnon_missile:      ######################################AGAM
     show sunrider_missiletrail_hit with sunridermissilehitwipe
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon
 
     pause 0.3
 
@@ -13639,7 +13639,7 @@ label hitanim_agamemnon_kinetic:
         xpos 0.5 ypos 0.5
         ease 1.2 alpha 0
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon_1
 
     pause 0.5
 
@@ -13669,7 +13669,7 @@ label hitanim_agamemnon_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon_2
 
     pause 0.5
 
@@ -13781,7 +13781,7 @@ label hitanim_agamemnon_pulse:
         ease 1 alpha 0
     show layer master at shake1
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon_3
 
     pause 1
 
@@ -13822,7 +13822,7 @@ label hitanim_agamemnon_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon_4
 
     pause 0.5
 
@@ -13950,7 +13950,7 @@ label hitanim_agamemnon_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_agamemnon
+    call hit_agamemnon from _call_hit_agamemnon_5
 
     pause 0.2
 
@@ -14144,7 +14144,7 @@ label hitanim_mochi_missile:      ######################################MOCHI
     show sunrider_missiletrail_hit with sunridermissilehitwipe
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi
 
     pause 0.3
 
@@ -14191,7 +14191,7 @@ label hitanim_mochi_kinetic:
         xpos 0.5 ypos 0.5
         ease 1.2 alpha 0
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi_1
 
     pause 0.5
 
@@ -14221,7 +14221,7 @@ label hitanim_mochi_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi_2
 
     pause 0.5
 
@@ -14333,7 +14333,7 @@ label hitanim_mochi_pulse:
         ease 1 alpha 0
     show layer master at shake1
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi_3
 
     pause 1
 
@@ -14374,7 +14374,7 @@ label hitanim_mochi_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi_4
 
     pause 0.5
 
@@ -14502,7 +14502,7 @@ label hitanim_mochi_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_mochi
+    call hit_mochi from _call_hit_mochi_5
 
     pause 0.2
 
@@ -14770,7 +14770,7 @@ label hitanim_phoenix_kinetic:
 
     pause 0.5
 
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix
 
     return
 
@@ -14839,7 +14839,7 @@ label hitanim_phoenix_missile:
 
     pause 0.1
 
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix_1
 
     return
 
@@ -14875,7 +14875,7 @@ label hitanim_phoenix_laser:
 
     pause 0.5
 
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix_2
 
     return
 
@@ -14986,7 +14986,7 @@ label hitanim_phoenix_pulse:
 
     pause 1
 
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix_3
 
     return
 
@@ -15024,7 +15024,7 @@ label hitanim_phoenix_rocket:
 
     pause 0.5
     
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix_4
 
     return
 
@@ -15141,7 +15141,7 @@ label hitanim_phoenix_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_phoenix
+    call hit_phoenix from _call_hit_phoenix_5
 
     return
 
@@ -16041,7 +16041,7 @@ label hitanim_bianca_kinetic:
 
     pause 0.5
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca
 
     return
 
@@ -16110,7 +16110,7 @@ label hitanim_bianca_missile:
 
     pause 0.1
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca_1
 
     return
 
@@ -16146,7 +16146,7 @@ label hitanim_bianca_laser:
 
     pause 0.5
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca_2
 
     return
 
@@ -16257,7 +16257,7 @@ label hitanim_bianca_pulse:
 
     pause 1
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca_3
 
     return
 
@@ -16295,7 +16295,7 @@ label hitanim_bianca_rocket:
 
     pause 0.5
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca_4
 
     return
 
@@ -16412,7 +16412,7 @@ label hitanim_bianca_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_bianca
+    call hit_bianca from _call_hit_bianca_5
 
     return
 
@@ -16930,7 +16930,7 @@ label hitanim_alliancecruiser_missile:
     show sunrider_missiletrail_hit with sunridermissilehitwipe    
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser
 
     pause 0.3
 
@@ -16978,7 +16978,7 @@ label hitanim_alliancecruiser_kinetic:
         
     pause 0.25
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser_1
 
     pause 0.5
 
@@ -17008,7 +17008,7 @@ label hitanim_alliancecruiser_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser_2
 
     pause 0.5
 
@@ -17122,7 +17122,7 @@ label hitanim_alliancecruiser_pulse:
     
     pause 0.25
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser_3
 
     pause 1
 
@@ -17163,7 +17163,7 @@ label hitanim_alliancecruiser_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser_4
 
     pause 0.5
 
@@ -17293,7 +17293,7 @@ label hitanim_alliancecruiser_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_alliancecruiser
+    call hit_alliancecruiser from _call_hit_alliancecruiser_5
 
     pause 0.2
 
@@ -17819,7 +17819,7 @@ label hitanim_alliancebattleship_missile:
     show sunrider_missiletrail_hit with sunridermissilehitwipe    
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship
 
     pause 0.3
 
@@ -17867,7 +17867,7 @@ label hitanim_alliancebattleship_kinetic:
         
     pause 0.25
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship_1
 
     pause 0.5
 
@@ -17897,7 +17897,7 @@ label hitanim_alliancebattleship_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship_2
 
     pause 0.5
 
@@ -18011,7 +18011,7 @@ label hitanim_alliancebattleship_pulse:
     
     pause 0.25
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship_3
 
     pause 1
 
@@ -18052,7 +18052,7 @@ label hitanim_alliancebattleship_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship_4
 
     pause 0.5
 
@@ -18182,7 +18182,7 @@ label hitanim_alliancebattleship_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_alliancebattleship
+    call hit_alliancebattleship from _call_hit_alliancebattleship_5
 
     pause 0.2
 
@@ -19250,7 +19250,7 @@ label hitanim_paladin_kinetic:
 
     pause 0.5
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin
 
     return
 
@@ -19319,7 +19319,7 @@ label hitanim_paladin_missile:
 
     pause 0.1
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin_1
 
     return
 
@@ -19355,7 +19355,7 @@ label hitanim_paladin_laser:
 
     pause 0.5
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin_2
 
     return
 
@@ -19466,7 +19466,7 @@ label hitanim_paladin_pulse:
 
     pause 1
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin_3
 
     return
 
@@ -19504,7 +19504,7 @@ label hitanim_paladin_rocket:
 
     pause 0.5
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin_4
 
     return
 
@@ -19621,7 +19621,7 @@ label hitanim_paladin_assault:
         ease 1.8 alpha 0
     pause 0.2
 
-    call hit_paladin
+    call hit_paladin from _call_hit_paladin_5
 
     return
 
@@ -19924,7 +19924,7 @@ label hitanim_unionfrigate_missile:
     show sunrider_missiletrail_hit with sunridermissilehitwipe    
     hide sunrider_missiletrail_hit with dissolve
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate
 
     pause 0.3
 
@@ -19972,7 +19972,7 @@ label hitanim_unionfrigate_kinetic:
         
     pause 0.25
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate_1
 
     pause 0.5
 
@@ -20002,7 +20002,7 @@ label hitanim_unionfrigate_laser:
     show sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
     hide sunrider_laserhit behind sunrider_laserhitexplode with enemy_laserhitwipe
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate_2
 
     pause 0.5
 
@@ -20116,7 +20116,7 @@ label hitanim_unionfrigate_pulse:
     
     pause 0.25
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate_3
 
     pause 1
 
@@ -20157,7 +20157,7 @@ label hitanim_unionfrigate_rocket:
     show sunrider_rockethittrail with sunriderhitrocketwipe
     hide sunrider_rockethittrail with dissolve
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate_4
 
     pause 0.5
 
@@ -20287,7 +20287,7 @@ label hitanim_unionfrigate_assault:
         pause 0.2
         ease 1.8 alpha 0
 
-    call hit_unionfrigate
+    call hit_unionfrigate from _call_hit_unionfrigate_5
 
     pause 0.2
 

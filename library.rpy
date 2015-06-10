@@ -2775,7 +2775,7 @@ init 2 python:
             self.id = 'gravity_gun_booster'
             self.display_name = "GRAVITINO GENERATOR"
             self.cost = 750
-            self.tooltip = "Chigara can make the Bianca's gravity gun more efficient by adding this one of these high tech devices. Energy cost per use will drop to 40 (from 60)."
+            self.tooltip = "Chigara can make the Bianca's gravity gun more efficient by adding one of these high tech devices. Energy cost per use will drop to 40 (from 60)."
             self.visibility_condition = 'store.bianca.weapons[1].energy_use == 60 and mission12_complete'
 
         def buy(self):

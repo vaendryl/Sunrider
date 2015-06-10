@@ -22,9 +22,9 @@ label start:
 
 #####################################VARIABLE SET UP
 
-    call initialize
+    call initialize from _call_initialize
 
-    call firstvariables
+    call firstvariables from _call_firstvariables
 
 #####################################VARIABLE SET UP
 
@@ -626,7 +626,7 @@ label firstbatle:
     hide ava
     hide battlewarning
 
-    call mission1_inits
+    call mission1_inits from _call_mission1_inits
     $ BM.mission = 1  #this sets the label to loop on. in this case it will be mission1
     $ battle1_check1 = False  #without this you would see the dialogue over and over again all the time
     jump battle_start #jumps to mission1 automatically thanks to setting BM.mission to 1
@@ -1309,7 +1309,7 @@ label Tydaria_jump1:
     hide cosette
     hide battlewarning
 
-    call mission2_inits
+    call mission2_inits from _call_mission2_inits
     $ BM.mission = 2
     $ battle2_check1 = False
     $ battle2_check2 = False
@@ -2678,7 +2678,7 @@ label humantraffickers:
     hide ava
     hide battlewarning
 
-    call mission3_inits
+    call mission3_inits from _call_mission3_inits
     $ BM.mission = 3
     $ check1 = False
     jump battle_start
@@ -2895,7 +2895,7 @@ label pactstationattack:
     hide chigara
     hide battlewarning
 
-    call mission4_inits
+    call mission4_inits from _call_mission4_inits
     $ BM.mission = 4
     $ battle_check1 = False
     jump battle_start
@@ -3115,7 +3115,7 @@ label piratebaseattack:
     hide cosette
     hide battlewarning
 
-    call mission5_inits
+    call mission5_inits from _call_mission5_inits
     $ BM.mission = 5
     $ battle_check1 = False
     $ check2 = False
@@ -3762,7 +3762,7 @@ label jumphotversta:
     hide asaga
     hide battlewarning
 
-    call mission6_inits
+    call mission6_inits from _call_mission6_inits
     $ BM.mission = 6
     $ check1 = False
     jump battle_start
@@ -4755,7 +4755,7 @@ label findherandstopher:
     hide chigara
     hide battlewarning
 
-    call mission8_inits
+    call mission8_inits from _call_mission8_inits
     $ BM.mission = 8
     $ check1 = False
     $ check2 = False
@@ -4922,7 +4922,7 @@ label maintainpreparethroughpact:
     hide asaga
     hide battlewarning
 
-    call mission7_inits
+    call mission7_inits from _call_mission7_inits
     $ BM.mission = 7
     jump battle_start
 
@@ -4973,7 +4973,7 @@ label cancelwarpagaout:
     hide chigara
     hide battlewarning
 
-    call mission8_inits
+    call mission8_inits from _call_mission8_inits_1
     $ BM.mission = 8
     $ check1 = False
     $ check2 = False
@@ -5051,7 +5051,7 @@ label agaclosechannel:
 
     $ check1 = False
 
-    call mission7_inits
+    call mission7_inits from _call_mission7_inits_1
     $ BM.mission = 7
     jump battle_start
 
@@ -6888,7 +6888,7 @@ label oldfriendcosettetail:
     $ check1 = False
     $ check2 = False
 
-    call mission9_inits
+    call mission9_inits from _call_mission9_inits
     $ BM.mission = 9
     jump battle_start
 
@@ -7863,7 +7863,7 @@ label jumptograveyard:
     $ check1 = False
     $ check2 = False
 
-    call mission10_inits
+    call mission10_inits from _call_mission10_inits
     $ BM.mission = 10
     jump battle_start
 
@@ -10288,7 +10288,7 @@ label theweddingcrash:
     $ check5 = False
     $ check6 = False
 
-    call mission11_inits
+    call mission11_inits from _call_mission11_inits
     $ BM.mission = 11
     jump battle_start
 
@@ -12435,7 +12435,7 @@ label battlefarportstart:
 
     $ BM.orders['SHORT RANGE WARP'] = [750,'short_range_warp']
 
-    call mission12_inits
+    call mission12_inits from _call_mission12_inits
     $ BM.mission = 12
     $BM.battle_bg = "Background/space6.jpg"
     jump battle_start
@@ -15305,7 +15305,7 @@ label clearoutpirates:
     $ PirateBomber.max_rockets = 1
     $ BM.mission = 13
 
-    call mission13_inits
+    call mission13_inits from _call_mission13_inits
 
     jump battle_start
 
@@ -15496,7 +15496,7 @@ label shipsguardingvaluable:
     $ BM.mission = 14
     $ check1 = False
     $ check2 = False
-    call mission14_inits
+    call mission14_inits from _call_mission14_inits
 
     jump battle_start
 
@@ -15765,7 +15765,7 @@ label ambushpactresupply:
     $ check1 = False
     $ check2 = False
 
-    call mission15_inits
+    call mission15_inits from _call_mission15_inits
 
     jump battle_start
 
@@ -18093,7 +18093,7 @@ label captainsituationpiratepact:
     $ check3 = False
     $ check4 = False
 
-    call mission16_inits
+    call mission16_inits from _call_mission16_inits
     $ BM.mission = 16
     jump battle_start
 
@@ -18274,7 +18274,7 @@ label after_mission16:
     $ check1 = False
     $ check2 = False
 
-    call mission17_inits
+    call mission17_inits from _call_mission17_inits
     $ BM.mission = 17
     jump battle_start
 
@@ -18908,7 +18908,7 @@ label jumptotydariaescort:
     hide ava
     hide battlewarning
 
-    call mission18_inits
+    call mission18_inits from _call_mission18_inits
     $ BM.mission = 18
     $ BM.formation_range = 7
     $ check1 = False
@@ -20252,7 +20252,7 @@ label bogiespiratefind:
     hide ava
     hide battlewarning
 
-    call mission19_inits
+    call mission19_inits from _call_mission19_inits
     $ BM.mission = 19
     $ check1 = False
     $ check2 = False
@@ -21136,7 +21136,7 @@ label satalonestaring:
     hide ava
     hide battlewarning
 
-    call mission20_inits
+    call mission20_inits from _call_mission20_inits
     $ BM.mission = 20
     $ check1 = False
     $ check2 = False
@@ -21991,7 +21991,7 @@ label temporary_mission21_skip:
     $ check6 = False
     $ check7 = False
 
-    call mission21_inits
+    call mission21_inits from _call_mission21_inits
 
     jump battle_start
 
@@ -22754,9 +22754,9 @@ label skiptomaskofarcadius:
     scene black
     with dissolve
 
-    call initialize
+    call initialize from _call_initialize_1
 
-    call firstvariables
+    call firstvariables from _call_firstvariables_1
 
     "Welcome to the Mask of Arcadius campaign. It is highly suggested that you complete the First Arrival campaign before playing Mask of Arcadius."
     "Do you want to go back to menu?"
@@ -22774,9 +22774,9 @@ label gobacktomenu:
 
 label continuewithchoices:
 
-    call initialize
+    call initialize from _call_initialize_2
 
-    call firstvariables
+    call firstvariables from _call_firstvariables_2
 
     python:
         BM.money = 19000
@@ -23169,7 +23169,7 @@ label rb_16:
     show eyecatch_logo with dissolve
     $ renpy.pause (2.0)
 
-    call beachepisode(True)
+    call beachepisode(True) from _call_beachepisode
 
 label devconsoleshow:
     show screen devconsole
