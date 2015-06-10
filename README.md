@@ -11,8 +11,6 @@ beta 7.2
 * ryders spawned from a carrier will no longer attack on the same turn.
 * the Phoenix now has the unique ability to start with half of her max energy after being restored to battle with the Resurrection order.
 * the cost multiplier for Sunrider's missile storage upgrade is reduced from 3 to 2.
-* Full forward and All Guard orders have had their duration reduced by 1 turn.
-* Full forward now provides a damage boost of +10% instead of +20%. the accuracy bonus has stayed the same.
 * The Black Jack had her melee attack energy cost reduced to 45 (from 50)
 * the Black Jack now scales better with melee upgrades in general.
 * added an upgrade in the store that reduces the Black Jack's movement cost to 15 (from 20). available after mission 5 (pirate base)

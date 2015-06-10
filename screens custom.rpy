@@ -6,7 +6,7 @@
 ## 2) battle map
 ## 3) command menu
 
-init -2:  ##0) transforms
+init -20:  ##0) transforms
 #    $import random
 
     transform hoverglow(img1):  #makes units glow when you mouseover
@@ -94,7 +94,25 @@ init -2:  ##0) transforms
         time wait
         alpha 1
         easein 1.0 ypos int(yy-80*zoomlevel)
+        
 
+    python:
+        class ImageCache(store.object):
+            """Stores all the images used by the battle screen so they stay cached"""
+            def __init__(self):
+                self.hexgrid = Image('Battle UI/hexgrid.png')
+                self.blue_hex = Image("Battle UI/blue hex.png")
+                self.red_hex = Image("Battle UI/red hex.png")
+                self.player_base = Image("Battle UI/player base.png")
+                self.pact_base = Image("Battle UI/pact_base.png")
+                self.pirate_base = Image("Battle UI/pirate_base.png")
+                self.hp_bar = Image('Battle UI/label hp bar.png')
+                self.energy_bar = Image('Battle UI/label energy bar.png')
+                self.targeting_window = Image('Battle UI/targeting_window.png')
+                self.move_tile = Image('Battle UI/move_tile.png')
+
+                
+        
 screen battle_screen:
     tag tactical
     modal False
@@ -156,7 +174,7 @@ screen battle_screen:
 ##much faster!
             $xsize = int((HEXW+5.5) * zoomlevel * 18)
             $ysize = int((HEXD+4) * zoomlevel * 16)
-            add 'Battle UI/hexgrid.png':
+            add IC.hexgrid:
                 alpha 0.4
                 # zoom zoomlevel * 0.685
                 size (xsize,ysize)
@@ -175,7 +193,7 @@ screen battle_screen:
                                 $yposition = dispy(a,b,zoomlevel)
                                 $xsize = int((HEXW + 4) * zoomlevel)
                                 $ysize = int((HEXH + 4) * zoomlevel)
-                                add "Battle UI/blue hex.png":
+                                add IC.blue_hex:
                                     xpos xposition
                                     ypos yposition
                                     size (xsize,ysize)
@@ -191,7 +209,7 @@ screen battle_screen:
                                 $yposition = dispy(a,b,zoomlevel)
                                 $xsize = int((HEXW + 4) * zoomlevel)
                                 $ysize = int((HEXH + 4) * zoomlevel)
-                                add "Battle UI/red hex.png":
+                                add IC.red_hex:
                                     xpos xposition
                                     ypos yposition
                                     size (xsize,ysize)
@@ -209,7 +227,7 @@ screen battle_screen:
                                         $yposition = dispy(a,b,zoomlevel)
                                         $xsize = int((HEXW + 4) * zoomlevel)
                                         $ysize = int((HEXH + 4) * zoomlevel)
-                                        add "Battle UI/red hex.png":
+                                        add IC.red_hex:
                                             xpos xposition
                                             ypos yposition
                                             size (xsize,ysize)
@@ -225,7 +243,7 @@ screen battle_screen:
                                         $yposition = dispy(a,b,zoomlevel)
                                         $xsize = int((HEXW + 4) * zoomlevel)
                                         $ysize = int((HEXH + 4) * zoomlevel)
-                                        add "Battle UI/blue hex.png":
+                                        add IC.blue_hex:
                                             xpos xposition
                                             ypos yposition
                                             size (xsize,ysize)
@@ -257,21 +275,21 @@ screen battle_screen:
                 $xsize = int(210 * zoomlevel)
                 $ysize = int(120 * zoomlevel)
                 if ship.faction == 'Player':
-                    add "Battle UI/player base.png":
+                    add IC.player_base:
                         xanchor 0.5
                         yanchor 0.5
                         xpos xposition
                         ypos yposition
                         size (xsize,ysize)
                 if ship.faction == 'PACT':
-                    add "Battle UI/pact_base.png":
+                    add IC.pact_base:
                         xanchor 0.5
                         yanchor 0.5
                         xpos xposition
                         ypos yposition
                         size (xsize,ysize)
                 if ship.faction == 'Pirate':
-                    add "Battle UI/pirate_base.png":
+                    add IC.pirate_base:
                         xanchor 0.5
                         yanchor 0.5
                         xpos xposition
@@ -312,12 +330,13 @@ screen battle_screen:
                         #you cannot target yourself with an active weapon
                         $ mode = 'offline'
 
-                        if BM.active_weapon.wtype == 'Support'and BM.active_weapon != None:
-                            #except when the active weapon is a support skill. in that case, player ships become targets
-                            $ mode = 'target'
+                        if BM.active_weapon != None:
+                            if BM.active_weapon.wtype == 'Support':
+                                #except when the active weapon is a support skill. in that case, player ships become targets
+                                $ mode = 'target'
                             
                         if ship.cth <=0:
-                            #if the target cannot be affected it should be obvious.
+                            #if the target cannot be affected it should be made obvious.
                             $ mode = 'offline'
 
                 else: #ship is an enemy faction
@@ -376,7 +395,7 @@ screen battle_screen:
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
                     $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add 'Battle UI/label hp bar.png':
+                    add IC.hp_bar:
                         xpos xposition
                         ypos yposition
                         zoom (zoomlevel/2.5)
@@ -385,7 +404,7 @@ screen battle_screen:
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
                     $energy_size = int(405*(float(ship.en)/ship.max_en))
-                    add 'Battle UI/label energy bar.png':
+                    add IC.energy_bar:
                         xpos xposition
                         ypos yposition
                         zoom (zoomlevel/2.5)
@@ -404,7 +423,7 @@ screen battle_screen:
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
                     $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add 'Battle UI/label hp bar.png':
+                    add IC.hp_bar:
                         xpos xposition
                         ypos yposition
                         zoom (zoomlevel/2.5)
@@ -573,7 +592,7 @@ screen battle_screen:
 
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.75 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.15 * ADJY) + int(zoomlevel * MOVY)
-                    add 'Battle UI/targeting_window.png':
+                    add IC.targeting_window:
                         xpos xposition
                         ypos yposition
                         xanchor 0.5
@@ -648,7 +667,7 @@ screen battle_screen:
         if BM.selectedmode and BM.selected != None:
             if BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
                 for tile in BM.selected.movement_tiles:
-                    $ lbl = 'Battle UI/move_tile.png'
+                    $ lbl = IC.move_tile
                     $ tile_location = (tile[3],tile[4])
 
                     if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
@@ -1871,7 +1890,8 @@ screen skirmishhelp:
             text "Pressing the MIDDLE MOUSE BUTTON allows you to instantly grab the next player unit from the player pool."
             text "To remove placed units, simply press the REMOVE button, then click on the unit you wish to remove."
             text "You may set the amount of usable command points during the battle using the buttons on the player pool bar."
-            text "However, you will not earn any money or command points in Skirmish Mode."
+            text "Additionally, you can freely try out all possible upgrades by clicking the blue upgrades button."
+            text "Keep in mind that you will {b}not{/b} earn any money or command points in Skirmish Mode!"
 
             textbutton "PROCEED":
                 xalign 0.5

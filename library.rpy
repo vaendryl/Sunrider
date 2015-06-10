@@ -94,7 +94,7 @@ init 2 python:
             self.move_cost = 20
             self.hate = 100
             self.evasion = 25
-            self.lbl = 'Battle UI/label_blackjack.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_blackjack.png')  #this is the battle avatar
             self.portrait = 'Battle UI/asaga_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/BlackJack/blackjack.png',
@@ -106,7 +106,7 @@ init 2 python:
             ##custom upgrade scaling
             self.upgrades['melee_dmg'] = ['Melee Damage',1,0.05,100,1.4]
             self.upgrades['melee_acc'] = ['Melee Accuracy',1,0.05,100,1.4]
-            self.upgrades['melee_cost'] = ['Melee Energy Cost',1,0.05,100,1.8]
+            self.upgrades['melee_cost'] = ['Melee Energy Cost',1,-0.05,100,1.8]
 
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_blackjack.png'
@@ -141,7 +141,7 @@ init 2 python:
             self.en = self.max_en
             self.move_cost = 20
             self.evasion = 20
-            self.lbl = 'Battle UI/label_liberty.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_liberty.png')  #this is the battle avatar
             self.portrait = 'Battle UI/chigara_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/Liberty/side.png'
@@ -185,7 +185,7 @@ init 2 python:
             self.move_cost = 10
             self.hate = 100
             self.evasion = 50
-            self.lbl = 'Battle UI/label_phoenix.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_phoenix.png')  #this is the battle avatar
             self.portrait = 'Battle UI/icari_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/Phoenix/side.png',
@@ -228,7 +228,7 @@ init 2 python:
             self.en = self.max_en
             self.move_cost = 30
             self.evasion = 20
-            self.lbl = 'Battle UI/label_bianca.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_bianca.png')  #this is the battle avatar
             self.portrait = 'Battle UI/claude_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/Bianca/side.png'
@@ -271,7 +271,7 @@ init 2 python:
             self.move_cost = 30
             self.hate = 100
             self.evasion = 20
-            self.lbl = 'Battle UI/label_seraphim.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_seraphim.png')  #this is the battle avatar
             self.portrait = 'Battle UI/sola_portrait.png'
             self.upgrades['kinetic_dmg'] = ['Kinetic Damage',1,0.075,100,1.4]
             self.upgrades['kinetic_acc'] = ['Kinetic Accuracy',1,0.075,100,1.4]
@@ -314,7 +314,7 @@ init 2 python:
             self.move_cost = 40
             self.hate = 100
             self.evasion = 10
-            self.lbl = 'Battle UI/label_paladin.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_paladin.png')  #this is the battle avatar
             self.portrait = 'Battle UI/kryska_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/Paladin/side.png',
@@ -356,7 +356,7 @@ init 2 python:
             self.move_cost = 30
             self.hate = 100
             self.evasion = 0
-            self.lbl = 'Battle UI/label_alliancecruiser.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_alliancecruiser.png')  #this is the battle avatar
             self.default_weapon_list = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
             self.portrait = None
             self.flak = 30
@@ -392,7 +392,7 @@ init 2 python:
             self.move_cost = 40
             self.hate = 100
             self.evasion = -25
-            self.lbl = 'Battle UI/label_alliancebattleship.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_alliancebattleship.png')  #this is the battle avatar
             self.default_weapon_list = [AllianceBattleshipLaser(),AllianceBattleshipMissile(),AllianceBattleshipKinetic(),AllianceBattleshipCannon(),AllianceBattleshipAssault()]
             self.portrait = None
             self.flak = 30
@@ -428,7 +428,7 @@ init 2 python:
             self.move_cost = 20
             self.hate = 100
             self.evasion = 5
-            self.blbl = 'Battle UI/label_unionfrigate.png'  #base(default) label
+            self.blbl = Image('Battle UI/label_unionfrigate.png')  #base(default) label
             self.lbl = self.blbl
             self.default_weapon_list = [UnionFrigateLaser(),ShdJam()]  #just this?
             self.portrait = None
@@ -466,7 +466,7 @@ init 2 python:
             self.move_cost = 50
             self.hate = 300
             self.evasion = 0
-            self.lbl = 'Battle UI/label_agamemnon.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_agamemnon.png')  #this is the battle avatar
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
@@ -506,9 +506,9 @@ init 2 python:
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 50
-            self.hate = 300
+            self.hate = 50
             self.evasion = 0
-            self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_mochi.png')  #this is the battle avatar
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
@@ -530,7 +530,8 @@ init 2 python:
             set_cell_available(self.location) #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
-            renpy.jump('sunrider_destroyed')
+            sunrider.hp = -1
+            BM.you_lose()
 
     class PhoenixBoaster(Battleship):
         def __init__(self):
@@ -577,7 +578,7 @@ init 2 python:
             self.armor = self.base_armor
             self.evasion = 5
             self.move_cost = 30
-            self.blbl = 'Battle UI/label_pactbomber.png'  #this is the battle avatar
+            self.blbl = Image('Battle UI/label_pactbomber.png')  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.default_weapon_list = [PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket()]
             self.sprites = {
@@ -609,7 +610,7 @@ init 2 python:
             self.default_weapon_list = [SeraphimEnemyKinetic()]
 
 
-            self.blbl = 'Battle UI/label_seraphimenemy.png'  #this is the battle avatar
+            self.blbl = Image('Battle UI/label_seraphimenemy.png')  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
                 'standard':'gameplay/Animations/SeraphimEnemy/side.png',
@@ -633,9 +634,9 @@ init 2 python:
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 200
-            self.hate = 100
+            self.hate = 50
             self.evasion = -20
-            self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
+            self.lbl = Image('Battle UI/label_mochi.png')  #this is the battle avatar
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
@@ -657,8 +658,8 @@ init 2 python:
             set_cell_available(self.location) #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
+            sunrider.hp = -1
             BM.you_lose()
-            renpy.jump('sunrider_destroyed')
 
 ### PACT ships ###
 
@@ -1274,7 +1275,7 @@ init 2 python:
             self.accuracy = 120
             self.wtype = 'Laser'
             self.name = 'Trinities'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""
@@ -1290,7 +1291,7 @@ init 2 python:
             self.uses_missiles = True
             self.wtype = 'Missile'
             self.name = 'Sunrider_Missile'
-            self.lbl = 'Battle UI/button_missile.png'
+            self.lbl = Image('Battle UI/button_missile.png')
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
@@ -1305,7 +1306,7 @@ init 2 python:
             self.accuracy = 70
             self.wtype = 'Kinetic'
             self.name = 'Sunrider\'s main guns'
-            self.lbl = 'Battle UI/button_kinetic.png'
+            self.lbl = Image('Battle UI/button_kinetic.png')
             self.tooltip = """
             Kinetics pack a punch, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
@@ -1319,7 +1320,7 @@ init 2 python:
             self.accuracy = 90
             self.wtype = 'Pulse'
             self.name = 'Sunrider_Pulse'
-            self.lbl = 'Battle UI/button_pulse.png'
+            self.lbl = Image('Battle UI/button_pulse.png')
             self.tooltip = """
             Fires a high volume of laser pulses. Even if the enemy evades one bolt,
             others may still strike. Collectively, they are more powerful than
@@ -1334,7 +1335,7 @@ init 2 python:
             self.accuracy = 70
             self.wtype = 'Assault'
             self.name = 'Sunrider\'s Flak'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -1353,7 +1354,7 @@ init 2 python:
             self.eccm = 10
             self.wtype = 'Rocket'
             self.name = 'Thermonuclear warhead'
-            self.lbl = 'Battle UI/button_rocket.png'
+            self.lbl = Image('Battle UI/button_rocket.png')
             self.tooltip = """
             Fires a large rocket at the enemy topped with a devastating warhead.
             Highly limited in supply. Can be shot down by enemy flak."""
@@ -1368,7 +1369,7 @@ init 2 python:
             self.accuracy = 120
             self.wtype = 'Laser'
             self.name = 'AllianceCruiser_Laser'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""
@@ -1384,7 +1385,7 @@ init 2 python:
             self.uses_missiles = True
             self.wtype = 'Missile'
             self.name = 'AllianceCruiser_Missile'
-            self.lbl = 'Battle UI/button_missile.png'
+            self.lbl = Image('Battle UI/button_missile.png')
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
@@ -1400,7 +1401,7 @@ init 2 python:
             self.accuracy = 75
             self.wtype = 'Kinetic'
             self.name = 'AllianceCruiser_Kinetic'
-            self.lbl = 'Battle UI/button_kinetic.png'
+            self.lbl = Image('Battle UI/button_kinetic.png')
             self.tooltip = """
             Kinetics pack a punch, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
@@ -1415,7 +1416,7 @@ init 2 python:
             self.accuracy = 70
             self.wtype = 'Assault'
             self.name = 'AllianceCruiser_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -1432,7 +1433,7 @@ init 2 python:
             self.accuracy = 110
             self.wtype = 'Laser'
             self.name = 'AllianceBattleship_Laser'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""
@@ -1448,7 +1449,7 @@ init 2 python:
             self.uses_missiles = True
             self.wtype = 'Missile'
             self.name = 'AllianceBattleship_Missile'
-            self.lbl = 'Battle UI/button_missile.png'
+            self.lbl = Image('Battle UI/button_missile.png')
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
@@ -1463,7 +1464,7 @@ init 2 python:
             self.accuracy = 65
             self.wtype = 'Kinetic'
             self.name = 'AllianceBattleship_Kinetic'
-            self.lbl = 'Battle UI/button_kinetic.png'
+            self.lbl = Image('Battle UI/button_kinetic.png')
             self.tooltip = """
             Kinetics pack a punch, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
@@ -1477,7 +1478,7 @@ init 2 python:
             self.accuracy = 60
             self.wtype = 'Kinetic'
             self.name = 'AllianceBattleship_Cannon'
-            self.lbl = 'Battle UI/button_cannon.png'
+            self.lbl = Image('Battle UI/button_cannon.png')
             self.animation_name = 'kinetic2'
             self.tooltip = """
             The ultimate in interstellar destruction. Can punch holes through
@@ -1494,7 +1495,7 @@ init 2 python:
             self.accuracy = 63
             self.wtype = 'Assault'
             self.name = 'AllianceBattleship_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -1513,7 +1514,7 @@ init 2 python:
             self.accuracy = 110
             self.wtype = 'Laser'
             self.name = 'Blackjack_Laser'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""
@@ -1530,7 +1531,7 @@ init 2 python:
             self.uses_missiles = True
             self.wtype = 'Missile'
             self.name = 'Blackjack_Missile'
-            self.lbl = 'Battle UI/button_missile.png'
+            self.lbl = Image('Battle UI/button_missile.png')
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
@@ -1546,7 +1547,7 @@ init 2 python:
             self.accuracy = 80
             self.wtype = 'Pulse'
             self.name = 'Blackjack_Pulse'
-            self.lbl = 'Battle UI/button_pulse.png'
+            self.lbl = Image('Battle UI/button_pulse.png')
             self.tooltip = """
             Fires a high volume of laser pulses. Even if the enemy evades one bolt,
             others may still strike. Collectively, they are more powerful than
@@ -1561,7 +1562,7 @@ init 2 python:
             self.accuracy = 65
             self.wtype = 'Assault'
             self.name = 'Blackjack_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -1579,7 +1580,7 @@ init 2 python:
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 1
-            self.lbl = 'Battle UI/button_melee.png'
+            self.lbl = Image('Battle UI/button_melee.png')
             self.tooltip = """
             Slice an enemy ryder for devastating damage. However, can only be used on adjacent
             ryders. Moving directly next to an enemy ryder will trigger an enemy blindside attack."""
@@ -1596,7 +1597,7 @@ init 2 python:
             self.accuracy = 110
             self.wtype = 'Laser'
             self.name = 'Liberty_Laser'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""
@@ -1615,7 +1616,7 @@ init 2 python:
             self.uses_missiles = True
             self.wtype = 'Missile'
             self.name = 'Paladin_Missile'
-            self.lbl = 'Battle UI/button_missile.png'
+            self.lbl = Image('Battle UI/button_missile.png')
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
             their large numbers provide heavy fire power and great accuracy even
@@ -1630,7 +1631,7 @@ init 2 python:
             self.accuracy = 70
             self.wtype = 'Assault'
             self.name = 'Paladin_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -1647,7 +1648,7 @@ init 2 python:
             self.accuracy = 70
             self.wtype = 'Kinetic'
             self.name = 'Paladin_Kinetic'
-            self.lbl = 'Battle UI/button_kinetic.png'
+            self.lbl = Image('Battle UI/button_kinetic.png')
             self.tooltip = """
             Kinetics pack a punch, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
@@ -2166,7 +2167,7 @@ init 2 python:
             self.energy_use = 80
             self.name = 'Repair I'
             self.shot_count = 1
-            self.lbl = 'Battle UI/button_repair.png'
+            self.lbl = Image('Battle UI/button_repair.png')
             self.tooltip = """
             Restores approximately 300 HP to target.
             Has a range of 3 hexes."""
@@ -2178,7 +2179,7 @@ init 2 python:
             self.buff_strength = 15
             self.buff_duration = 3
             self.name = 'Aim Up'
-            self.lbl = 'Battle UI/button_aimup.png'
+            self.lbl = Image('Battle UI/button_aimup.png')
             self.tooltip = """
             Adds an additional 15 points to the target's weapon accuracy.
             Has a range of 3 hexes."""
@@ -2190,7 +2191,7 @@ init 2 python:
             self.buff_strength = 20
             self.buff_duration = 3
             self.name = 'Damage Up'
-            self.lbl = 'Battle UI/button_atkup.png'
+            self.lbl = Image('Battle UI/button_atkup.png')
             self.tooltip = """
             Increases the target's weapon damage by 20 percent.
             Has a range of 3 hexes."""
@@ -2203,7 +2204,7 @@ init 2 python:
             self.buff_duration = 1
             self.name = 'Restore'
             self.energy_use = 40
-            self.lbl = 'Battle UI/button_restore.png'
+            self.lbl = Image('Battle UI/button_restore.png')
             self.tooltip = """
             Removes all enemy status ailments from the target.
             Has a range of 3 hexes."""
@@ -2219,7 +2220,7 @@ init 2 python:
             self.buff_strength = 100
             self.buff_duration = 1
             self.name = 'Stealth'
-            self.lbl = 'Battle UI/button_stealth.png'
+            self.lbl = Image('Battle UI/button_stealth.png')
             self.tooltip = """
             Become immune to enemy blindsides for one turn."""
 
@@ -2235,7 +2236,7 @@ init 2 python:
             self.buff_strength = 100
             self.buff_duration = 3
             self.name = 'Awaken'
-            self.lbl = 'Battle UI/button_awaken.png'
+            self.lbl = Image('Battle UI/button_awaken.png')
             self.tooltip = """
             Temporarily overcharges the Seraphim's systems, providing
             an additional 100 additional points to accuracy as well as
@@ -2253,7 +2254,7 @@ init 2 python:
             self.buff_strength = 100
             self.buff_duration = -1
             self.name = 'Awaken Asaga'
-            self.lbl = 'Battle UI/button_asaawaken.png'
+            self.lbl = Image('Battle UI/button_asaawaken.png')
             self.end_of_turn_callback = self.callback
             self.tooltip = """
             Improves the Black Jack's damage, evasion and armor each turn, but also causes progressively more damage each turn until canceled."""
@@ -2286,7 +2287,7 @@ init 2 python:
             self.self_buff = True
             self.energy_use = 0
             self.accuracy = 100
-            self.lbl = 'Battle UI/button_asaawaken.png'
+            self.lbl = Image('Battle UI/button_asaawaken.png')
             self.tooltip = """
             Cancels the awakening effect"""
 
@@ -2315,7 +2316,7 @@ init 2 python:
             self.buff_strength = -25
             self.buff_duration = 3
             self.name = 'Aim Down'
-            self.lbl = 'Battle UI/button_aimdown.png'
+            self.lbl = Image('Battle UI/button_aimdown.png')
             self.tooltip = """
             Reduces the target's weapon accuracy by 25 points."""
 
@@ -2328,7 +2329,7 @@ init 2 python:
             self.buff_strength = -100
             self.buff_duration = 2 #has to be 2 or else the debuff won't last beyond the start of their next turn
             self.name = 'Disable'
-            self.lbl = 'Battle UI/button_disable.png'
+            self.lbl = Image('Battle UI/button_disable.png')
             self.tooltip = """
             Completely disables the target for one turn."""
 
@@ -2341,7 +2342,7 @@ init 2 python:
             self.buff_strength = -100
             self.buff_duration = 2
             self.name = 'Flak Off'
-            self.lbl = 'Battle UI/button_flak.png'
+            self.lbl = Image('Battle UI/button_flak.png')
             self.tooltip = """
             The target can no longer counter attack or fire flak at missiles for two turns."""
 
@@ -2354,7 +2355,7 @@ init 2 python:
             self.buff_strength = -100
             self.buff_duration = 2
             self.name = 'Shield Down'
-            self.lbl = 'Battle UI/button_shutoff.png'
+            self.lbl = Image('Battle UI/button_shutoff.png')
             self.tooltip = """
             Deactivates the target's shields for two turns."""
 
@@ -2368,7 +2369,7 @@ init 2 python:
             self.buff_duration = 1
             self.cumulative = True  #do not overwrite but add to the current modifier.
             self.name = 'Shield Jam'
-            self.lbl = 'Battle UI/button_shdjam.png'
+            self.lbl = Image('Battle UI/button_shdjam.png')
             self.tooltip = """
             Temporarily reduce the target's shield generation by 15 points. Can be used multiple times on the same target."""
 
@@ -2387,7 +2388,7 @@ init 2 python:
             self.wtype = 'Rocket'
             self.name = 'Basic Rockets'
             self.shot_count = 2
-            self.lbl = 'Battle UI/button_rocket.png'
+            self.lbl = Image('Battle UI/button_rocket.png')
 
     class Flak(Kinetic):
         def __init__(self):
@@ -2399,7 +2400,7 @@ init 2 python:
             self.shot_count = 30  #many shots, but any armor will block it
             self.wtype = 'Assault'
             self.name = 'Basic Flak'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
 
     class MachineGun(Kinetic):
         def __init__(self):
@@ -2410,7 +2411,7 @@ init 2 python:
             self.shot_count = 15  #many shots, but any armor will block most
             self.wtype = 'Assault'
             self.name = 'Basic Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
 
 #################################################### PHOENIX BOOSTER
 
@@ -2473,7 +2474,7 @@ init 2 python:
             self.accuracy = 65
             self.wtype = 'Assault'
             self.name = 'Phoenix_Assault'
-            self.lbl = 'Battle UI/button_assault.png'
+            self.lbl = Image('Battle UI/button_assault.png')
             self.tooltip = """
             Assault guns spray explosive low caliber rounds at the enemy. Even if
             the enemy evades one round, others may hit. Armor is twice as
@@ -2492,7 +2493,7 @@ init 2 python:
             self.name = 'Zantetsuken'  #lol
             self.type = 'Melee'
             self.shot_count = 2
-            self.lbl = 'Battle UI/button_melee.png'
+            self.lbl = Image('Battle UI/button_melee.png')
             self.tooltip = """
             Slice an enemy ryder for devastating damage. However, can only be used on adjacent
             ryders. Moving directly next to an enemy ryder will trigger an enemy blindside attack."""
@@ -2512,7 +2513,7 @@ init 2 python:
             self.name = 'Zantetsuken'
             self.type = 'Melee'
             self.shot_count = 2
-            self.lbl = 'Battle UI/button_melee.png'
+            self.lbl = Image('Battle UI/button_melee.png')
 
 ################################################# SERAPHIM
     class SeraphimKinetic(Kinetic):
@@ -2537,7 +2538,7 @@ init 2 python:
             self.accuracy = 55
             self.wtype = 'Assault'
             self.name = 'Bianca Shotgun'
-            self.lbl = 'Battle UI/button_kinetic.png'
+            self.lbl = Image('Battle UI/button_kinetic.png')
             self.tooltip = """
             Provides reliable firepower, but highly inaccurate unless the target
             is nearby and large. Can also be used for blindside attacks."""
@@ -2555,7 +2556,7 @@ init 2 python:
             self.accuracy = 120
             self.wtype = 'Laser'
             self.name = 'Trinities'
-            self.lbl = 'Battle UI/button_laser.png'
+            self.lbl = Image('Battle UI/button_laser.png')
             self.tooltip = """
             Lasers are accurate even from long distances, but lack fire power.
             Mitigated by enemy shields."""

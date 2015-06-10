@@ -17,7 +17,7 @@ label skirmish_battle:
         BM.yadj.value = 370
         store.zoomlevel = 0.65
         BM.phase = 'formation'
-        BM.selected = None
+        BM.selected = None #if something is selected it won't get shown in the player pool.
         battlemode()
         BM.remove_mode = False #when True player can click on units and delete them quickly
         for ship in player_ships:
@@ -52,6 +52,9 @@ label skirmish_battle:
         player_ships = player_ships_original
         sunrider = original_sunrider
         BM.mission = None
+        BM.ships = []
+        for pship in player_ships:
+            BM.ships.append(pship)
     jump dispatch
     return
 

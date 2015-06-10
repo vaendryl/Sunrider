@@ -255,8 +255,9 @@ init -6 python:
             ship.location = None
 
     def get_acc(weapon, attacker, target, guess = False, range_reduction = 0,custom_range=0): #calculate the chance to hit an enemy ship
-        if weapon.max_range and custom_range == 0:  #if this value is not None, False or 0.
-            if get_ship_distance(attacker,target) > weapon.max_range: return 0
+        if hasattr(weapon,'max_range'): 
+            if weapon.max_range and custom_range == 0:  #if this value is not None, False or 0.
+                if get_ship_distance(attacker,target) > weapon.max_range: return 0
 
         accuracy = weapon.accuracy
 
@@ -542,6 +543,18 @@ init -6 python:
         
         show_message('Reinitialization complete.')
         return
+
+    def update_weapon(weapon):
+        """reset a weapon to init so it's compatible with current code. most useful for custom actions that store weapons from old code"""
+        keep_dict = {}
+        if hasattr(weapon,'keep_after_reset'):
+            keep_dict = weapon.keep_after_reset
+        weapon.__init__()
+        if keep_dict != {}:
+            for stat in keep_dict:
+                setattr(weapon,stat,keep_dict[stat])
+            weapon.keep_after_reset = keep_dict
+        return weapon    
 
     def fix_enemy_list():
         store.all_enemies = [

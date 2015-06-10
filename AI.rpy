@@ -12,25 +12,32 @@ init python:
             self.preferred_distance = 0
             #the higher the less likely the unit is to approach kinetic users.
             self.kinetic_fear = 0.75
+            return
 
         def AI_estimate_damage(self):
             raise NotImplementedError
+            return
 
         def AI_attack_target(self):
             raise NotImplementedError
+            return
 
         def AI_basic_loop(self):
             raise NotImplementedError
+            return
 
         def AI_move_towards(self):
             raise NotImplementedError
+            return
 
         def AI(self):
             raise NotImplementedError
+            return
 
     class DefaultAI(AI):
         def __init__(self,parent):
             AI.__init__(self,parent)
+            return
 
         def AI_estimate_damage(self,pship,en = 0, range_reduction = 0):
             """this gets called on every possible target ship. it cycles through all the available
@@ -38,75 +45,81 @@ init python:
             then gets used by the rest of the AI"""
             parent = self.parent
             #the higher this number, the greater the effect hate has.
-            priority_modifier = 1.5
-            #quit when out of energy
+            priority_modifier = 1.7
             if en == 0: en = parent.en
             #init our result
             pship.damage_estimation = [None,0,0] #weapon,estimation,priority
             #failsafe
             if pship.hp < 1:
                 return
+            debuglog_add(parent.name + ' is scanning ' + pship.name + ' as potential target.')
 
             #cycle through all the weapons and find out which one is likely to be most
             #effective for each player ship
             for weapon in parent.weapons:
+                debuglog_add('considering using ' + weapon.name)
                 #ignore this weapon if it's too expensive.
                 if parent.en < weapon.energy_cost(parent):
+                    debuglog_add('not enough energy to use this weapon')
                     continue
                 else:
                     #get the accuracy for this weapon on this target. guess=True
-                    accuracy = get_acc(weapon,parent,pship,True, range_reduction)
+                    accuracy = get_acc(weapon,parent,pship,True,range_reduction)
+                    debuglog_add('estimated accuracy of this weapon: ' + str(accuracy))
 
                     #check weapon type of this weapon and calculate how much damage this would do on this target.
                     ##KINETICS
                     if weapon.wtype == 'Kinetic' or weapon.wtype == 'Assault':
                         estimation = (weapon.damage-pship.armor*2)*weapon.shot_count*accuracy / 100.0
                         priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
+                        debuglog_add(weapon.name + ' estimated damage: ' + str(int(estimation)) + ' priority: ' + str(priority))
                         #if the priority on this combination is higher than the current best, replace it.
                         if pship.damage_estimation[2] < priority:
                             pship.damage_estimation = [weapon,int(estimation),priority]
 
                     ##MISSILES
-                    if weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
+                    elif weapon.wtype == 'Missile' or weapon.wtype == 'Rocket':
                         #missiles use ammo so this needs to be checked.
                         if weapon.uses_missiles and parent.missiles <= 0:
-                            return
+                            debuglog_add('not enough missiles to use this weapon')
+                            continue # 'return' is BAAAAAAAAAAD -_-
                         elif weapon.uses_rockets and parent.rockets <= 0:
-                            return
+                            debuglog_add('not enough rockets to use this weapon')
+                            continue
                         else:
                             estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
                             estimation = estimation * estimate_flak(parent,pship)
                             priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                            #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                            #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
+                            debuglog_add(weapon.name + ' estimated damage: ' + str(int(estimation)) + ' priority: ' + str(priority))
                             if pship.damage_estimation[2] < priority:
                                 pship.damage_estimation = [weapon,int(estimation),priority]
 
                     ##ENERGY
-                    if weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
+                    elif weapon.wtype == 'Laser' or weapon.wtype == 'Pulse':
                         estimation = (weapon.damage-pship.armor)*weapon.shot_count*accuracy / 100.0
                         estimation = estimation * (100 - pship.shields) / 100.0
                         priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
-                        #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
-                        #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
+                        debuglog_add(weapon.name + ' estimated damage: ' + str(int(estimation)) + ' priority: ' + str(priority))
                         if pship.damage_estimation[2] < priority:
                             pship.damage_estimation = [weapon,int(estimation),priority]
 
                     ##MELEE
-                    if weapon.wtype == 'Melee':
+                    elif weapon.wtype == 'Melee':
                         estimation = estimate_melee_damage(parent,weapon,pship) if pship.stype == 'Ryder' else 0
                         priority = int(estimation * (1 + (pship.hate/100.0)**priority_modifier/10))
                         #renpy.log('I estimate that {} would do {!s} damage on {}'.format(weapon.name,int(estimation),pship.name))
                         #renpy.log('based on hate I give this ship a priority of {}'.format(priority))
                         if pship.damage_estimation[2] < priority:
                             pship.damage_estimation = [weapon,int(estimation),priority]
+                    
+                    else:
+                        continue
 
             # if pship.damage_estimation[0] == None:
                 # debuglog_add( 'all weapons can do no damage on the {}'.format(pship.name) )
             # else:
                 # debuglog_add('{} has the highest damage({!s}) on the {} with a priority of {!s}'.format(pship.damage_estimation[0].name,pship.damage_estimation[1],pship.name,pship.damage_estimation[2]))
+            return
 
 #AI attacks
         def AI_attack_target(self,pship,weapon,counter=False):
@@ -284,6 +297,7 @@ init python:
                     debuglog_add('can not find anything better to do, so I just attack with whatever')
                     parent.AI_attack_target(best_target[0],best_target[1])
                     return
+            return
 
 #AI move towards
         def AI_move_towards(self, target, melee_distance = None, max_move_distance = 0, preferred_distance = 0,rush=False):
@@ -504,6 +518,7 @@ init python:
                     parent.AI_running = False
                     parent.just_spawned = False
                     return
+            return
 
     def cartesian_product(seq,n):
         """
@@ -676,6 +691,7 @@ init python:
 
             if len(free_spaces) == 0:
                 spawning = False
+        return            
 
     def support_AI(ship):
         """
@@ -857,9 +873,12 @@ init python:
         if self.location is None or target.location is None: return 0
         if type(ignore) is not list: ignore = [ignore]
 
+        for ship in eval(shiplist):  #failsafe
+            ship.flak_used = False
+        
         path = interpolate_hex(self.location,target.location) #get a list of locations between parent and target
 
-        flak_strength = 1.0  #the lower this number the stronger, actually.
+        flak_strength = 1.0  #the lower this number the stronger, actually. 300 damage x 0.50 flak = estimated 150 damage
         for hex in path:
             for ship in eval(shiplist):
                 if ship in ignore: continue
@@ -871,8 +890,7 @@ init python:
                         flak_strength = (100-effective_flak)/100.0 * flak_strength
                         ship.flak_used = True
 
-
-        for ship in (enemy_ships if self.faction == 'Player' else player_ships):
+        for ship in eval(shiplist):
             ship.flak_used = False
 
         return flak_strength
@@ -912,10 +930,10 @@ init python:
         return result
 
     def get_can_melee(self):
-        can_melee = False
         for weapon in self.weapons:
             if weapon.wtype == 'Melee':
                 return True
+        return False
 
     def get_melee_weapon(self):
         for weapon in self.weapons:
@@ -944,6 +962,7 @@ init python:
             else:
                 attacked = True
                 self.AI_attack_target(adjacent,melee_weapon)
+                return attacked
 
         else:
             #the while never ran, the ship ran out of energy to melee or there was never a valid target.
@@ -976,6 +995,7 @@ init python:
 
         if best_hex is not None:
             self.move_ship(best_hex,BM)
+        return True
 
 
 

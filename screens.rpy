@@ -43,7 +43,7 @@ screen say:
 
     if 'mouseup_3' not in config.keymap['game_menu']:
         key 'mouseup_3' action Show('save')
-
+    
     # Defaults for side_image and two_window
     default side_image = None
     default two_window = False
@@ -359,6 +359,7 @@ screen load:
     zorder 200
 
     key "mousedown_3" action Hide('load', transition=dissolve)
+    key 'mousedown_4' action NullAction() #should fix a bug where you can rollback in battle when the menu is open.
 
     if not hasattr(store,'BM'):
         $ BM = Battle()
@@ -440,6 +441,7 @@ screen save:
     zorder 200
 
     key "mousedown_3" action Hide('save', transition=dissolve)
+    key 'mousedown_4' action NullAction() #should fix a bug where you can rollback in battle when the menu is open.
 
     if not hasattr(store,"BM"):
         $ BM = Battle()
@@ -540,6 +542,7 @@ screen preferences:
     modal True
 
     key "mousedown_3" action Hide('preferences', transition=dissolve)
+    key 'mousedown_4' action NullAction() #should fix a bug where you can rollback in battle when the menu is open.
     
     imagemap:
 
@@ -601,6 +604,7 @@ screen gameprefs:
     modal True
     
     key "mousedown_3" action Hide('gameprefs', transition=dissolve)
+    key 'mousedown_4' action NullAction() #should fix a bug where you can rollback in battle when the menu is open.
     
     imagemap:
 

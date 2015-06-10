@@ -32,6 +32,7 @@ init -10 python:
     mod_items = []
 
     mp = MultiPersistent("Sunrider")
+    IC = ImageCache()
     important_variables = [
         'captain_moralist','captain_prince','affection_ava','affection_asaga',
         'affection_chigara','affection_icari','affection_claude','affection_tera',
@@ -107,6 +108,7 @@ init -5:
 label initialize:
     python:
         BM = Battle() #create an instance of the battle manager which keeps track of lots of things
+        IC = ImageCache()
         MasterBM = BM #Keep the main battle manager in a variable of its own, in case some modder goes switching out the battle manager.
         player_ships = []
         enemy_ships = []
@@ -132,17 +134,9 @@ label initialize:
         check9 = False
 
 
-        all_enemies = [
-            PactBomber(),  PactMook(),
-            MissileFrigate(), PactCruiser(),
-            PactCarrier(), PactOutpost(),
-            PactBattleship(),RyuvianCruiser(),
-            Havoc(), PirateBomber(),
-            PirateGrunt(), PirateDestroyer(),
-            PirateBase(),
-            ]
-        for ship in all_enemies:
-            ship.location = None
+        all_enemies = []
+        # for ship in all_enemies:
+            # ship.location = None
 
     return
 

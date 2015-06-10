@@ -318,6 +318,15 @@ label after_load:
 
             # #update the multipersistent object with the most critical flags.
             # update_mp()
+            
+            #initialize the image cache introduced in 7.2
+            IC = ImageCache()
+            
+            #working around an issue I noticed but can't explain.
+            if BM.selected is not None:
+                if BM.selected.faction == 'Player':
+                    if not BM.selected in player_ships:
+                        BM.selected = None
 
             #add the restore skill to Bianca if she doesn't have it (due to very old save)
             if hasattr(store,'bianca'):
@@ -327,6 +336,9 @@ label after_load:
                 else:
                     bianca = Bianca()
                     bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
+            else:
+                bianca = Bianca()
+                bianca.weapons = [BiancaAssault(),GravityGun(),AccDown(),DamageUp(),Restore()]
                 
             #this was reduced in 7.2
             store.BM.formation_range = 6
@@ -350,8 +362,11 @@ label after_load:
             #set the new save version
             store.BM.save_version = config.version
 
-            #make sure the player can access the lab
             if store.mission2_complete:
+                skirmish_enabled = True
+            
+            #make sure the player can access the lab
+            if store.mission3_complete:
                 res_location = "lab"
                 res_event = "allocatefunds"
 

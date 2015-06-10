@@ -2442,6 +2442,8 @@ label attackonpiratesnest:
     $ warpto_pactstation1 = True
 
     $ mission_pirateattack = True
+    
+    $ skirmish_enabled = True
 
     $ liberty_weapons = [LibertyLaser(),Repair(),AccUp(),Disable(),FlakOff(),ShutOff()]
     $ liberty = create_ship(Liberty(),(5,7),liberty_weapons)
@@ -2566,6 +2568,8 @@ label researchanddevelopment:
 
     menu:
         "Let me allocate our funds.":
+            if not BM.seen_skirmish:
+                chi "Very well captain. Remember you can freely try out all upgrades in the simulator."
             jump allocatefunds
 
         "Nothing right now.":
@@ -2692,6 +2696,7 @@ label mission3:
         chi "Energy fields provide protection against laser based weapons for all units within the blue field indicated on the map."
         chi "Using allied defenses while exploiting weaknesses in the enemy's defenses is essential to winning."
         chi "No defense is perfect though, so make sure you exploit the holes in the enemy's defenses by using the best weapon type for the situation."
+        $ renpy.block_rollback()
 
         hide chigara onlayer screens with dissolve
 
@@ -15201,8 +15206,8 @@ label newoffice:
     chi "Ah, good day captain. And welcome to your new office."
     kay "Wow, things really changed here since Far Port."
     chi "With the new equipment we've received from the Alliance, I've managed to make some upgrades to your office."
-    chi "I've installed a new holo simulator to your computer. Now you'll be able to play custom battles based on the combat data we've gathered to date."
-    chi "Simply select the skirmish button hovering over your office on the ship map to begin the simulation."
+    # chi "I've installed a new holo simulator to your computer. Now you'll be able to play custom battles based on the combat data we've gathered to date."
+    # chi "Simply select the skirmish button hovering over your office on the ship map to begin the simulation."
     kay "Wow, thanks Chigara."
     chi "Eh-heh... I also took the liberty of adding a few more memorabilia to your office as well."
 
@@ -15234,9 +15239,6 @@ label newoffice:
 
     $ chi_location = None
     $ captaindeck = 0
-
-    $ skirmish_enabled = True
-
 
 
     jump dispatch
