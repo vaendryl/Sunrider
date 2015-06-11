@@ -127,21 +127,6 @@ init -6 python:
             BM.active_upgrade = ship.upgrades[upgrade]
         else:
             renpy.music.play('sound/Voice/Chigara/Others Line 4.ogg',channel = 'chivoice')
-    
-    def process_upgrade(ship, upgrade, level):
-        while ship.upgrades[upgrade][1] < level:
-            name,level,increase,cost,multiplier = ship.upgrades[upgrade]
-            if BM.money >= cost or BM.mission == 'skirmish':  #sanity check
-                if not BM.mission == 'skirmish':
-                    BM.money -= cost
-                new_value = getattr(ship,upgrade)+increase
-                setattr(ship,upgrade,new_value)
-                level += 1
-                cost = int(cost * multiplier)
-                ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
-                BM.active_upgrade = ship.upgrades[upgrade]
-            else:
-                return
 
     def reverse_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
