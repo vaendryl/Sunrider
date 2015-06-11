@@ -22409,6 +22409,14 @@ label aftercredits7:
 
     $ renpy.pause(1.0)
 
+    menu:
+        "Would you like to make a special save to be imported into part 3? This will overwrite your previous one if it exists."
+        
+        "Yes.":
+            $ update_mp()
+            "Your progress has been saved successfully."
+        "No.":
+            $ pass
     stop music fadeout 1.5
     scene white with dissolvelong
 

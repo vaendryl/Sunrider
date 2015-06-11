@@ -572,8 +572,7 @@ init -6 python:
     def update_mp():
         for variable in important_variables:
             if hasattr(store,variable):
-                if getattr(mp,variable) is None:
-                    setattr(mp,variable, getattr(store,variable) )
+                setattr(mp,variable, getattr(store,variable) )
         mp.save()
 
     def time_warp_easeout(t):  ##probably never got used
