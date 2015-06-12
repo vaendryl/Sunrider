@@ -975,8 +975,9 @@ init -2 python:
         def jumptomission(self):
             renpy.jump('mission{}'.format(self.mission))
 
+        # We should remove all references to this function as well as the function itself
         def editableformations(self):
-            return (type(self.mission) != str and self.mission > 12) #apparently string>int is completely legal in python :o
+            return True
 
         def battle(self):
             for ship in player_ships:
