@@ -962,6 +962,8 @@ init -2 python:
                     if ship.location != None:
                         set_cell_available(ship.location)
                         ship.location = None
+                    if not in BM.ships:
+                        BM.ships.append(ship)
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')

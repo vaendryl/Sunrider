@@ -55,6 +55,7 @@ label skirmish_battle:
         BM.ships = []
         for pship in player_ships:
             BM.ships.append(pship)
+    scene Solid((0, 0, 0, 255))
     jump dispatch
     return
 

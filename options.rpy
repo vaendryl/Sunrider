@@ -33,7 +33,7 @@ init -1 python hide:
     config.version = " Beta 7.2"
     config.window_title = config.name+config.version
 
-    config.image_cache_size = 50
+    config.image_cache_size = 8
     renpy.music.set_volume(0.75, 0, channel="music")
 
     #########################################
@@ -286,12 +286,12 @@ init python:
     ## The name that's used for directories and archive files. For example, if
     ## this is 'mygame-1.0', the windows distribution will be in the
     ## directory 'mygame-1.0-win', in the 'mygame-1.0-win.zip' file.
-    build.directory_name = "SunriderMaskofArcadius"
+    build.directory_name = "SunriderMaskofArcadius-Steam"
 
     ## The name that's uses for executables - the program that users will run
     ## to start the game. For example, if this is 'mygame', then on Windows,
     ## users can click 'mygame.exe' to start the game.
-    build.executable_name = "SunriderMaskofArcadius"
+    build.executable_name = "SunriderMaskofArcadius-Steam"
 
     ## If True, Ren'Py will include update information into packages. This
     ## allows the updater to run.
