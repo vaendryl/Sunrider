@@ -485,7 +485,7 @@ init -2 python:
                 pass
 
         def battle_next_ship(self):
-            if self.selected == None or not BM.selected in player_ships: #rollback can screw with the identity of BM.selected
+            if self.selected == None:
                 self.select_ship(sunrider)
                 return
 
@@ -690,15 +690,15 @@ init -2 python:
                         if ship.modifiers['damage'][0] == 20:
                             ship.modifiers['damage'] = [0,0]
 
-                self.active_strategy = ['all guard',5]
+                self.active_strategy = ['all guard',4]
 
                 succesful = False
                 for ship in player_ships:
                     if ship.flak > 0:
-                        if apply_modifier(ship,'flak',20,5): succesful = True
+                        if apply_modifier(ship,'flak',20,4): succesful = True
                     if ship.shield_generation > 0:
-                        if apply_modifier(ship,'shield_generation',10,5): succesful = True
-                    if apply_modifier(ship,'evasion',10,5): succesful = True
+                        if apply_modifier(ship,'shield_generation',10,4): succesful = True
+                    if apply_modifier(ship,'evasion',10,4): succesful = True
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
@@ -742,12 +742,12 @@ init -2 python:
                         if ship.modifiers['evasion'][0] == 10:
                             ship.modifiers['evasion'] = [0,0]
 
-                self.active_strategy = ['full forward',5]
+                self.active_strategy = ['full forward',4]
 
                 succesful = False
                 for ship in player_ships:
-                    if apply_modifier(ship,'accuracy',15,5): succesful = True
-                    if apply_modifier(ship,'damage',20,5): succesful = True
+                    if apply_modifier(ship,'accuracy',15,4): succesful = True
+                    if apply_modifier(ship,'damage',10,4): succesful = True
                 if not succesful:
                     show_message('already active!')
                     self.order_used = False
@@ -873,28 +873,22 @@ init -2 python:
                         result = ui.interact()
 
                         if result[0] == "selection":
-                            #the player has clicked a location
-                            
                             if result[1].faction != 'Player' and get_ship_distance(sunrider,result[1]) <= BM.vanguard_range:
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
                                 listlocs = interpolate_hex(loc1, loc2)
                                 hasship = False
-                                
-                                #test whether there are targets in the path.
                                 for loc in listlocs:
                                     if not get_cell_available(loc):
                                         for ship in enemy_ships:
                                             if ship.location[0] == loc[0] and ship.location[1] == loc[1]:
                                                 hasship = True
                                 if not hasship:
-                                    #no good targets found
                                     self.cmd += self.orders['VANGUARD CANNON'][0]
                                     looping = False
+                                    self.vanguardtarget = False
                                     self.order_used = False
                                     return
-                                    
-                                self.vanguardtarget = False  #resolve firing the VGC, no further targeting is required.  
                                 renpy.music.play('Music/March_of_Immortals.ogg')
                                 renpy.call_in_new_context('atkanim_sunrider_vanguard')
                                 renpy.hide_screen('battle_screen')
@@ -918,11 +912,10 @@ init -2 python:
                                                     self.target = ship
                                                     ship.receive_damage(BM.vanguard_damage,sunrider,'Vanguard')
                                 looping = False
-                                                                
-                                if BM.battlemode: #have to check this because killing the last enemy unit ends the battle.
-                                    renpy.hide_screen('battle_screen')
-                                    renpy.show_screen('battle_screen')
-                                    BM.order_used = True
+                                self.vanguardtarget = False
+                                renpy.hide_screen('battle_screen')
+                                renpy.show_screen('battle_screen')
+                                BM.order_used = True
 
                         if result[0] == 'deselect':
                             self.cmd += self.orders['VANGUARD CANNON'][0]
@@ -962,8 +955,6 @@ init -2 python:
                     if ship.location != None:
                         set_cell_available(ship.location)
                         ship.location = None
-                    if not in BM.ships:
-                        BM.ships.append(ship)
 
                 renpy.show_screen('player_unit_pool_collapsed')
                 renpy.show_screen('player_unit_pool')
@@ -1799,7 +1790,7 @@ init -2 python:
                         renpy.call_in_new_context('hitlegion_{}'.format(self.animation_name)) #you just got pwnd, son.
                     except:
                         show_message('missing animation. "hitlegion_{}" does\'t seem to exist'.format(self.animation_name))
-                    if not self.mercenary and store.Difficulty > 0:
+                    if not self.mercenary:
                         # show_message( 'the {} was obliterated. Game Over.'.format(self.name) )
                         renpy.jump('sunrider_destroyed') #game over
                         sunrider.hp = 0  #failsafe
@@ -1955,11 +1946,6 @@ init -2 python:
         def move_ship(self, new_location,bm):
               ##play voices based on backwards or forwards motion
             if self.faction == 'Player':
-                
-                if not self in player_ships: #sanity check - sometimes weird things happen when loading old saves.
-                    BM.selected = None
-                    return
-                
                 if self.location[0] > new_location[0]: #going west
                     a = renpy.random.randint(0,len(self.movebackward_voice)-1)
                     renpy.music.play('sound/Voice/{}'.format(self.movebackward_voice[a]),channel = self.voice_channel)
@@ -3177,8 +3163,7 @@ init -2 python:
             self.weapon = weapon
 
         def __call__(self):
-            #the weapon stored at __init__ might be from old code so the weapon must be updated or things can crash.
-            BM.weaponhover = update_weapon(self.weapon)
+            BM.weaponhover = self.weapon
 
             #wtype:'Support' targets only allies, wtype:'Special' targets everyone
             if BM.weaponhover.wtype == 'Support' or BM.weaponhover.wtype == 'Special':
@@ -3200,11 +3185,9 @@ init -2 python:
 
         def __call__(self):
             BM.weaponhover = None
-            #the weapon stored at __init__ might be from old code so the weapon must be updated or things can crash.
-            weapon = update_weapon(self.weapon)
-            if weapon.wtype == 'Support':
-                if weapon.self_buff:
-                    weapon.fire(BM.selected,BM.selected)
+            if self.weapon.wtype == 'Support':
+                if self.weapon.self_buff:
+                    self.weapon.fire(BM.selected,BM.selected)
                     update_stats()
                     BM.selected.movement_tiles = get_movement_tiles(BM.selected)
 
@@ -3212,7 +3195,7 @@ init -2 python:
                     return
 
             BM.targetingmode = True   #displays targeting info over enemy_ships
-            BM.active_weapon = weapon
+            BM.active_weapon = self.weapon
             BM.weaponhover = BM.active_weapon
             ignore_evasion = False
 
