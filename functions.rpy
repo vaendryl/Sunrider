@@ -128,14 +128,14 @@ init -6 python:
         else:
             renpy.music.play('sound/Voice/Chigara/Others Line 4.ogg',channel = 'chivoice')
     
-    def process_upgrade(ship, upgrade, min_level):
-        while ship.upgrades[upgrade][1] < min_level:
-            name,level,increase,cost,multiplier = ship.upgrades[upgrade]
-            new_value = getattr(ship,upgrade)+increase
-            setattr(ship,upgrade,new_value)
-            level += 1
-            cost = int(cost * multiplier)
-            ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
+    # def process_upgrade(ship, upgrade, min_level):
+        # while ship.upgrades[upgrade][1] < min_level:
+            # name,level,increase,cost,multiplier = ship.upgrades[upgrade]
+            # new_value = getattr(ship,upgrade)+increase
+            # setattr(ship,upgrade,new_value)
+            # level += 1
+            # cost = int(cost * multiplier)
+            # ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
 
     def reverse_upgrade(ship, upgrade):
         name,level,increase,cost,multiplier = ship.upgrades[upgrade]
