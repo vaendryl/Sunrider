@@ -286,12 +286,17 @@ init -2 python:
             renpy.hide_screen('enemy_unit_pool')
             renpy.hide_screen('mousefollow')
             renpy.hide_screen('battle_screen')
-            clean_battle_exit()
-            self.battlemode = False
+            
             BM.cmd = store.tempcmd
             BM.money = store.tempmoney
             BM.mission = None
             store.player_ships = store.player_ships_original
+            store.sunrider = store.original_sunrider
+            BM.mission = None
+            BM.ships = []
+            for pship in player_ships:
+                BM.ships.append(pship)
+            clean_battle_exit()
             renpy.jump('dispatch')
 
         def skirmish_remove(self):
@@ -962,7 +967,7 @@ init -2 python:
                     if ship.location != None:
                         set_cell_available(ship.location)
                         ship.location = None
-                    if not in BM.ships:
+                    if ship not in BM.ships:
                         BM.ships.append(ship)
 
                 renpy.show_screen('player_unit_pool_collapsed')
@@ -977,9 +982,8 @@ init -2 python:
         def jumptomission(self):
             renpy.jump('mission{}'.format(self.mission))
 
-        # We should remove all references to this function as well as the function itself
         def editableformations(self):
-            return True
+            return (type(self.mission) != str and self.mission > 12) #apparently string>int is completely legal in python :o
 
         def battle(self):
             for ship in player_ships:

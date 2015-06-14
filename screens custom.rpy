@@ -532,8 +532,8 @@ screen battle_screen:
                             if ship.faction != 'Player':
                                 if get_distance(tile,ship.location) <= ship.flak_range:
                                     if BM.active_weapon.wtype == 'Rocket':
-                                        #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
-                                        $ effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm)
+                                        #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is from the rocket itself. (default 10)
+                                        $ effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.active_weapon.eccm)
                                     else:
                                         $effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm)
                                     if effective_flak > 100:
