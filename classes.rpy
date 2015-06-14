@@ -201,7 +201,10 @@ init -2 python:
         ## Common dispatcher
         ########################################################
         def common_unexpected(self):
-            self.debug_log.append("Unexpected dispatcher key: " + self.result)
+            if isinstance(self.result, list):
+                self.debug_log.append("Unexpected dispatcher key: " + str(self.result[0]))
+            else:
+                self.debug_log.append("Unexpected dispatcher key: " + self.result)
 
         def common_none(self):
             pass
@@ -377,7 +380,7 @@ init -2 python:
         ########################################################
         def skirmish_phase(self):
             self.result = ui.interact()
-            self.dispatch_handler(self.result,'skirmish')()
+            self.dispatch_handler(self.result, 'skirmish')()
 
         #------------------------------------------------------#
         ########################################################
@@ -879,13 +882,13 @@ init -2 python:
 
                         if result[0] == "selection":
                             #the player has clicked a location
-                            
+
                             if result[1].faction != 'Player' and get_ship_distance(sunrider,result[1]) <= BM.vanguard_range:
                                 loc1 = sunrider.location
                                 loc2 = result[1].location
                                 listlocs = interpolate_hex(loc1, loc2)
                                 hasship = False
-                                
+
                                 #test whether there are targets in the path.
                                 for loc in listlocs:
                                     if not get_cell_available(loc):
@@ -898,8 +901,8 @@ init -2 python:
                                     looping = False
                                     self.order_used = False
                                     return
-                                    
-                                self.vanguardtarget = False  #resolve firing the VGC, no further targeting is required.  
+
+                                self.vanguardtarget = False  #resolve firing the VGC, no further targeting is required.
                                 renpy.music.play('Music/March_of_Immortals.ogg')
                                 renpy.call_in_new_context('atkanim_sunrider_vanguard')
                                 renpy.hide_screen('battle_screen')
@@ -923,7 +926,7 @@ init -2 python:
                                                     self.target = ship
                                                     ship.receive_damage(BM.vanguard_damage,sunrider,'Vanguard')
                                 looping = False
-                                                                
+
                                 if BM.battlemode: #have to check this because killing the last enemy unit ends the battle.
                                     renpy.hide_screen('battle_screen')
                                     renpy.show_screen('battle_screen')
@@ -966,8 +969,8 @@ init -2 python:
                 for ship in player_ships:
                     if ship.location != None:
                         set_cell_available(ship.location)
-                        ship.location = None
-                    if ship not in BM.ships:
+                        ship.location = None                    
+                    if not ship in BM.ships:
                         BM.ships.append(ship)
 
                 renpy.show_screen('player_unit_pool_collapsed')
@@ -1431,7 +1434,7 @@ init -2 python:
 
             renpy.block_rollback()
 
-    
+
     #SHIT A BUG IN THE CODE! KILL IT WITH FIRE!!!
                           #ug
                        #b
@@ -1454,7 +1457,7 @@ init -2 python:
                       #g            bug
                        #b
                         #ug
-    
+
     ## Displayables ##
     #custom displayables harness the power of pygame directly.
 
@@ -1959,11 +1962,11 @@ init -2 python:
         def move_ship(self, new_location,bm):
               ##play voices based on backwards or forwards motion
             if self.faction == 'Player':
-                
+
                 if not self in player_ships: #sanity check - sometimes weird things happen when loading old saves.
                     BM.selected = None
                     return
-                
+
                 if self.location[0] > new_location[0]: #going west
                     a = renpy.random.randint(0,len(self.movebackward_voice)-1)
                     renpy.music.play('sound/Voice/{}'.format(self.movebackward_voice[a]),channel = self.voice_channel)

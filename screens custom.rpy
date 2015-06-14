@@ -94,7 +94,7 @@ init -20:  ##0) transforms
         time wait
         alpha 1
         easein 1.0 ypos int(yy-80*zoomlevel)
-        
+
 
     python:
         class ImageCache(store.object):
@@ -111,8 +111,8 @@ init -20:  ##0) transforms
                 self.targeting_window = Image('Battle UI/targeting_window.png')
                 self.move_tile = Image('Battle UI/move_tile.png')
 
-                
-        
+
+
 screen battle_screen:
     tag tactical
     modal False
@@ -126,7 +126,8 @@ screen battle_screen:
     if 'mouseup_3' not in config.keymap['game_menu']:
         key "mousedown_3" action Return(["deselect"])
     key "]" action Return(["next ship"])
-    key "[" action Return(["previous ship"])
+    if BM.phase == "battle":
+        key "[" action Return(["previous ship"])
 
     ##messing with the player for fun and profit
     if BM.battlemode:
@@ -271,7 +272,7 @@ screen battle_screen:
                   ##first we show the circle base below every unit
             if ship.location != None:
                 $ x,y = ship.location
-                if x > 0 and y > 0:            
+                if x > 0 and y > 0:
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel, 0.50 * ADJY) + int(zoomlevel * MOVY)
                     $xsize = int(210 * zoomlevel)
@@ -324,7 +325,7 @@ screen battle_screen:
                     $hvr = hoverglow(ship.lbl)
 
                     ##depending on the circumstance of the particular ship in the loop the avatar should appear normally, should blink(target) or should appear dark(offline).
-                    
+
                     if ship.faction == 'Player':
                         #by default player ships can be selected, which the above values are already set to.
 
@@ -336,7 +337,7 @@ screen battle_screen:
                                 if BM.active_weapon.wtype == 'Support':
                                     #except when the active weapon is a support skill. in that case, player ships become targets
                                     $ mode = 'target'
-                                
+
                             if ship.cth <=0:
                                 #if the target cannot be affected it should be made obvious.
                                 $ mode = 'offline'
@@ -883,7 +884,7 @@ screen battle_screen:
                 idle 'Skirmish/playermusic.png'
                 hover hoverglow('Skirmish/playermusic.png')
                 action Show('player_music')
-                
+
             imagebutton:
                 xpos 414
                 ypos 1022
@@ -1645,7 +1646,7 @@ screen victory2:
         $ total_ships += len(enemy_ships)
 
     $total_wait_time = len(destroyed_ships) * 0.2
-    if total_wait_time > 3.0: 
+    if total_wait_time > 3.0:
         $ total_wait_time = 3.0
     $ wait_time = total_wait_time / len(destroyed_ships)
 
@@ -2148,11 +2149,11 @@ screen debug_window:
                         value YScrollValue('debug log')
                         hovered SetField(BM, 'draggable', False)
                         unhovered SetField(BM, 'draggable', True)
-                        
-                        
+
+
 screen debug_pships:
     #show a list all all player ships and as much relevant data about them as possible. useful for tracing weird behaviour. maybe.
-    zorder 100    
+    zorder 100
     drag:
         xalign 0.5
         ypos 0.2
@@ -2173,24 +2174,24 @@ screen debug_pships:
                         id 'debug pship list'
                         yinitial 0
                         mousewheel True
-                        
+
                         vbox:
                             for pship in player_ships:
                                 text pship.name size 12
                                 vbox:
                                     xpos 20
-                                    for entry in pship.__dict__:                                                                            
+                                    for entry in pship.__dict__:
                                         $ data = getattr(pship,entry)
                                         if not type(data) is dict and not type(data) is list:  #renpy can't deal with those at all
                                             text str(entry)+ ' : ' + str(data) size 12
-                                
+
                     vbar:
                         value YScrollValue('debug pship list')
                         hovered SetField(BM, 'draggable', False)
                         unhovered SetField(BM, 'draggable', True)
 
 screen debug_eships:
-    zorder 100    
+    zorder 100
     drag:
         xalign 0.5
         ypos 0.2
@@ -2211,17 +2212,17 @@ screen debug_eships:
                         id 'debug eship list'
                         yinitial 0
                         mousewheel True
-                        
+
                         vbox:
                             for eship in enemy_ships:
                                 text eship.name size 12
                                 vbox:
                                     xpos 20
-                                    for entry in eship.__dict__:                                                                            
+                                    for entry in eship.__dict__:
                                         $ data = getattr(eship,entry)
                                         if not type(data) is dict and not type(data) is list:
                                             text str(entry)+ ' : ' + str(data) size 12
-                                
+
                     vbar:
                         value YScrollValue('debug eship list')
                         hovered SetField(BM, 'draggable', False)
