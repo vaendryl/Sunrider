@@ -1604,6 +1604,7 @@ init -2 python:
         """this class is the basis of all unit types in the game.
         these values are the default one if none are specified."""
         def __init__(self):
+            self.name = "basic"
             self.brain = DefaultAI(self)
             self.shield_generation = 0
             self.shields = self.shield_generation
@@ -1720,6 +1721,14 @@ init -2 python:
         #return None if an attribute does not exist
         # def __getattr__(self,X):
             # return None
+
+        def __ne__(self, right):
+            """ Negativity method for ships """
+            return self.id != right.id if hasattr(right, "id") else True
+
+        def __eq__(self, right):
+            """ Equality method for ships """
+            return self.id == right.id if hasattr(right, "id") else False
 
         def update_armor(self):
             self.armor = (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * self.hp / float(self.max_hp)
