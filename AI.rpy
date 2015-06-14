@@ -145,6 +145,7 @@ init python:
 
             #calculate how far you can move and -still- use the weapon
             max_advance_distance = (parent.en - weapon.energy_cost(parent)) / parent.move_cost
+            if counter: max_advance_distance = 0
             if max_advance_distance > 0:
 
                 #if less than 75% try to move as much as possible while still being able to fire.
