@@ -10,8 +10,15 @@ init -6 python:
 
     import math
     from copy import deepcopy
+    from random import randrange
+    from itertools import chain
 
-    def get_modified_damage(damage,faction):
+    def gen_ship_id(ship_name):
+        ship_id = abs(ship_name.__hash__()) if ship_name else 12021992
+        ship_id = randrange(ship_id if ship_id > 100 else 12021992)
+        return ship_id
+
+    def get_modified_damage(damage, faction):
         #implementing difficulty setting.
         Difficulty = store.Difficulty #to be safe
 
@@ -75,18 +82,18 @@ init -6 python:
     def update_upgrades(ship):
         if ship == None:
             return
-        
+
         # make a backup of the current upgrade level and player money
         original_money = BM.money
         upgrades = deepcopy(ship.upgrades)
-        
+
         # reset upgrades to level 1
         for key in upgrades:
             name,level,increase,cost,multiplier = upgrades[key]
             if key in ship.upgrades:
                 for count in range(level-1):
                     reverse_upgrade(ship, key)
-        
+
         # calculate the amount of money used to originally purchase the upgrades
         BM.money = 1000000000
         for key in upgrades:
@@ -95,7 +102,7 @@ init -6 python:
                 for count in range(level-1):
                     process_upgrade(ship, key)
         old_cost = 1000000000 - BM.money
-        
+
         # calculate the new cost to purchase the upgrades and update upgrades to the latest version
         reset_upgrades(ship)
         BM.money = 1000000000
@@ -105,10 +112,10 @@ init -6 python:
                 for count in range(level-1):
                     process_upgrade(ship, key)
         new_cost = 1000000000 - BM.money
-        
+
         # update player money to the correct cost
         BM.money = original_money + old_cost - new_cost
-        
+
         #I don't really want people ending up with negative money after an update
         if BM.money < 0:
             BM.money = 0
@@ -133,7 +140,7 @@ init -6 python:
         level -= 1
         cost = int(round(cost / multiplier))
         if not BM.mission == 'skirmish': #better safe than sorry
-            BM.money += int(cost * 0.8)  
+            BM.money += int(cost * 0.8)
         new_value = getattr(ship,upgrade)-increase
         setattr(ship,upgrade,new_value)
         ship.upgrades[upgrade] = [name,level,increase,cost,multiplier]
@@ -255,7 +262,7 @@ init -6 python:
             ship.location = None
 
     def get_acc(weapon, attacker, target, guess = False, range_reduction = 0,custom_range=0): #calculate the chance to hit an enemy ship
-        if hasattr(weapon,'max_range'): 
+        if hasattr(weapon,'max_range'):
             if weapon.max_range and custom_range == 0:  #if this value is not None, False or 0.
                 if get_ship_distance(attacker,target) > weapon.max_range: return 0
 
@@ -489,7 +496,7 @@ init -6 python:
             BM.ships.append(ship)
 
         #the all_enemies list also needs to be updated or you get problems in skirmish
-        iterate_list = BM.ships + store.all_enemies
+        iterate_list = chain(BM.ships, store.all_enemies)
         #going to re-init all the ships
         for ship in iterate_list:
             weapons = ship.weapons
@@ -532,15 +539,18 @@ init -6 python:
                             new_ship_dict[key2] = ship_value[key2]
                 else:
                     # key not a dict
-                    if hasattr(ship,key):
-                        setattr(ship,key, getattr(ship_copy,key) )
+                    if hasattr(ship, key):
+                        setattr(ship, key, getattr(ship_copy, key) )
+
+            if ship.id == 0:
+                ship.id = gen_ship_id(ship.name)
 
             #restore the old weapon list
             ship.weapons = weapons
 
         for pship in player_ships:
-            update_upgrades(pship)        
-        
+            update_upgrades(pship)
+
         show_message('Reinitialization complete.')
         return
 
@@ -554,7 +564,7 @@ init -6 python:
             for stat in keep_dict:
                 setattr(weapon,stat,keep_dict[stat])
             weapon.keep_after_reset = keep_dict
-        return weapon    
+        return weapon
 
     def fix_enemy_list():
         store.all_enemies = [
@@ -644,8 +654,7 @@ init -6 python:
         bm.xadj.value = int(side_distance) #actually set the new viewport values
         bm.yadj.value = int(top_distance)
 
-    def create_ship(ship,location=None,weapons=[]):
-
+    def create_ship(ship, location=None, weapons=[]):
         #find the location
         if location != None:
             location = get_free_spot_near(location)
@@ -666,6 +675,8 @@ init -6 python:
         for weapon in weapons:
             ship.register_weapon(weapon)
 
+        #make unique id
+        ship.id = gen_ship_id(ship.name)
         #register the ship
         if ship.faction == 'Player':
             store.player_ships.append(ship)
