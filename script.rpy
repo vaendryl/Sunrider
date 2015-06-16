@@ -5077,6 +5077,7 @@ label mission7:
 label after_mission7:
 
     $ Saveddiplomats = False
+    $ mission7_complete = True
 
     hide screen commands
     hide screen battle_screen
@@ -5461,6 +5462,7 @@ label after_mission8:
         phoenix = create_ship(Phoenix(),(9,5),phoenix_weapons)
 
     $ Saveddiplomats = True
+    $ mission8_complete = True
 
     hide screen commands
     hide screen battle_screen
@@ -10442,6 +10444,8 @@ label mission11:
 
 label after_mission11:
 
+    $ mission11_complete = True
+    
     hide screen commands
     hide screen battle_screen
 
