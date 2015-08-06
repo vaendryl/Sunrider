@@ -207,8 +207,12 @@ init -6 python:
         if cumulative:
             current_magnitude, current_duration = target.modifiers[modifier]
             magnitude += current_magnitude
-            if current_duration <= 1: duration += current_duration
-            target.modifiers[modifier] = [magnitude,duration]
+            # don't extend ongoing buff duration further than duration + 1
+            # TODO extension limit should probably be a property of the buff object instead of this magic formula
+            new_duration = min(duration + current_duration, duration + 1)
+            new_duration = max(current_duration, new_duration) 
+            
+            target.modifiers[modifier] = [magnitude,new_duration]
             return True
 
         if magnitude > 0:  #I may have to make a better check at some point
