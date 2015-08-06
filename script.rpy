@@ -18484,13 +18484,14 @@ label admiralstopthismadness:
 
     $ affection_cosette += 1
     $ captain_moralist += 2
+    $ SupportedGreyThreat = False
 
     jump holdwarpcoordinatesyour
 
 label youvelostfontana:
 
     $ captain_prince += 1
-
+    $ SupportedGreyThreat = True
     jump holdwarpcoordinatesyour
 
 label holdwarpcoordinatesyour:
@@ -18593,6 +18594,41 @@ label incidentongesshit:
     show ava uniform handonhip neutral with dissolve
 
     ava "Are you feeling all right, captain?"
+    
+    if SupportedGreyThreat:
+    #if affection_cosette < 2:
+        jump shownoquarter
+    else:
+        jump supposecosetteright
+
+label newssecondongessthe:
+
+    scene black with horizontalwipe
+    scene bg captainsoffice2
+    show ava uniform armscrossed neutral
+    with horizontalwipe
+
+    ava "News of the Second Battle of Ongess has hit the holonet."
+    kay "What's the response?"
+    ava "Virtually every Universalist affiliated news source is calling it a resounding victory, and further proof that PACT is losing the war."
+    ava "With this, PACT has been defeated at Far Port, and twice at Ongess. Many are drawing parallels between this war and the Alliance-Imperial War which led to the creation of the Solar Alliance."
+    ava "Once again, the free people of the Alliance will unite to defeat a tyrant who seeks to rule all of mankind. And just like two hundred years ago, a great Grey will lead the Alliance to total victory against the forces of evil. Or so they say."
+    ava "In the latest opinion poll published by All Alliance News, Admiral Grey gained 4 points in his standings. He now soundly dominates the polls at 48 points, against Progress candidate Frandall's 37 points."
+    ava "All in all, this election's hardly even a competition any more."
+    kay "... ... ..."
+
+    show ava uniform handonhip neutral with dissolve
+
+    ava "Are you feeling all right, captain?"
+
+    if SupportedGreyThreat:
+    #if affection_cosette < 2:
+        jump shownoquarter
+    else:
+        jump supposecosetteright
+        
+label supposecosetteright:
+
     kay "You suppose Cosette's right?"
 
     show ava uniform alt neutral mad with dissolve
@@ -18616,25 +18652,8 @@ label incidentongesshit:
 
     jump crewdownmean
 
-label newssecondongessthe:
-
-    scene black with horizontalwipe
-    scene bg captainsoffice2
-    show ava uniform armscrossed neutral
-    with horizontalwipe
-
-    ava "News of the Second Battle of Ongess has hit the holonet."
-    kay "What's the response?"
-    ava "Virtually every Universalist affiliated news source is calling it a resounding victory, and further proof that PACT is losing the war."
-    ava "With this, PACT has been defeated at Far Port, and twice at Ongess. Many are drawing parallels between this war and the Alliance-Imperial War which led to the creation of the Solar Alliance."
-    ava "Once again, the free people of the Alliance will unite to defeat a tyrant who seeks to rule all of mankind. And just like two hundred years ago, a great Grey will lead the Alliance to total victory against the forces of evil. Or so they say."
-    ava "In the latest opinion poll published by All Alliance News, Admiral Grey gained 4 points in his standings. He now soundly dominates the polls at 48 points, against Progress candidate Frandall's 37 points."
-    ava "All in all, this election's hardly even a competition any more."
-    kay "... ... ..."
-
-    show ava uniform handonhip neutral with dissolve
-
-    ava "Are you feeling all right, captain?"
+label shownoquarter:
+    
     kay "Yeah."
     kay "From the moment they nuked Cera City, PACT lost its claim to the moral high ground. Whatever their propaganda machine may spurt, they are a menace to the galaxy."
     kay "We must use whatever means necessary to end Arcadius, or else he will do the same to us."
