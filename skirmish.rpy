@@ -35,6 +35,7 @@ label skirmish_battle:
         show screen skirmishhelp
         $ BM.seen_skirmish = True
 
+    #start formation set-up phase and come back after
     call mission_skirmish from _call_mission_skirmish
 
     python:
@@ -42,6 +43,7 @@ label skirmish_battle:
         BM.mission = 'skirmishbattle'
         update_stats()
 
+    #start the actual skirmish battle and come back here after
     call battle_start from _call_battle_start
 
     python:

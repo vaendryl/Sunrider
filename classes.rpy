@@ -477,7 +477,7 @@ init -2 python:
         def battle_cheat(self):
             self.cmd = 99999
             for ship in player_ships:
-                ship.en = 9999
+                ship.set_stat('en',9999)
 
         def battle_inst_win(self):
             instant_win()
@@ -630,7 +630,7 @@ init -2 python:
             #expect that any actions will remove cancel button
             self.battle_log_pop()
             ship = self.selected
-            ship.en += get_distance(ship.location,ship.current_location)*ship.move_cost
+            ship.en += get_distance(ship.location,ship.current_location)*ship.get_stat('move_cost')
             a = ship.location[0]-1  #make the next line of code a little shorter
             b = ship.location[1]-1
             self.grid[a][b] = False #tell the BM that the old cell is now free again
@@ -660,8 +660,8 @@ init -2 python:
                     revived_ship = result[1]
                     renpy.hide_screen('ryderlist')
                     launch_location = get_free_spot_near(sunrider.location) #so useful
-                    revived_ship.en = 0   #not sure about this
-                    revived_ship.hp = revived_ship.max_hp
+                    revived_ship.set_stat('en',0) 
+                    revived_ship.set_stat('hp',revived_ship.get_stat('max_hp'))
                     destroyed_ships.remove(revived_ship)
                     player_ships.append(revived_ship)
                     self.ships.append(revived_ship)
@@ -673,11 +673,12 @@ init -2 python:
 
                     #Phoenix rising from the ashes!
                     if revived_ship.name == 'Phoenix':
-                        revived_ship.en = revived_ship.max_en / 2
+                        revived_ship.set_stat('en',revived_ship.get_stat('max_en') / 2)
 
                     #wipe all modifiers after a res
-                    for modifier in revived_ship.modifiers:
-                        revived_ship.modifiers[modifier] = [0,0]
+                    # for modifier in revived_ship.modifiers:
+                        # revived_ship.modifiers[modifier] = [0,0]
+                    revived_ship.buffs = []
 
                     #play the resurrect voice
                     if hasattr(revived_ship,'resurrect_voice'):
@@ -690,46 +691,43 @@ init -2 python:
             if self.cmd >= self.orders[self.result[0]][0]:
                 self.cmd -= self.orders[self.result[0]][0]
 
-                if self.active_strategy[0] == 'full forward':
+                strategy,remaining_turns = self.active_strategy
+                
+                if strategy == 'full forward':
                     show_message("Full Forward order cancelled!")
                     for ship in player_ships:
-                        if ship.modifiers['accuracy'][0] == 15:
-                            ship.modifiers['accuracy'] = [0,0]
-                        if ship.modifiers['damage'][0] == 20:
-                            ship.modifiers['damage'] = [0,0]
-
-                self.active_strategy = ['all guard',5]
-
-                succesful = False
-                for ship in player_ships:
-                    if ship.flak > 0:
-                        if apply_modifier(ship,'flak',20,5): succesful = True
-                    if ship.shield_generation > 0:
-                        if apply_modifier(ship,'shield_generation',10,5): succesful = True
-                    if apply_modifier(ship,'evasion',10,5): succesful = True
-                if not succesful:
+                        ship.remove_buff('Full Forward')
+                
+                if strategy == "all guard" and remaining_turns == 5:
                     show_message('already active!')
                     self.order_used = False
                     self.cmd += self.orders[self.result[0]][0]
-                else:
-                    message = "ORDER: ALL GUARD"
-                    self.battle_log_insert(['order'], message)
-                    BM.order_used = True
-                    store.show_message('all ships gained improved flak, shielding and evasion!')
+                
+                #actually process the buffs
+                self.active_strategy = ['all guard',5]
+                for ship in player_ships:
+                    ship.set_buff(AllGuard)
+                    
+                #bookkeeping
+                self.battle_log_insert(['order'], "ORDER: ALL GUARD")
+                BM.order_used = True
+                store.show_message('all ships gained improved flak, shielding and evasion!')
 
-                    random_ship = renpy.random.choice( get_player_ships_in_battle() )
-                    random_voice = renpy.random.choice(random_ship.buffed_voice)
-                    renpy.music.play('sound/Voice/{}'.format(random_voice),channel = random_ship.voice_channel)
+                #play a voice
+                random_ship = renpy.random.choice( get_player_ships_in_battle() )
+                random_voice = renpy.random.choice(random_ship.buffed_voice)
+                renpy.music.play('sound/Voice/{}'.format(random_voice),channel = random_ship.voice_channel)
 
-                    for ship in player_ships:
-                        ship.getting_buff = True
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    renpy.pause(1)
-                    for ship in player_ships:
-                        ship.getting_buff = False
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
+                #animation
+                for ship in player_ships:
+                    ship.getting_buff = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                renpy.pause(1)
+                for ship in player_ships:
+                    ship.getting_buff = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
                 update_stats()
 
             else:
@@ -740,43 +738,43 @@ init -2 python:
             if self.cmd >= self.orders[self.result[0]][0]:
                 self.cmd -= self.orders[self.result[0]][0]
 
-                if self.active_strategy[0] == 'all guard':
+                strategy,remaining_turns = self.active_strategy
+                
+                if strategy == 'all guard':
                     show_message("All Guard order cancelled!")
                     for ship in player_ships:
-                        if ship.modifiers['flak'][0] == 20:
-                            ship.modifiers['flak'] = [0,0]
-                        if ship.modifiers['shield_generation'][0] == 10:
-                            ship.modifiers['shield_generation'] = [0,0]
-                        if ship.modifiers['evasion'][0] == 10:
-                            ship.modifiers['evasion'] = [0,0]
-
-                self.active_strategy = ['full forward',5]
-
-                succesful = False
-                for ship in player_ships:
-                    if apply_modifier(ship,'accuracy',15,5): succesful = True
-                    if apply_modifier(ship,'damage',20,5): succesful = True
-                if not succesful:
+                        ship.remove_buff('All Guard')
+                
+                if strategy == "full forward" and remaining_turns == 5:
                     show_message('already active!')
                     self.order_used = False
                     self.cmd += self.orders[self.result[0]][0]
-                else:
-                    message = "ORDER: FULL FORWARD"
-                    self.battle_log_insert(['order'], message)
-                    BM.order_used = True
-                    store.show_message('All ships gain 20% damage and 15% accuracy!')
-                    random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
-                    random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
-                    renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
-                    for ship in player_ships:
-                        ship.getting_buff = True
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
-                    renpy.pause(1)
-                    for ship in player_ships:
-                        ship.getting_buff = False
-                    renpy.hide_screen('battle_screen')
-                    renpy.show_screen('battle_screen')
+                
+                #actually process the buffs
+                self.active_strategy = ['full forward',5]
+                for ship in player_ships:
+                    ship.set_buff(FullForward)
+                
+                #bookkeeping
+                self.battle_log_insert(['order'], "ORDER: FULL FORWARD")
+                BM.order_used = True
+                store.show_message('All ships gain 20% damage and 15% accuracy!')
+                
+                #play a voice
+                random_ship = player_ships[renpy.random.randint(0,len(player_ships)-1)]
+                random_voice = renpy.random.randint(0,len(random_ship.buffed_voice)-1)
+                renpy.music.play('sound/Voice/{}'.format(random_ship.buffed_voice[random_voice]),channel = random_ship.voice_channel)
+                
+                #animation
+                for ship in player_ships:
+                    ship.getting_buff = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                renpy.pause(1)
+                for ship in player_ships:
+                    ship.getting_buff = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
 
             else:
                 renpy.music.play('sound/Voice/Ava/Ava Others 9.ogg',channel='avavoice')
@@ -1062,8 +1060,12 @@ init -2 python:
 
 #ending a turn
         def end_player_turn(self):
+            #bookkeeping
             self.battle_log_insert(['system'], "---------Player turn end---------")
             self.battle_log_trimm()
+            self.turn_count += 1
+            
+            #cleanup
             renpy.hide_screen('commands')
             self.selected = None #some sanity checking
             self.target = None
@@ -1072,14 +1074,17 @@ init -2 python:
             self.targetingmode = False
             self.active_weapon = None
             self.weaponhover = None
-            self.turn_count += 1
+            
+            #end of turn animation and sound
             renpy.music.play(EnemyTurnMusic)
             renpy.call_in_new_context('endofturn')
 
+            #reset flak
             for ship in self.ships:
                 ship.flak_effectiveness = 100
 
-            self.enemy_AI() #call the AI to take over
+            #call the AI to take over
+            self.enemy_AI() 
             self.battle_log_insert(['system'], "---------{0} turn end---------".format(self.phase))
             self.battle_log_trimm()
              ##I have NO idea why this dumb workaround is needed, but the destroy() method -somehow- doesn't want to jump to this label sometimes.
@@ -1393,6 +1398,7 @@ init -2 python:
                 if difficulty_penalty < 0: difficulty_penalty = 0
 
                 self.cmd += int((net_gain*10)/(BM.turn_count+difficulty_penalty))
+                # if self.cmd > 4000: self.cmd = 4000
 
                 renpy.show_screen('victory2')
                 renpy.pause(1)
@@ -1610,6 +1616,7 @@ init -2 python:
         these values are the default one if none are specified."""
         def __init__(self):
             self.brain = DefaultAI(self)
+            self.buffs = []
             self.shield_generation = 0
             self.shields = self.shield_generation
             self.shield_range = -1
@@ -1722,10 +1729,65 @@ init -2 python:
                 'energy regen':[0,0],
                 }
 
-        #return None if an attribute does not exist
-        # def __getattr__(self,X):
-            # return None
-
+        #defunct
+        def get_stat(self,stat):
+            return getattr(self,stat)
+            
+        #defunct
+        def set_stat(self,stat,value):
+            setattr(self,stat,value)
+            return
+            
+        def has_buff(self,name):
+            for buff in self.buffs:
+                if name == buff.name:
+                    return True
+            return False
+        
+        def set_buff(self,buff):
+            if self.has_buff(buff.name):
+                if buff.cumulative:
+                    for i in self.buffs:
+                        if i.name == buff.name:
+                            i.stack_counter += 1
+                            return True
+                else:
+                    for i in self.buffs:
+                        if i.name == buff.name and i.turns_left < buff.duration:
+                            i.turns_left = buff.duration
+                            return True
+                #didn't increase the stack and didn not refresh duration -> failure
+                return False 
+            else:
+                self.buffs.append(buff(self))
+                return True
+                
+        def remove_buff(self,buff_name):
+            self.buffs[:] = [f for f in self.buffs if f.name != buff_name] #interesting alternative. may even be faster.
+            
+            ## regular way of doing it?
+            # for buff in ship.buffs:
+                # if buff.name == buff_name:
+                    # buff.remove()
+                    # break
+            
+        def __getattribute__(self,name):
+            v = store.object.__getattribute__(self, name)
+            if not is_number(v): return v #speedup the code
+            
+            # try to not crash the game
+            if not hasattr(self,'buffs'):
+                return v
+                
+            buffs = store.object.__getattribute__(self, 'buffs')
+            
+            for buff in buffs:
+                for affected_stat in buff.affected_stats:
+                    if name == affected_stat:
+                        v = buff.get_modified_stat(name,v)
+        
+            return v
+        
         def update_armor(self):
             self.armor = (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * self.hp / float(self.max_hp)
             self.armor = int(self.armor)
@@ -1734,6 +1796,13 @@ init -2 python:
             if self.armor > self.base_armor: self.armor_color = '070'
 
         def update_stats(self):
+        
+            #curse my lack of foresight
+            for weapon in self.weapons:
+                if weapon.parent is None:
+                    weapon.parent = self
+        
+        #WILL NEED TO CHANGE TO ACCOMODATE FOR BUFF SYSTEM
             try:
                 if self.modifiers['energy regen'][0] == -100:
                     self.en = 0
@@ -1931,6 +2000,7 @@ init -2 python:
                 raise IndexError('ERROR: too many weapons assigned to the {}'.format(self.name))
             else:
                 self.weapons.append(weapon)
+                weapon.parent = self
 
         def remove_weapon(self, weapon):
             if weapon in self.weapons:
@@ -2019,12 +2089,12 @@ init -2 python:
                 BM.just_moved = True
 
             ## BLIND SIDE ATTACKS
-            if self.faction == 'Player' and self.modifiers['stealth'][0] != 100:
+            if self.faction == 'Player' and not self.has_buff("Stealth"):
                 #player unit moves next to enemy unit
 
                 for enemy in enemy_ships:
                     #if next to enemy, not dead and the enemy isn't cursed.
-                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.modifiers['flak'][0] != -100:
+                    if get_ship_distance(self,enemy) == 1 and self in player_ships and enemy.flak > 0:
                         counter = None
                         for weapon in enemy.weapons:
                             if weapon.wtype == 'Assault':
@@ -2037,10 +2107,9 @@ init -2 python:
                             BM.just_moved = False
             else:
                 #enemy moves next to player unit
-
                 if self.name != 'Phoenix': #enemy phoenix is immune to counter attacks without having to buff itself.
                     for ship in player_ships:
-                        if get_ship_distance(self,ship) == 1 and self in enemy_ships: #if next to enemy and -not dead-
+                        if get_ship_distance(self,ship) == 1 and self in enemy_ships and ship.flak > 0: #if next to enemy and -not dead-
                             counter = None
                             for weapon in ship.weapons:
                                 if weapon.wtype == 'Assault':
@@ -2080,6 +2149,31 @@ init -2 python:
             self.tooltip = ''
             #a dict that keeps track of what specific fields on this class should be after a reset.
             self.keep_after_reset = {}
+            self.parent = None
+            
+        def __getattribute__(self,name):
+            v = store.object.__getattribute__(self, name)
+            if not is_number(v): return v #speedup the code
+            
+            if not hasattr(self,'parent'):
+                return v
+            parent = store.object.__getattribute__(self, 'parent')
+            
+            if parent is None:
+                # I'd like to raise an exception here but that freezes the game...
+                # whenever it's not set right it's certain to cause issues. better be careful
+                return v
+            
+            buffs = store.object.__getattribute__(parent, 'buffs')
+            for buff in buffs:
+                for affected_stat in buff.affected_stats:
+                    if name == affected_stat:
+                        v= buff.get_modified_stat(name,v)
+            return v
+
+        def callback(self):
+            """should be overwritten. will be called at the start of a turn."""
+            return
 
         ## Laser ##
     class Laser(Weapon): #starter laser weapon and parent of all other lasers
@@ -2094,9 +2188,12 @@ init -2 python:
             self.lbl = 'Battle UI/button_laser.png'
 
         def energy_cost(self, parent):
+            if self.parent is None: self.parent = parent
+            self.parent = parent #curse my past self for not setting this from the beginning
             return int(self.energy_use * parent.energy_cost)
 
         def fire(self, parent, target, counter = False): #firing lasers!
+            if self.parent is None: self.parent = parent
             target.update_armor()
             if parent.en < self.energy_cost(parent):  #energy handling
                 return 'no energy'
@@ -2159,9 +2256,11 @@ init -2 python:
             self.lbl = 'Battle UI/button_kinetic.png'
 
         def energy_cost(self, parent):
+            if self.parent is None: self.parent = parent
             return int(self.energy_use * parent.kinetic_cost)
 
         def fire(self, parent, target, counter = False): #firing gunz!
+            if self.parent is None: self.parent = parent
             target.update_armor()
 
             if parent.en < self.energy_cost(parent):  #energy handling
@@ -2227,9 +2326,11 @@ init -2 python:
             self.flaklist = []
 
         def energy_cost(self, parent):
+            if self.parent is None: self.parent = parent
             return int(self.energy_use * parent.missile_cost)
 
         def fire(self, parent, target, counter = False):
+            if self.parent is None: self.parent = parent
             target.update_armor()
             BM.missiles = []
             wName = "missile"
@@ -2426,9 +2527,11 @@ init -2 python:
             self.lbl = 'Battle UI/button_melee.png'
 
         def energy_cost(self, parent):
+            if self.parent is None: self.parent = parent
             return int(self.energy_use * parent.melee_cost)
 
         def fire(self, parent, target, counter = False):
+            if self.parent is None: self.parent = parent
             target.update_armor()
 
             #don't really want to fix this yet :D
@@ -2472,7 +2575,9 @@ init -2 python:
             return int(total_damage)
 
     class Support(store.object):
+        """the base support skill. often gets treated the same as a weapon"""
         def __init__(self):
+            self.applied_buff = None
             self.repair = False
             self.self_buff = False #if true this skill automatically casts on self only
             self.damage = 0 #also used to repair
@@ -2484,11 +2589,13 @@ init -2 python:
             self.hp_cost = 0
             self.wtype = 'Support'
             self.end_of_turn_callback = None
+            self.parent = None
             self.keep_after_reset = {} #used by save compat code.
             self.cumulative = False  #if true it does not overwrite but add to the current value.
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
+            self.hate_penalty = 0 #get this much hate for using the skill
 
             #effective range is 3 cells away and always hits
             self.accuracy = 350
@@ -2500,11 +2607,6 @@ init -2 python:
 
         def fire(self,parent,target,counter = False,hidden=False):
 
-            #handle callbacks
-            if self.end_of_turn_callback is not None:
-                if self.end_of_turn_callback not in BM.end_turn_callbacks:
-                    BM.end_turn_callbacks.append(self.end_of_turn_callback)
-
             #energy  management
             if parent.en < self.energy_use:
                 return 'no energy'
@@ -2515,6 +2617,7 @@ init -2 python:
                     parent.hp -= self.hp_cost
                     if parent.hp < 1: parent.hp = 1
 
+            #autocast
             if self.self_buff:
                 target = parent
 
@@ -2550,58 +2653,18 @@ init -2 python:
 
                 return healing
 
-            elif self.modifies == 'restore':
-                successful = False
-                if parent is target:
-                    BM.battle_log_insert(['support', 'debuff'], "{0} performs self-restoration".format(parent.name))
-                else:
-                    BM.battle_log_insert(['support', 'debuff'], "{0} attempts to restore {1}".format(parent.name, target.name))
-                for modifier in target.modifiers:
-                    if target.modifiers[modifier][0] < 0: #a modifier lower than 0 is assumed to be a curse
-                        successful = True
-                        BM.battle_log_insert(['support', 'debuff'], "{0} is healed from curse to its {1}".format(target.name, modifier.replace('_', ' ')))
-                        target.modifiers[modifier] = [0,0]
-
-                if not successful:
-                    #there were no curses to remove
-                    message = "No curses to remove from {0}".format(target.name)
-                    BM.battle_log_insert(['support', 'debuff'], message)
-                    show_message(message)
-                    parent.en += self.energy_use
-                    parent.hp += self.hp_cost
-                    return 0
-
-                else:
-                    if not hidden:
-                        target.getting_buff = True
-                        BM.selectedmode = False
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-                        if BM.phase == 'Player':
-                            if not target == parent and target.faction == 'Player':
-                                renpy.music.play( 'sound/Voice/{}'.format( renpy.random.choice(target.buffed_voice) ),channel = target.voice_channel )
-                        message = "All curses were removed from the {}".format(target.name)
-                        BM.battle_log_insert(['support', 'debuff'], message)
-                        show_message(message)
-                        target.getting_buff = False
-                        if BM.phase == 'Player':
-                            BM.selectedmode = True
-                        renpy.hide_screen('battle_screen')
-                        renpy.show_screen('battle_screen')
-                    return 0
-
             #if it's a buff/curse
             else:
 
                 #I should replace this with proper immunity flagging.
                 if self.name == 'Disable' and target.name == 'Legion':
                     show_message( "The Legion is immune!" )
-                    parent.en += self.energy_use
+                    parent.en += self.energy_cost(parent)
                     return 0
 
-                successful = False
+                #lots of bookkeeping
                 if parent is target:
-                    # let's hope that we cannot use self-debuff....
+                    # let's hope that we cannot use self-debuff...
                     target.getting_buff = True
                     log_tags = ['support', 'buff']
                     BM.battle_log_insert(log_tags, "{0} uses {1}".format(parent.name, self.name))
@@ -2614,19 +2677,24 @@ init -2 python:
                         target.getting_curse = True
                         log_tags = ['support', 'debuff']
                         BM.battle_log_insert(log_tags, "{0} uses {1} on {2}".format(parent.name, self.name, target.name))
-                if hasattr(self.modifies,"__iter__"):  #this checks is the var is an iterable (like a list). if it's not it should be a string.
-                    for modifier in self.modifies:
-                        if apply_modifier(target,modifier,self.buff_strength,self.buff_duration,self.cumulative): successful = True
-                else:
-                    if apply_modifier(target,self.modifies,self.buff_strength,self.buff_duration,self.cumulative): successful = True
+                
+                #try to set the buff
+                successful = target.set_buff(self.applied_buff) #returns False if it could not apply the buff
+                
+                # if hasattr(self.modifies,"__iter__"):  #this checks is the var is an iterable (like a list). if it's not it should be a string.
+                    # for modifier in self.modifies:
+                        # if apply_modifier(target,modifier,self.buff_strength,self.buff_duration,self.cumulative): successful = True
+                # else:
+                    # if apply_modifier(target,self.modifies,self.buff_strength,self.buff_duration,self.cumulative): successful = True
 
                 if not successful:
                     #wasted
-                    message = "A stronger or similar effect is already present on {0}".format(target.name)
+                    message = "The buff could not be applied to the {0}".format(target.name)
                     BM.battle_log_insert(log_tags, message)
                     show_message(message)
                     target.getting_buff = False
                     target.getting_curse = False
+                    parent.en += self.energy_cost(parent)
                     return 0
 
                 update_stats()
@@ -2634,6 +2702,7 @@ init -2 python:
                     BM.battle_log_insert(['support', 'buff'], "{0} is buffed with {1}".format(target.name, self.name))
                 else:
                     BM.battle_log_insert(['support', 'debuff'], "{0} is cursed with {1}".format(target.name, self.name))
+                
                 if not hidden:
                     BM.selectedmode = False
                     renpy.hide_screen('battle_screen')
@@ -2662,13 +2731,17 @@ init -2 python:
                 target.getting_buff = False
                 target.getting_curse = False
 
-                if self.name == 'Disable':  #I should probably put stuff like this in the library at some point
-                    parent.hate += 250
+                parent.hate += self.hate_penalty
+                # if self.name == 'Disable':  #I should probably put stuff like this in the library at some point
+                    # parent.hate += 250
 
                 return 0
 
         def energy_cost(self, parent):
             return int(self.energy_use)
+            
+        def callback(self):
+            return
 
     class Curse(Support):
         def __init__(self):
@@ -2688,6 +2761,7 @@ init -2 python:
             self.energy_use = 60
             self.hp_cost = 0
             self.wtype = 'Special'
+            self.parent = None
             self.modifies = '' #what modifier key will it affect. e.g. 'accuracy'
             self.buff_strength = 0 #how many points does it increase a stat?
             self.buff_duration = 1
@@ -2775,6 +2849,127 @@ init -2 python:
 
         def energy_cost(self,parent):
             return self.energy_use
+            
+        def callback(self):
+            return
+
+    class CharacterSprite(store.object):
+        """used for composite sprites in VN mode."""
+        def __init__(self,name,bodies,blushes,mouths,eyes,eyebrows,extras=None,tears={},*args,**kwargs):
+            self.name = name
+            
+            #list of all the variants per standard position
+            #these are now actually dicts though...
+            self._list_bodies = bodies
+            self._list_blushes = blushes
+            self._list_blushes['None'] = None #we do need to allow all combinations where this element does not appear
+            self._list_mouths = mouths
+            self._list_eyes = eyes
+            self._list_eyebrows = eyebrows
+            self._list_extras = extras #eyepatches anyone?
+            self._list_tears = tears
+            self._list_tears['None'] = None
+            
+            self.body = ''
+            self.blush = ''
+            self.mouth = ''
+            self.eyes = ''
+            self.eyebrows = ''
+            self.tears = ''
+            # self.extra = ''
+            
+        def init_images(self):
+            """this builds the LiveComposites and registers the results in the sprites dict"""
+            
+            #deal with offsets which became required after cropping the elements due to performance reasons.
+            if self.name == 'ava':
+                offset = (223,40)
+            elif self.name == 'chigara':
+                offset = (281,37)
+            elif self.name == 'claude':
+                offset = (297,104)
+            elif self.name == 'sola':
+                offset = (49,23)
+            elif self.name == 'asaga':
+                offset = (270,454)
+            elif self.name == 'icari':
+                offset = (182,67)
+            elif self.name == 'kryska':
+                offset = (260,20)
+            else:
+                offset = (0,0)
+            
+            #cycle through all the main categories to build every combination into the sprites dict
+            for body in self._list_bodies:
+                # component_list = [(2400,3300),(0,0),self._list_bodies[body]]
+                self.body = self._list_bodies[body]
+                sprite_dimensions = Image(self.body).load().get_size()
+                
+                #deal with weird posture of Claude which needs a separate offset
+                if 'boobs' in body:
+                    offset = (80, 362)
+                #asaga is also annoying
+                if body == 'leanforward':
+                    offset = (248, 836)
+                    
+                #easter egg! thomas is een sukkel.
+                    
+                for blush in self._list_blushes:
+                    if not blush == 'None':
+                        self.blush = self._list_blushes[blush]
+                    else:
+                        self.blush = ''
+                    for mouth in self._list_mouths:
+                        self.mouth = self._list_mouths[mouth]
+                        for eye in self._list_eyes:
+                            self.eyes = self._list_eyes[eye]
+                            for eyebrow in self._list_eyebrows:
+                                self.eyebrows = self._list_eyebrows[eyebrow]
+                                for tear in self._list_tears:
+                                    if not tear == 'None':
+                                        self.tears = self._list_tears[tear]
+                                    else:
+                                        self.tears = ''
+                                
+                                    component_list = [
+                                        sprite_dimensions,
+                                        (0,0), self.body,
+                                        offset, self.mouth,
+                                        offset, self.eyes,
+                                        offset, self.eyebrows]
+                                            
+                                    if not self.blush == '':
+                                        component_list.insert(3,self.blush)
+                                        component_list.insert(3,offset)
+                                            
+                                    if not tear == 'None':
+                                        component_list.append(offset)
+                                        component_list.append(self.tears)
+                                    
+                                    if not self._list_extras is None:
+                                        for extra in self._list_extras:
+                                            component_list.append((0,0))
+                                            component_list.append(self._list_extras[extra])
+                                    
+                                    d = LiveComposite(*component_list)
+                                    
+                                    # d = Transform(LiveComposite(*component_list))
+                                    # d.zoom = 0.9
+                                    # d.xanchor = 0.5
+                                    # d.yanchor = 0.0
+                                    # d.ypos = -80
+                                    # d.xpos = 0.5
+                                    
+                                    #register the results
+                                    sprite_name = self.name+' '+body+' '+mouth+' '+eye+' '+eyebrow
+                                    if not self.blush == '':
+                                        sprite_name = sprite_name+' '+blush
+                                    if not self.tears == '':
+                                        sprite_name = sprite_name+' '+tear
+                                    
+                                    store.sprites[sprite_name] = d
+                                    # self.blush = ''
+                                    # self.tears = ''
 
     class Cover(store.object):
         def __init__(self,location = (1,1)):
@@ -3133,6 +3328,61 @@ init -2 python:
         def isVisible(self):
             return eval(self.visibility_condition)
 
+    class Buff(store.object):
+        """objects derived from this object get attached to units and modifies stats when looked up.
+        The individual buffs are defined in the Library."""
+        name = "Unnamed Buff"
+        tooltip = "Empty Tooltip"
+        affected_stats = []
+        cumulative = False #when True applying the same buff on a target has some effect
+        duration = 5 #number of turns in effect.
+        
+        def __init__(self,type,curse=False,parent=None): 
+            self.curse = curse # if True this is a debuff. affects the icon and if Restore removes it.
+            self.type = type #offense, defense or utility. affects icon
+            self.parent = parent #what ship owns this buff. may be useful
+            self.turn_counter = 0
+            self.stack_counter = 0
+            
+            if self.type == 'offense':
+                self.icon = 'Battle UI/icon_intercept.png'
+            elif self.type == 'defense':
+                self.icon = 'Battle UI/icon_armor.png'
+            else:
+                self.icon = 'Battle UI/move_tile_small.png'
+            if self.curse:
+                self.icon = im.MatrixColor(self.icon,im.matrix.tint(1.0, 0.5, 0.5)) #debuffs have their icon tinted red            
+            
+            self.turns_left = self.duration
+            
+        def get_modified_stat(self,stat,v):
+            """should be overwritten"""
+            return v
+            
+        def remove(self,silent=False):
+            self.parent.buffs.remove(self)
+            if self.curse:
+                message = "{0} recovered from {1}".format(ship.name, self.name)
+                BM.battle_log_insert(['support', 'debuff'], message)
+            else:
+                message = "{1} expired from {0}".format(ship.name, self.name)
+                BM.battle_log_insert(['support', 'buff'], message)
+                
+            if not silent:
+                show_message(message)
+                renpy.pause(0.5)
+            
+        def turn_start(self):
+            if self.duration != -1: #duration of -1 means it does not expire.
+                self.turns_left -= 1
+                if self.turns_left <= 0:
+                    self.remove()
+        
+        def callback(self):
+            """should be overwritten. gets called at the start of every turn."""
+            return
+        
+    
     ## CUSTOM ACTIONS ##
     class BonusPageNext(Action):
         def __init__(self):

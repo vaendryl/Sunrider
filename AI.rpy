@@ -743,14 +743,15 @@ init python:
                     #get a list of ships that do not have this curse on them already
                     viable_targets = []
                     for oship in (enemy_ships if ship.faction == 'Player' else player_ships):
-                        #warning, this code does not support abilities that modify more than 1 stat
-                        if oship.modifiers[weapon.modifies][0] > weapon.buff_strength and oship.location != None: #  e.g. 0 accuracy > -20 accuracy
+                        #check if this ship already has this debuff. add to viable targets if not.
+                        if oship.has_buff(weapon.name):
                             viable_targets.append(oship)
                     if viable_targets == []:
                         continue #to next weapon
 
                     if weapon.modifies == 'flak':
-                        viable_targets = heapq.nlargest( 3 , viable_targets , key=lambda x:x.flak ) #return the 3 ships with the highest flak
+                        #return the 3 ships with the highest flak
+                        viable_targets = heapq.nlargest( 3 , viable_targets , key=lambda x:x.flak ) 
                         for oship in viable_targets[:]:
                             if oship.flak < 10:
                                 viable_targets.remove(oship)
@@ -773,15 +774,18 @@ init python:
                         viable_target = None
                         curse_weight = 0
                         for oship in (player_ships if ship.faction == 'Player' else enemy_ships):
-                            if oship.location != None:
-                                for modifier in oship.modifiers:
-                                    magnitude, duration = oship.modifiers[modifier]
-                                    if magnitude < curse_weight: # e.g. -100 < -20   or  disable < aimdown etc. smaller means more powerful in this case
-                                        viable_target = oship
-                                        curse_weight = magnitude
-
-                        if viable_target != None:
-                            viable_options.append( (weapon,viable_target) )
+                            
+                            # restoring the Disable debuff has priority over anything else.
+                            if oship.has_buff("Disable"):
+                                show_message('using {} on {}'.format(chosen_weapon.name,chosen_target.name) )
+                                ship.AI_attack_target(oship,weapon)
+                                return True
+                                
+                            #add all debuffed ships to the viable options list. mass debuffing is a good way to distract the AI.
+                            for buff in oship.buffs:
+                                if buff.curse:
+                                    viable_options.append( (weapon,oship) )
+                                    continue
 
                     else: #other buffs
                         pass # not implemented

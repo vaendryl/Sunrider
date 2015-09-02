@@ -2,6 +2,16 @@
 
 label dispatch:
 
+    # mod support.
+    # cheers TheBigfootedBigfoot :)
+    python:
+        if hasattr(store,'chat_labels'):
+            if chat_labels != []: # if empty, skip
+                for item in chat_labels:
+                    if eval(item[0]): # check string evals to true
+                        globals()[item[1]+"_location"] = item[2] # Set location of char
+                        globals()[item[1]+"_event"] = item[3] # Set char-event
+    
     #dissolve to black so that previous scene doesn't briefly appear when going to new scene
     window hide
 #    scene Solid((0, 0, 0, 255))

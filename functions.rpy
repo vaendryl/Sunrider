@@ -268,13 +268,13 @@ init -6 python:
         #upgrades modify the base stat
         wtype = get_weapon_type(weapon)
         if wtype == 'Kinetic': accuracy *= attacker.kinetic_acc
-        elif wtype == 'Laser': accuracy *= attacker.energy_acc
+        elif wtype == 'Energy': accuracy *= attacker.energy_acc
         elif wtype == 'Melee': accuracy *= attacker.melee_acc
         else: pass
 
         #subtract the targets evasion from accuracy but only when it's not a support skill and the AI isn't guessing CTH.
         if not weapon.wtype == 'Support' and not guess:
-            accuracy -= (target.evasion * ( 100 + target.modifiers['evasion'][0] ) / 100 )
+            accuracy -= target.evasion 
         elif guess:
             #AI assumes all ryders have 25 evasion.
             if target.stype == 'Ryder': accuracy -= 25
@@ -383,6 +383,12 @@ init -6 python:
           #we also update armor (to match damage levels) while we are at it.
           #the font color is also updated to show a value is buffed or not from baseline
 
+        #this should've been set from the beginning
+        for ship in BM.ships:
+            for weapon in ship.weapons:
+                if weapon.parent is None:
+                    weapon.parent = ship
+        
         for ship1 in player_ships:
             try:
                 if ship1.modifiers['energy regen'][0] == -100:
@@ -551,6 +557,7 @@ init -6 python:
     def update_weapon(weapon):
         """reset a weapon to init so it's compatible with current code. most useful for custom actions that store weapons from old code"""
         keep_dict = {}
+        parent = weapon.parent
         if hasattr(weapon,'keep_after_reset'):
             keep_dict = weapon.keep_after_reset
         weapon.__init__()
@@ -558,6 +565,7 @@ init -6 python:
             for stat in keep_dict:
                 setattr(weapon,stat,keep_dict[stat])
             weapon.keep_after_reset = keep_dict
+        weapon.parent = parent
         return weapon    
 
     def fix_enemy_list():
@@ -854,19 +862,21 @@ init -6 python:
     def get_counter_attack(location, AI = False):
         """check if a location is next to an (enemy) unit that has an Assault type weapon"""
         if location == None: return False
+        
+        shiplist = enemy_ships
         if AI:
             shiplist = player_ships
-        else:
-            shiplist = enemy_ships
+            
         for ship in shiplist:
             if get_distance(ship.location,location) == 1:
-                if has_weapon(ship,'Assault') and ship.modifiers['flak'][0] != -100:
+                if has_weapon(ship,'Assault') and ship.flak > 0:
                     return True
         return False
 
     def update_modifiers():
         """called when the phase changes. it ticks down modifiers and removes them when expired."""
 
+        #player phase starts
         if BM.phase == 'Player':
 
             #order management
@@ -882,42 +892,22 @@ init -6 python:
                 else:
                     BM.active_strategy = [strat,duration -1]
 
-            #handle the actual modifiers
+            #handle the buffs and any callbacks
             for ship in player_ships:
-                for key in ship.modifiers:
-                    mod_power,duration = ship.modifiers[key]
-                    if mod_power != 0:
-                        if duration == 1:
-                            if mod_power < 0:
-                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
-                                BM.battle_log_insert(['support', 'debuff'], message)
-                                show_message(message)
-                            else:
-                                if not order_expired:
-                                    message = "{0} lost buff to its {1}".format(ship.name, key.replace('_', ' '))
-                                    BM.battle_log_insert(['support', 'buff'], message)
-                                    show_message(message)
-                            ship.modifiers[key] = [0,0]
-                            renpy.pause(0.5)
-                        else:
-                            ship.modifiers[key][1] -= 1
+                for buff in ship.buffs:
+                    buff.turn_start()
+                    buff.callback()
+                for weapon in ship.weapons:
+                    weapon.callback()
+            
+        #enemy turn starts
         else:
             for ship in enemy_ships:
-                for key in ship.modifiers:
-                    if ship.modifiers[key][1] > 0:
-                        if ship.modifiers[key][1] == 1:
-                            if ship.modifiers[key][0] < 0:
-                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
-                                BM.battle_log_insert(['support', 'debuff'], message)
-                                show_message(message)
-                            else:
-                                message = "{0} recovered from curse to its {1}".format(ship.name, key.replace('_', ' '))
-                                BM.battle_log_insert(['support', 'debuff'], message)
-                                show_message(message)
-                            ship.modifiers[key] = [0,0]
-                            renpy.pause(0.5)
-                        else:
-                            ship.modifiers[key][1] -= 1
+                for buff in ship.buffs:
+                    buff.turn_start()
+                    buff.callback()
+                for weapon in ship.weapons:
+                    weapon.callback()
 
     def game_over():
         renpy.hide_screen('game_over_gimmick')
@@ -1164,3 +1154,73 @@ init -6 python:
             if ship.name == ship_name:
                 return ship
         return None
+
+    def check_list(input):
+        #return the input if it's a list or make it into one if it isn't.
+        try:
+            a = input[0] #allows not just lists but everything that acts like one, like strings
+        except:
+            return [input]
+        else:
+            return input
+        
+    def dshow (input_string,xpos=0.5,ypos=1750,zoom=0.9,t=dissolve,zorder=0,behind=[]):
+        name = input_string.split(' ',1)[0]
+        d = store.sprites[input_string]
+        renpy.show(name,[sprite_default(xpos,ypos,zoom)],'master',d,zorder,name,behind)
+        renpy.with_statement(t)
+        return
+        
+    def get_elementlist(name,base):
+        
+        # Character\Ava\armscrossed
+        #self.sprites = [self.make_sprite(file) for file in os.listdir(FULL_PATH+'/'+folder_name) if os.path.isfile(FULL_PATH+'/'+folder_name+'/'+file)]
+        
+        path = 'Character/'+name+'/'+base+'/' #as known to renpy using game folder as base. eg 'Character\Ava\armscrossed'
+        name = name.lower()
+        base = base.lower()
+        
+        mouth_files = [f for f in os.listdir(FULL_PATH+path+'mouth') if '.png' in f]
+        mouths = {}
+        for mouth in mouth_files:
+            mouths[mouth.split('.')[0]] = (path+'mouth/'+mouth)
+        
+        eye_files = [f for f in os.listdir(FULL_PATH+path+'eyes') if '.png' in f]
+        eyes = {}
+        for eye in eye_files:
+            eyes[eye.split('.')[0]] = (path+'eyes/'+eye)
+
+        eyebrow_files = [f for f in os.listdir(FULL_PATH+path+'eyebrows') if '.png' in f]
+        eyebrows = {}
+        for eyebrow in eyebrow_files:
+            eyebrows[eyebrow.split('.')[0]] = (path+'eyebrows/'+eyebrow)             
+        
+        elementlist = [
+            name,
+            {base:path+'base.png'},
+            {'blush':path+'blush.png'},
+            mouths,eyes,eyebrows
+            ]
+            
+        if not renpy.loadable(path+'blush.png'):
+            elementlist[2]['blush'] = Null()
+        
+        return elementlist
+        
+    def get_expressions(char):
+        return [f for f in store.sprites if char in f]
+
+    def test_sprites(name):
+        f = get_expressions(name)
+        sprite_name = f[renpy.random.randint(0,len(f)-1)]
+        dshow(sprite_name)
+        return sprite_name
+        
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except:
+            return False
+        
+    

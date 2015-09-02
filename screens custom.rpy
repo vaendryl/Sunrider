@@ -673,7 +673,7 @@ screen battle_screen:
                     $ lbl = IC.move_tile
                     $ tile_location = (tile[3],tile[4])
 
-                    if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
+                    if get_counter_attack(tile_location) and not BM.selected.has_buff("Stealth"):
                         $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
 
                     if tile_location == BM.mouse_location:
@@ -1101,8 +1101,8 @@ screen commands: ##show the weapon buttons etc##
 
         ##show weapon stats in status window on hover
 
-        if not BM.weaponhover == None or not BM.active_weapon == None:
-            if BM.weaponhover == None:
+        if not BM.weaponhover is None or not BM.active_weapon is None:
+            if BM.weaponhover is None:
                 $weapon = BM.active_weapon
             else:
                 $weapon = BM.weaponhover
@@ -1114,18 +1114,23 @@ screen commands: ##show the weapon buttons etc##
 
         ##show buffs
         $count = 0
-        for modifier in BM.selected.modifiers:
-            if BM.selected.modifiers[modifier][0] != 0:
-                text modifier xpos 1217 ypos (922+count*24) size 20 outlines [(1,'000',0,0)]
-                if BM.selected.modifiers[modifier][0] > 0:
-                    if BM.selected.modifiers[modifier][1] > 0:
-                        $ status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
-                    else:
-                        $ status_effect = '+{}%'.format(BM.selected.modifiers[modifier][0])
-                else:
-                    $ status_effect = '{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
-                text status_effect xanchor 1.0 xpos 1554 ypos (922+count*24) size 19 outlines [(1,'000',0,0)]
-                $count += 1
+        for buff in BM.selected.buffs:
+            text buff.name xpos 1217 ypos (922+count*24) size 20 outlines [(1,'000',0,0)]
+            $count += 1
+        
+        ##defunct
+        # for modifier in BM.selected.modifiers:
+            # if BM.selected.modifiers[modifier][0] != 0:
+                # text modifier xpos 1217 ypos (922+count*24) size 20 outlines [(1,'000',0,0)]
+                # if BM.selected.modifiers[modifier][0] > 0:
+                    # if BM.selected.modifiers[modifier][1] > 0:
+                        # $ status_effect = '+{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                    # else:
+                        # $ status_effect = '+{}%'.format(BM.selected.modifiers[modifier][0])
+                # else:
+                    # $ status_effect = '{}% for {} turns'.format(BM.selected.modifiers[modifier][0],BM.selected.modifiers[modifier][1])
+                # text status_effect xanchor 1.0 xpos 1554 ypos (922+count*24) size 19 outlines [(1,'000',0,0)]
+                # $count += 1
 
         ##show weapon buttons
         if BM.selected.faction == 'Player':

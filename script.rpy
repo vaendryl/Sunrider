@@ -14,7 +14,11 @@ label splashscreen:
     return
 
 label quit:
-    $ renpy.quit(relaunch=False)
+    python:
+        try:
+            renpy.quit(relaunch=False)
+        except:
+            pass
     return
 
 # The game starts here.

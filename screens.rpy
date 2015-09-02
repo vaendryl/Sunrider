@@ -43,6 +43,7 @@ screen say:
 
     if 'mouseup_3' not in config.keymap['game_menu']:
         key 'mouseup_3' action Show('save')
+    key 'h' action Hide('say')
     
     # Defaults for side_image and two_window
     default side_image = None

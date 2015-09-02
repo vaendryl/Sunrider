@@ -28,7 +28,6 @@ init 2 python:
             self.upgrades['base_armor'] = ['Armor',1,5,500,2]
             self.upgrades['max_missiles'] = ['Missile Storage',1,1,500,2]
             
-            
             self.missiles = self.max_missiles
             self.rockets = 0
             self.evasion = -25  # cruisers are easy to hit
@@ -2074,47 +2073,76 @@ init 2 python:
 ######################################### PACT SUPPORT
 
     class PactRepair(Support):
-            def __init__(self):
-                Support.__init__(self)
-                self.repair = True
-                self.damage = 300 #also used for heals
-                self.energy_use = 60
-                self.name = 'Repair I'
-                self.shot_count = 1
+        def __init__(self):
+            Support.__init__(self)
+            self.repair = True
+            self.damage = 300 #also used for heals
+            self.energy_use = 60
+            self.name = 'Repair I'
+            self.shot_count = 1
 
     class DisableLite(Curse): #halves available EN
-            def __init__(self):
-                Curse.__init__(self)
-                self.energy_use = 100
-                self.accuracy = 9999
-                self.modifies = 'energy regen'
-                self.buff_strength = -50
-                self.buff_duration = 2
-                self.name = 'Disable Lite'
+        def __init__(self):
+            Curse.__init__(self)
+            self.applied_buff = DisableLiteD
+            self.energy_use = 100
+            self.accuracy = 9999
+            self.modifies = 'energy regen'
+            self.buff_strength = -50
+            self.buff_duration = 2
+            self.name = 'Disable Lite'
 
     class PactRestore(Support):
-            def __init__(self):
-                Support.__init__(self)
-                self.energy_use = 60
-                self.modifies = 'restore'
-                self.buff_strength = 1
-                self.buff_duration = 1
-                self.name = 'Restore'
+        def __init__(self):
+            Support.__init__(self)
+            self.energy_use = 60
+            self.modifies = 'restore'
+            self.buff_strength = 1
+            self.buff_duration = 1
+            self.name = 'Restore'
+            
+        def fire(self,parent,target,counter = False,hidden=False):
+        #bookkeeping
+            if parent is target:
+                BM.battle_log_insert(['support', 'debuff'], "{0} performs self-restoration".format(parent.name))
+            else:
+                BM.battle_log_insert(['support', 'debuff'], "{0} attempts to restore {1}".format(parent.name, target.name))
+            
+            #remove all curses from the target
+            target.buffs[:] = [f for f in target.buffs if not f.curse]
+            
+            #animation
+            if not hidden:
+                target.getting_buff = True
+                BM.selectedmode = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                message = "All curses were removed from the {}".format(target.name)
+                BM.battle_log_insert(['support', 'debuff'], message)
+                show_message(message)
+                target.getting_buff = False
+                if BM.phase == 'Player':
+                    BM.selectedmode = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+            return 0
 
     class PactFlakOff(Curse):
-            def __init__(self):
-                Curse.__init__(self)
-                self.energy_use = 40
-                self.modifies = 'flak'
-                self.sort_on = 'pship.flak'
-                self.accuracy = 9999
-                self.buff_strength = -100
-                self.buff_duration = 2
-                self.name = 'Flak Off'
+        def __init__(self):
+            Curse.__init__(self)
+            self.applied_buff = FlakOffD
+            self.energy_use = 40
+            self.modifies = 'flak'
+            self.sort_on = 'pship.flak'
+            self.accuracy = 9999
+            self.buff_strength = -100
+            self.buff_duration = 2
+            self.name = 'Flak Off'
 
     class PactShutOff(Curse):
         def __init__(self):
             Curse.__init__(self)
+            self.applied_buff = ShieldDown
             self.energy_use = 60
             self.accuracy = 9999
             self.modifies = 'shield_generation'
@@ -2157,8 +2185,209 @@ init 2 python:
 
 
 
-### SUPPORT SKILLS ###
+            ## Buffs ##
 
+    class FullForward(Buff):
+        name = "Full Forward"
+        tooltip = "Increases damage by 20% and accuracy by 15%"
+        affected_stats = ['damage','accuracy']
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            if stat == 'accuracy':
+                return int(v * 1.15)
+            elif stat == 'damage':
+                return int(v * 1.20)
+                
+    class AllGuard(Buff):
+        name = "All Guard"
+        tooltip = "Increases flak by 20%, shield generation by 10% and evasion by 10%."
+        affected_stats = ['flak','shield_generation','evasion']
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'defense',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            if stat == 'flak':
+                return v + 20
+            elif stat == 'shield_generation':
+                if v > 0: return v + 10
+                return v
+            elif stat == 'evasion':
+                return v + 10
+                
+    class AccuracyUpB(Buff):
+        name = "Aim Up"
+        tooltip = "Increases accuracy by 15 points."
+        affected_stats = ['accuracy']
+        duration = 3
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return v + 15
+            
+    class Sentinel(Buff):
+        name = "Sentinel"
+        tooltip = "Doubles armor and increases the chance of enemies targeting this unit."
+        affected_stats = ['armor','hate']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'defense',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            if stat == 'armor':
+                return v * 2 + 5 #giving a bit extra because I'm nice like that.            
+            elif stat == 'hate':
+                return v * 3
+            
+    class DamageUpB(Buff):
+        name = "Damage Up"
+        tooltip = "Increases damage by 20%."
+        affected_stats = ['damage']
+        duration = 3
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return int(v * 1.2)
+
+    class StealthB(Buff):
+        name = "Stealth"
+        tooltip = "Makes the user immune to counter attacks and reduces the chance the enemy targets the unit."
+        affected_stats = ['hate']
+        duration = 1
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'utility',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return int(v * 0.25)
+            
+    class AwakenedSeraphim(Buff):
+        name = "Awakened"
+        tooltip = "Gives an additional 100 points to accuracy and doubles damage."
+        affected_stats = ['accuracy','damage']
+        duration = 3
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            if stat == 'accuracy':
+                return v + 100
+            elif stat == 'damage':
+                return v * 2
+                
+    class AwakenedAsaga(Buff):
+        name = "True Awakening"
+        tooltip = "Increases armor, evasion and damage each turn it is active. Does not expire."
+        affected_stats = ['armor','evasion','damage']
+        duration = -1 #does not expire.
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',parent=parent)
+            turn_counter = 1
+            
+        def get_modified_stat(self,stat,v):
+            return int( v * (1.0+0.5*self.turn_counter))
+                
+        def callback(self):
+            self.turn_counter += 1
+            blackjack.hp -= (100 + 50 * self.turn_counter)
+            blackjack.update_stats()
+            if blackjack.hp < 1:
+                blackjack.hp = 1
+                # blackjack.hate *= 2  #changed my mind on this
+                self.remove()
+            return
+                
+            ##debufs##
+        #since debufs tick down at the start of a faction's turn, a duration of 1
+        #doesn't do anything as it'll expire right away.
+        
+    class AccDownD(Buff):
+        name = "Aim Down"
+        tooltip = "Reduces accuracy by 25 points."
+        affected_stats = ['accuracy']
+        duration = 3
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'offense',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return v - 25
+
+    class DisableD(Buff):
+        name = "Disabled"
+        tooltip = "Fully disables a unit, including shield generation and flak."
+        affected_stats = ['en','flak','shield_generation']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'Utility',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return 0 #wow, looks harsh
+            
+    class DisableLiteD(Buff):
+        name = "Disable Lite"
+        tooltip = "Doubles cost of weapons and abilities."
+        affected_stats = ['energy_use']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'Utility',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return v * 2
+
+    class FlakOffD(Buff):
+        name = "Flak Off"
+        tooltip = "Disables flak."
+        affected_stats = ['flak']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'defense',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return 0
+            
+    class ShieldDown(Buff):
+        name = "Shield Down"
+        tooltip = "Removes all shield generation."
+        affected_stats = ['shield_generation']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'defense',curse=True,parent=parent)
+            
+        def get_modified_stat(self,stat,v):
+            return 0 
+
+    class ShieldJam(Buff):
+        name = "Shield Jam"
+        cumulative = True
+        tooltip = "Reduces shield generation each time it's applied."
+        affected_stats = ['shield_generation']
+        duration = 2
+        
+        def __init__(self,parent):
+            Buff.__init__(self,'defense',curse=True,parent=parent)
+            self.stack_counter = 1
+            
+        def get_modified_stat(self,stat,v):
+            return v - 15 * self.stack_counter
+            
+            ### SUPPORT SKILLS ###
+            #many of the attributes are now defunct but should be harmless.
+            
     class Repair(Support):
         def __init__(self):
             Support.__init__(self)
@@ -2175,6 +2404,7 @@ init 2 python:
     class AccUp(Support):
         def __init__(self):
             Support.__init__(self)
+            self.applied_buff = AccuracyUpB
             self.modifies = 'accuracy'
             self.buff_strength = 15
             self.buff_duration = 3
@@ -2184,9 +2414,22 @@ init 2 python:
             Adds an additional 15 points to the target's weapon accuracy.
             Has a range of 3 hexes."""
 
+    class Taunt(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.applied_buff = Sentinel
+            self.modifies = 'armor'
+            self.buff_strength = 100
+            self.buff_duration = 2
+            self.name = 'Taunt'
+            self.lbl = Image('Battle UI/button_aimup.png') #needs to be changed
+            self.tooltip = """
+            Increases armor and compels enemies to target you."""            
+
     class DamageUp(Support):
         def __init__(self):
             Support.__init__(self)
+            self.applied_buff = DamageUpB
             self.modifies = 'damage'
             self.buff_strength = 20
             self.buff_duration = 3
@@ -2208,10 +2451,38 @@ init 2 python:
             self.tooltip = """
             Removes all enemy status ailments from the target.
             Has a range of 3 hexes."""
+            
+        def fire(self,parent,target,counter = False,hidden=False):
+            #bookkeeping
+            if parent is target:
+                BM.battle_log_insert(['support', 'debuff'], "{0} performs self-restoration".format(parent.name))
+            else:
+                BM.battle_log_insert(['support', 'debuff'], "{0} attempts to restore {1}".format(parent.name, target.name))
+            
+            #remove all curses from the target
+            target.buffs[:] = [f for f in target.buffs if not f.curse]
+            if not hidden:
+                target.getting_buff = True
+                BM.selectedmode = False
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+                if BM.phase == 'Player':
+                    if not target == parent and target.faction == 'Player':
+                        renpy.music.play( 'sound/Voice/{}'.format( renpy.random.choice(target.buffed_voice) ),channel = target.voice_channel )
+                message = "All curses were removed from the {}".format(target.name)
+                BM.battle_log_insert(['support', 'debuff'], message)
+                show_message(message)
+                target.getting_buff = False
+                if BM.phase == 'Player':
+                    BM.selectedmode = True
+                renpy.hide_screen('battle_screen')
+                renpy.show_screen('battle_screen')
+            return 0
 
     class Stealth(Support):
         def __init__(self):
             Support.__init__(self)
+            self.applied_buff = StealthB
             self.self_buff = True
             self.energy_use = 20
             self.accuracy = 100
@@ -2222,11 +2493,13 @@ init 2 python:
             self.name = 'Stealth'
             self.lbl = Image('Battle UI/button_stealth.png')
             self.tooltip = """
-            Become immune to enemy blindsides for one turn."""
+            Become immune to enemy blindsides for one turn and reduces 
+            the chance of enemies targeting you."""
 
     class Awaken(Support):
         def __init__(self):
             Support.__init__(self)
+            self.applied_buff = AwakenedSeraphim
             self.self_buff = True
             self.energy_use = 100
             self.accuracy = 100
@@ -2245,6 +2518,7 @@ init 2 python:
     class AwakenAsaga(Support):
         def __init__(self):
             Support.__init__(self)
+            self.applied_buff = AwakenedAsaga
             self.self_buff = True
             self.energy_use = 100
             self.accuracy = 100
@@ -2260,23 +2534,6 @@ init 2 python:
             Improves the Black Jack's damage, evasion and armor each turn, but also causes progressively more damage each turn until canceled."""
 
         def callback(self):
-            a,b = blackjack.modifiers['damage']
-            a = a + 50
-            blackjack.modifiers['damage'] = [a,b]
-            a,b = blackjack.modifiers['evasion']
-            a = a + 50
-            blackjack.modifiers['evasion'] = [a,b]
-            a,b = blackjack.modifiers['armor']
-            a = a + 50
-            blackjack.modifiers['armor'] = [a,b]
-            # a,b = blackjack.modifiers['accuracy']
-            # a = a + 50
-            # blackjack.modifiers['accuracy'] = [a,b]
-            blackjack.update_stats()
-            blackjack.hp -= (100 +  -b * 40 - 40)
-            if blackjack.hp < 1:
-                blackjack.hp = 1
-                blackjack.hate *= 2
             if self in blackjack.weapons:
                 blackjack.weapons.remove(self)
                 blackjack.weapons.append(EndAwakenAsaga())
@@ -2292,12 +2549,14 @@ init 2 python:
             Cancels the awakening effect"""
 
         def fire(self,parent,target,counter = False):
-            blackjack.modifiers['damage'] = [0,0]
-            blackjack.modifiers['evasion'] = [0,0]
-            blackjack.modifiers['armor'] = [0,0]
-            # blackjack.modifiers['accuracy'] = [0,0]
-            blackjack.update_stats()
-            BM.end_turn_callbacks = []
+            blackjack.remove_buff("True Awakening")
+            
+            # blackjack.modifiers['damage'] = [0,0]
+            # blackjack.modifiers['evasion'] = [0,0]
+            # blackjack.modifiers['armor'] = [0,0]
+            # blackjack.update_stats()
+            # BM.end_turn_callbacks = []
+            
             blackjack.weapons.remove(self)
             blackjack.weapons.append(AwakenAsaga())
 
@@ -2310,6 +2569,7 @@ init 2 python:
     class AccDown(Curse):
         def __init__(self):
             Curse.__init__(self)
+            self.applied_buff = AccDownD
             self.energy_use = 30
             self.modifies = 'accuracy'
             self.accuracy = 9999
@@ -2323,6 +2583,8 @@ init 2 python:
     class Disable(Curse): #takes away all EN
         def __init__(self):
             Curse.__init__(self)
+            self.applied_buff = DisableD
+            self.hate_penalty = 250
             self.energy_use = 100
             self.accuracy = 9999
             self.modifies = ['energy regen','flak', 'shield_generation']
@@ -2336,6 +2598,7 @@ init 2 python:
     class FlakOff(Curse):
         def __init__(self):
             Curse.__init__(self)
+            self.applied_buff = FlakOffD
             self.energy_use = 40
             self.modifies = 'flak'
             self.accuracy = 9999
@@ -2349,6 +2612,7 @@ init 2 python:
     class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
             Curse.__init__(self)
+            self.applied_buff = ShieldDown
             self.energy_use = 60
             self.accuracy = 9999
             self.modifies = 'shield_generation'
