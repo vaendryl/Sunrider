@@ -3166,6 +3166,7 @@ init -2 python:
             store.amissionforalliance = False
             store.missionforryuvia = False
             store.OngessTruth = False
+            store.SupportedGreyThreat = False
 
             store.battlemusic = True
 
