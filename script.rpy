@@ -11434,7 +11434,7 @@ label fakeservicerecord:
 
     show ava uniform handonhip neutral with dissolve
 
-    ava "An ace pilot with a fake profile, serving onboard a ship that doesn't exist? That sounds likes like something only Alliance Spec Ops would do."
+    ava "An ace pilot with a fake profile, serving onboard a ship that doesn't exist? That sounds like something only Alliance Spec Ops would do."
     kay "Heh, should have known. Our new pilot's probably the Admiral's spy, sent here to keep tabs on us just in case. Doesn't look like the Alliance quite trusts us yet, does it?"
     ava "Want me to keep an eye out for her?"
 
